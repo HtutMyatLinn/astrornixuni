@@ -16,7 +16,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $role = Auth::user()->role;
+        $role = Auth::user()->role->role;
 
         if ($role != 'admin') {
             return redirect('admin/dashboard');

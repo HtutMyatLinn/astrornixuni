@@ -27,24 +27,32 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        // Get user role
-        $role = $request->user()->role;
+        // Get the authenticated user
+        $user = $request->user();
 
-        // Redirect based on role
-        switch ($role) {
-            case 'admin':
-                return redirect('admin/dashboard');
-            case 'marketingmanager':
-                return redirect('marketingmanager/dashboard');
-            case 'marketingcoordinator':
-                return redirect('marketingcoordinator/dashboard');
-            case 'student':
-                return redirect('student/dashboard');
-            default:
-                return redirect('/');
+        // Check if the user has a role assigned
+        if ($user->role) {
+            // Get the role name from the role relationship
+            $roleName = $user->role->role;
+
+            // Redirect based on role
+            switch ($roleName) {
+                case 'admin':
+                    return redirect('admin/dashboard');
+                case 'marketingmanager':
+                    return redirect('marketingmanager/dashboard');
+                case 'marketingcoordinator':
+                    return redirect('marketingcoordinator/dashboard');
+                case 'student':
+                    return redirect('student/dashboard');
+                default:
+                    return redirect('/');
+            }
         }
-    }
 
+        // If the user has no role assigned, redirect to home
+        return redirect('/');
+    }
 
     /**
      * Destroy an authenticated session.
