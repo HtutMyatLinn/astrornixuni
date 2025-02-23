@@ -9,6 +9,7 @@
 
 <body>
     <h1>Student</h1>
+    <div>{{ Auth::user()->name }}</div>
     <!-- Authentication -->
     <form method="POST" action="{{ route('logout') }}">
         @csrf
