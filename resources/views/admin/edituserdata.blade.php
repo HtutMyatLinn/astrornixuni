@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="space-y-6">
-                    <h3 class="text-2xl font-bold mb-6">Personal Info</h3>
+                    <h3 class="text-2xl font-bold mb-6">Personal Information</h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
