@@ -5,20 +5,33 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-// Primary route using AuthenticatedSessionController to show the login view.
-Route::get('/', [AuthenticatedSessionController::class, 'create'])->name('login');
+// Primary route
+Route::get('/', function () {
+    return view('home');
+})->name('/');
 
-// Authentication routes.
-Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+// Contribution route
+Route::get('/contributions', function () {
+    return view('contributions.index');
+})->name('contributions');
+
+// Faculty route
+Route::get('/faculty', function () {
+    return view('faculty');
+})->name('faculty');
+
+// About us route
+Route::get('/aboutus', function () {
+    return view('aboutus');
+})->name('aboutus');
+
+// Contact us route
+Route::get('/contactus', function () {
+    return view('contactus');
+})->name('contactus');
 
 // Routes that require the user to be authenticated and verified.
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Default dashboard (if needed)
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
     // Profile management routes.
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -26,7 +39,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin dashboard.
     Route::middleware('admin')->group(function () {
-        Route::get('/admin/dashboard', [HomeController::class, 'admin'])->name('admin.dashboard');
+        // Route::get('/admin/dashboard', [HomeController::class, 'admin'])->name('admin.dashboard');
+        Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin');
+        Route::get('/admin/user-management', [HomeController::class, 'administratorUserManagement'])->name('admin.user-management');
+        Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
+        Route::get('/admin/report', [HomeController::class, 'administratorReport'])->name('admin.report');
+        Route::get('/admin/submission', [HomeController::class, 'administratorSubmission'])->name('admin.submission');
+        Route::get('/admin/closure', [HomeController::class, 'administratorClosure'])->name('admin.closure');
+        Route::get('/admin/logs', [HomeController::class, 'administratorLogs'])->name('admin.logs');
+        Route::get('/admin/inquiry', [HomeController::class, 'administratorInquiry'])->name('admin.inquiry');
+        Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
     });
 
     // Marketing Manager dashboard.

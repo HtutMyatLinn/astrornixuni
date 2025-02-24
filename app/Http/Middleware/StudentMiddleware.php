@@ -16,8 +16,10 @@ class StudentMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role->role !== 'student') {
-            return redirect('/');
+        if (Auth::user()->role === null) {
+            return redirect('login');
+        } elseif (Auth::user()->role->role !== 'student') {
+            return redirect('login');
         }
         return $next($request);
     }

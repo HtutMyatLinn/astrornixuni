@@ -16,8 +16,10 @@ class MarketingManagerMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role->role !== 'marketingmanager') {
-            return redirect('/');
+        if (Auth::user()->role === null) {
+            return redirect('login');
+        } elseif (Auth::user()->role->role !== 'marketingmanager') {
+            return redirect('login');
         }
         return $next($request);
     }
