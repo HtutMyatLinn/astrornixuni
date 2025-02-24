@@ -17,29 +17,50 @@ class HomeController extends Controller
         return view('admin.usermanagement');
     }
 
+    public function administratorUserManagementStudent()
+    {
+        return view('admin.usermanagementstudent');
+    }
+
+    public function administratorUserManagementMarketingManager()
+    {
+        return view('admin.usermanagementmarketingmanager');
+    }
+
+    public function administratorUserManagementMarketingCoordinator()
+    {
+        return view('admin.usermanagementmarketingcoordinator');
+    }
+
     public function administratorNotifications()
     {
         return view('admin.notifications');
     }
 
-    public function administratorReport()
+    public function administratorNotificationsUnregister()
     {
-        return view('admin.reportandanalysis');
+        return view('admin.notificationsunregister');
     }
 
-    public function administratorSubmission()
+
+    public function administratorNotificationsPassword()
     {
-        return view('admin.submission');
+        return view('admin.notificationspassword');
+    }
+
+    public function administratorNotificationsInquiry()
+    {
+        return view('admin.notificationsinquiry');
+    }
+
+    public function administratorRole()
+    {
+        return view('admin.role');
     }
 
     public function administratorClosure()
     {
         return view('admin.closuredate');
-    }
-
-    public function administratorLogs()
-    {
-        return view('admin.logsandsecurity');
     }
 
     public function administratorInquiry()
@@ -53,14 +74,14 @@ class HomeController extends Controller
     }
     public function marketingmanager()
     {
-        return view('marketingmanager.dashboard');
+        return view('marketingmanager.index');
     }
     public function marketingcoordinator()
     {
-        return view('marketingcoordinator.dashboard');
+        return view('marketingcoordinator.index');
     }
     public function student()
     {
-        return view('student.dashboard');
+        return view('student.index');
     }
 }

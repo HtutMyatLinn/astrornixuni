@@ -28,8 +28,27 @@
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
             @include('admin.header')
             <!-- here to add content -->
+            <!-- Add New Role Screen -->
+            <div class="flex justify-center items-center min-h-screen w-full">
+                <div class="max-w-md w-full p-8 bg-white rounded-2xl shadow-lg">
+                    <h1 class="text-2xl font-bold text-center mb-8">
+                        Add <span class="border-b-2 border-blue-600">New</span> Role
+                    </h1>
 
-            <h1>Report and Analysis</h1>
+                    <div class="mb-8">
+                        <label class="block text-sm font-medium mb-2">Role Name :</label>
+                        <input
+                            type="text"
+                            placeholder="Type to enter role..."
+                            class="w-full px-4 py-2.5 bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800">Save</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

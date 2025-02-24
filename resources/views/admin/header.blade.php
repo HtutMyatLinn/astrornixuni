@@ -8,13 +8,6 @@
 
             <!-- Right side -->
             <div class="flex items-center space-x-4">
-                <!-- Theme Toggle -->
-                <button class="flex justify-center items-center w-10 h-10 rounded-full bg-gray-100 text-gray-400 hover:text-gray-500">
-                    <svg class="w-5 h-5" fill="#A2A2A2" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                </button>
 
                 <!-- Notifications -->
                 <button class="flex justify-center items-center w-10 h-10 rounded-full bg-gray-100 text-gray-400 hover:text-gray-500 relative">

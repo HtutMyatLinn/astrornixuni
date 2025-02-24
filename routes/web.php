@@ -42,14 +42,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::get('/admin/dashboard', [HomeController::class, 'admin'])->name('admin.dashboard');
         Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin');
         Route::get('/admin/user-management', [HomeController::class, 'administratorUserManagement'])->name('admin.user-management');
+        Route::get('/admin/user-management/student', [HomeController::class, 'administratorUserManagementStudent'])->name('admin.user-management.student');
+        Route::get('/admin/user-management/marketing-manager', [HomeController::class, 'administratorUserManagementMarketingManager'])->name('admin.user-management.marketing-manager');
+        Route::get('/admin/user-management/marketing-coordinator', [HomeController::class, 'administratorUserManagementMarketingCoordinator'])->name('admin.user-management.marketing-coordinator');
         Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
-        Route::get('/admin/report', [HomeController::class, 'administratorReport'])->name('admin.report');
-        Route::get('/admin/submission', [HomeController::class, 'administratorSubmission'])->name('admin.submission');
+        Route::get('/admin/notifications/inquiry', [HomeController::class, 'administratorNotificationsInquiry'])->name('admin.notifications.inquiry');
+        Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');
+        Route::get('/admin/notifications/unregister-user', [HomeController::class, 'administratorNotificationsUnregister'])->name('admin.notifications.unregister-user');
+        Route::get('/admin/role', [HomeController::class, 'administratorRole'])->name('admin.role');
         Route::get('/admin/closure', [HomeController::class, 'administratorClosure'])->name('admin.closure');
-        Route::get('/admin/logs', [HomeController::class, 'administratorLogs'])->name('admin.logs');
         Route::get('/admin/inquiry', [HomeController::class, 'administratorInquiry'])->name('admin.inquiry');
         Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
     });
+
+    // tempo
 
     // Marketing Manager dashboard.
     Route::middleware('marketingmanager')->group(function () {
