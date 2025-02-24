@@ -11,21 +11,41 @@
         </div>
     </div>
 
-    <!-- User Profile Section -->
-    <div class="p-4 pl-6 text-white bg-[#1C2434]" x-data="{ open: false }">
-        <button @click="open = !open" class="flex items-center justify-between w-full space-x-3">
+    <!-- User Profile Section with Dropdown -->
+    <div class="p-4 text-white bg-[#1C2434]" x-data="{ open: false }">
+        <button @click="open = !open" class="flex items-center justify-between w-full space-x-3 px-4 py-2 focus:outline-none">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                    <svg class="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
+                <!-- Centered Profile Picture -->
+                <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+                    <img class="w-6 h-4" src="{{ asset('images/two_person.png') }}" alt="">
                 </div>
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">Aung Aung</h3>
                     <p class="text-xs text-gray-400">Admin</p>
                 </div>
             </div>
+            <svg class="w-5 h-5 transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
         </button>
+
+        <!-- Dropdown Items -->
+        <div x-show="open" x-transition class="mt-2 bg-[#1C2A3A] shadow-lg rounded-md overflow-hidden">
+            <a href="#" class="flex items-center px-4 py-3 text-sm text-[#D4D4D4] hover:bg-gray-700 transition-colors">
+                <img class="h-4 w-4 mr-3" src="{{ asset('images/editprofile.png') }}" alt="">
+                Edit Profile
+            </a>
+            <!-- Authentication -->
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"
+                    class="flex items-center w-full px-4 py-3 text-sm text-[#D4D4D4] hover:bg-gray-700 transition-colors">
+                    <img class="h-4 w-4 mr-3" src="{{ asset('images/logout.png') }}" alt="">
+                    Log Out
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Navigation Menu -->
@@ -59,12 +79,12 @@
                     Notifications
                 </a>
 
-                <a href="{{ route('admin.report') }}"
+                <a href="{{ route('admin.role') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
-                          {{ request()->routeIs('admin.report') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
+                          {{ request()->routeIs('admin.role') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3" src="{{ asset('images/report&analysis.png') }}" alt="">
-                    Report & Analytics
+                    Role
                 </a>
             </div>
         </div>
@@ -75,13 +95,7 @@
                 Settings
             </h2>
             <div class="space-y-1">
-                <a href="{{ route('admin.submission') }}"
-                    class="flex items-center px-4 py-4 text-sm rounded-lg
-                          {{ request()->routeIs('admin.submission') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
-                          hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/submissionmanagement.png') }}" alt="">
-                    Submission
-                </a>
+
 
                 <a href="{{ route('admin.closure') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
@@ -91,13 +105,7 @@
                     Closure Dates
                 </a>
 
-                <a href="{{ route('admin.logs') }}"
-                    class="flex items-center px-4 py-4 text-sm rounded-lg
-                          {{ request()->routeIs('admin.logs') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
-                          hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/logs.png') }}" alt="">
-                    Logs & Security
-                </a>
+
 
                 <a href="{{ route('admin.inquiry') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
@@ -110,15 +118,6 @@
         </div>
     </nav>
     <p>
-        <!-- Authentication -->
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
 
-        <x-responsive-nav-link :href="route('logout')"
-            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-            {{ __('Log Out') }}
-        </x-responsive-nav-link>
-    </form>
     </p>
 </aside>

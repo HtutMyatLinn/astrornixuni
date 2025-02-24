@@ -35,20 +35,19 @@
 
                 <!-- Tabs -->
                 <div class="flex gap-8 border-b mb-6">
-                    <a href="{{ route('admin.user-management') }}" class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
+                    <a href="{{ route('admin.user-management') }}" class="px-1 py-4 hover:text-gray-900">
                         Admin
                     </a>
                     <a href="{{ route('admin.user-management.student') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Student
                     </a>
-                    <a href="{{ route('admin.user-management.marketing-coordinator') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                    <a href="{{ route('admin.user-management.marketing-coordinator') }}" class="px-1 py-4 text-[#4353E1] border-b-4 border-[#4353E1] hover:text-gray-900">
                         Marketing Coordinator
                     </a>
                     <a href="{{ route('admin.user-management.marketing-manager') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Marketing Manager
                     </a>
                 </div>
-
 
                 <!-- Search and Filters -->
                 <div class="flex justify-between mb-8">

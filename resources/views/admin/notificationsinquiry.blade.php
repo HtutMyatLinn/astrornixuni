@@ -109,10 +109,10 @@
 
                             <!-- Tabs -->
                             <div class="flex gap-8 border-b mb-6">
-                                <a href="{{ route('admin.notifications') }}" class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
+                                <a href="{{ route('admin.notifications') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900 ">
                                     All
                                 </a>
-                                <a href="{{ route('admin.notifications.inquiry') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                                <a href="{{ route('admin.notifications.inquiry') }}" class="px-1 py-4  hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                                     Inquiry
                                 </a>
                                 <a href="{{ route('admin.notifications.password-reset') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
