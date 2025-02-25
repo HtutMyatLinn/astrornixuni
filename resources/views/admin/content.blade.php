@@ -2,7 +2,7 @@
 
     <div class="max-w-7xl mx-auto space-y-4 mb-4">
         <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-            Welcome Back, Aung Aung
+            Welcome Back, {{ Auth::user()->username }}
         </h1>
         <h2 class="text-sm sm:text-lg text-gray-500">
             Here, it is what happening in your university today
@@ -16,7 +16,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/totalstudents.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->
@@ -37,7 +37,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/totalsubmissions.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->
@@ -58,7 +58,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/totalpendingcontributions.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->
@@ -79,7 +79,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/totalfaculty.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/totalfaculty.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->
@@ -100,7 +100,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/totalsubmissions.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->
@@ -121,7 +121,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/rejectcontri.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/rejectcontri.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->
@@ -143,7 +143,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/totaluser.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/totaluser.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->
@@ -166,7 +166,7 @@
             <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
                 <!-- Avatar Circle -->
                 <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                    <img class=" w-5 h-5" src="{{asset('images/totalinquiry.png') }}" alt="">
+                    <img class=" w-5 h-5" src="{{ asset('images/totalinquiry.png') }}" alt="">
                 </div>
 
                 <!-- Stats Container with Flexbox -->

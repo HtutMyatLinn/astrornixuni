@@ -45,7 +45,7 @@
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             @if (Auth::check())
-                                <div>{{ Auth::user()->name }}</div>
+                                <div>{{ Auth::user()->username }}</div>
                             @else
                                 <div>Guest</div>
                             @endif
@@ -66,7 +66,7 @@
                             @if (Auth::check())
                                 <p
                                     class="m-0 min-w-10 min-h-10 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none">
-                                    {{ Auth::user()->name[0] }}
+                                    {{ Auth::user()->username[0] }}
                                 </p>
                             @else
                                 <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">

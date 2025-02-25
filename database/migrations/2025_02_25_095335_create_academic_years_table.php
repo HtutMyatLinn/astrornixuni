@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id('role_id')->primary();
-            $table->string('role', 30);
-            $table->string('functionalities', 255)->nullable();
+        Schema::create('academic_years', function (Blueprint $table) {
+            $table->id('academic_year_id')->primary();
+            $table->string('academic_year', 20)->unique(); // Stores academic year (e.g. 2024-2025)
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('academic_years');
     }
 };
