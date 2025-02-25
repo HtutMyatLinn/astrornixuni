@@ -18,7 +18,7 @@ class MarketingManagerMiddleware
     {
         if (Auth::user()->role === null) {
             return redirect('login');
-        } elseif (Auth::user()->role->role !== 'marketingmanager') {
+        } elseif (Auth::user()->role->role !== 'Marketing Manager') {
             return redirect('login');
         }
         return $next($request);

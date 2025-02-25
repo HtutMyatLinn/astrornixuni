@@ -37,13 +37,13 @@ class AuthenticatedSessionController extends Controller
 
             // Redirect based on role
             switch ($roleName) {
-                case 'admin':
+                case 'Admin':
                     return redirect('admin/dashboard');
-                case 'marketingmanager':
+                case 'Marketing Manager':
                     return redirect('marketingmanager/dashboard');
-                case 'marketingcoordinator':
+                case 'Marketing Coordinator':
                     return redirect('marketingcoordinator/dashboard');
-                case 'student':
+                case 'Student':
                     return redirect('student/dashboard');
                 default:
                     return redirect('/');

@@ -18,7 +18,7 @@ class AdminMiddleware
     {
         if (Auth::user()->role === null) {
             return redirect('login');
-        } elseif (Auth::user()->role->role !== 'admin') {
+        } elseif (Auth::user()->role->role !== 'Admin') {
             return redirect('login');
         }
         return $next($request);

@@ -18,13 +18,13 @@ class RoleMiddleware
     {
         $role = Auth::user()->role->role;
 
-        if ($role != 'admin') {
+        if ($role != 'Admin') {
             return redirect('admin/dashboard');
-        } elseif ($role != 'arketingmanager') {
+        } elseif ($role != 'Marketing Manager') {
             return redirect('marketingmanager/dashboard');
-        } elseif ($role != 'marketingcoordinator') {
+        } elseif ($role != 'Marketing Coordinator') {
             return redirect('marketingcoordinator/dashboard');
-        } elseif ($role != 'student') {
+        } elseif ($role != 'Student') {
             return redirect('student/dashboard');
         } else {
             return redirect('/');
