@@ -190,11 +190,10 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Notification Type</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Message</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Last Login Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date & Time</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
                                         </tr>
                                     </thead>
@@ -211,7 +210,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">Science</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
+
                                             <td class="px-6 py-4">
                                                 <span class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Active</span>
                                             </td>
@@ -247,7 +246,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">IT</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
+
                                             <td class="px-6 py-4">
                                                 <span class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Active</span>
                                             </td>
@@ -283,7 +282,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">Psychology</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
+
                                             <td class="px-6 py-4">
                                                 <span class="px-3 py-1 rounded-full text-sm bg-red-50 text-red-700">InActive</span>
                                             </td>
