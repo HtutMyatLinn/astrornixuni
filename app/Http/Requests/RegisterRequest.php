@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Requests;
+
+use App\Models\User;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules;
+
+class RegisterRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+
+    public function rules(): array
+    {
+        return [
+            'username' => ['required', 'string', 'max:30'],
+            'first_name' => ['required', 'string', 'max:30'],
+            'last_name' => ['required', 'string', 'max:30'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', 'min:8', 'max:16', 'regex:/[A-Z]/', 'regex:/[a-z]/', 'regex:/[0-9]/', 'regex:/[\W_]/', Rules\Password::defaults()],
+            'faculty' => ['required'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            // Username messages
+            'username.required' => 'Username is required.',
+            'username.max' => 'Username must not exceed 30 characters.',
+
+            // First name messages
+            'first_name.required' => 'First name is required.',
+            'first_name.max' => 'First name must not exceed 30 characters.',
+
+            // Last name messages
+            'last_name.required' => 'Last name is required.',
+            'last_name.max' => 'Last name must not exceed 30 characters.',
+
+            // Email messages
+            'email.required' => 'Email is required.',
+            'email.string' => 'Email must be a string.',
+            'email.lowercase' => 'Email must be in lowercase.',
+            'email.email' => 'Email must be a valid email address.',
+            'email.max' => 'Email must not exceed 255 characters.',
+            'email.unique' => 'Email is already taken.',
+
+            // Password messages
+            'password.required' => 'Password is required.',
+            'password.confirmed' => 'Password confirmation does not match.',
+            'password.min' => 'Password must be at least 8 characters.',
+            'password.max' => 'Password must not exceed 16 characters.',
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            'password.defaults' => 'Password does not meet the default requirements.',
+
+            // Faculty messages
+            'faculty.required' => 'Faculty is required.',
+        ];
+    }
+    // public function messages(): array
+    // {
+    //     return [
+    //         'username.required' => 'Username is required',
+    //         'first_name.required' => 'First name is required',
+    //         'last_name.required' => 'Last name is required',
+    //         'email.required' => 'Email is required',
+    //         'password.required' => 'Password is required',
+    //         'password.min' => 'Password must be at least 8 characters',
+    //         'password.confirmed' => 'Password confirmation does not match',
+    //         'faculty.required' => 'Faculty is required',
+    //     ];
+    // }
+}
