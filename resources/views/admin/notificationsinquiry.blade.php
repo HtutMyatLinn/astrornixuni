@@ -190,11 +190,10 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Notification Type</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Message</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date & Time</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Last Login Date</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
                                         </tr>
                                     </thead>
@@ -213,25 +212,11 @@
                                             <td class="px-6 py-4 text-gray-600">Science</td>
                                             <td class="px-6 py-4 text-gray-600">Student</td>
                                             <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Active</span>
+                                                <span class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Read</span>
                                             </td>
-                                            <td class="px-6 py-4 text-gray-600">5/7/16</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <button class="text-blue-600 hover:text-blue-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="text-red-600 hover:text-red-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M3 6h18" />
-                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
+
+                                            <td class="px-6 py-4 text-[#2F64AA] font-light">
+                                                Response
                                             </td>
                                         </tr>
 
@@ -249,25 +234,11 @@
                                             <td class="px-6 py-4 text-gray-600">IT</td>
                                             <td class="px-6 py-4 text-gray-600">Student</td>
                                             <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Active</span>
+                                                <span class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Read</span>
                                             </td>
-                                            <td class="px-6 py-4 text-gray-600">9/4/12</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <button class="text-blue-600 hover:text-blue-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="text-red-600 hover:text-red-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M3 6h18" />
-                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
+
+                                            <td class="px-6 py-4 text-[#2F64AA] font-light">
+                                                Response
                                             </td>
                                         </tr>
 
@@ -285,25 +256,11 @@
                                             <td class="px-6 py-4 text-gray-600">Psychology</td>
                                             <td class="px-6 py-4 text-gray-600">Student</td>
                                             <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm bg-red-50 text-red-700">InActive</span>
+                                                <span class="px-3 py-1 rounded-full text-sm bg-red-50 text-red-700">Unread</span>
                                             </td>
-                                            <td class="px-6 py-4 text-gray-600">9/18/16</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <button class="text-blue-600 hover:text-blue-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="text-red-600 hover:text-red-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M3 6h18" />
-                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
+
+                                            <td class="px-6 py-4 text-[#2F64AA] font-light">
+                                                Response
                                             </td>
                                         </tr>
 
