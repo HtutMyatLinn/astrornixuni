@@ -65,6 +65,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Marketing Coordinator dashboard.
     Route::middleware('marketingcoordinator')->group(function () {
         Route::get('/marketingcoordinator/dashboard', [HomeController::class, 'marketingcoordinator'])->name('marketingcoordinator.dashboard');
+        Route::get('/marketingcoordinator/guest-management', [HomeController::class, 'marketingcoordinatorGuestManagement'])->name('marketingcoordinator.guest-management');
+        Route::get('/marketingcoordinator/submission-management', [HomeController::class, 'marketingcoordinatorSubmissionManagement'])->name('marketingcoordinator.submission-management');
+
+        Route::get('/marketingcoordinator/submission-management/view-detail-contribution', [HomeController::class, 'marketingcoordinatorSubmissionManagementViewDetailContribution'])->name('marketingcoordinator.submission-management.view-detail-contribution');
+
+        Route::get('/marketingcoordinator/provide-feedback', [HomeController::class, 'marketingcoordinatorProvideFeedBack'])->name('marketingcoordinator.provide-feedback');
+        Route::get('/marketingcoordinator/published-contribution', [HomeController::class, 'marketingcoordinatorPublishedContribution'])->name('marketingcoordinator.published-contribution');
+        Route::get('/marketingcoordinator/notifications', [HomeController::class, 'marketingcoordinatorNotifications'])->name('marketingcoordinator.notifications');
     });
 
     // Student dashboard.

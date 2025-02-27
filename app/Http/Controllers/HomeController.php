@@ -80,6 +80,31 @@ class HomeController extends Controller
     {
         return view('marketingcoordinator.index');
     }
+    public function marketingcoordinatorGuestManagement()
+    {
+        return view('marketingcoordinator.guestmanagement');
+    }
+    public function marketingcoordinatorSubmissionManagement()
+    {
+        return view('marketingcoordinator.submissionmanagement');
+    }
+    public function marketingcoordinatorSubmissionManagementViewDetailContribution()
+    {
+        return view('marketingcoordinator.submissionmanagementviewcontribution');
+    }
+
+    public function marketingcoordinatorProvideFeedBack()
+    {
+        return view('marketingcoordinator.feedback');
+    }
+    public function marketingcoordinatorPublishedContribution()
+    {
+        return view('marketingcoordinator.publishedcontribution');
+    }
+    public function marketingcoordinatorNotifications()
+    {
+        return view('marketingcoordinator.notifications');
+    }
     public function student()
     {
         return view('student.index');
