@@ -28,7 +28,7 @@ class RegisterRequest extends FormRequest
             'username' => ['required', 'string', 'max:30'],
             'first_name' => ['required', 'string', 'max:30'],
             'last_name' => ['required', 'string', 'max:30'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'email', 'unique:' . User::class],
             'password' => ['required', 'confirmed', 'min:8', 'max:16', 'regex:/[A-Z]/', 'regex:/[a-z]/', 'regex:/[0-9]/', 'regex:/[\W_]/', Rules\Password::defaults()],
             'faculty' => ['required'],
         ];
@@ -52,9 +52,7 @@ class RegisterRequest extends FormRequest
             // Email messages
             'email.required' => 'Email is required.',
             'email.string' => 'Email must be a string.',
-            'email.lowercase' => 'Email must be in lowercase.',
             'email.email' => 'Email must be a valid email address.',
-            'email.max' => 'Email must not exceed 255 characters.',
             'email.unique' => 'Email is already taken.',
 
             // Password messages
@@ -62,7 +60,7 @@ class RegisterRequest extends FormRequest
             'password.confirmed' => 'Password confirmation does not match.',
             'password.min' => 'Password must be at least 8 characters.',
             'password.max' => 'Password must not exceed 16 characters.',
-            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
+            'password.regex' => 'Password does not meet the default requirements.',
             'password.defaults' => 'Password does not meet the default requirements.',
 
             // Faculty messages

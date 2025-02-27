@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('user_code', 7)->unique();
             $table->string('username', 30);
             $table->string('first_name', 30);
-            $table->string('last_name', 30);
+            $table->string('last_name', 30)->nullable();
             $table->string('email', 30)->unique();
             $table->string('password', 255);
             $table->string('profile_image', 255)->nullable();
@@ -32,12 +32,6 @@ return new class extends Migration
             $table->foreign('faculty_id')->references('faculty_id')->on('faculties')->onDelete('set null')->onUpdate('cascade');
             $table->foreign('role_id')->references('role_id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
         });
-
-        // Schema::create('password_reset_tokens', function (Blueprint $table) {
-        //     $table->string('email')->primary();
-        //     $table->string('token');
-        //     $table->timestamp('created_at')->nullable();
-        // });
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();

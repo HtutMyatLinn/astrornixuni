@@ -21,7 +21,7 @@
                     <label for="email" class="block text-gray-700 font-semibold">University Email</label>
                     <input type="email" name="email" id="email"
                         class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        placeholder="example@university.edu" value="{{ old('email') }}">
+                        placeholder="example@gmail.com" value="{{ old('email') }}">
                     <div class="absolute left-2 -bottom-2 bg-white">
                         @error('email')
                             <p class="text-red-500 text-sm">{{ $message }}</p>
