@@ -1,4 +1,4 @@
-<main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-6 lg:p-8">
+<main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
     <div class="max-w-7xl mx-auto space-y-4 mb-4">
         <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
