@@ -53,11 +53,6 @@ class HomeController extends Controller
         return view('admin.notificationsinquiry');
     }
 
-    public function administratorRole()
-    {
-        return view('admin.role');
-    }
-
     public function administratorClosure()
     {
         return view('admin.closuredate');
