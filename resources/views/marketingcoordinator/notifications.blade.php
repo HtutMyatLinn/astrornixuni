@@ -370,7 +370,7 @@
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 text-gray-600">Story</td>
-                                        <td class="px-6 py-4 text-gray-600">Mi Mi</td>
+                                        <td class="px-6 py-4 text-gray-600">Hla Hla</td>
 
                                         <td class="px-6 py-4 text-gray-600">5/7/16</td>
 
