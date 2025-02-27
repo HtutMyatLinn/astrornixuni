@@ -18,7 +18,8 @@
 
                 {{-- Username --}}
                 <div class="relative">
-                    <label for="username" class="block text-gray-700 font-semibold">Username</label>
+                    <label for="username" class="block text-gray-700 font-semibold">Username <span
+                            class="text-red-500">*</span></label>
                     <input id="username" type="text"
                         class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         name="username" placeholder="Enter your username" value="{{ old('username') }}">
@@ -32,7 +33,8 @@
                 <div class="flex flex-col md:flex-row items-center gap-2 w-full">
                     {{-- Firstname --}}
                     <div class="w-full relative">
-                        <label for="first_name" class="block text-gray-700 font-semibold">First Name</label>
+                        <label for="first_name" class="block text-gray-700 font-semibold">First Name <span
+                                class="text-red-500">*</span></label>
                         <input id="first_name" type="text"
                             class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
                             name="first_name" placeholder="Enter your first name" value="{{ old('first_name') }}">
@@ -44,7 +46,7 @@
                     </div>
                     {{-- Lastname --}}
                     <div class="w-full relative">
-                        <label for="last_name" class="block text-gray-700 font-semibold">Last Name</label>
+                        <label for="last_name" class="block text-gray-700 font-semibold">Last Name (Optional)</label>
                         <input id="last_name" type="text"
                             class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
                             name="last_name" placeholder="Enter your last name" value="{{ old('last_name') }}">
@@ -62,7 +64,7 @@
                         <span class="text-red-500">*</span></label>
                     <input id="email" type="email"
                         class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        name="email" placeholder="example@university.edu" value="{{ old('email') }}">
+                        name="email" placeholder="example@gmail.com" value="{{ old('email') }}">
                     <div class="absolute left-2 -bottom-2 bg-white">
                         @error('email')
                             <p class="text-red-500 text-sm">{{ $message }}</p>
@@ -96,8 +98,7 @@
 
                 {{-- Faculty --}}
                 <div class="w-full relative">
-                    <label for="faculty" class="block text-gray-700 font-semibold">Faculty <span
-                            class="text-red-500">*</span></label>
+                    <label for="faculty" class="block text-gray-700 font-semibold">Faculty</label>
                     <select id="faculty" name="faculty"
                         class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
                         <option value="" disabled selected>Select your faculty</option>
