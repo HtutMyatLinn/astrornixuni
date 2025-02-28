@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleEditRequest;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -13,7 +13,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::paginate(4);
+        return view('admin.role', compact('roles'));
     }
 
     /**
@@ -21,8 +22,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-        return view('admin.role', compact('roles'));
+        //
     }
 
     /**
@@ -60,9 +60,15 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RoleEditRequest $request, Role $role)
     {
-        //
+        // Update role data
+        $role->role = $request->edit_role;
+        $role->functionalities = $request->edit_functionalities;
+        $role->save();
+
+        // Redirect to roles index page with a success message
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 
     /**

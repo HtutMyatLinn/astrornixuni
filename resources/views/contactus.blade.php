@@ -14,14 +14,15 @@
         </div>
 
         <!-- Bottom Right Circular Image -->
-        <div class="absolute bottom-[-30px] right-1/2 md:right-6 transform md:translate-x-0 translate-x-1/2">
+        <div
+            class="absolute bottom-[-60px] sm:bottom-[-70px] right-1/2 md:right-6 transform md:translate-x-0 translate-x-1/2">
             <img src="{{ asset('images/Ellipse2.png') }}" alt="Profile"
-                class="w-16 h-16 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full border-4 border-white shadow-lg object-cover">
+                class="w-32 h-32 sm:w-40 sm:h-40 rounded-full shadow-lg object-cover">
         </div>
     </div>
 
     <!-- Contact Section (Responsive Layout) -->
-    <div class="w-full px-4 md:px-12 py-8 md:py-12">
+    <div class="w-full px-4 md:px-12 mt-10 py-8 md:py-12">
         <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
 
             <!-- Left Column: Contact Form -->

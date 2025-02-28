@@ -2,8 +2,8 @@
     <div class="min-h-screen bg-[#5A7BAF]">
         <!-- Hero Section -->
         <div class="flex flex-col items-center justify-center px-4 py-20 text-center text-white">
-            <h1 class="mb-4 text-5xl font-bold">All Contributions</h1>
-            <p class="mb-8 max-w-2xl text-xl text-gray-200">
+            <h1 class="mb-4 text-2xl md:text-4xl font-bold">All Contributions</h1>
+            <p class="mb-8 max-w-2xl text-sm md:text-lg text-gray-200">
                 Explore the latest contributions from researchers, students and industry experts
             </p>
             <div class="relative w-full max-w-2xl">
@@ -89,8 +89,8 @@
                     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         <!-- Card 1 -->
                         <div class="overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md">
-                            <img src="{{ asset('images/math.png')}}"
-                                alt="Mathematics textbook cover" class="h-48 w-full object-cover">
+                            <img src="{{ asset('images/math.png') }}" alt="Mathematics textbook cover"
+                                class="h-48 w-full object-cover">
                             <div class="p-4">
                                 <h3 class="mb-2 text-lg font-semibold">Mathematics</h3>
                                 <p class="mb-4 text-sm text-gray-600">
@@ -104,8 +104,8 @@
 
                         <!-- Card 2 -->
                         <div class="overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md">
-                            <img src="{{ asset('images/math.png')}}"
-                                alt="Mathematics textbook cover" class="h-48 w-full object-cover">
+                            <img src="{{ asset('images/math.png') }}" alt="Mathematics textbook cover"
+                                class="h-48 w-full object-cover">
                             <div class="p-4">
                                 <h3 class="mb-2 text-lg font-semibold">Mathematics</h3>
                                 <p class="mb-4 text-sm text-gray-600">
@@ -119,8 +119,8 @@
 
                         <!-- Card 3 -->
                         <div class="overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md">
-                            <img src="{{ asset('images/math.png')}}"
-                                alt="Mathematics textbook cover" class="h-48 w-full object-cover">
+                            <img src="{{ asset('images/math.png') }}" alt="Mathematics textbook cover"
+                                class="h-48 w-full object-cover">
                             <div class="p-4">
                                 <h3 class="mb-2 text-lg font-semibold">Mathematics</h3>
                                 <p class="mb-4 text-sm text-gray-600">

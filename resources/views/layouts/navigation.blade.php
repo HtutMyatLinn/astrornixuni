@@ -45,7 +45,7 @@
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             @if (Auth::check())
-                                <div>{{ Auth::user()->username }}</div>
+                                <div class="truncate max-w-[100px]">{{ Auth::user()->username }}</div>
                             @else
                                 <div>Guest</div>
                             @endif
@@ -62,28 +62,30 @@
 
                     <x-slot name="content">
                         {{-- Profile --}}
-                        <div class="flex justify-between items-center gap-3 p-2">
+                        <div class="flex items-center gap-3 p-2">
                             @if (Auth::check())
                                 <p
-                                    class="m-0 min-w-10 min-h-10 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none">
-                                    {{ Auth::user()->username[0] }}
+                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                    {{ strtoupper(Auth::user()->username[0]) }}
                                 </p>
                             @else
                                 <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
-                                    <img src="{{ asset('images/guest.jpg') }}" alt="Logo"
+                                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
                                         class="w-full h-full rounded-full object-cover">
                                 </div>
                             @endif
-                            @if (Auth::check())
-                                <p class="text-xs sm:text-sm text-gray-500 truncate w-full"
-                                    title="{{ Auth::user()->email }}">
-                                    {{ Auth::user()->email }}
-                                </p>
-                            @else
-                                <p class="text-xs sm:text-sm text-gray-500 truncate" title="Guest">
-                                    Register to get access to all features
-                                </p>
-                            @endif
+                            <div class="flex-1 min-w-0">
+                                @if (Auth::check())
+                                    <p class="text-xs sm:text-sm text-gray-500 w-full"
+                                        title="{{ Auth::user()->email }}">
+                                        {{ Auth::user()->email }}
+                                    </p>
+                                @else
+                                    <p class="text-xs sm:text-sm text-gray-500" title="Guest">
+                                        Register to get access to all features
+                                    </p>
+                                @endif
+                            </div>
                         </div>
                         @if (Auth::check())
                             <x-dropdown-link :href="route('profile.edit')">

@@ -23,10 +23,13 @@
         </button>
 
         <!-- Sidebar -->
-        @include('admin.sidebar')
+        <aside id="sidebar"
+            class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
+            @include('admin.sidebar')
+        </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-64">
             @include('admin.header')
             <!-- here to add content -->
             <main class="flex-1 bg-[#F1F5F9] p-4 sm:p-5">
@@ -36,7 +39,7 @@
 
                     <div class="max-w-7xl mx-auto">
                         <!-- Intake -->
-                        <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-8 md:p-12 mb-10">
+                        <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-8 mb-10">
                             <h1 class="text-2xl md:text-xl font-bold text-gray-900 mb-8">Academic Year & Intake
                                 Management</h1>
 
@@ -149,7 +152,8 @@
                                                 Year</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Intake
                                             </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submission
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Submission
                                                 Closure Date</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Final
                                                 Closure Date</th>
@@ -330,7 +334,7 @@
     <!-- JavaScript for Sidebar Toggle -->
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
         });
     </script>
 </body>
