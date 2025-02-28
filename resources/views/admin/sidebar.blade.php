@@ -82,12 +82,12 @@
                     Notifications
                 </a>
 
-                <a href="{{ route('roles.create') }}"
+                <a href="{{ route('roles.index') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
-          {{ request()->routeIs('roles.create') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
+          {{ request()->routeIs('roles.index') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
           hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3" src="{{ asset('images/report&analysis.png') }}" alt="">
-                    Role
+                    Data Management
                 </a>
             </div>
         </div>

@@ -23,10 +23,13 @@
         </button>
 
         <!-- Sidebar -->
-        @include('admin.sidebar')
+        <aside id="sidebar"
+            class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
+            @include('admin.sidebar')
+        </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#F1F5F9]">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#F1F5F9] lg:ml-64">
             @include('admin.header')
 
             <!-- Main Content Container -->
@@ -63,7 +66,7 @@
                             <path d="m21 21-4.3-4.3" />
                         </svg>
                         <input type="text" placeholder="Search..."
-                            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-50 border-0 focus:ring-2 focus:ring-blue-500" />
+                            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                     </div>
 
                     <div class="flex gap-4">
@@ -290,7 +293,7 @@
     <!-- JavaScript for Sidebar Toggle -->
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
         });
     </script>
 </body>

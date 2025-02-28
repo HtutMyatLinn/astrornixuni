@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleRequest extends FormRequest
+class ContributionCategoryEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,20 +22,16 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => 'required|string|max:30|unique:roles,role',
-            'functionalities' => 'nullable|string|max:255',
+            'edit_contribution_category' => 'required|string|max:255',
         ];
     }
 
     public function messages()
     {
         return [
-            'role.required' => 'Role is required.',
-            'role.string' => 'Role must be a string.',
-            'role.max' => 'Role must not exceed 30 characters.',
-            'role.unique' => 'Role already exists.',
-            'functionalities.string' => 'Functionalities must be a string.',
-            'functionalities.max' => 'Functionalities must not exceed 255 characters.',
+            'edit_contribution_category.required' => 'Contribution category is required.',
+            'edit_contribution_category.string' => 'Contribution category must be a string.',
+            'edit_contribution_category.max' => 'Contribution category must not exceed 255 characters.',
         ];
     }
 }

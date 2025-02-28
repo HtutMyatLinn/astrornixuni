@@ -2,15 +2,16 @@
     <div class="overflow-x-hidden w-full max-w-full">
 
         <!-- About Us Section -->
-        <div class="container mx-auto px-3 sm:px-4 py-4 md:py-12 flex flex-col md:flex-row items-center gap-3 md:gap-12">
+        <div
+            class="container mx-auto px-3 sm:px-8 py-4 md:py-12 flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-12">
             <!-- Image Section -->
-            <div class="w-full md:w-1/2 flex justify-center">
+            <div class="w-full md:w-1/2 sm:max-w-[90%] md:max-w-md flex justify-center">
                 <img src="{{ asset('images/img1.png') }}" alt="Graduation Celebration"
-                    class="w-auto max-w-[85%] sm:max-w-[90%] md:max-w-md rounded-lg object-cover">
+                    class="w-full h-full rounded-lg object-cover">
             </div>
 
             <!-- Text Section -->
-            <div class="w-full md:w-1/2 font-poppins text-center md:text-left mx-auto">
+            <div class="w-full font-poppins text-center md:text-left">
                 <!-- About Us Section -->
                 <h3
                     class="text-sm md:text-2xl font-semibold text-black mb-3 md:mb-6 flex items-center justify-center md:justify-start">
@@ -47,7 +48,7 @@
 
         <!-- Features Section -->
         <div
-            class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 text-center mb-6 md:mb-12 font-poppins w-full max-w-screen-lg mx-auto px-3">
+            class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 text-center mt-20 mb-6 md:mb-12 font-poppins w-full max-w-screen-lg mx-auto px-3">
             <div class="px-2">
                 <img src="{{ asset('images/fluent.png') }}" alt="Academic Excellence"
                     class="mx-auto mb-2 md:mb-4 w-7 md:w-12">
@@ -70,23 +71,23 @@
 
         <!-- Our Staff Section -->
         <div class="text-center font-poppins py-4 md:py-12 w-full max-w-screen-lg mx-auto">
-            <h2 class="text-sm md:text-2xl font-semibold text-black mb-3 md:mb-8">Our Staff</h2>
+            <h2 class="text-sm md:text-3xl font-semibold text-black mb-3 md:mb-12">Our Staff</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8 px-3">
                 <div class="text-center">
                     <img src="{{ asset('images/i1.png') }}" alt="Jason Wan"
-                        class="mx-auto rounded-full w-16 h-16 md:w-32 md:h-32">
+                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44">
                     <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
                     <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
                 </div>
                 <div class="text-center">
                     <img src="{{ asset('images/i2.png') }}" alt="Jason Wan"
-                        class="mx-auto rounded-full w-16 h-16 md:w-32 md:h-32">
+                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44">
                     <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
                     <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
                 </div>
                 <div class="text-center">
                     <img src="{{ asset('images/i3.png') }}" alt="Jason Wan"
-                        class="mx-auto rounded-full w-16 h-16 md:w-32 md:h-32">
+                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44">
                     <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
                     <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
                 </div>

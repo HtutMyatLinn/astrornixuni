@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ContributionCategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/user-management/student', [HomeController::class, 'administratorUserManagementStudent'])->name('admin.user-management.student');
         Route::get('/admin/user-management/marketing-manager', [HomeController::class, 'administratorUserManagementMarketingManager'])->name('admin.user-management.marketing-manager');
         Route::get('/admin/user-management/marketing-coordinator', [HomeController::class, 'administratorUserManagementMarketingCoordinator'])->name('admin.user-management.marketing-coordinator');
+        Route::get('/data-management/contribution-category', [HomeController::class, 'contributionCategory'])->name('data-management.contribution-category');
         Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
         Route::get('/admin/notifications/inquiry', [HomeController::class, 'administratorNotificationsInquiry'])->name('admin.notifications.inquiry');
         Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');
@@ -54,7 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
 
         // Role management routes.
-        Route::resource('roles', RoleController::class);
+        Route::resource('data-management/roles', RoleController::class);
+        Route::resource('/data-management/contribution-category', ContributionCategoryController::class);
     });
 
     // Marketing Manager dashboard.
