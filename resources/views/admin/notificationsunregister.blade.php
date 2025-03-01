@@ -129,11 +129,11 @@
                                 </a>
                                 <a href="{{ route('admin.notifications.password-reset') }}"
                                     class="px-1 py-4 text-gray-600 hover:text-gray-900">
-                                    Password Rest
+                                    Password Reset
                                 </a>
                                 <a href="{{ route('admin.notifications.unregister-user') }}"
                                     class="px-1 py-4  hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
-                                    Unregister User
+                                    Unassigned User
                                 </a>
                             </div>
 
@@ -223,169 +223,76 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User Code
+                                            </th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Notification Type
                                             </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
-                                            </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Last
-                                                Login Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date &
+                                                Time</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
-                                        <!-- Row 1 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">Science</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Active</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">5/7/16</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <button class="text-blue-600 hover:text-blue-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="text-red-600 hover:text-red-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M3 6h18" />
-                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 2 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">IT</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Active</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">9/4/12</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <button class="text-blue-600 hover:text-blue-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="text-red-600 hover:text-red-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M3 6h18" />
-                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 3 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">Psychology</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-red-50 text-red-700">InActive</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">9/18/16</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <button class="text-blue-600 hover:text-blue-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
-                                                    <button class="text-red-600 hover:text-red-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path d="M3 6h18" />
-                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Add more rows as needed -->
+                                        @if ($users->isNotEmpty())
+                                            @foreach ($users as $user)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $user->user_code }}
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center gap-3">
+                                                            <div class="w-10 h-10 select-none">
+                                                                <img src="{{ asset('images/guest.jpg') }}"
+                                                                    alt="Guest Profile"
+                                                                    class="w-full h-full rounded-full object-cover">
+                                                            </div>
+                                                            <div>
+                                                                <div class="font-medium">
+                                                                    {{ $user->first_name . ' ' . $user->last_name }}
+                                                                </div>
+                                                                <div class="text-sm text-gray-500">{{ $user->email }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        Unassigned User
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ optional($user->created_at)->format('M d, Y') ?? 'N/A' }}
+                                                        <p class="text-gray-400">
+                                                            {{ optional($user->created_at)->format('h:m') ?? 'N/A' }}
+                                                        </p>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center gap-3">
+                                                            <button class="text-[#2F64AA] hover:text-blue-700">
+                                                                Assign Role
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                                    No users found.
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
 
                             <!-- Pagination -->
-                            <div class="flex justify-end items-center gap-2 mt-6">
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">1</button>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">2</button>
-                                <span class="text-gray-600">...</span>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">Next</button>
-                            </div>
+                            @if ($users->isNotEmpty())
+                                <div class="flex justify-end items-center gap-2 mt-6">
+                                    {{ $users->links('pagination::tailwind') }}
+                                </div>
+                            @endif
                         </div>
 
 

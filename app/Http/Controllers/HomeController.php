@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -9,7 +10,13 @@ class HomeController extends Controller
     //
     public function administrator()
     {
-        return view('admin.index');
+        // Fetch users where role is not null, sorted by newest first, with pagination
+        $total_users = User::all();
+        $total_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->get();
+
+        return view('admin.index', compact('total_users', 'total_students'));
     }
 
     public function administratorUserManagement()
@@ -36,12 +43,6 @@ class HomeController extends Controller
     {
         return view('admin.notifications');
     }
-
-    public function administratorNotificationsUnregister()
-    {
-        return view('admin.notificationsunregister');
-    }
-
 
     public function administratorNotificationsPassword()
     {

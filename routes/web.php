@@ -1,10 +1,15 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContributionCategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MarketingCoordinatorControllerr;
+use App\Http\Controllers\MarketingManagerController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UnassignedUserController;
+use App\Http\Middleware\MarketingCoordinatorMiddleware;
 use Illuminate\Support\Facades\Route;
 
 // Primary route
@@ -42,22 +47,36 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin dashboard.
     Route::middleware('admin')->group(function () {
         Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin');
-        Route::get('/admin/user-management', [HomeController::class, 'administratorUserManagement'])->name('admin.user-management');
-        Route::get('/admin/user-management/student', [HomeController::class, 'administratorUserManagementStudent'])->name('admin.user-management.student');
-        Route::get('/admin/user-management/marketing-manager', [HomeController::class, 'administratorUserManagementMarketingManager'])->name('admin.user-management.marketing-manager');
-        Route::get('/admin/user-management/marketing-coordinator', [HomeController::class, 'administratorUserManagementMarketingCoordinator'])->name('admin.user-management.marketing-coordinator');
         Route::get('/data-management/contribution-category', [HomeController::class, 'contributionCategory'])->name('data-management.contribution-category');
         Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
         Route::get('/admin/notifications/inquiry', [HomeController::class, 'administratorNotificationsInquiry'])->name('admin.notifications.inquiry');
         Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');
-        Route::get('/admin/notifications/unregister-user', [HomeController::class, 'administratorNotificationsUnregister'])->name('admin.notifications.unregister-user');
         Route::get('/admin/closure', [HomeController::class, 'administratorClosure'])->name('admin.closure');
         Route::get('/admin/inquiry', [HomeController::class, 'administratorInquiry'])->name('admin.inquiry');
         Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
 
         // Role management routes.
         Route::resource('data-management/roles', RoleController::class);
+        Route::get('/admin/roles/search', [RoleController::class, 'search'])->name('admin.roles.search');
+
+        // Contribution Category management routes.
         Route::resource('/data-management/contribution-category', ContributionCategoryController::class);
+        Route::get('/admin/contribution-categories/search', [ContributionCategoryController::class, 'search'])->name('admin.contribution_categories.search');
+
+        // Unassigned user management routes.
+        Route::get('/admin/notifications/unregister-user', [UnassignedUserController::class, 'index'])->name('admin.notifications.unregister-user');
+
+        // Admin management routes.
+        Route::get('/admin/user-management', [AdminController::class, 'index'])->name('admin.user-management');
+
+        // Marketing Coordinator management routes.
+        Route::get('/admin/user-management/marketing-coordinator', [MarketingCoordinatorControllerr::class, 'index'])->name('admin.user-management.marketing-coordinator');
+
+        // Marketing Manager management routes.
+        Route::get('/admin/user-management/marketing-manager', [MarketingManagerController::class, 'index'])->name('admin.user-management.marketing-manager');
+
+        // Student management routes.
+        Route::get('/admin/user-management/student', [StudentController::class, 'index'])->name('admin.user-management.student');
     });
 
     // Marketing Manager dashboard.

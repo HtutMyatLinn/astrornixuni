@@ -30,6 +30,13 @@ class AuthenticatedSessionController extends Controller
         // Get the authenticated user
         $user = $request->user();
 
+        // Increase login count
+        $user->increment('login_count');
+
+        // Change the user's status to active (1)
+        $user->status = 1;
+        $user->save();
+
         // Check if the user has a role assigned
         if ($user->role) {
             // Get the role name from the role relationship

@@ -78,8 +78,10 @@
                             <circle cx="11" cy="11" r="8" />
                             <path d="m21 21-4.3-4.3" />
                         </svg>
-                        <input type="text" placeholder="Search..."
-                            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <form method="GET" action="{{ route('admin.roles.search') }}">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..."
+                                class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        </form>
                     </div>
 
                     <div class="flex gap-4">
@@ -159,17 +161,19 @@
                                 <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            <!-- Row 1 -->
-
+                        {{-- <tbody class="divide-y divide-gray-100">
                             @if ($roles->isNotEmpty())
                                 @foreach ($roles as $role)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 text-gray-600">{{ $role->role }}</td>
-                                        <td class="px-6 py-4 text-gray-600">{{ $role->functionalities }}</td>
-                                        <td class="px-6 py-4 text-gray-600">{{ $role->created_at->format('M d,Y') }}
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ $role->role }}
                                         </td>
-                                        <td class="px-6 py-4 text-gray-600">{{ $role->updated_at->format('M d,Y') }}
+                                        <td class="px-6 py-4 text-gray-600">{{ $role->functionalities }}</td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ optional($role->created_at)->format('M d, Y') ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ optional($role->updated_at)->format('M d, Y') ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <button
@@ -186,16 +190,61 @@
                                     </tr>
                                 @endforeach
                             @else
-                                <p>No roles found.</p>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                        No roles found.
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody> --}}
+
+                        <tbody class="divide-y divide-gray-100">
+                            @if ($roles->isNotEmpty())
+                                @foreach ($roles as $role)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ $role->role }}
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ $role->functionalities }}
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ optional($role->created_at)->format('M d, Y') ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ optional($role->updated_at)->format('M d, Y') ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <button
+                                                onclick="openEditModal('{{ $role->role_id }}', '{{ $role->role }}', '{{ $role->functionalities }}')"
+                                                class="text-blue-600 hover:text-blue-700">
+                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                        No roles found.
+                                    </td>
+                                </tr>
                             @endif
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex justify-end items-center gap-2 mt-6">
-                    {{ $roles->links('pagination::tailwind') }}
-                </div>
+                @if ($roles->isNotEmpty())
+                    <div class="flex justify-end items-center gap-2 mt-6">
+                        {{ $roles->links('pagination::tailwind') }}
+                    </div>
+                @endif
             </div>
 
             <!-- Add New Role Modal -->
@@ -262,7 +311,7 @@
                         Edit <span class="border-b-2 border-blue-600">Role</span>
                     </h1>
 
-                    <form id="editRoleForm" action="{{ route('roles.update', $role->role_id) }}" method="POST">
+                    <form id="editRoleForm" method="POST">
                         @csrf
                         @method('PUT')
 
