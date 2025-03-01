@@ -129,11 +129,11 @@
                                 </a>
                                 <a href="{{ route('admin.notifications.password-reset') }}"
                                     class="px-1 py-4 text-gray-600 hover:text-gray-900">
-                                    Password Rest
+                                    Password Reset
                                 </a>
                                 <a href="{{ route('admin.notifications.unregister-user') }}"
                                     class="px-1 py-4 text-gray-600 hover:text-gray-900">
-                                    Unregister User
+                                    Unassigned User
                                 </a>
                             </div>
 
@@ -387,8 +387,6 @@
                                     class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">Next</button>
                             </div>
                         </div>
-
-
                     </div>
             </main>
         </div>

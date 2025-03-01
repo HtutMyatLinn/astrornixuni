@@ -76,8 +76,10 @@
                             <circle cx="11" cy="11" r="8" />
                             <path d="m21 21-4.3-4.3" />
                         </svg>
-                        <input type="text" placeholder="Search..."
-                            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <form method="GET" action="{{ route('admin.contribution_categories.search') }}">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..."
+                                class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        </form>
                     </div>
 
                     <div class="flex gap-4">
@@ -158,17 +160,17 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <!-- Row 1 -->
                             @if ($contribution_categories->isNotEmpty())
                                 @foreach ($contribution_categories as $contribution_category)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 text-gray-600">
-                                            {{ $contribution_category->contribution_category }}</td>
-                                        <td class="px-6 py-4 text-gray-600">
-                                            {{ $contribution_category->created_at->format('M d,Y') }}
+                                            {{ $contribution_category->contribution_category }}
                                         </td>
                                         <td class="px-6 py-4 text-gray-600">
-                                            {{ $contribution_category->updated_at->format('M d,Y') }}
+                                            {{ optional($contribution_category->created_at)->format('M d, Y') ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ optional($contribution_category->updated_at)->format('M d, Y') ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <button
@@ -177,7 +179,7 @@
                                                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d=" M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                                                     <path d="m15 5 4 4" />
                                                 </svg>
                                             </button>
@@ -185,18 +187,22 @@
                                     </tr>
                                 @endforeach
                             @else
-                                <p>No contribution categories found.</p>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="4">
+                                        No contribution categories found.
+                                    </td>
+                                </tr>
                             @endif
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex justify-end items-center gap-2 mt-6">
+                @if ($contribution_categories->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
                         {{ $contribution_categories->links('pagination::tailwind') }}
                     </div>
-                </div>
+                @endif
             </div>
 
             <!-- Add New Role Modal -->

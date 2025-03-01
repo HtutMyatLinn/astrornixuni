@@ -5,15 +5,33 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContributionCategoryEditRequest;
 use App\Http\Requests\ContributionCategoryRequest;
 use App\Models\ContributionCategory;
+use Illuminate\Http\Request;
 
 class ContributionCategoryController extends Controller
 {
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if (!$search) {
+            return redirect()->route('contribution-category.index');
+        }
+
+        $contribution_categories = ContributionCategory::where('contribution_category', 'LIKE', "%{$search}%")
+            ->paginate(5);
+
+        if ($contribution_categories->isEmpty()) {
+            return view('admin.contributioncategory', compact('contribution_categories'));
+        }
+
+        return view('admin.contributioncategory', compact('contribution_categories', 'search'));
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $contribution_categories = ContributionCategory::paginate(1);
+        $contribution_categories = ContributionCategory::paginate(5);
         return view('admin.contributioncategory', compact('contribution_categories'));
     }
 

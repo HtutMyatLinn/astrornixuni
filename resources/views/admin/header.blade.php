@@ -26,8 +26,11 @@
                         <span class="text-sm text-gray-500">Admin</span>
                     </div>
 
-                    <!-- Profile Image Placeholder -->
-                    <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+                    <!-- Profile Image -->
+                    <div class="w-12 h-12 select-none">
+                        <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                            class="w-full h-full rounded-full object-cover">
+                    </div>
                 </div>
             </div>
         </div>

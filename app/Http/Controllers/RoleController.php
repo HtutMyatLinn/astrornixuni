@@ -5,15 +5,34 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RoleEditRequest;
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        if (!$search) {
+            return redirect()->route('roles.index');
+        }
+
+        $roles = Role::where('role', 'LIKE', "%{$search}%")
+            ->paginate(5);
+
+        if ($roles->isEmpty()) {
+            return view('admin.role', compact('roles'));
+        }
+
+        return view('admin.role', compact('roles', 'search'));
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $roles = Role::paginate(4);
+        $roles = Role::paginate(10);
         return view('admin.role', compact('roles'));
     }
 

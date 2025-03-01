@@ -18,8 +18,9 @@
             class="flex items-center justify-between w-full space-x-3 px-4 py-2 focus:outline-none">
             <div class="flex items-center space-x-3">
                 <!-- Centered Profile Picture -->
-                <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                    <img class="w-6 h-4" src="{{ asset('images/two_person.png') }}" alt="">
+                <div class="w-12 h-12 select-none">
+                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                        class="w-full h-full rounded-full object-cover">
                 </div>
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3>
