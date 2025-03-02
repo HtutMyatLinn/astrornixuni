@@ -65,18 +65,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Unassigned user management routes.
         Route::get('/admin/notifications/unregister-user', [UnassignedUserController::class, 'index'])->name('admin.notifications.unregister-user');
+        Route::get('/admin/notifications/unregister-user/search', [UnassignedUserController::class, 'search'])->name('admin.notifications.unregister-user.search');
 
         // Admin management routes.
         Route::get('/admin/user-management', [AdminController::class, 'index'])->name('admin.user-management');
+        Route::get('/admin/user-management/search', [AdminController::class, 'search'])->name('admin.user-management.search');
 
         // Marketing Coordinator management routes.
         Route::get('/admin/user-management/marketing-coordinator', [MarketingCoordinatorControllerr::class, 'index'])->name('admin.user-management.marketing-coordinator');
+        Route::get('/admin/user-management/marketing-coordinator/search', [MarketingCoordinatorControllerr::class, 'search'])->name('admin.user-management.marketing-coordinator.search');
 
         // Marketing Manager management routes.
         Route::get('/admin/user-management/marketing-manager', [MarketingManagerController::class, 'index'])->name('admin.user-management.marketing-manager');
+        Route::get('/admin/user-management/marketing-manager/search', [MarketingManagerController::class, 'search'])->name('admin.user-management.marketing-manager.search');
 
         // Student management routes.
         Route::get('/admin/user-management/student', [StudentController::class, 'index'])->name('admin.user-management.student');
+        Route::get('/admin/user-management/student/search', [StudentController::class, 'search'])->name('admin.user-management.student.search');
     });
 
     // Marketing Manager dashboard.

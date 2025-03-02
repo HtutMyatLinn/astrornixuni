@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    // Search for roles based on the search query
     public function search(Request $request)
     {
         $search = $request->input('search');
@@ -18,7 +19,7 @@ class RoleController extends Controller
         }
 
         $roles = Role::where('role', 'LIKE', "%{$search}%")
-            ->paginate(5);
+            ->paginate(10);
 
         if ($roles->isEmpty()) {
             return view('admin.role', compact('roles'));
