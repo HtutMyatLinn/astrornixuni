@@ -75,26 +75,54 @@
                 <div class="flex flex-col md:flex-row items-center gap-2 w-full">
                     {{-- Password --}}
                     <div class="w-full relative">
-                        <label for="password" class="block text-gray-700 font-semibold">Password <span
-                                class="text-red-500">*</span></label>
-                        <input id="password" type="password"
-                            class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                            name="password" placeholder="Enter a secure password">
+                        <label for="password" class="block text-gray-700 font-semibold">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input id="password" type="password"
+                                class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none pr-10"
+                                name="password" placeholder="Enter a secure password">
+                            <button type="button" class="absolute right-3 top-3 text-gray-500"
+                                onclick="togglePassword('password', this)">
+                                <i class="ri-eye-off-line"></i>
+                            </button>
+                        </div>
                         <div class="absolute left-2 -bottom-2 bg-white">
                             @error('password')
                                 <p class="text-red-500 text-sm">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
+
                     {{-- Confirm Password --}}
-                    <div class="w-full">
-                        <label for="password_confirmation" class="block text-gray-700 font-semibold">Confirm
-                            Password <span class="text-red-500">*</span></label>
-                        <input id="password_confirmation" type="password"
-                            class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                            name="password_confirmation" placeholder="Confirm a password">
+                    <div class="w-full relative">
+                        <label for="password_confirmation" class="block text-gray-700 font-semibold">
+                            Confirm Password <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input id="password_confirmation" type="password"
+                                class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none pr-10"
+                                name="password_confirmation" placeholder="Confirm a password">
+                            <button type="button" class="absolute right-3 top-3 text-gray-500"
+                                onclick="togglePassword('password_confirmation', this)">
+                                <i class="ri-eye-off-line"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+                <script>
+                    function togglePassword(fieldId, icon) {
+                        const field = document.getElementById(fieldId);
+                        if (field.type === "password") {
+                            field.type = "text";
+                            icon.innerHTML = '<i class="ri-eye-line"></i>'; // Change to eye open
+                        } else {
+                            field.type = "password";
+                            icon.innerHTML = '<i class="ri-eye-off-line"></i>'; // Change to eye closed
+                        }
+                    }
+                </script>
 
                 {{-- Faculty --}}
                 <div class="w-full relative">

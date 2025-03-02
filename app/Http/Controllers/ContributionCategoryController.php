@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class ContributionCategoryController extends Controller
 {
+    // Search for contribution categories based on the search query
     public function search(Request $request)
     {
         $search = $request->input('search');
@@ -18,7 +19,7 @@ class ContributionCategoryController extends Controller
         }
 
         $contribution_categories = ContributionCategory::where('contribution_category', 'LIKE', "%{$search}%")
-            ->paginate(5);
+            ->paginate(10);
 
         if ($contribution_categories->isEmpty()) {
             return view('admin.contributioncategory', compact('contribution_categories'));
@@ -26,12 +27,13 @@ class ContributionCategoryController extends Controller
 
         return view('admin.contributioncategory', compact('contribution_categories', 'search'));
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $contribution_categories = ContributionCategory::paginate(5);
+        $contribution_categories = ContributionCategory::paginate(10);
         return view('admin.contributioncategory', compact('contribution_categories'));
     }
 

@@ -30,17 +30,38 @@
                 </div>
 
                 {{-- Password --}}
-                <div class="relative">
-                    <label for="password" class="block text-gray-700 font-semibold">Password</label>
-                    <input type="password" name="password" id="password"
-                        class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        placeholder="Enter a secure password">
+                <div class="w-full relative">
+                    <label for="password" class="block text-gray-700 font-semibold">
+                        Password <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <input id="password" type="password"
+                            class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none pr-10"
+                            name="password" placeholder="Enter a secure password">
+                        <button type="button" class="absolute right-3 top-3 text-gray-500"
+                            onclick="togglePassword('password', this)">
+                            <i class="ri-eye-off-line"></i>
+                        </button>
+                    </div>
                     <div class="absolute left-2 -bottom-2 bg-white">
                         @error('password')
                             <p class="text-red-500 text-sm">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
+
+                <script>
+                    function togglePassword(fieldId, icon) {
+                        const field = document.getElementById(fieldId);
+                        if (field.type === "password") {
+                            field.type = "text";
+                            icon.innerHTML = '<i class="ri-eye-line"></i>'; // Change to eye open
+                        } else {
+                            field.type = "password";
+                            icon.innerHTML = '<i class="ri-eye-off-line"></i>'; // Change to eye closed
+                        }
+                    }
+                </script>
 
                 {{-- Forgot Password --}}
                 @if (Route::has('password.request'))
@@ -81,6 +102,5 @@
                 </p>
             </div>
         </div>
-
     </div>
 </x-guest-layout>
