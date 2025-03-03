@@ -18,10 +18,17 @@
             class="flex items-center justify-between w-full space-x-3 px-4 py-2 focus:outline-none">
             <div class="flex items-center space-x-3">
                 <!-- Centered Profile Picture -->
-                <div class="w-12 h-12 select-none">
-                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                        class="w-full h-full rounded-full object-cover">
-                </div>
+                @if (Auth::check())
+                    <p
+                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                        {{ strtoupper(Auth::user()->username[0]) }}
+                    </p>
+                @else
+                    <div class="w-12 h-12 select-none">
+                        <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                            class="w-full h-full rounded-full object-cover">
+                    </div>
+                @endif
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3>
                     <p class="text-xs text-gray-400">Admin</p>
@@ -101,9 +108,9 @@
             <div class="space-y-1">
 
 
-                <a href="{{ route('admin.closure') }}"
+                <a href="{{ route('academic-years.index') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
-                          {{ request()->routeIs('admin.closure') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
+                          {{ request()->routeIs('academic-years.index') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3" src="{{ asset('images/closuredate.png') }}" alt="">
                     Closure Dates

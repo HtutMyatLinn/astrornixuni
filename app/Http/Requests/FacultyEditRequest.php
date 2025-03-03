@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class RoleEditRequest extends FormRequest
+class FacultyEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,29 +20,25 @@ class RoleEditRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
-    public function rules(): array
+    public function rules()
     {
         return [
-            'edit_role' => [
+            'edit_faculty' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('roles', 'role')->ignore($this->role_id, 'role_id') // Ignore current role
+                Rule::unique('faculties', 'faculty')->ignore($this->faculty_id, 'faculty_id')
             ],
-            'edit_functionalities' => 'nullable|string',
+            'edit_contact_number' => 'required|string|max:20',
         ];
     }
-
 
     public function messages()
     {
         return [
-            'edit_role.required' => 'Role is required.',
-            'edit_role.string' => 'Role must be a string.',
-            'edit_role.max' => 'Role must not exceed 255 characters.',
-            'edit_role.unique' => 'The role has already been taken.',
-            'edit_functionalities.string' => 'Functionalities must be a string.',
+            'edit_faculty.required' => 'The faculty name is required.',
+            'edit_faculty.unique' => 'The faculty name has already been taken.',
+            'edit_contact_number.required' => 'The contact number is required.',
         ];
     }
 }

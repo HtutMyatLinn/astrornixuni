@@ -33,7 +33,8 @@
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar Toggle Button (Mobile) -->
-        <button id="sidebarToggle" class="lg:hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg">
+        <button id="sidebarToggle"
+            class="lg:hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
@@ -54,7 +55,8 @@
 
                     <div class="flex flex-col md:flex-row items-start mb-8">
                         <div class="w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Profile" class="w-full h-full object-cover">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+                                alt="Profile" class="w-full h-full object-cover">
                         </div>
                         <div>
                             <h3 class="text-xl font-medium">Zaw Zaw</h3>
@@ -65,43 +67,60 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="firstName" class="block mb-2 font-medium">First Name</label>
-                            <input type="text" id="firstName" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="text" id="firstName"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ Auth::user()->first_name }}">
                         </div>
 
                         <div>
                             <label for="lastName" class="block mb-2 font-medium">Last Name</label>
-                            <input type="text" id="lastName" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="text" id="lastName"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ Auth::user()->last_name }}">
                         </div>
 
                         <div>
                             <label for="userName" class="block mb-2 font-medium">User Name</label>
-                            <input type="text" id="userName" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="text" id="userName"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ Auth::user()->username }}">
                         </div>
 
                         <div>
                             <label for="role" class="block mb-2 font-medium">Role</label>
-                            <input type="text" id="role" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="text" id="role"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ Auth::user()->role->role }}">
                         </div>
 
                         <div>
                             <label for="faculty" class="block mb-2 font-medium">Faculty</label>
-                            <input type="text" id="faculty" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="text" id="faculty"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ optional(Auth::user()->faculty)->faculty }}">
                         </div>
 
                         <div>
                             <label for="status" class="block mb-2 font-medium">Status</label>
-                            <input type="text" id="status" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="text" id="status"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ Auth::user()->status }}">
                         </div>
 
                         <div>
                             <label for="email" class="block mb-2 font-medium">Email</label>
-                            <input type="email" id="email" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="email" id="email"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ Auth::user()->email }}" disabled>
                         </div>
 
                         <div>
                             <label for="password" class="block mb-2 font-medium">Password</label>
-                            <input type="password" id="password" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
-                            <button id="changePasswordBtn" class="text-[#4353E1] mt-2 border-b border-[#4353E1]">Change Your Password ?</button>
+                            <input type="password" id="password"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                value="{{ Auth::user()->password }}" disabled>
+                            <button id="changePasswordBtn" class="text-[#4353E1] mt-2 border-b border-[#4353E1]">Change
+                                Your Password ?</button>
                         </div>
                     </div>
 
@@ -123,21 +142,25 @@
                     <div class="space-y-6">
                         <div>
                             <label for="oldPassword" class="block mb-2 font-medium">Old Password</label>
-                            <input type="password" id="oldPassword" placeholder="Enter Current Password" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="password" id="oldPassword" placeholder="Enter Current Password"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
                         </div>
 
                         <div>
                             <label for="newPassword" class="block mb-2 font-medium">New Password</label>
-                            <input type="password" id="newPassword" placeholder="Enter New Password" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="password" id="newPassword" placeholder="Enter New Password"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
                         </div>
 
                         <div>
                             <label for="confirmPassword" class="block mb-2 font-medium">Confirm New Password</label>
-                            <input type="password" id="confirmPassword" placeholder="Enter New Password Again" class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
+                            <input type="password" id="confirmPassword" placeholder="Enter New Password Again"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50">
                         </div>
 
                         <div class="flex justify-center mt-6">
-                            <button id="savePasswordBtn" class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-8 rounded-md">Save</button>
+                            <button id="savePasswordBtn"
+                                class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-8 rounded-md">Save</button>
                         </div>
                     </div>
                 </div>

@@ -16,11 +16,19 @@
     <div class="p-4 text-white bg-[#1C2434]" x-data="{ open: false }">
         <button @click="open = !open"
             class="flex items-center justify-between w-full space-x-3 px-4 py-2 focus:outline-none">
-            <div class="flex  float-start space-x-3">
+            <div class="flex float-start space-x-3">
                 <!-- Centered Profile Picture -->
-                <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                    <img class="w-6 h-4" src="{{ asset('images/two_person.png') }}" alt="">
-                </div>
+                @if (Auth::check())
+                    <p
+                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                        {{ strtoupper(Auth::user()->username[0]) }}
+                    </p>
+                @else
+                    <div class="w-12 h-12 select-none">
+                        <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                            class="w-full h-full rounded-full object-cover">
+                    </div>
+                @endif
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3>
                     <p class="text-xs text-gray-400">Marketing Coordinator</p>
