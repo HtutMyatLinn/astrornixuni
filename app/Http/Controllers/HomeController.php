@@ -76,6 +76,10 @@ class HomeController extends Controller
     {
         return view('marketingcoordinator.index');
     }
+    public function marketingcoordinatorAccountSetting()
+    {
+        return view('marketingcoordinator.accountsetting');
+    }
     public function marketingcoordinatorGuestManagement()
     {
         return view('marketingcoordinator.guestmanagement');

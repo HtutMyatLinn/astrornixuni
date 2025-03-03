@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <!-- Left side -->
             <div class="flex items-center space-x-4">
-                <img src="{{ asset('images/logo.png') }}" class=" h-16 w-16" />
+                <img src="{{ asset('images/logo.png') }}" class="h-16 w-16" alt="Logo" />
             </div>
 
             <!-- Right side -->
@@ -26,8 +26,16 @@
                         <span class="text-sm text-gray-500">Marketing Coordinator</span>
                     </div>
 
-                    <!-- Profile Image Placeholder -->
-                    <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+                    <!-- Profile Image with Link to Account Settings -->
+                    <a href="{{ route('marketingcoordinator.account-setting') }}" class="block cursor-pointer">
+                        @if(Auth::user()->avatar)
+                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Profile" class="w-12 h-12 rounded-full object-cover border border-gray-200">
+                        @else
+                        <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-medium text-lg">
+                            {{ substr(Auth::user()->username, 0, 1) }}
+                        </div>
+                        @endif
+                    </a>
                 </div>
             </div>
         </div>
