@@ -44,6 +44,9 @@
                         class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                         Contribution Category Management
                     </a>
+                    <a href="{{ route('faculty.index') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                        Faculty Management
+                    </a>
                 </div>
 
                 {{-- Add Contribution Type Button --}}
@@ -216,7 +219,7 @@
                         </button>
 
                         <h1 class="text-2xl font-bold text-center mb-6">
-                            Add <span class="border-b-2 border-blue-600">Contribution Category</span> Role
+                            Add <span class="border-b-2 border-blue-600">New</span> Contribution Category
                         </h1>
 
                         <form action="{{ route('contribution-category.store') }}" method="POST">

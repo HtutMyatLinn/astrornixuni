@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -19,26 +18,6 @@ class HomeController extends Controller
         return view('admin.index', compact('total_users', 'total_students'));
     }
 
-    public function administratorUserManagement()
-    {
-        return view('admin.usermanagement');
-    }
-
-    public function administratorUserManagementStudent()
-    {
-        return view('admin.usermanagementstudent');
-    }
-
-    public function administratorUserManagementMarketingManager()
-    {
-        return view('admin.usermanagementmarketingmanager');
-    }
-
-    public function administratorUserManagementMarketingCoordinator()
-    {
-        return view('admin.usermanagementmarketingcoordinator');
-    }
-
     public function administratorNotifications()
     {
         return view('admin.notifications');
@@ -52,11 +31,6 @@ class HomeController extends Controller
     public function administratorNotificationsInquiry()
     {
         return view('admin.notificationsinquiry');
-    }
-
-    public function administratorClosure()
-    {
-        return view('admin.closuredate');
     }
 
     public function administratorInquiry()

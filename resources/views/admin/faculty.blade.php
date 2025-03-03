@@ -27,34 +27,33 @@
             class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
             @include('admin.sidebar')
         </aside>
-
         <!-- Main Content -->
         <div class="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-64">
             @include('admin.header')
 
             <div class="p-8 bg-white m-5 shadow-lg">
-                <h1 class="text-2xl font-bold mb-6">List of Roles ({{ $roles->count() }})</h1>
+                <h1 class="text-2xl font-bold mb-6">List of Faculties ({{ $faculties->count() }})
+                </h1>
 
                 <!-- Tabs -->
                 <div class="flex gap-8 border-b">
-                    <a href="{{ route('roles.index') }}"
-                        class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
+                    <a href="{{ route('roles.index') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Role Management
                     </a>
                     <a href="{{ route('contribution-category.index') }}"
                         class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Contribution Category Management
                     </a>
-                    <a href="{{ route('faculty.index') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                    <a href="{{ route('faculty.index') }}"
+                        class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                         Faculty Management
                     </a>
                 </div>
 
-                {{-- Add Role Button --}}
+                {{-- Add Contribution Type Button --}}
                 <div class="flex justify-end my-4">
-                    <button onclick="openModal()"
-                        class="px-12 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        Add Role
+                    <button onclick="openModal()" class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Add Faculty
                     </button>
                 </div>
 
@@ -81,7 +80,7 @@
                             <circle cx="11" cy="11" r="8" />
                             <path d="m21 21-4.3-4.3" />
                         </svg>
-                        <form method="GET" action="{{ route('admin.roles.search') }}">
+                        <form method="GET" action="{{ route('data-management.faculty.search') }}">
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..."
                                 class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                         </form>
@@ -157,32 +156,33 @@
                     <table class="w-full">
                         <thead class="bg-[#F9F8F8]">
                             <tr>
-                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
-                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Funtionalities</th>
+                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty
+                                </th>
+                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contact Number</th>
                                 <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Added Date</th>
                                 <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Updated Date</th>
                                 <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            @if ($roles->isNotEmpty())
-                                @foreach ($roles as $role)
+                            @if ($faculties->isNotEmpty())
+                                @foreach ($faculties as $faculty)
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-4 text-gray-600">
-                                            {{ $role->role }}
+                                            {{ $faculty->faculty }}
                                         </td>
                                         <td class="px-6 py-4 text-gray-600">
-                                            {{ $role->functionalities }}
+                                            {{ $faculty->contact_number }}
                                         </td>
                                         <td class="px-6 py-4 text-gray-600">
-                                            {{ optional($role->created_at)->format('M d, Y') ?? 'N/A' }}
+                                            {{ optional($faculty->created_at)->format('M d, Y') ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4 text-gray-600">
-                                            {{ optional($role->updated_at)->format('M d, Y') ?? 'N/A' }}
+                                            {{ optional($faculty->updated_at)->format('M d, Y') ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4">
                                             <button
-                                                onclick="openEditModal('{{ $role->role_id }}', '{{ $role->role }}', '{{ $role->functionalities }}')"
+                                                onclick="openEditModal('{{ $faculty->faculty_id }}', '{{ $faculty->faculty }}', '{{ $faculty->contact_number }}')"
                                                 class="text-blue-600 hover:text-blue-700">
                                                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -197,7 +197,7 @@
                             @else
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
-                                        No roles found.
+                                        No faculties found.
                                     </td>
                                 </tr>
                             @endif
@@ -206,17 +206,17 @@
                 </div>
 
                 <!-- Pagination -->
-                @if ($roles->isNotEmpty())
+                @if ($faculties->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
-                        {{ $roles->links('pagination::tailwind') }}
+                        {{ $faculties->links('pagination::tailwind') }}
                     </div>
                 @endif
             </div>
 
-            <!-- Add New Role Modal -->
+            <!-- Add New Faculty Modal -->
             <div class="flex justify-center items-center mt-24 w-full">
                 <!-- Modal -->
-                <div id="roleModal"
+                <div id="facultyModal"
                     class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
                     <div class="max-w-md w-full bg-white p-8 rounded-md shadow-lg relative">
                         <button onclick="closeModal()" class="absolute top-2 right-2 text-black">
@@ -224,33 +224,34 @@
                         </button>
 
                         <h1 class="text-2xl font-bold text-center mb-6">
-                            Add <span class="border-b-2 border-blue-600">New</span> Role
+                            Add <span class="border-b-2 border-blue-600">New</span>Faculty
                         </h1>
 
-                        <form action="{{ route('roles.store') }}" method="POST">
+                        <form action="{{ route('faculty.store') }}" method="POST">
                             @csrf
 
-                            <!-- Role Name Input -->
+                            <!-- Faculty Input -->
                             <div class="mb-4">
-                                <label class="block text-sm font-medium mb-2">Role Name :</label>
-                                <input type="text" name="role" value="{{ old('role') }}"
-                                    placeholder="Enter role name..."
+                                <label class="block text-sm font-medium mb-2">Faculty :</label>
+                                <input type="text" name="faculty" value="{{ old('faculty') }}"
+                                    placeholder="Enter contribution category..."
                                     class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-blue-500 @error('role') border-red-500 @enderror">
+                focus:outline-none focus:ring-2 focus:ring-blue-500 @error('faculty') border-red-500 @enderror">
 
-                                @error('role')
+                                @error('faculty')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <!-- Functionalities Input -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium mb-2">Functionalities :</label>
-                                <textarea name="functionalities" placeholder="Enter functionalities..."
+                            <!-- Contribution Category Input -->
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Contact Number :</label>
+                                <input type="tel" pattern="[0-9]{11}" name="contact_number"
+                                    value="{{ old('contact_number') }}" placeholder="Enter contribution category..."
                                     class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-blue-500 @error('functionalities') border-red-500 @enderror">{{ old('functionalities') }}</textarea>
+                focus:outline-none focus:ring-2 focus:ring-blue-500 @error('contact_number') border-red-500 @enderror">
 
-                                @error('functionalities')
+                                @error('contact_number')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -267,40 +268,42 @@
                 </div>
             </div>
 
-            <!-- Edit Role Modal -->
-            <div id="editRoleModal"
+            <!-- Edit Contribution Category Modal -->
+            <div id="editFacultyModal"
                 class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
                 <div class="max-w-md w-full bg-white p-8 rounded-md shadow-lg relative">
                     <button onclick="closeEditModal()" class="absolute top-2 right-2 text-black">✖</button>
 
                     <h1 class="text-2xl font-bold text-center mb-6">
-                        Edit <span class="border-b-2 border-blue-600">Role</span>
+                        Edit <span class="border-b-2 border-blue-600">Faculty</span>
                     </h1>
 
-                    <form id="editRoleForm" method="POST">
+                    <form id="editFacultyForm" method="POST">
                         @csrf
                         @method('PUT')
 
                         <!-- Hidden ID Input -->
-                        <input type="hidden" id="editRoleId" name="role_id">
+                        <input type="hidden" id="editFacultyId" name="faculty_id">
 
-                        <!-- Role Name Input -->
+                        <!-- Faculty Input -->
                         <div class="mb-4">
-                            <label class="block text-sm font-medium mb-2">Role Name :</label>
-                            <input type="text" id="editRoleName" name="edit_role"
-                                placeholder="Enter role name..."
+                            <label class="block text-sm font-medium mb-2">Faculty :</label>
+                            <input type="text" id="editFaculty" name="edit_faculty"
+                                value="{{ old('edit_faculty') }}" placeholder="Enter faculty..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            @error('edit_role')
+                            @error('edit_faculty')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Functionalities Input -->
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium mb-2">Functionalities :</label>
-                            <textarea id="editFunctionalities" name="edit_functionalities" placeholder="Enter functionalities..."
-                                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                            @error('edit_functionalities')
+                        <!-- Contribution Category Input -->
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2">Contact Number :</label>
+                            <input type="tel" pattern="[0-9]{11}" name="edit_contact_number"
+                                id="editContactNumber" value="{{ old('edit_contact_number') }}"
+                                placeholder="Enter contact number..."
+                                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            @error('edit_contact_number')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -318,18 +321,19 @@
 
             <!-- JavaScript for Modal -->
             <script>
-                // Open role modal
+                // Open contribution category modal
                 function openModal() {
                     darkOverlay2.classList.remove('opacity-0', 'invisible');
                     darkOverlay2.classList.add('opacity-100');
-                    document.getElementById('roleModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
+                    document.getElementById('facultyModal').classList.remove('opacity-0', 'invisible',
+                        '-translate-y-5');
                 }
 
-                // Close role modal
+                // Close contribution category modal
                 function closeModal() {
                     darkOverlay2.classList.add('opacity-0', 'invisible');
                     darkOverlay2.classList.remove('opacity-100');
-                    document.getElementById('roleModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+                    document.getElementById('facultyModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
                 }
 
                 // Keep modal open if validation errors exist
@@ -339,27 +343,30 @@
                     @endif
                 };
 
-                // Open edit role modal
-                function openEditModal(roleId, roleName, functionalities) {
+                // Open edit contribution category modal
+                function openEditModal(faculty_id, faculty, contact_number) {
                     // Populate the modal fields with the selected role's data
-                    document.getElementById('editRoleId').value = roleId;
-                    document.getElementById('editRoleName').value = roleName;
-                    document.getElementById('editFunctionalities').value = functionalities;
+                    document.getElementById('editFacultyId').value = faculty_id;
+                    document.getElementById('editFaculty').value = faculty;
+                    document.getElementById('editContactNumber').value = contact_number;
 
                     // Set form action dynamically
-                    document.getElementById('editRoleForm').action = `/data-management/roles/${roleId}`;
+                    document.getElementById('editFacultyForm').action =
+                        `/data-management/faculty/${faculty_id}`;
 
                     // Open the modal
                     darkOverlay2.classList.remove('opacity-0', 'invisible');
                     darkOverlay2.classList.add('opacity-100');
-                    document.getElementById('editRoleModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
+                    document.getElementById('editFacultyModal').classList.remove('opacity-0', 'invisible',
+                        '-translate-y-5');
                 }
 
-                // Close edit role modal
+                // Close edit contribution category modal
                 function closeEditModal() {
                     darkOverlay2.classList.add('opacity-0', 'invisible');
                     darkOverlay2.classList.remove('opacity-100');
-                    document.getElementById('editRoleModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+                    document.getElementById('editFacultyModal').classList.add('opacity-0', 'invisible',
+                        '-translate-y-5');
                 }
             </script>
         </div>

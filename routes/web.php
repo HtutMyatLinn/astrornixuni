@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContributionCategoryController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IntakeController;
 use App\Http\Controllers\MarketingCoordinatorControllerr;
 use App\Http\Controllers\MarketingManagerController;
 use App\Http\Controllers\RoleController;
@@ -51,9 +54,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
         Route::get('/admin/notifications/inquiry', [HomeController::class, 'administratorNotificationsInquiry'])->name('admin.notifications.inquiry');
         Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');
-        Route::get('/admin/closure', [HomeController::class, 'administratorClosure'])->name('admin.closure');
         Route::get('/admin/inquiry', [HomeController::class, 'administratorInquiry'])->name('admin.inquiry');
         Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
+
+        // Academic year and Intake routes
+        Route::resource('admin/academic-years', AcademicYearController::class);
+        Route::get('/academic-years/search', [AcademicYearController::class, 'search'])->name('admin.academic-years.search');
+
+        //Intake routes
+        Route::post('/admin/intakes', [AcademicYearController::class, 'intake_store'])->name('admin.intakes');
+        Route::get('/intakes/search', [AcademicYearController::class, 'intake_search'])->name('admin.intakes.search');
 
         // Role management routes.
         Route::resource('data-management/roles', RoleController::class);
@@ -62,6 +72,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Contribution Category management routes.
         Route::resource('/data-management/contribution-category', ContributionCategoryController::class);
         Route::get('/admin/contribution-categories/search', [ContributionCategoryController::class, 'search'])->name('admin.contribution_categories.search');
+
+        // Faculty management routes.
+        Route::resource('/data-management/faculty', FacultyController::class);
+        Route::get('/faculty/search', [FacultyController::class, 'search'])->name('data-management.faculty.search');
 
         // Unassigned user management routes.
         Route::get('/admin/notifications/unregister-user', [UnassignedUserController::class, 'index'])->name('admin.notifications.unregister-user');
