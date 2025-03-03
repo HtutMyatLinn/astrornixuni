@@ -92,7 +92,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Marketing Coordinator dashboard.
     Route::middleware('marketingcoordinator')->group(function () {
         Route::get('/marketingcoordinator/dashboard', [HomeController::class, 'marketingcoordinator'])->name('marketingcoordinator.dashboard');
+
+        Route::get('/marketingcoordinator/account-setting', [HomeController::class, 'marketingcoordinatorAccountSetting'])->name('marketingcoordinator.account-setting');
+
         Route::get('/marketingcoordinator/guest-management', [HomeController::class, 'marketingcoordinatorGuestManagement'])->name('marketingcoordinator.guest-management');
+
         Route::get('/marketingcoordinator/submission-management', [HomeController::class, 'marketingcoordinatorSubmissionManagement'])->name('marketingcoordinator.submission-management');
 
         Route::get('/marketingcoordinator/submission-management/view-detail-contribution', [HomeController::class, 'marketingcoordinatorSubmissionManagementViewDetailContribution'])->name('marketingcoordinator.submission-management.view-detail-contribution');
