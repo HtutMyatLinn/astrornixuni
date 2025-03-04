@@ -200,8 +200,8 @@
                                 <form action="{{ route('academic-years.store') }}" method="POST">
                                     @csrf
 
-                                    <!-- Academic Year Name Input -->
-                                    <div class="mb-4">
+                                    <!-- Academic Year Input -->
+                                    <div class="mb-4 relative">
                                         <label class="block text-sm font-medium mb-2">Academic Year :</label>
                                         <input type="text" name="academic_year"
                                             value="{{ old('academic_year') }}"
@@ -210,7 +210,8 @@
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('academic_year') border-red-500 @enderror">
 
                                         @error('academic_year')
-                                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                            <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                                {{ $message }}</p>
                                         @enderror
                                     </div>
 
@@ -244,13 +245,14 @@
                                 <input type="hidden" id="editAcademicYearId" name="academic_year_id">
 
                                 <!-- Academic Year Input -->
-                                <div class="mb-4">
+                                <div class="mb-4 relative">
                                     <label class="block text-sm font-medium mb-2">Academic Year :</label>
                                     <input type="text" id="editAcademicYear" name="edit_academic_year"
                                         value="{{ old('edit_academic_year') }}" placeholder="Enter academic year..."
                                         class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     @error('edit_academic_year')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                            {{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -277,10 +279,10 @@
                                 class="grid md:grid-cols-2 gap-x-8 gap-y-6">
                                 @csrf
 
-                                <div class="space-y-2">
+                                <div class="space-y-2 relative">
                                     <label class="block text-start font-bold text-gray-900">Academic Year</label>
-                                    <select name="academic_year"
-                                        class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200">
+                                    <select name="academic_year_select"
+                                        class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('academic_year_select') border-red-500 @enderror">
                                         <option value="">Select Academic Year . . .</option>
                                         @if ($academic_years->isEmpty())
                                             <option disabled>No data found</option>
@@ -292,28 +294,31 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                    @error('academic_year')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    @error('academic_year_select')
+                                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                            {{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <div class="space-y-2">
+                                <div class="space-y-2 relative">
                                     <label class="block text-start font-bold text-gray-900">Intake</label>
                                     <input type="text" name="intake" value="{{ old('intake') }}"
                                         placeholder="Enter Intake . . ."
-                                        class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200">
+                                        class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('intake') border-red-500 @enderror">
                                     @error('intake')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                            {{ $message }}</p>
                                     @enderror
                                 </div>
 
-                                <div class="space-y-2">
+                                <div class="space-y-2 relative">
                                     <label class="block text-start font-bold text-gray-900">Closure Date</label>
                                     <input type="date" name="closure_date" value="{{ old('closure_date') }}"
                                         placeholder="Enter Closure Date . . ."
-                                        class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200">
+                                        class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('closure_date') border-red-500 @enderror">
                                     @error('closure_date')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                            {{ $message }}</p>
                                     @enderror
                                 </div>
 
@@ -505,11 +510,11 @@
         }
 
         // Keep modal open if validation errors exist
-        // window.onload = function() {
-        //     @if ($errors->any())
-        //         openModal();
-        //     @endif
-        // };
+        window.onload = function() {
+            @if ($errors->any())
+                openModal();
+            @endif
+        };
 
         // Open edit academic year modal
         function openEditModal(academicYearId, academicYear) {

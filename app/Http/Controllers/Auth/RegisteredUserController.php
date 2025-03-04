@@ -41,6 +41,7 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'faculty_id' => $request->faculty_id,
             'last_login_date' => now(),
             'last_password_changed_date' => now(),
             'password_expired_date' => now()->addMonths(2),

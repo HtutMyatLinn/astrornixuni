@@ -231,7 +231,7 @@
                             @csrf
 
                             <!-- Role Name Input -->
-                            <div class="mb-4">
+                            <div class="mb-4 relative">
                                 <label class="block text-sm font-medium mb-2">Role Name :</label>
                                 <input type="text" name="role" value="{{ old('role') }}"
                                     placeholder="Enter role name..."
@@ -239,19 +239,21 @@
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('role') border-red-500 @enderror">
 
                                 @error('role')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                        {{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- Functionalities Input -->
-                            <div class="mb-6">
+                            <div class="mb-6 relative">
                                 <label class="block text-sm font-medium mb-2">Functionalities :</label>
                                 <textarea name="functionalities" placeholder="Enter functionalities..."
                                     class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('functionalities') border-red-500 @enderror">{{ old('functionalities') }}</textarea>
 
                                 @error('functionalities')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                        {{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -285,23 +287,25 @@
                         <input type="hidden" id="editRoleId" name="role_id">
 
                         <!-- Role Name Input -->
-                        <div class="mb-4">
+                        <div class="mb-4 relative">
                             <label class="block text-sm font-medium mb-2">Role Name :</label>
                             <input type="text" id="editRoleName" name="edit_role"
                                 placeholder="Enter role name..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('edit_role')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                    {{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- Functionalities Input -->
-                        <div class="mb-6">
+                        <div class="mb-6 relative">
                             <label class="block text-sm font-medium mb-2">Functionalities :</label>
                             <textarea id="editFunctionalities" name="edit_functionalities" placeholder="Enter functionalities..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                             @error('edit_functionalities')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="absolute left-2 -bottom-2 bg-whitetext-red-500 text-sm mt-1">
+                                    {{ $message }}</p>
                             @enderror
                         </div>
 

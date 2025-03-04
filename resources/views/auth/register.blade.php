@@ -127,7 +127,7 @@
                 {{-- Faculty --}}
                 <div class="w-full relative">
                     <label for="faculty" class="block text-gray-700 font-semibold">Faculty</label>
-                    <select id="faculty" name="faculty"
+                    <select id="faculty" name="faculty_id"
                         class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
                         <option value="" disabled selected>Select your faculty</option>
                         @if ($faculties->isEmpty())
