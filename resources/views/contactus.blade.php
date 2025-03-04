@@ -24,17 +24,14 @@
     <!-- Contact Section (Responsive Layout) -->
     <div class="w-full px-4 md:px-12 mt-10 py-8 md:py-12">
         <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-
             <!-- Left Column: Contact Form -->
             <div class="bg-white p-4 md:p-8 rounded-lg shadow-md w-full">
                 <h3 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4">Submit an Inquiry</h3>
-
                 <!-- Info Message Inside the Box -->
                 <p class="text-gray-700 text-xs md:text-sm mb-3 md:mb-4">
                     Have a question or need assistance? Fill out the form below, and our support team will get back to
                     you within 24-48 hours.
                 </p>
-
                 <form action="#" method="POST" class="space-y-3 md:space-y-4">
                     @csrf
 
@@ -115,9 +112,7 @@
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345086165!2d144.95373631590485!3d-37.81720974202178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d5df6f6d85f%3A0x4e84c5ef31b4d0f1!2sMarvel%20Stadium!5e0!3m2!1sen!2us!4v1617654460081!5m2!1sen!2us"
                         allowfullscreen="" loading="lazy"></iframe>
                 </div>
-
             </div>
-
         </div>
     </div>
 </x-app-layout>

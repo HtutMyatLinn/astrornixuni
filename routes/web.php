@@ -40,6 +40,10 @@ Route::get('/contactus', function () {
     return view('contactus');
 })->name('contactus');
 
+Route::get('/student/contribution-detail', function () {
+    return view('contribution-detail');
+})->name('student.contribution-detail');
+
 // Routes that require the user to be authenticated and verified.
 Route::middleware(['auth', 'verified'])->group(function () {
     // Profile management routes.
@@ -123,8 +127,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Student dashboard.
     Route::middleware('student')->group(function () {
         Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard');
+        Route::get('/student/upload_contribution', function () {
+            return view('upload_contribution');
+        })->name('student.upload_contribution');
+
     });
 });
+
 
 // Include additional authentication routes (if any).
 require __DIR__ . '/auth.php';
