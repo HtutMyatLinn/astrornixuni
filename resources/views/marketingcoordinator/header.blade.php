@@ -23,7 +23,7 @@
                     <!-- Text Section -->
                     <div class="text-right">
                         <h4 class="text-sm font-medium text-black">{{ Auth::user()->username }}</h4>
-                        <span class="text-sm text-gray-500">Marketing Coordinator</span>
+                        <span class="text-sm text-gray-500">{{ Auth::user()->role->role }}</span>
                     </div>
 
                     <!-- Profile Image with Link to Account Settings -->

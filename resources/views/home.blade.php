@@ -58,8 +58,8 @@
         {{-- Hero --}}
         <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 py-10 px-3">
             <div class="text-5xl font-light pb-5 sm:pb-0">
-                <p>Lorem</p>
-                <p>ipsum dolo</p>
+                <p>Empowering</p>
+                <p>Minds, Inspiring Futures</p>
             </div>
             <div class="text-2xl leading-relaxed text-gray-800">
                 <p>Our university fosters a dynamic learning environment where creativity, critical thinking, and

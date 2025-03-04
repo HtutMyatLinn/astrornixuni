@@ -37,7 +37,7 @@ class StudentController extends Controller
         // Fetch users where role is 'Student', sorted by newest first, with pagination
         $students = User::whereHas('role', function ($query) {
             $query->where('role', 'Student');
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('updated_at', 'desc')->paginate(10);
 
         return view('admin.usermanagementstudent', compact('students'));
     }

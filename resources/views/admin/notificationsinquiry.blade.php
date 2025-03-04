@@ -11,7 +11,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-w-[420px]">
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar Toggle Button (Mobile) -->
@@ -256,7 +256,8 @@
                                             </td>
 
                                             <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                Response
+                                                <a href="mailto:mary123@gmail.com"
+                                                    class="hover:underline">Response</a>
                                             </td>
                                         </tr>
 

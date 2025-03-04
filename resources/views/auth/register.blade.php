@@ -130,11 +130,15 @@
                     <select id="faculty" name="faculty"
                         class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
                         <option value="" disabled selected>Select your faculty</option>
-                        <option value="engineering">Engineering</option>
-                        <option value="science">Science</option>
-                        <option value="arts">Arts</option>
-                        <option value="business">Business</option>
-                        <option value="medicine">Medicine</option>
+                        @if ($faculties->isEmpty())
+                            <option disabled>No data found</option>
+                        @else
+                            @foreach ($faculties as $faculty)
+                                <option value="{{ $faculty->faculty_id }}">
+                                    {{ $faculty->faculty }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                     <div class="absolute left-2 -bottom-2 bg-white">
                         @error('faculty')

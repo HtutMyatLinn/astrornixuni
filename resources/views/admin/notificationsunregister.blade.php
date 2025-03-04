@@ -11,7 +11,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-w-[420px]">
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar Toggle Button (Mobile) -->
@@ -273,9 +273,10 @@
                                                     </td>
                                                     <td class="px-6 py-4">
                                                         <div class="flex items-center gap-3">
-                                                            <button class="text-[#2F64AA] hover:text-blue-700">
+                                                            <a href="{{ route('admin.edit-user-data', ['id' => $user->user_id]) }}"
+                                                                class="text-[#2F64AA] hover:text-blue-700">
                                                                 Assign Role
-                                                            </button>
+                                                            </a>
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -11,7 +11,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-w-[420px]">
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar -->

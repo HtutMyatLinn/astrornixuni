@@ -37,7 +37,7 @@ class AdminController extends Controller
         // Fetch users where role is 'Admin', sorted by newest first, with pagination
         $admins = User::whereHas('role', function ($query) {
             $query->where('role', 'Admin');
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('updated_at', 'desc')->paginate(10);
 
         return view('admin.usermanagement', compact('admins'));
     }
