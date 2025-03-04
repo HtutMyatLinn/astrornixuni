@@ -40,6 +40,10 @@ Route::get('/contactus', function () {
     return view('contactus');
 })->name('contactus');
 
+Route::get('/student/contribution-detail', function () {
+    return view('contribution-detail');
+})->name('student.contribution-detail');
+
 // Routes that require the user to be authenticated and verified.
 Route::middleware(['auth', 'verified'])->group(function () {
     // Profile management routes.
@@ -131,6 +135,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         })->name('student.upload_contribution');
     });
 });
+
 
 // Include additional authentication routes (if any).
 require __DIR__ . '/auth.php';
