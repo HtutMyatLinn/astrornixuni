@@ -231,7 +231,7 @@
                             @csrf
 
                             <!-- Faculty Input -->
-                            <div class="mb-4">
+                            <div class="mb-4 relative">
                                 <label class="block text-sm font-medium mb-2">Faculty :</label>
                                 <input type="text" name="faculty" value="{{ old('faculty') }}"
                                     placeholder="Enter contribution category..."
@@ -239,12 +239,13 @@
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('faculty') border-red-500 @enderror">
 
                                 @error('faculty')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                        {{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- Contribution Category Input -->
-                            <div class="mb-4">
+                            <div class="mb-4 relative">
                                 <label class="block text-sm font-medium mb-2">Contact Number :</label>
                                 <input type="tel" pattern="[0-9]{11}" name="contact_number"
                                     value="{{ old('contact_number') }}" placeholder="Enter contribution category..."
@@ -252,7 +253,8 @@
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('contact_number') border-red-500 @enderror">
 
                                 @error('contact_number')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                    <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                        {{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -286,25 +288,27 @@
                         <input type="hidden" id="editFacultyId" name="faculty_id">
 
                         <!-- Faculty Input -->
-                        <div class="mb-4">
+                        <div class="mb-4 relative">
                             <label class="block text-sm font-medium mb-2">Faculty :</label>
                             <input type="text" id="editFaculty" name="edit_faculty"
                                 value="{{ old('edit_faculty') }}" placeholder="Enter faculty..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('edit_faculty')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                    {{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- Contribution Category Input -->
-                        <div class="mb-4">
+                        <div class="mb-4 relative">
                             <label class="block text-sm font-medium mb-2">Contact Number :</label>
                             <input type="tel" pattern="[0-9]{11}" name="edit_contact_number"
                                 id="editContactNumber" value="{{ old('edit_contact_number') }}"
                                 placeholder="Enter contact number..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('edit_contact_number')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class=" absolute left-2 -bottom-2 bg-whitetext-red-500 text-sm mt-1">
+                                    {{ $message }}</p>
                             @enderror
                         </div>
 

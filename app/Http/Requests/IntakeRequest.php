@@ -23,7 +23,7 @@ class IntakeRequest extends FormRequest
     {
         return [
             'intake' => 'required|string|max:50',
-            'academic_year' => 'required|exists:academic_years,academic_year_id',
+            'academic_year_select' => 'required|exists:academic_years,academic_year_id',
             'closure_date' => 'required|date',
         ];
     }
@@ -34,8 +34,8 @@ class IntakeRequest extends FormRequest
             'intake.required' => 'The intake is required.',
             'intake.string' => 'The intake must be a string.',
             'intake.max' => 'The intake may not be greater than 50 characters.',
-            'academic_year.required' => 'The academic year is required.',
-            'academic_year.exists' => 'The selected academic year is invalid.',
+            'academic_year_select.required' => 'The academic year is required.',
+            'academic_year_select.exists' => 'The selected academic year is invalid.',
             'closure_date.required' => 'The closure date is required.',
             'closure_date.date' => 'The closure date must be a valid date.',
         ];

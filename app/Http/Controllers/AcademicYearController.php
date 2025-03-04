@@ -67,7 +67,7 @@ class AcademicYearController extends Controller
     {
         // Create a new academic year
         $academic_year = new AcademicYear();
-        $academic_year->academic_year = $request->academic_year;
+        $academic_year->academic_year_select = $request->academic_year_select;
         $academic_year->save();
 
         // Redirect back with a success message
@@ -79,7 +79,7 @@ class AcademicYearController extends Controller
     {
         $intake = new Intake();
         $intake->intake = $request->intake;
-        $intake->academic_year_id = $request->academic_year;
+        $intake->academic_year_id = $request->academic_year_select;
         $intake->closure_date = $request->closure_date;
 
         // Automatically set final_closure_date to 14 days after closure_date
