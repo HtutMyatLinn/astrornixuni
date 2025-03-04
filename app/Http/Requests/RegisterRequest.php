@@ -63,17 +63,4 @@ class RegisterRequest extends FormRequest
             'password.defaults' => 'Password does not meet the default requirements.',
         ];
     }
-    // public function messages(): array
-    // {
-    //     return [
-    //         'username.required' => 'Username is required',
-    //         'first_name.required' => 'First name is required',
-    //         'last_name.required' => 'Last name is required',
-    //         'email.required' => 'Email is required',
-    //         'password.required' => 'Password is required',
-    //         'password.min' => 'Password must be at least 8 characters',
-    //         'password.confirmed' => 'Password confirmation does not match',
-    //         'faculty.required' => 'Faculty is required',
-    //     ];
-    // }
 }

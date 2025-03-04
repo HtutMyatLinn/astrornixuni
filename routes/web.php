@@ -50,12 +50,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin dashboard.
     Route::middleware('admin')->group(function () {
         Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin');
+        Route::get('/admin/account-setting', [HomeController::class, 'adminAccountSetting'])->name('admin.account-setting');
         Route::get('/data-management/contribution-category', [HomeController::class, 'contributionCategory'])->name('data-management.contribution-category');
         Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
         Route::get('/admin/notifications/inquiry', [HomeController::class, 'administratorNotificationsInquiry'])->name('admin.notifications.inquiry');
         Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');
         Route::get('/admin/inquiry', [HomeController::class, 'administratorInquiry'])->name('admin.inquiry');
-        Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
+        // Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
+        Route::get('/admin/edit-user-data/{id}', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
+        Route::post('/admin/update-user-data/{id}', [HomeController::class, 'administratorUpdateUserData'])->name('admin.update-user-data');
 
         // Academic year and Intake routes
         Route::resource('admin/academic-years', AcademicYearController::class);
@@ -123,6 +126,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Student dashboard.
     Route::middleware('student')->group(function () {
         Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard');
+        Route::get('/student/upload_contribution', function () {
+            return view('upload_contribution');
+        })->name('student.upload_contribution');
     });
 });
 

@@ -14,8 +14,7 @@
 
     <!-- User Profile Section with Dropdown -->
     <div class="p-4 text-white bg-[#1C2434]" x-data="{ open: false }">
-        <button @click="open = !open"
-            class="flex items-center justify-between w-full space-x-3 px-4 py-2 focus:outline-none">
+        <button @click="open = !open" class="flex items-center justify-between w-full space-x-3 py-2 focus:outline-none">
             <div class="flex items-center space-x-3">
                 <!-- Centered Profile Picture -->
                 @if (Auth::check())
@@ -31,7 +30,7 @@
                 @endif
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3>
-                    <p class="text-xs text-gray-400">Admin</p>
+                    <p class="text-xs text-gray-400">{{ Auth::user()->role->role }}</p>
                 </div>
             </div>
             <svg class="w-5 h-5 transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'"

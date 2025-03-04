@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserEditRequest;
+use App\Models\Faculty;
+use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -16,6 +20,11 @@ class HomeController extends Controller
         })->get();
 
         return view('admin.index', compact('total_users', 'total_students'));
+    }
+
+    public function adminAccountSetting()
+    {
+        return view('admin.accountsetting');
     }
 
     public function administratorNotifications()
@@ -38,10 +47,31 @@ class HomeController extends Controller
         return view('admin.inquirymanagement');
     }
 
-    public function administratorEditUserData()
+    public function administratorEditUserData($id)
     {
-        return view('admin.edituserdata');
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $faculties = Faculty::all();
+
+        return view('admin.edituserdata', compact('user', 'roles', 'faculties'));
     }
+
+    public function administratorUpdateUserData(UserEditRequest $request, string $id)
+    {
+        $user = User::find($id);
+
+        // Update user data
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->username = $request->username;
+        $user->role_id = $request->role_id;
+        $user->faculty_id = $request->faculty_id;
+        $user->save();
+
+        // Redirect to roles index page with a success message
+        return redirect()->back()->with('success', 'User updated successfully.');
+    }
+
     public function marketingmanager()
     {
         return view('marketingmanager.index');
