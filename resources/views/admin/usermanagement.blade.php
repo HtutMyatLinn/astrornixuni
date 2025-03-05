@@ -73,46 +73,6 @@
                     </div>
 
                     <div class="flex gap-4">
-                        <!-- Filter Dropdown -->
-                        <div class="relative group">
-                            <button
-                                class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                Filter By
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </button>
-                            <div
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <div class="p-2">
-                                    <div class="relative group/faculty">
-                                        <button
-                                            class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
-                                            <span>Faculty</span>
-                                            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m9 18 6-6-6-6" />
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="absolute left-full top-0 ml-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover/faculty:opacity-100 group-hover/faculty:visible transition-all duration-200">
-                                            <div class="p-2">
-                                                <button
-                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Science</button>
-                                                <button
-                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">IT</button>
-                                                <button
-                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Psychology</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Sort Dropdown -->
                         <div class="relative group">
                             <button
@@ -127,10 +87,14 @@
                             <div
                                 class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                 <div class="p-2">
-                                    <button
-                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Ascending</button>
-                                    <button
-                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Descending</button>
+                                    <a href="{{ route('admin.user-management.sort', ['order' => 'asc']) }}"
+                                        class="w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">
+                                        Ascending
+                                    </a>
+                                    <a href="{{ route('admin.user-management.sort', ['order' => 'desc']) }}"
+                                        class="w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">
+                                        Descending
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -159,17 +123,10 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
-<<<<<<< Updated upstream
                                                 <div class="w-10 h-10 select-none">
                                                     <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
                                                         class="w-full h-full rounded-full object-cover">
                                                 </div>
-=======
-                                                <p
-                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                    {{ strtoupper($admin->username[0]) }}
-                                                </p>
->>>>>>> Stashed changes
                                                 <div>
                                                     <div class="font-medium">
                                                         {{ $admin->first_name . ' ' . $admin->last_name }}
@@ -194,7 +151,6 @@
                                         <td class="px-6 py-4 text-gray-600">{{ $admin->last_login_date ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4">
-<<<<<<< Updated upstream
                                             <div class="flex items-center gap-3">
                                                 <button class="text-blue-600 hover:text-blue-700">
                                                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -216,17 +172,6 @@
                                                     </svg>
                                                 </button>
                                             </div>
-=======
-                                            <a href="{{ route('admin.edit-user-data', ['id' => $admin->user_id]) }}"
-                                                class="text-blue-600 hover:text-blue-700">
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                    <path d="m15 5 4 4" />
-                                                </svg>
-                                            </a>
->>>>>>> Stashed changes
                                         </td>
                                     </tr>
                                 @endforeach
