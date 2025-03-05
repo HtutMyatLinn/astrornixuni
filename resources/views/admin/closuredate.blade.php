@@ -167,7 +167,7 @@
                                     @else
                                         <tr class="hover:bg-gray-50">
                                             <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
-                                                No roles found.
+                                                No academic years found.
                                             </td>
                                         </tr>
                                     @endif
@@ -204,8 +204,7 @@
                                     <div class="mb-4 relative">
                                         <label class="block text-sm font-medium mb-2">Academic Year :</label>
                                         <input type="text" name="academic_year"
-                                            value="{{ old('academic_year') }}"
-                                            placeholder="Enter academic_year name..."
+                                            value="{{ old('academic_year') }}" placeholder="Enter academic year..."
                                             class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('academic_year') border-red-500 @enderror">
 
@@ -275,6 +274,20 @@
                             <h1 class="text-2xl md:text-xl font-bold text-gray-900 mb-8">Academic Year & Intake
                                 Management</h1>
 
+                            @if (session('intake_success'))
+                                <div id="intake-success-message"
+                                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                                    role="alert">
+                                    <span class="block sm:inline">{{ session('intake_success') }}</span>
+                                </div>
+
+                                <script>
+                                    setTimeout(() => {
+                                        document.getElementById('intake-success-message').style.display = 'none';
+                                    }, 3000);
+                                </script>
+                            @endif
+
                             <form action="{{ route('admin.intakes') }}" method="POST"
                                 class="grid md:grid-cols-2 gap-x-8 gap-y-6">
                                 @csrf
@@ -283,7 +296,7 @@
                                     <label class="block text-start font-bold text-gray-900">Academic Year</label>
                                     <select name="academic_year_select"
                                         class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('academic_year_select') border-red-500 @enderror">
-                                        <option value="">Select Academic Year . . .</option>
+                                        <option value="">Select academic year . . .</option>
                                         @if ($academic_years->isEmpty())
                                             <option disabled>No data found</option>
                                         @else
@@ -303,7 +316,7 @@
                                 <div class="space-y-2 relative">
                                     <label class="block text-start font-bold text-gray-900">Intake</label>
                                     <input type="text" name="intake" value="{{ old('intake') }}"
-                                        placeholder="Enter Intake . . ."
+                                        placeholder="Enter intake . . ."
                                         class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('intake') border-red-500 @enderror">
                                     @error('intake')
                                         <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
@@ -314,7 +327,7 @@
                                 <div class="space-y-2 relative">
                                     <label class="block text-start font-bold text-gray-900">Closure Date</label>
                                     <input type="date" name="closure_date" value="{{ old('closure_date') }}"
-                                        placeholder="Enter Closure Date . . ."
+                                        placeholder="Enter closure date . . ."
                                         class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('closure_date') border-red-500 @enderror">
                                     @error('closure_date')
                                         <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
@@ -326,7 +339,7 @@
                                     <label class="block text-start font-bold text-gray-900">Final Closure Date</label>
                                     <input type="date" disabled name="final_closure_date"
                                         value="{{ old('final_closure_date') }}"
-                                        placeholder="Enter Final Closure Date . . ."
+                                        placeholder="Enter final closure date . . ."
                                         class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200">
                                 </div>
 

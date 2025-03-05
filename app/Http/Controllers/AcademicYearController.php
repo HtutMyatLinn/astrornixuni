@@ -67,7 +67,7 @@ class AcademicYearController extends Controller
     {
         // Create a new academic year
         $academic_year = new AcademicYear();
-        $academic_year->academic_year_select = $request->academic_year_select;
+        $academic_year->academic_year = $request->academic_year;
         $academic_year->save();
 
         // Redirect back with a success message
@@ -87,7 +87,7 @@ class AcademicYearController extends Controller
 
         $intake->save();
 
-        return redirect()->back()->with('success', 'Intake created successfully.');
+        return redirect()->back()->with('intake_success', 'Intake created successfully.');
     }
 
 
@@ -116,11 +116,11 @@ class AcademicYearController extends Controller
         $academic_year = AcademicYear::find($id);
 
         // Update role data
-        $academic_year->academic_year = $request->edit_academic_year;
+        $academic_year->academic_year = $request->edit_academic;
         $academic_year->save();
 
         // Redirect to roles index page with a success message
-        return redirect()->route('academic-years.index')->with('success', 'Academin year updated successfully.');
+        return redirect()->route('academic-years.index')->with('success', 'Academic year updated successfully.');
     }
 
     /**
