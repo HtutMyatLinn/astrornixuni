@@ -78,17 +78,20 @@
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
                                 <option value="">All Faculties</option>
                                 @foreach ($faculties as $faculty)
-                                <option value="{{ $faculty->faculty_id }}" {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
-                                    {{ $faculty->faculty }}
-                                </option>
+                                    <option value="{{ $faculty->faculty_id }}"
+                                        {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
+                                        {{ $faculty->faculty }}
+                                    </option>
                                 @endforeach
                             </select>
 
                             <!-- Sort Option -->
                             <select name="sort" onchange="this.form.submit()"
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest Login</option>
-                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest Login</option>
+                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest Login
+                                </option>
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest Login
+                                </option>
                             </select>
 
                         </div>
@@ -111,73 +114,61 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @if ($students->isNotEmpty())
-                            @foreach ($students as $student)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ $student->user_code }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 select-none">
-                                            <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                                                class="w-full h-full rounded-full object-cover">
-                                        </div>
-                                        <div>
-                                            <div class="font-medium">
-                                                {{ $student->first_name . ' ' . $student->last_name }}
+                                @foreach ($students as $student)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ $student->user_code }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <p
+                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                    {{ strtoupper($student->username[0]) }}
+                                                </p>
+                                                <div>
+                                                    <div class="font-medium">
+                                                        {{ $student->first_name . ' ' . $student->last_name }}
+                                                    </div>
+                                                    <div class="text-sm text-gray-500">
+                                                        {{ $student->email }}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="text-sm text-gray-500">
-                                                {{ $student->email }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ optional($student->role)->role ?? 'N/A' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    @if ($student->status == 1)
-                                    <span
-                                        class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
-                                    @else
-                                    <span
-                                        class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ $student->last_login_date ?? 'N/A' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <button class="text-blue-600 hover:text-blue-700">
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                <path d="m15 5 4 4" />
-                                            </svg>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-700">
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="M3 6h18" />
-                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ optional($student->role)->role ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            @if ($student->status == 1)
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
+                                            @else
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ $student->last_login_date ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <a href="{{ route('admin.edit-user-data', ['id' => $student->user_id]) }}"
+                                                class="text-blue-600 hover:text-blue-700">
+                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @else
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
-                                    No users found.
-                                </td>
-                            </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
+                                        No users found.
+                                    </td>
+                                </tr>
                             @endif
                         </tbody>
                     </table>
@@ -185,9 +176,9 @@
 
                 <!-- Pagination -->
                 @if ($students->isNotEmpty())
-                <div class="flex justify-end items-center gap-2 mt-6">
-                    {{ $students->appends(request()->query())->links('pagination::tailwind') }}
-                </div>
+                    <div class="flex justify-end items-center gap-2 mt-6">
+                        {{ $students->appends(request()->query())->links('pagination::tailwind') }}
+                    </div>
                 @endif
             </div>
         </div>

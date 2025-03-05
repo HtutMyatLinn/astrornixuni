@@ -248,11 +248,10 @@
                                                     </td>
                                                     <td class="px-6 py-4">
                                                         <div class="flex items-center gap-3">
-                                                            <div class="w-10 h-10 select-none">
-                                                                <img src="{{ asset('images/guest.jpg') }}"
-                                                                    alt="Guest Profile"
-                                                                    class="w-full h-full rounded-full object-cover">
-                                                            </div>
+                                                            <p
+                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                {{ strtoupper($user->username[0]) }}
+                                                            </p>
                                                             <div>
                                                                 <div class="font-medium">
                                                                     {{ $user->first_name . ' ' . $user->last_name }}

@@ -116,6 +116,53 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             @if ($admins->isNotEmpty())
+                                @foreach ($admins as $admin)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ $admin->user_code }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <p
+                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                    {{ strtoupper($admin->username[0]) }}
+                                                </p>
+                                                <div>
+                                                    <div class="font-medium">
+                                                        {{ $admin->first_name . ' ' . $admin->last_name }}
+                                                    </div>
+                                                    <div class="text-sm text-gray-500">{{ $admin->email }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ optional($admin->role)->role ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            @if ($admin->status == 1)
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
+                                            @else
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">{{ $admin->last_login_date ?? 'N/A' }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <a href="{{ route('admin.edit-user-data', ['id' => $admin->user_id]) }}"
+                                                class="text-blue-600 hover:text-blue-700">
+                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @foreach ($admins as $admin)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 text-gray-600">

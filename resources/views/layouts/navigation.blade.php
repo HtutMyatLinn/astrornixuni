@@ -76,12 +76,11 @@
                             @endif
                             <div class="flex-1 min-w-0">
                                 @if (Auth::check())
-                                    <p class="text-xs sm:text-sm text-gray-500 w-full"
-                                        title="{{ Auth::user()->email }}">
+                                    <p class="text-xs sm:text-sm text-gray-500" title="{{ Auth::user()->email }}">
                                         {{ Auth::user()->email }}
                                     </p>
                                 @else
-                                    <p class="text-xs sm:text-sm text-gray-500" title="Guest">
+                                    <p class="text-xs sm:text-sm text-gray-500 w-44" title="Guest">
                                         Register to get access to all features
                                     </p>
                                 @endif
