@@ -113,6 +113,7 @@
                         </div>
 
                         <!-- Sort Dropdown -->
+<<<<<<< Updated upstream
                         <div class="relative group">
                             <button
                                 class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
@@ -132,6 +133,16 @@
                                         class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Descending</button>
                                 </div>
                             </div>
+=======
+                        <div class="flex gap-4">
+                            <select name="sort" onchange="this.form.submit()"
+                                class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest Login
+                                </option>
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest Login
+                                </option>
+                            </select>
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -158,10 +169,17 @@
                                         </td>
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
+<<<<<<< Updated upstream
                                                 <div class="w-10 h-10 select-none">
                                                     <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
                                                         class="w-full h-full rounded-full object-cover">
                                                 </div>
+=======
+                                                <p
+                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                    {{ strtoupper($marketing_manager->username[0]) }}
+                                                </p>
+>>>>>>> Stashed changes
                                                 <div>
                                                     <div class="font-medium">
                                                         {{ $marketing_manager->first_name . ' ' . $marketing_manager->last_name }}
@@ -188,6 +206,7 @@
                                             {{ $marketing_manager->last_login_date ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4">
+<<<<<<< Updated upstream
                                             <div class="flex items-center gap-3">
                                                 <button class="text-blue-600 hover:text-blue-700">
                                                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -209,6 +228,17 @@
                                                     </svg>
                                                 </button>
                                             </div>
+=======
+                                            <a href="{{ route('admin.edit-user-data', ['id' => $marketing_manager->user_id]) }}"
+                                                class="text-blue-600 hover:text-blue-700">
+                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                    <path d="m15 5 4 4" />
+                                                </svg>
+                                            </a>
+>>>>>>> Stashed changes
                                         </td>
                                     </tr>
                                 @endforeach
@@ -226,7 +256,11 @@
                 <!-- Pagination -->
                 @if ($marketing_managers->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
+<<<<<<< Updated upstream
                         {{ $marketing_managers->links('pagination::tailwind') }}
+=======
+                        {{ $marketing_managers->appends(request()->query())->links('pagination::tailwind') }}
+>>>>>>> Stashed changes
                     </div>
                 @endif
             </div>

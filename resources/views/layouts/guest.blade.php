@@ -29,7 +29,8 @@
     <!-- Dark Overlay -->
     <div class="fixed inset-0 bg-black opacity-40 -z-10"></div>
 
-    <div class="w-full max-w-4xl mx-auto h-screen flex justify-center items-start sm:items-center">
+    <div
+        class="w-full max-w-4xl mx-auto {{ request()->routeIs('register') ? '' : 'h-screen' }} flex justify-center items-start sm:items-center">
         <div>
             {{ $slot }}
         </div>

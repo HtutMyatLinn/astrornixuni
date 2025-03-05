@@ -6,7 +6,9 @@
         {{-- Left Section - Form --}}
         <div class="w-full md:w-1/2 pl-0 sm:pl-4 pr-0 sm:pr-8">
             {{-- Logo --}}
-            <x-logo />
+            <a href="{{ route('/') }}">
+                <x-logo />
+            </a>
 
             <h1 class="text-2xl font-bold text-gray-900 mt-10 mb-2">Login to your account</h1>
             <p class="text-gray-600 text-sm mb-6">Access exclusive content, stay informed, and connect with the

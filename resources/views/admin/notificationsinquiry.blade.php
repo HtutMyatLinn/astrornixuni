@@ -227,10 +227,10 @@
                                                 Notification Type</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Message
                                             </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date &
-                                                Time</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
                                             </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date &
+                                                Time</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
                                             </th>
                                         </tr>
@@ -238,23 +238,13 @@
                                     <tbody class="divide-y divide-gray-100">
                                         <!-- Row 1 -->
                                         <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">Inquiry</td>
                                             <td class="px-6 py-4 text-gray-600">Science</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
                                             <td class="px-6 py-4">
                                                 <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Read</span>
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Read</span>
                                             </td>
-
+                                            <td class="px-6 py-4 text-gray-600">12/2/25</td>
                                             <td class="px-6 py-4 text-[#2F64AA] font-light">
                                                 <a href="mailto:mary123@gmail.com"
                                                     class="hover:underline">Response</a>
@@ -263,49 +253,31 @@
 
                                         <!-- Row 2 -->
                                         <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">IT</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
+                                            <td class="px-6 py-4 text-gray-600">Inquiry</td>
+                                            <td class="px-6 py-4 text-gray-600">Science</td>
                                             <td class="px-6 py-4">
                                                 <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Read</span>
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Read</span>
                                             </td>
-
+                                            <td class="px-6 py-4 text-gray-600">12/2/25</td>
                                             <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                Response
+                                                <a href="mailto:mary123@gmail.com"
+                                                    class="hover:underline">Response</a>
                                             </td>
                                         </tr>
 
                                         <!-- Row 3 -->
                                         <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">Psychology</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
+                                            <td class="px-6 py-4 text-gray-600">Inquiry</td>
+                                            <td class="px-6 py-4 text-gray-600">Science</td>
                                             <td class="px-6 py-4">
                                                 <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-red-50 text-red-700">Unread</span>
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Read</span>
                                             </td>
-
+                                            <td class="px-6 py-4 text-gray-600">12/2/25</td>
                                             <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                Response
+                                                <a href="mailto:mary123@gmail.com"
+                                                    class="hover:underline">Response</a>
                                             </td>
                                         </tr>
 

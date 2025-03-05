@@ -206,7 +206,7 @@
                                         <input type="text" name="academic_year"
                                             value="{{ old('academic_year') }}" placeholder="Enter academic year..."
                                             class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
-                focus:outline-none focus:ring-2 focus:ring-blue-500 @error('academic_year') border-red-500 @enderror">
+                                            focus:outline-none focus:ring-2 focus:ring-blue-500 @error('academic_year') border-red-500 @enderror">
 
                                         @error('academic_year')
                                             <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
@@ -326,8 +326,8 @@
 
                                 <div class="space-y-2 relative">
                                     <label class="block text-start font-bold text-gray-900">Closure Date</label>
-                                    <input type="date" name="closure_date" value="{{ old('closure_date') }}"
-                                        placeholder="Enter closure date . . ."
+                                    <input type="date" id="closure_date" name="closure_date"
+                                        value="{{ old('closure_date') }}" placeholder="Enter closure date . . ."
                                         class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('closure_date') border-red-500 @enderror">
                                     @error('closure_date')
                                         <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
@@ -337,7 +337,7 @@
 
                                 <div class="space-y-2">
                                     <label class="block text-start font-bold text-gray-900">Final Closure Date</label>
-                                    <input type="date" disabled name="final_closure_date"
+                                    <input type="date" id="final_closure_date" disabled name="final_closure_date"
                                         value="{{ old('final_closure_date') }}"
                                         placeholder="Enter final closure date . . ."
                                         class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200">
@@ -350,6 +350,26 @@
                                     </button>
                                 </div>
                             </form>
+
+                            <script>
+                                document.getElementById('closure_date').addEventListener('change', function() {
+                                    const closureDate = this.value; // Get the selected closure date
+                                    if (closureDate) {
+                                        // Parse the closure date and add 14 days
+                                        const finalClosureDate = new Date(closureDate);
+                                        finalClosureDate.setDate(finalClosureDate.getDate() + 14);
+
+                                        // Format the final closure date as YYYY-MM-DD
+                                        const formattedDate = finalClosureDate.toISOString().split('T')[0];
+
+                                        // Set the value of the final_closure_date field
+                                        document.getElementById('final_closure_date').value = formattedDate;
+                                    } else {
+                                        // Clear the final_closure_date field if no closure date is selected
+                                        document.getElementById('final_closure_date').value = '';
+                                    }
+                                });
+                            </script>
                         </div>
                         <div class="p-8 bg-white shadow-lg">
                             <!-- Header -->
@@ -497,6 +517,7 @@
                             @endif
                         </div>
                     </div>
+                </div>
             </main>
         </div>
     </div>
@@ -508,14 +529,14 @@
 
     <!-- JavaScript for Modal -->
     <script>
-        // Open role modal
+        // Open academic year modal
         function openModal() {
             darkOverlay2.classList.remove('opacity-0', 'invisible');
             darkOverlay2.classList.add('opacity-100');
             document.getElementById('academicYearModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
         }
 
-        // Close role modal
+        // Close academic year modal
         function closeModal() {
             darkOverlay2.classList.add('opacity-0', 'invisible');
             darkOverlay2.classList.remove('opacity-100');

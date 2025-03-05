@@ -2,13 +2,14 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div
-        class="bg-white p-4 rounded-sm w-full md:w-[700px] h-full flex flex-col md:flex-row justify-center items-center">
+    <div class="bg-white p-3 rounded-sm w-full md:w-[700px] flex flex-col md:flex-row justify-center items-center">
 
         {{-- Left Section - Form --}}
         <div class="w-full px-0 md:px-4">
             {{-- Logo --}}
-            <x-logo />
+            <a href="{{ route('/') }}">
+                <x-logo />
+            </a>
 
             <h1 class="text-2xl font-bold text-gray-900 mt-10 mb-2">Join the University Magazine</h1>
             <p class="text-gray-600 text-sm mb-6">Stay updated with the latest news, articles, and student stories.</p>
@@ -146,6 +147,34 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="mb-6">
+                    <!-- Clickable text to toggle requirements visibility -->
+                    <p id="toggle-requirements" class="text-sm text-gray-500 cursor-pointer hover:text-indigo-600">
+                        Password must meet the following requirements<span class="text-red-500">*</span>
+                    </p>
+
+                    <!-- Requirements list -->
+                    <ul id="requirements-list" class="list-disc list-inside text-sm text-gray-600 mt-2 hidden">
+                        <li id="password-min" class="text-red-500">Password must be at least 8 characters.</li>
+                        <li id="password-max" class="text-red-500">Password must not exceed 16 characters.</li>
+                        <li id="password-regex" class="text-red-500">Password must be at least 1 uppercase.</li>
+                        <li id="password-defaults" class="text-red-500">Password must be at least 1 lowercase.</li>
+                        <li id="password-defaults" class="text-red-500">Password must be at least 1 number.</li>
+                        <li id="password-defaults" class="text-red-500">Password must be at least 1 special character.
+                        </li>
+                    </ul>
+                </div>
+
+                <script>
+                    // Toggle visibility of the requirements list
+                    const toggleButton = document.getElementById('toggle-requirements');
+                    const requirementsList = document.getElementById('requirements-list');
+
+                    toggleButton.addEventListener('click', () => {
+                        requirementsList.classList.toggle('hidden');
+                    });
+                </script>
 
                 {{-- Submit --}}
                 <x-primary-button>
