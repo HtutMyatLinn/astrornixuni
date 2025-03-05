@@ -7,38 +7,44 @@ use Illuminate\Http\Request;
 
 class MarketingManagerController extends Controller
 {
-    // Search for marketing managers based on the search query
     public function search(Request $request)
     {
         $search = $request->input('search');
+        $sortOrder = $request->input('sort', 'desc');
 
-        if (!$search) {
-            return redirect()->route('admin.user-management.marketing-manager');
-        }
-
-        $marketing_managers = User::whereHas('role', function ($query) {
+        $managersQuery = User::whereHas('role', function ($query) {
             $query->where('role', 'Marketing Manager');
-        })
-            ->where(function ($query) use ($search) {
+        });
+
+        if ($search) {
+            $managersQuery->where(function ($query) use ($search) {
                 $query->where('username', 'LIKE', "%{$search}%")
                     ->orWhere('user_code', 'LIKE', "%{$search}%")
                     ->orWhere('email', 'LIKE', "%{$search}%")
                     ->orWhere('first_name', 'LIKE', "%{$search}%")
                     ->orWhere('last_name', 'LIKE', "%{$search}%");
-            })
-            ->paginate(10);
+            });
+        }
 
-        return view('admin.usermanagementmarketingmanager', compact('marketing_managers', 'search'));
+        $marketing_managers = $managersQuery
+            ->orderBy('last_login_date', $sortOrder)
+            ->paginate(10)
+            ->appends($request->all());
+
+        return view('admin.usermanagementmarketingmanager', compact('marketing_managers', 'search', 'sortOrder'));
     }
 
-    // Display a listing of the resource.
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch users where role is 'Marketing Manager', sorted by newest first, with pagination
+        $sortOrder = $request->input('sort', 'desc');
+
         $marketing_managers = User::whereHas('role', function ($query) {
             $query->where('role', 'Marketing Manager');
-        })->orderBy('updated_at', 'desc')->paginate(10);
+        })
+            ->orderBy('last_login_date', $sortOrder)
+            ->paginate(10)
+            ->appends($request->all());
 
-        return view('admin.usermanagementmarketingmanager', compact('marketing_managers'));
+        return view('admin.usermanagementmarketingmanager', compact('marketing_managers', 'sortOrder'));
     }
 }

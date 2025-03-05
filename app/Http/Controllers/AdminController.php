@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    // Display a listing of the resource (default listing)
+    public function index()
+    {
+        $admins = User::whereHas('role', function ($query) {
+            $query->where('role', 'Admin');
+        })->orderBy('updated_at', 'desc')->paginate(10);
+
+        return view('admin.usermanagement', compact('admins'));
+    }
+
     // Search for admins based on the search query
     public function search(Request $request)
     {
@@ -31,14 +41,17 @@ class AdminController extends Controller
         return view('admin.usermanagement', compact('admins', 'search'));
     }
 
-    // Display a listing of the resource.
-    public function index()
+    // Sort admins by last login date
+    public function sortByLastLoginDate(Request $request)
     {
-        // Fetch users where role is 'Admin', sorted by newest first, with pagination
+        $order = $request->input('order', 'asc'); // Default to ascending if not specified
+
         $admins = User::whereHas('role', function ($query) {
             $query->where('role', 'Admin');
-        })->orderBy('updated_at', 'desc')->paginate(10);
+        })
+            ->orderBy('last_login_date', $order)
+            ->paginate(10);
 
-        return view('admin.usermanagement', compact('admins'));
+        return view('admin.usermanagement', compact('admins', 'order'));
     }
 }
