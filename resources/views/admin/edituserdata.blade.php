@@ -169,7 +169,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-end mt-8">
+                        <div class="flex justify-end mt-8 gap-4">
+                            <a href="{{ url()->previous() }}"
+                                class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 inline-block">
+                                Back
+                            </a>
                             <button type="submit"
                                 class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800">Save</button>
                         </div>
