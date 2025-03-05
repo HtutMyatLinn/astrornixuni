@@ -11,7 +11,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50 min-w-[420px]">
+<body class="bg-gray-50">
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar Toggle Button (Mobile) -->
@@ -23,24 +23,21 @@
         </button>
 
         <!-- Sidebar -->
-        <aside id="sidebar"
-            class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
-            @include('marketingcoordinator.sidebar')
-        </aside>
+        @include('marketingcoordinator.sidebar')
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-64">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
             @include('marketingcoordinator.header')
             <!-- here to add content -->
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
                 <div class="max-w-7xl mx-auto space-y-4 mb-4">
-                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Contribution Details & Approval</h1>
+                    <h1 class=" text-xl sm:text-4xl font-bold text-gray-900">Contribution Details & Approval</h1>
 
 
 
-                    <div class="max-w-7xl mx-auto p-8 bg-white rounded-lg shadow-sm my-8">
-                        <h1 class="text-2xl font-bold mb-2">Contribution Detail</h1>
+                    <div class="max-w-7xl mx-auto p-12 bg-white rounded-lg shadow-sm my-8">
+                        <h1 class="text-4xl font-bold mb-2">Contribution Detail</h1>
                         <div class="border-b-4 border-blue-600 w-32 mb-8"></div>
 
                         <div class="space-y-6">
@@ -105,7 +102,7 @@
     <!-- JavaScript for Sidebar Toggle -->
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('translate-x-full');
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
         });
     </script>
 </body>

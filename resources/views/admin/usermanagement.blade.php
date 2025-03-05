@@ -163,71 +163,12 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            @foreach ($admins as $admin)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ $admin->user_code }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 select-none">
-                                            <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                                                class="w-full h-full rounded-full object-cover">
-                                        </div>
-                                        <div>
-                                            <div class="font-medium">
-                                                {{ $admin->first_name . ' ' . $admin->last_name }}
-                                            </div>
-                                            <div class="text-sm text-gray-500">{{ $admin->email }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-gray-600">
-                                    {{ optional($admin->role)->role ?? 'N/A' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    @if ($admin->status == 1)
-                                    <span
-                                        class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
-                                    @else
-                                    <span
-                                        class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 text-gray-600">{{ $admin->last_login_date ?? 'N/A' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <button class="text-blue-600 hover:text-blue-700">
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                <path d="m15 5 4 4" />
-                                            </svg>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-700">
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path d="M3 6h18" />
-                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
                             @else
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
-                                    No users found.
-                                </td>
-                            </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
+                                        No users found.
+                                    </td>
+                                </tr>
                             @endif
                         </tbody>
                     </table>
@@ -235,9 +176,9 @@
 
                 <!-- Pagination -->
                 @if ($admins->isNotEmpty())
-                <div class="flex justify-end items-center gap-2 mt-6">
-                    {{ $admins->links('pagination::tailwind') }}
-                </div>
+                    <div class="flex justify-end items-center gap-2 mt-6">
+                        {{ $admins->links('pagination::tailwind') }}
+                    </div>
                 @endif
             </div>
         </div>
