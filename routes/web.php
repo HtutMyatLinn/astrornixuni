@@ -91,6 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Admin management routes.
         Route::get('/admin/user-management', [AdminController::class, 'index'])->name('admin.user-management');
         Route::get('/admin/user-management/search', [AdminController::class, 'search'])->name('admin.user-management.search');
+        Route::get('/admin/user-management/sort', [AdminController::class, 'sortByLastLoginDate'])->name('admin.user-management.sort');
 
         // Marketing Coordinator management routes.
         Route::get('/admin/user-management/marketing-coordinator', [MarketingCoordinatorControllerr::class, 'index'])->name('admin.user-management.marketing-coordinator');
