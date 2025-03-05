@@ -29,7 +29,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-w-[420px]">
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar Toggle Button (Mobile) -->
@@ -41,10 +41,13 @@
         </button>
 
         <!-- Sidebar -->
-        @include('marketingcoordinator.sidebar')
+        <aside id="sidebar"
+            class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
+            @include('marketingcoordinator.sidebar')
+        </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-64">
             @include('marketingcoordinator.header')
             <!-- account setting -->
             <div class="container mx-auto p-4">
@@ -179,7 +182,7 @@
 
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
         });
         const modal = document.getElementById('passwordModal');
         const changePasswordBtn = document.getElementById('changePasswordBtn');
