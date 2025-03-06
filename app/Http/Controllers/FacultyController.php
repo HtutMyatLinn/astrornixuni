@@ -31,11 +31,17 @@ class FacultyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $faculties = Faculty::paginate(10);
-        return view('admin.faculty', compact('faculties'));
+        $sort = $request->input('sort', 'desc'); // Default sort is 'desc'
+
+        $faculties = Faculty::orderBy('created_at', $sort)
+            ->paginate(10)
+            ->appends(['sort' => $sort]); // Keep sort on pagination links
+
+        return view('admin.faculty', compact('faculties', 'sort'));
     }
+
 
     /**
      * Show the form for creating a new resource.

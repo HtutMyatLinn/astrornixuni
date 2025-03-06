@@ -31,11 +31,17 @@ class ContributionCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $contribution_categories = ContributionCategory::paginate(10);
-        return view('admin.contributioncategory', compact('contribution_categories'));
+        $sort = $request->input('sort', 'desc'); // Default is 'desc' (Newest First)
+
+        $contribution_categories = ContributionCategory::orderBy('created_at', $sort)
+            ->paginate(10)
+            ->appends(['sort' => $sort]); // Keeps sort on pagination
+
+        return view('admin.contributioncategory', compact('contribution_categories', 'sort'));
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -30,11 +30,15 @@ class UnassignedUserController extends Controller
     }
 
     // Display a listing of the resource.
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch users where role is not null, sorted by newest first, with pagination
-        $users = User::whereNull('role_id')->orderBy('created_at', 'desc')->paginate(10);
+        $sort = $request->input('sort', 'desc'); // Default to 'desc' if no sort is selected
 
-        return view('admin.notificationsunregister', compact('users'));
+        $users = User::whereNull('role_id')
+            ->orderBy('created_at', $sort)
+            ->paginate(10)
+            ->appends(['sort' => $sort]); // Keep sort on pagination links
+
+        return view('admin.notificationsunregister', compact('users', 'sort'));
     }
 }

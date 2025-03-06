@@ -43,14 +43,19 @@ class AcademicYearController extends Controller
 
     /**
      * Display a listing of the resource.
-     */
-    public function index()
+     */ public function index(Request $request)
     {
-        $academic_years = AcademicYear::paginate(10);
+        $sort = $request->input('sort', 'desc'); // Default to 'desc'
+
+        $academic_years = AcademicYear::orderBy('created_at', $sort)
+            ->paginate(10)
+            ->appends(['sort' => $sort]); // Keep the sort on pagination
+
         $intakes = Intake::paginate(10);
 
-        return view('admin.closuredate', compact('academic_years', 'intakes'));
+        return view('admin.closuredate', compact('academic_years', 'intakes', 'sort'));
     }
+
 
     /**
      * Show the form for creating a new resource.
