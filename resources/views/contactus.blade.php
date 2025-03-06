@@ -32,32 +32,56 @@
                     Have a question or need assistance? Fill out the form below, and our support team will get back to
                     you within 24-48 hours.
                 </p>
-                <form action="#" method="POST" class="space-y-3 md:space-y-4">
-                    @csrf
 
-                    <!-- Subject -->
-                    <div>
-                        <label class="block text-sm font-semibold">Subject</label>
-                        <input type="text" name="subject" placeholder="Enter the subject of your inquiry"
-                            class="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-gray-300 text-sm md:text-base">
+                @if (session('success'))
+                    <div id="success-message"
+                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                        role="alert">
+                        <span class="block sm:inline">{{ session('success') }}</span>
                     </div>
 
+                    <script>
+                        setTimeout(() => {
+                            document.getElementById('success-message').style.display = 'none';
+                        }, 3000);
+                    </script>
+                @endif
+
+                <form action="{{ route('inquiry.store') }}" method="POST" class="space-y-3 md:space-y-4">
+                    @csrf
+
+                    <!-- Hidden input for user_id -->
+                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
                     <!-- Priority Level -->
-                    <div>
+                    <div class="relative">
                         <label class="block text-sm font-semibold">Priority Level</label>
-                        <select name="priority"
+                        <select name="priority_level"
                             class="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-gray-300 text-sm md:text-base">
-                            <option>Low</option>
-                            <option selected>Medium</option>
-                            <option>High</option>
+                            <option value="" {{ old('priority_level') == '' ? 'selected' : '' }}>Select priority
+                                level</option>
+                            <option value="low" {{ old('priority_level') == 'low' ? 'selected' : '' }}>Low</option>
+                            <option value="medium" {{ old('priority_level') == 'medium' ? 'selected' : '' }}>Medium
+                            </option>
+                            <option value="high" {{ old('priority_level') == 'high' ? 'selected' : '' }}>High</option>
                         </select>
+                        @error('priority_level')
+                            <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     <!-- Message -->
-                    <div>
+                    <div class="relative">
                         <label class="block text-sm font-semibold">Your Message</label>
-                        <textarea name="message" placeholder="Write your message here..."
-                            class="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-gray-300 h-24 md:h-32 text-sm md:text-base"></textarea>
+                        <textarea name="inquiry" placeholder="Write your message here..."
+                            class="w-full px-3 py-2 mt-1 border rounded-md focus:ring focus:ring-gray-300 h-24 md:h-32 text-sm md:text-base">{{ old('inquiry') }}</textarea>
+                        @error('inquiry')
+                            <p class="absolute left-2 -bottom-1 bg-white text-red-500 text-sm mt-1">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     <!-- Help Tip Inside Contact Form -->

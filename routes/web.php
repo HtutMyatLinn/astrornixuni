@@ -6,6 +6,7 @@ use App\Http\Controllers\ContributionCategoryController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\IntakeController;
 use App\Http\Controllers\MarketingCoordinatorControllerr;
 use App\Http\Controllers\MarketingManagerController;
@@ -43,6 +44,9 @@ Route::get('/contactus', function () {
 Route::get('/student/contribution-detail', function () {
     return view('contribution-detail');
 })->name('student.contribution-detail');
+
+// Contact us data store route
+Route::post('/inquiry', [InquiryController::class, 'store'])->name('inquiry.store');
 
 // Routes that require the user to be authenticated and verified.
 Route::middleware(['auth', 'verified'])->group(function () {
