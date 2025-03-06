@@ -72,8 +72,8 @@
                 @endif
 
                 <!-- Search and Filters -->
-                <div class="flex justify-between  mb-8">
-                    <div class="relative w-[400px]">
+                <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                    <div class="relative max-w-[400px]">
                         <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -87,78 +87,80 @@
                     </div>
 
                     <div class="flex gap-4">
-
-
                         <!-- Sort Dropdown -->
                         <form method="GET" action="{{ route('faculty.index') }}">
-    <select name="sort" onchange="this.form.submit()"
-        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First</option>
-        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
-    </select>
-</form>
-
+                            <select name="sort" onchange="this.form.submit()"
+                                class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First
+                                </option>
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First
+                                </option>
+                            </select>
+                        </form>
                     </div>
                 </div>
 
                 <!-- Table -->
                 <div class="bg-white rounded-lg overflow-hidden">
-                    <table class="w-full">
-                        <thead class="bg-[#F9F8F8]">
-                            <tr>
-                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty
-                                </th>
-                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contact Number</th>
-                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Added Date</th>
-                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Updated Date</th>
-                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            @if ($faculties->isNotEmpty())
-                                @foreach ($faculties as $faculty)
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-[#F9F8F8]">
+                                <tr>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty
+                                    </th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contact Number
+                                    </th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Added Date</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Updated Date</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                @if ($faculties->isNotEmpty())
+                                    @foreach ($faculties as $faculty)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $faculty->faculty }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $faculty->contact_number }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ optional($faculty->created_at)->format('M d, Y') ?? 'N/A' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ optional($faculty->updated_at)->format('M d, Y') ?? 'N/A' }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <button
+                                                    onclick="openEditModal('{{ $faculty->faculty_id }}', '{{ $faculty->faculty }}', '{{ $faculty->contact_number }}')"
+                                                    class="text-blue-600 hover:text-blue-700">
+                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                        <path d="m15 5 4 4" />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4 text-gray-600">
-                                            {{ $faculty->faculty }}
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">
-                                            {{ $faculty->contact_number }}
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">
-                                            {{ optional($faculty->created_at)->format('M d, Y') ?? 'N/A' }}
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">
-                                            {{ optional($faculty->updated_at)->format('M d, Y') ?? 'N/A' }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <button
-                                                onclick="openEditModal('{{ $faculty->faculty_id }}', '{{ $faculty->faculty }}', '{{ $faculty->contact_number }}')"
-                                                class="text-blue-600 hover:text-blue-700">
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                    <path d="m15 5 4 4" />
-                                                </svg>
-                                            </button>
+                                        <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                            No faculties found.
                                         </td>
                                     </tr>
-                                @endforeach
-                            @else
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
-                                        No faculties found.
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- Pagination -->
                 @if ($faculties->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
-                    {{ $faculties->appends(request()->query())->links('pagination::tailwind') }}
+                        {{ $faculties->appends(request()->query())->links('pagination::tailwind') }}
                     </div>
                 @endif
             </div>

@@ -139,8 +139,8 @@
 
 
                             <!-- Search and Filters -->
-                            <div class="flex justify-between mb-8">
-                                <div class="relative w-[400px]">
+                            <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                                <div class="relative max-w-[400px]">
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -161,93 +161,100 @@
                                     <form method="GET" action="{{ route('admin.notifications.unregister-user') }}">
                                         <select name="sort" onchange="this.form.submit()"
                                             class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                            <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First</option>
-                                            <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
+                                            <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>
+                                                Newest First</option>
+                                            <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>
+                                                Oldest First</option>
                                         </select>
                                     </form>
-
                                 </div>
                             </div>
 
                             <!-- Table -->
                             <div class="bg-white rounded-lg overflow-hidden">
-                                <table class="w-full">
-                                    <thead class="bg-[#F9F8F8]">
-                                        <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User Code
-                                            </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                Notification Type
-                                            </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date &
-                                                Time</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-100">
-                                        @if ($users->isNotEmpty())
-                                        @foreach ($users as $user)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $user->user_code }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <p
-                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                        {{ strtoupper($user->username[0]) }}
-                                                    </p>
-                                                    <div>
-                                                        <div class="font-medium">
-                                                            {{ $user->first_name . ' ' . $user->last_name }}
-                                                        </div>
-                                                        <div class="text-sm text-gray-500">{{ $user->email }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                Unassigned User
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ optional($user->created_at)->format('M d, Y') ?? 'N/A' }}
-                                                <p class="text-gray-400">
-                                                    {{ optional($user->created_at)->format('h:m') ?? 'N/A' }}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <a href="{{ route('admin.edit-user-data', ['id' => $user->user_id]) }}"
-                                                        class="text-[#2F64AA] hover:text-blue-700">
-                                                        Assign Role
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                        @else
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
-                                                No users found.
-                                            </td>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead class="bg-[#F9F8F8]">
+                                            <tr>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User
+                                                    Code
+                                                </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User
+                                                </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Notification Type
+                                                </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date
+                                                    &
+                                                    Time</th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            @if ($users->isNotEmpty())
+                                                @foreach ($users as $user)
+                                                    <tr class="hover:bg-gray-50">
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ $user->user_code }}
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            <div class="flex items-center gap-3">
+                                                                <p
+                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                    {{ strtoupper($user->username[0]) }}
+                                                                </p>
+                                                                <div>
+                                                                    <div class="font-medium">
+                                                                        {{ $user->first_name . ' ' . $user->last_name }}
+                                                                    </div>
+                                                                    <div class="text-sm text-gray-500">
+                                                                        {{ $user->email }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            Unassigned User
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ optional($user->created_at)->format('M d, Y') ?? 'N/A' }}
+                                                            <p class="text-gray-400">
+                                                                {{ optional($user->created_at)->format('h:m') ?? 'N/A' }}
+                                                            </p>
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            <div class="flex items-center gap-3">
+                                                                <a href="{{ route('admin.edit-user-data', ['id' => $user->user_id]) }}"
+                                                                    class="text-[#2F64AA] hover:text-blue-700">
+                                                                    Assign Role
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                                        No users found.
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <!-- Pagination -->
                             @if ($users->isNotEmpty())
-                            <div class="flex justify-end items-center gap-2 mt-6">
-                                {{ $users->appends(request()->query())->links('pagination::tailwind') }}
-                            </div>
+                                <div class="flex justify-end items-center gap-2 mt-6">
+                                    {{ $users->appends(request()->query())->links('pagination::tailwind') }}
+                                </div>
                             @endif
                         </div>
-
-
                     </div>
+                </div>
             </main>
         </div>
     </div>
