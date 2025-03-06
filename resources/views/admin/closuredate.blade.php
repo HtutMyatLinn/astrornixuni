@@ -33,11 +33,11 @@
             @include('admin.header')
             <!-- here to add content -->
             <main class="flex-1 bg-[#F1F5F9] p-4 sm:p-5">
-
-                <div class="max-w-7xl mx-auto space-y-2 mb-4">
+                <div class="space-y-2 mb-4">
                     <div class="p-8 bg-white  shadow-lg">
                         <!-- Header -->
-                        <div class="flex justify-between items-center mb-6">
+                        <div
+                            class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-6">
                             <h1 class="text-2xl font-bold">List of Academic Years ({{ $academic_years->count() }})</h1>
                             <button onclick="openModal()"
                                 class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
@@ -60,8 +60,8 @@
                         @endif
 
                         <!-- Search and Filters -->
-                        <div class="flex justify-between mb-8">
-                            <div class="relative w-[400px]">
+                        <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                            <div class="relative max-w-[400px]">
                                 <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -79,75 +79,79 @@
                             <div class="flex gap-4">
                                 <!-- sort select-->
                                 <form method="GET" action="{{ route('academic-years.index') }}">
-    <select name="sort" onchange="this.form.submit()"
-        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First</option>
-        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
-    </select>
-</form>
-
+                                    <select name="sort" onchange="this.form.submit()"
+                                        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest
+                                            First</option>
+                                        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest
+                                            First</option>
+                                    </select>
+                                </form>
                             </div>
                         </div>
 
                         <!-- Table -->
                         <div class="bg-white rounded-lg overflow-hidden">
-                            <table class="w-full">
-                                <thead class="bg-[#F9F8F8]">
-                                    <tr>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Academic
-                                            Year</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Added Date
-                                        </th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Updated Date
-                                        </th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    @if ($academic_years->isNotEmpty())
-                                        @foreach ($academic_years as $academic_year)
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-[#F9F8F8]">
+                                        <tr>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Academic
+                                                Year</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Added Date
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Updated
+                                                Date
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        @if ($academic_years->isNotEmpty())
+                                            @foreach ($academic_years as $academic_year)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $academic_year->academic_year }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ optional($academic_year->created_at)->format('M d, Y') ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ optional($academic_year->updated_at)->format('M d, Y') ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <button
+                                                            onclick="openEditModal('{{ $academic_year->academic_year_id }}', '{{ $academic_year->academic_year }}')"
+                                                            class="text-blue-600 hover:text-blue-700">
+                                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <path
+                                                                    d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                                <path d="m15 5 4 4" />
+                                                            </svg>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
                                             <tr class="hover:bg-gray-50">
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ $academic_year->academic_year }}
-                                                </td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ optional($academic_year->created_at)->format('M d, Y') ?? 'N/A' }}
-                                                </td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ optional($academic_year->updated_at)->format('M d, Y') ?? 'N/A' }}
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <button
-                                                        onclick="openEditModal('{{ $academic_year->academic_year_id }}', '{{ $academic_year->academic_year }}')"
-                                                        class="text-blue-600 hover:text-blue-700">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                                    No academic years found.
                                                 </td>
                                             </tr>
-                                        @endforeach
-                                    @else
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
-                                                No academic years found.
-                                            </td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Pagination -->
                         @if ($academic_years->isNotEmpty())
                             <div class="flex justify-end items-center gap-2 mt-6">
-                            {{ $academic_years->appends(request()->query())->links('pagination::tailwind') }}
+                                {{ $academic_years->appends(request()->query())->links('pagination::tailwind') }}
                             </div>
                         @endif
                     </div>
@@ -172,8 +176,8 @@
                                     <!-- Academic Year Input -->
                                     <div class="mb-4 relative">
                                         <label class="block text-sm font-medium mb-2">Academic Year :</label>
-                                        <input type="text" name="academic_year"
-                                            value="{{ old('academic_year') }}" placeholder="Enter academic year..."
+                                        <input type="text" name="academic_year" value="{{ old('academic_year') }}"
+                                            placeholder="Enter academic year..."
                                             class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
                                             focus:outline-none focus:ring-2 focus:ring-blue-500 @error('academic_year') border-red-500 @enderror">
 
@@ -237,9 +241,9 @@
 
                     <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Manage Intake & Closure Date</h1>
 
-                    <div class="max-w-7xl mx-auto">
+                    <div>
                         <!-- Intake -->
-                        <div class="max-w-7xl mx-auto bg-white rounded-xl shadow-lg p-8 mb-5">
+                        <div class="bg-white rounded-xl shadow-lg p-8 mb-5">
                             <h1 class="text-2xl md:text-xl font-bold text-gray-900 mb-8">Academic Year & Intake
                                 Management</h1>
 
@@ -350,8 +354,8 @@
                                 ({{ $intakes->count() }})</h1>
 
                             <!-- Search and Filters -->
-                            <div class="flex justify-between mb-8">
-                                <div class="relative w-[400px]">
+                            <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between mb-8">
+                                <div class="relative max-w-[400px]">
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -412,51 +416,56 @@
 
                             <!-- Table -->
                             <div class="bg-white rounded-lg overflow-hidden">
-                                <table class="w-full">
-                                    <thead class="bg-[#F9F8F8]">
-                                        <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Academic
-                                                Year</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Intake
-                                            </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                Submission
-                                                Closure Date</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Final
-                                                Closure Date</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
-                                            </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-100">
-                                        @if ($intakes->isNotEmpty())
-                                            @foreach ($intakes as $intake)
-                                                <tr class="hover:bg-gray-50">
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $intake->academicYear->academic_year }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $intake->intake }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $intake->closure_date ?? 'N/A' }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $intake->final_closure_date ?? 'N/A' }}
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        @if ($intake->status == 'active')
-                                                            <span
-                                                                class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
-                                                        @else
-                                                            <span
-                                                                class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        {{-- <button
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead class="bg-[#F9F8F8]">
+                                            <tr>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Academic
+                                                    Year</th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Intake
+                                                </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Submission
+                                                    Closure Date</th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Final
+                                                    Closure Date</th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Status
+                                                </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            @if ($intakes->isNotEmpty())
+                                                @foreach ($intakes as $intake)
+                                                    <tr class="hover:bg-gray-50">
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ $intake->academicYear->academic_year }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ $intake->intake }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ $intake->closure_date ?? 'N/A' }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ $intake->final_closure_date ?? 'N/A' }}
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            @if ($intake->status == 'active')
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
+                                                            @else
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
+                                                            @endif
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            {{-- <button
                                                             onclick="openEditModal('{{ $intake->intake_id }}', '{{ $intake->intake }}')"
                                                             class="text-blue-600 hover:text-blue-700">
                                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
@@ -468,18 +477,19 @@
                                                                 <path d="m15 5 4 4" />
                                                             </svg>
                                                         </button> --}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                                        No information found.
                                                     </td>
                                                 </tr>
-                                            @endforeach
-                                        @else
-                                            <tr class="hover:bg-gray-50">
-                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
-                                                    No information found.
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <!-- Pagination -->
