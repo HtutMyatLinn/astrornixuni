@@ -296,20 +296,24 @@
                                     <label class="block text-start font-bold text-gray-900">Academic Year</label>
                                     <select name="academic_year_select"
                                         class="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 text-gray-500 focus:ring-2 focus:ring-gray-200 @error('academic_year_select') border-red-500 @enderror">
-                                        <option value="">Select academic year . . .</option>
+                                        <option value=""
+                                            {{ old('academic_year_select') == '' ? 'selected' : '' }}>Select academic
+                                            year . . .</option>
                                         @if ($academic_years->isEmpty())
                                             <option disabled>No data found</option>
                                         @else
                                             @foreach ($academic_years as $academic_year)
-                                                <option value="{{ $academic_year->academic_year_id }}">
+                                                <option value="{{ $academic_year->academic_year_id }}"
+                                                    {{ old('academic_year_select') == $academic_year->academic_year_id ? 'selected' : '' }}>
                                                     {{ $academic_year->academic_year }}
                                                 </option>
                                             @endforeach
                                         @endif
                                     </select>
                                     @error('academic_year_select')
-                                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
-                                            {{ $message }}</p>
+                                        <p class="text-red-500 text-sm mt-1">
+                                            {{ $message }}
+                                        </p>
                                     @enderror
                                 </div>
 
