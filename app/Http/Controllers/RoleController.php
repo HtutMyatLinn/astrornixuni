@@ -31,11 +31,17 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::paginate(10);
-        return view('admin.role', compact('roles'));
+        $sort = $request->input('sort', 'desc'); // Default sort is 'desc'
+
+        $roles = Role::orderBy('created_at', $sort)
+            ->paginate(10)
+            ->appends(['sort' => $sort]); // Keep the sort on pagination
+
+        return view('admin.role', compact('roles', 'sort'));
     }
+
 
     /**
      * Show the form for creating a new resource.
