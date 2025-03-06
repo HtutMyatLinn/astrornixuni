@@ -186,7 +186,7 @@
                             <div class="mb-4 relative">
                                 <label class="block text-sm font-medium mb-2">Faculty :</label>
                                 <input type="text" name="faculty" value="{{ old('faculty') }}"
-                                    placeholder="Enter contribution category..."
+                                    placeholder="Enter faculty..."
                                     class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('faculty') border-red-500 @enderror">
 
@@ -200,7 +200,7 @@
                             <div class="mb-4 relative">
                                 <label class="block text-sm font-medium mb-2">Contact Number :</label>
                                 <input type="tel" pattern="[0-9]{11}" name="contact_number"
-                                    value="{{ old('contact_number') }}" placeholder="Enter contribution category..."
+                                    value="{{ old('contact_number') }}" placeholder="Enter contact number..."
                                     class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg
                 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('contact_number') border-red-500 @enderror">
 
