@@ -34,14 +34,14 @@
             <!-- here to add content -->
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
-                <div class="max-w-7xl mx-auto space-y-4 mb-4">
+                <div class="space-y-4 mb-4">
                     <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">System Notifications & Alerts</h1>
                     <h2 class="text-sm sm:text-lg text-gray-500">Summary of Alerts</h2>
-                    <div class="max-w-7xl mx-auto">
+                    <div>
                         <!-- Stats Grid -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-10">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                             <!-- Total Students Card -->
-                            <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                            <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                                 <!-- Avatar Circle -->
                                 <div
                                     class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <!-- Total submissions Card -->
-                            <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                            <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                                 <!-- Avatar Circle -->
                                 <div
                                     class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
@@ -87,7 +87,7 @@
                             </div>
                             <!-- Total Pending Contributions Card -->
                             <div
-                                class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] col-span-0 sm:col-span-2 lg:col-span-1 p-6 w-full">
+                                class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] col-span-0 sm:col-span-2 lg:col-span-1 p-6 w-full">
                                 <!-- Avatar Circle -->
                                 <div
                                     class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
