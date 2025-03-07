@@ -43,16 +43,6 @@ class HomeController extends Controller
         return view('admin.notificationspassword');
     }
 
-    public function administratorNotificationsInquiry()
-    {
-        return view('admin.notificationsinquiry');
-    }
-
-    public function administratorInquiry()
-    {
-        return view('admin.inquirymanagement');
-    }
-
     public function administratorEditUserData($id)
     {
         $user = User::findOrFail($id);

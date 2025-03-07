@@ -138,168 +138,121 @@
                             </div>
 
 
-                            <!-- Search and Filters -->
-                            <div class="flex justify-between mb-8">
-                                <div class="relative w-[400px]">
-                                    <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <circle cx="11" cy="11" r="8" />
-                                        <path d="m21 21-4.3-4.3" />
-                                    </svg>
-                                    <input type="text" placeholder="Search..."
-                                        class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-                                </div>
-
-                                <div class="flex gap-4">
-                                    <!-- Filter Dropdown -->
-                                    <div class="relative group">
-                                        <button
-                                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                            Filter By
-                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m6 9 6 6 6-6" />
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                            <div class="p-2">
-                                                <div class="relative group/faculty">
-                                                    <button
-                                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
-                                                        <span>Faculty</span>
-                                                        <svg class="h-4 w-4 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                            fill="none" stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="m9 18 6-6-6-6" />
-                                                        </svg>
-                                                    </button>
-                                                    <div
-                                                        class="absolute left-full top-0 ml-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover/faculty:opacity-100 group-hover/faculty:visible transition-all duration-200">
-                                                        <div class="p-2">
-                                                            <button
-                                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Science</button>
-                                                            <button
-                                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">IT</button>
-                                                            <button
-                                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Psychology</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <form method="GET" action="{{ route('admin.notifications.inquiry') }}">
+                                <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                                    <!-- Search Input -->
+                                    <div class="relative max-w-[400px]">
+                                        <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.3-4.3" />
+                                        </svg>
+                                        <input type="text" name="search" value="{{ request('search') }}"
+                                            placeholder="Search..."
+                                            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                                     </div>
 
-                                    <!-- Sort Dropdown -->
-                                    <div class="relative group">
-                                        <button
-                                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                            Sort By
-                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m6 9 6 6 6-6" />
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                            <div class="p-2">
-                                                <button
-                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Ascending</button>
-                                                <button
-                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Descending</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!-- Sort Option -->
+                                    <select name="sort" onchange="this.form.submit()"
+                                        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>
+                                            Newest
+                                        </option>
+                                        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>
+                                            Oldest
+                                        </option>
+                                    </select>
                                 </div>
-                            </div>
+                            </form>
 
                             <!-- Table -->
                             <div class="bg-white rounded-lg overflow-hidden">
-                                <table class="w-full">
-                                    <thead class="bg-[#F9F8F8]">
-                                        <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                Notification Type</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Message
-                                            </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
-                                            </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date &
-                                                Time</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-100">
-                                        <!-- Row 1 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 text-gray-600">Inquiry</td>
-                                            <td class="px-6 py-4 text-gray-600">Science</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Read</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">12/2/25</td>
-                                            <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                <a href="mailto:mary123@gmail.com"
-                                                    class="hover:underline">Response</a>
-                                            </td>
-                                        </tr>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead class="bg-[#F9F8F8]">
+                                            <tr>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    User</th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Message
+                                                </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date
+                                                    &
+                                                    Time</th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Status
+                                                </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            @if ($inquiries->isNotEmpty())
+                                                @foreach ($inquiries as $inquiry)
+                                                    <tr class="hover:bg-gray-50">
+                                                        <td class="px-6 py-4">
+                                                            <div class="flex items-center gap-3">
+                                                                <p
+                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                    {{ strtoupper($inquiry->user->username[0]) }}
+                                                                </p>
+                                                                <div>
+                                                                    <div class="font-medium">
+                                                                        {{ $inquiry->user->first_name . ' ' . $inquiry->user->last_name }}
+                                                                    </div>
+                                                                    <div class="text-sm text-gray-500">
+                                                                        {{ $inquiry->user->email }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ $inquiry->inquiry }}
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-600">
+                                                            {{ optional($inquiry->created_at)->format('M d, Y') ?? 'N/A' }}
+                                                            <span
+                                                                class="text-gray-400">{{ optional($inquiry->created_at)->format('h:i A') }}</span>
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            @if ($inquiry->inquiry_status == 'Pending')
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Pending</span>
+                                                            @else
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Resolve</span>
+                                                            @endif
+                                                        </td>
+                                                        <td class="px-6 py-4 text-[#2F64AA] font-light">
+                                                            <a href="mailto:mary123@gmail.com"
+                                                                class="hover:underline">Response</a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-24 text-gray-600 text-center" colspan="5">
+                                                        No inquiries found.
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
 
-                                        <!-- Row 2 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 text-gray-600">Inquiry</td>
-                                            <td class="px-6 py-4 text-gray-600">Science</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Read</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">12/2/25</td>
-                                            <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                <a href="mailto:mary123@gmail.com"
-                                                    class="hover:underline">Response</a>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 3 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 text-gray-600">Inquiry</td>
-                                            <td class="px-6 py-4 text-gray-600">Science</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Read</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">12/2/25</td>
-                                            <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                <a href="mailto:mary123@gmail.com"
-                                                    class="hover:underline">Response</a>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Add more rows as needed -->
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Pagination -->
-                            <div class="flex justify-end items-center gap-2 mt-6">
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">1</button>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">2</button>
-                                <span class="text-gray-600">...</span>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">Next</button>
+                                    <!-- Pagination -->
+                                    @if ($inquiries->isNotEmpty())
+                                        <div class="flex justify-end items-center gap-2 mt-6">
+                                            {{ $inquiries->appends(request()->query())->links('pagination::tailwind') }}
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-
-
                     </div>
+                </div>
             </main>
         </div>
     </div>
