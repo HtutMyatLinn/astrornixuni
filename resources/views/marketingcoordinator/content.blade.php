@@ -1,12 +1,21 @@
 <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
-    <div class="max-w-7xl mx-auto space-y-4 mb-4">
-        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-            Welcome Back, {{ Auth::user()->username }}
-        </h1>
-        <h2 class="text-sm sm:text-lg text-gray-500">
-            Here, it is what happening in your university today
-        </h2>
+    <div class="space-y-4 mb-4">
+        @if (Auth::user()->login_count === 1)
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+                Welcome, {{ Auth::user()->username }}
+            </h1>
+            <h2 class="text-sm sm:text-lg text-gray-500">
+                Here is what's happening in your university today.
+            </h2>
+        @else
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+                Welcome Back, {{ Auth::user()->username }}!
+            </h1>
+            <h2 class="text-sm sm:text-lg text-gray-500">
+                Here is what's new in your university today.
+            </h2>
+        @endif
     </div>
 
     <div class="max-w-7xl mx-auto">
