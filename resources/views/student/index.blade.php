@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex flex-col sm:flex-row justify-center items-center gap-6 px-6 bg-gray-100 rounded-lg shadow-md">
         <!-- Title Section -->
-        <div class="text-left text-xl font-semibold bg-blue-900 text-white p-4 pr-6">
+        <div class="text-left text-xl font-semibold bg-[#283B63] text-white p-4 pr-6">
             <p>17th</p>
             <p>Best</p>
             <p>Articles</p>
@@ -30,7 +30,8 @@
 
         <!-- View Button -->
         <div class="flex items-center px-6 py-3">
-            <a href="#" class="font-semibold underline underline-offset-4 transition duration-300">
+            <a href="{{ route('contributions') }}"
+                class="font-semibold underline underline-offset-4 transition duration-300">
                 View
             </a>
             <i class="ri-arrow-right-long-line"></i>
@@ -42,6 +43,10 @@
     <script>
         var swiper = new Swiper(".mySwiper", {
             loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
             pagination: {
                 el: ".swiper-pagination",
                 clickable: true,
@@ -57,8 +62,8 @@
         {{-- Hero --}}
         <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 py-10 px-3">
             <div class="text-5xl font-light pb-5 sm:pb-0">
-                <p>Lorem</p>
-                <p>ipsum dolo</p>
+                <p>Empowering</p>
+                <p>Minds, Inspiring Futures</p>
             </div>
             <div class="text-2xl leading-relaxed text-gray-800">
                 <p>Our university fosters a dynamic learning environment where creativity, critical thinking, and
@@ -76,7 +81,7 @@
                     Top
                     Contributions
                 </h2>
-                <div class="grid grid-cols-2 md:grid-cols-2 py-24">
+                <div class="grid grid-cols-1 md:grid-cols-2 py-24">
                     <!-- Large Image -->
                     <div class="relative col-span-1">
                         <img src="{{ asset('images/809812e35ca241ddeca6bd1f191e857e.jfif') }}"
@@ -125,9 +130,9 @@
 
         {{-- Magazine --}}
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 pt-8 py-14 flex flex-col gap-3">
-            <div class="uppercase text-red-700 mb-5 sm:mb-16">
+            <div class="uppercase mb-5 sm:mb-16">
                 <h1 class="text-2xl font-bold">The Magazine</h1>
-                <p class="text-red-600">Contribution</p>
+                <p class="text-gary-600">Contribution</p>
             </div>
 
             <div>
@@ -174,7 +179,8 @@
                     </a>
                 </div>
             </div>
-            <a href="" class="text-red-600 underline underline-offset-2 mt-1">Read all Contributions</a>
+            <a href="{{ route('contributions') }}" class="text-blue-600 underline underline-offset-2 mt-1">Read all
+                Contributions</a>
         </div>
     </div>
 </x-app-layout>
