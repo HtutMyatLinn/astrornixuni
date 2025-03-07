@@ -14,12 +14,13 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UnassignedUserController;
 use App\Http\Middleware\MarketingCoordinatorMiddleware;
+use App\Http\Middleware\TrackBrowser;
 use Illuminate\Support\Facades\Route;
 
 // Primary route
 Route::get('/', function () {
     return view('home');
-})->name('/');
+})->name('/')->middleware(TrackBrowser::class);
 
 // Contribution route
 Route::get('/contributions', function () {
@@ -57,7 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin dashboard.
     Route::middleware('admin')->group(function () {
-        Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin');
+        Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin')->middleware(TrackBrowser::class);
         Route::get('/admin/account-setting', [HomeController::class, 'adminAccountSetting'])->name('admin.account-setting');
         Route::get('/data-management/contribution-category', [HomeController::class, 'contributionCategory'])->name('data-management.contribution-category');
         Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
@@ -112,12 +113,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Marketing Manager dashboard.
     Route::middleware('marketingmanager')->group(function () {
-        Route::get('/marketingmanager/dashboard', [HomeController::class, 'marketingmanager'])->name('marketingmanager.dashboard');
+        Route::get('/marketingmanager/dashboard', [HomeController::class, 'marketingmanager'])->name('marketingmanager.dashboard')->middleware(TrackBrowser::class);
     });
 
     // Marketing Coordinator dashboard.
     Route::middleware('marketingcoordinator')->group(function () {
-        Route::get('/marketingcoordinator/dashboard', [HomeController::class, 'marketingcoordinator'])->name('marketingcoordinator.dashboard');
+        Route::get('/marketingcoordinator/dashboard', [HomeController::class, 'marketingcoordinator'])->name('marketingcoordinator.dashboard')->middleware(TrackBrowser::class);
 
         Route::get('/marketingcoordinator/account-setting', [HomeController::class, 'marketingcoordinatorAccountSetting'])->name('marketingcoordinator.account-setting');
 
@@ -134,7 +135,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Student dashboard.
     Route::middleware('student')->group(function () {
-        Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard');
+        Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard')->middleware(TrackBrowser::class);
         Route::get('/student/upload_contribution', function () {
             return view('upload_contribution');
         })->name('student.upload_contribution');
