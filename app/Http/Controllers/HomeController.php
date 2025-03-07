@@ -76,6 +76,34 @@ class HomeController extends Controller
     {
         return view('marketingmanager.index');
     }
+
+    public function marketingmanagerPublishedContribution()
+    {
+        return view('marketingmanager.publishedcontribution');
+    }
+
+    public function marketingmanagerPublishedContributionViewDetail()
+    {
+        return view('marketingmanager.publishedcontributionviewdetail');
+    }
+
+
+
+    public function marketingmanagerDownloadContribution()
+    {
+        return view('marketingmanager.downloadcontribution');
+    }
+
+    public function marketingmanagerReport()
+    {
+        return view('marketingmanager.report');
+    }
+
+    public function marketingmanagerNotifation()
+    {
+        return view('marketingmanager.notifications');
+    }
+
     public function marketingcoordinator()
     {
         return view('marketingcoordinator.index');

@@ -113,6 +113,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Marketing Manager dashboard.
     Route::middleware('marketingmanager')->group(function () {
         Route::get('/marketingmanager/dashboard', [HomeController::class, 'marketingmanager'])->name('marketingmanager.dashboard');
+        Route::get('/marketingmanager/published-contribution', [HomeController::class, 'marketingmanagerPublishedContribution'])->name('marketingmanager.published-contribution');
+        Route::get('/marketingmanager/download-contribution', [HomeController::class, 'marketingmanagerDownloadContribution'])->name('marketingmanager.download-contribution');
+        Route::get('/marketingmanager/report', [HomeController::class, 'marketingmanagerReport'])->name('marketingmanager.report');
+        Route::get('/marketingmanager/notifications', [HomeController::class, 'marketingmanagerNotifation'])->name('marketingmanager.notifications');
+        Route::get('/marketingmanager/publishedcontributionviewdetail', [HomeController::class, 'marketingmanagerPublishedContributionViewDetail'])->name('marketingmanager.publishedcontributionviewdetail');
     });
 
     // Marketing Coordinator dashboard.
