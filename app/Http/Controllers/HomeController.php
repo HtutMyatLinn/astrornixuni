@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
+use App\Models\BrowserStat;
 use App\Models\Faculty;
 use App\Models\Role;
 use App\Models\User;
@@ -19,7 +20,12 @@ class HomeController extends Controller
             $query->where('role', 'Student');
         })->get();
 
-        return view('admin.index', compact('total_users', 'total_students'));
+        // Get browser data
+        $browserStats = BrowserStat::all();
+        $labels = $browserStats->pluck('browser_name');
+        $data = $browserStats->pluck('visit_count');
+
+        return view('admin.index', compact('total_users', 'total_students', 'labels', 'data'));
     }
 
     public function adminAccountSetting()
@@ -75,6 +81,32 @@ class HomeController extends Controller
     public function marketingmanager()
     {
         return view('marketingmanager.index');
+    }
+    public function marketingmanagerAccountSetting()
+    {
+        return view('marketingmanager.accountsetting');
+    }
+    public function marketingmanagerPublishedContribution()
+    {
+        return view('marketingmanager.publishedcontribution');
+    }
+    public function marketingmanagerPublishedContributionViewDetail()
+    {
+        return view('marketingmanager.publishedcontributionviewdetail');
+    }
+    public function marketingmanagerDownloadContribution()
+    {
+        return view('marketingmanager.downloadcontribution');
+    }
+
+    public function marketingmanagerReport()
+    {
+        return view('marketingmanager.report');
+    }
+
+    public function marketingmanagerNotifation()
+    {
+        return view('marketingmanager.notifications');
     }
     public function marketingcoordinator()
     {
