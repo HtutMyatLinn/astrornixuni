@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
 use App\Models\BrowserStat;
+use App\Models\Contribution;
 use App\Models\Faculty;
+use App\Models\Inquiry;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,6 +18,11 @@ class HomeController extends Controller
     {
         // Fetch users where role is not null, sorted by newest first, with pagination
         $total_users = User::all();
+        $inquiries = Inquiry::all();
+        $faculties = Faculty::all();
+        $contributions = Contribution::where('contribution_status', 'Upload')->paginate(10);
+        $rejected_contributions = Contribution::where('contribution_status', 'Reject')->paginate(10);
+        $published_contributions = Contribution::where('contribution_status', 'Publish')->paginate(10);
         $total_students = User::whereHas('role', function ($query) {
             $query->where('role', 'Student');
         })->get();
@@ -25,7 +32,7 @@ class HomeController extends Controller
         $labels = $browserStats->pluck('browser_name');
         $data = $browserStats->pluck('visit_count');
 
-        return view('admin.index', compact('total_users', 'total_students', 'labels', 'data'));
+        return view('admin.index', compact('total_users', 'total_students', 'labels', 'data', 'inquiries', 'faculties', 'contributions', 'rejected_contributions', 'published_contributions'));
     }
 
     public function adminAccountSetting()

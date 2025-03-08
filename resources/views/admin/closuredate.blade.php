@@ -39,16 +39,16 @@
                         <div
                             class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
                             <h1 class="text-2xl font-bold">List of Academic Years
-                                </h1>
+                            </h1>
 
                             <button onclick="openModal()"
-                                class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 select-none">
                                 Add Academic Year
                             </button>
                         </div>
                         <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                               Total - {{ $academic_years->count() }}
-                                </h2>
+                            Total - {{ $academic_years->count() }}
+                        </h2>
 
                         @if (session('success'))
                             <div id="success-message"
@@ -236,7 +236,7 @@
                                 <!-- Save Button -->
                                 <div class="flex justify-center">
                                     <button type="submit"
-                                        class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                                        class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 select-none">
                                         Update
                                     </button>
                                 </div>
@@ -327,7 +327,7 @@
 
                                 <div class="md:col-span-2 flex justify-end mt-4">
                                     <button type="submit"
-                                        class="px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
+                                        class="px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors select-none">
                                         Submit
                                     </button>
                                 </div>
@@ -356,10 +356,10 @@
                         <div class="p-8 bg-white shadow-lg">
                             <!-- Header -->
                             <h1 class="text-2xl font-bold mb-4">List of Overall Information
-                                </h1>
+                            </h1>
 
-                                <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                                   Total - {{ $intakes->count() }}</h2>
+                            <h2 class=" text-lg font-semibold text-gray-400 mb-4">
+                                Total - {{ $intakes->count() }}</h2>
 
                             <!-- Search and Filters -->
                             <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between mb-8">
@@ -372,35 +372,38 @@
                                         <path d="m21 21-4.3-4.3" />
                                     </svg>
                                     <form method="GET" action="{{ route('admin.intakes.search') }}">
-    <div class="relative w-full md:w-[300px] lg:w-[400px]">
-        <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-        </svg>
-        <input type="text" name="academic_year" value="{{ request('academic_year') }}"
-            placeholder="Search by Academic Year..."
-            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-    </div>
-</form>
+                                        <div class="relative w-full md:w-[300px] lg:w-[400px]">
+                                            <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="11" cy="11" r="8" />
+                                                <path d="m21 21-4.3-4.3" />
+                                            </svg>
+                                            <input type="text" name="academic_year"
+                                                value="{{ request('academic_year') }}"
+                                                placeholder="Search by Academic Year..."
+                                                class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                                        </div>
+                                    </form>
 
                                 </div>
 
                                 <div class="flex gap-4">
                                     <!-- Filter Dropdown -->
                                     <form method="GET" action="{{ route('academic-years.index') }}">
-    <select name="sort_final_closure_date" onchange="this.form.submit()"
-        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-        <option value="asc" {{ request('sort_final_closure_date') == 'asc' ? 'selected' : '' }}>
-            Earlier Final Closure Date
-        </option>
-        <option value="desc" {{ request('sort_final_closure_date') == 'desc' ? 'selected' : '' }}>
-            Later Final Closure Date
-        </option>
-    </select>
-</form>
+                                        <select name="sort_final_closure_date" onchange="this.form.submit()"
+                                            class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                            <option value="asc"
+                                                {{ request('sort_final_closure_date') == 'asc' ? 'selected' : '' }}>
+                                                Earlier Final Closure Date
+                                            </option>
+                                            <option value="desc"
+                                                {{ request('sort_final_closure_date') == 'desc' ? 'selected' : '' }}>
+                                                Later Final Closure Date
+                                            </option>
+                                        </select>
+                                    </form>
 
 
                                 </div>

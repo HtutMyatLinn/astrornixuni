@@ -39,10 +39,10 @@ class TrackBrowser
 
     private function getBrowser($userAgent)
     {
-        if (strpos($userAgent, 'MSIE') !== false) {
+        if (strpos($userAgent, 'MSIE') !== false || strpos($userAgent, 'Trident') !== false) {
             return 'Internet Explorer';
-        } elseif (strpos($userAgent, 'Trident') !== false) {
-            return 'Internet Explorer';
+        } elseif (strpos($userAgent, 'Edg') !== false) { // Microsoft Edge
+            return 'Microsoft Edge';
         } elseif (strpos($userAgent, 'Firefox') !== false) {
             return 'Mozilla Firefox';
         } elseif (strpos($userAgent, 'Chrome') !== false) {

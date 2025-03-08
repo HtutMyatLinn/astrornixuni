@@ -105,7 +105,13 @@
                 Settings
             </h2>
             <div class="space-y-1">
-
+                <a href="{{ route('admin.inquiry') }}"
+                    class="flex items-center px-4 py-4 text-sm rounded-lg
+                      {{ request()->routeIs('admin.inquiry') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
+                      hover:bg-gray-700 transition-colors duration-200">
+                    <img class="w-4 h-4 mr-3" src="{{ asset('images/inquiry.png') }}" alt="">
+                    Reports
+                </a>
 
                 <a href="{{ route('academic-years.index') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
@@ -113,16 +119,6 @@
                           hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3" src="{{ asset('images/closuredate.png') }}" alt="">
                     Closure Dates
-                </a>
-
-
-
-                <a href="{{ route('admin.inquiry') }}"
-                    class="flex items-center px-4 py-4 text-sm rounded-lg
-                          {{ request()->routeIs('admin.inquiry') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
-                          hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/inquiry.png') }}" alt="">
-                    Inquiry Management
                 </a>
             </div>
         </div>

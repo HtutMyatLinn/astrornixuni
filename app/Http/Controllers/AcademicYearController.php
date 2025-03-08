@@ -41,7 +41,9 @@ class AcademicYearController extends Controller
         // Find intakes that belong to the searched academic year
         $intakes = Intake::whereHas('academicYear', function ($query) use ($academicYearSearch) {
             $query->where('academic_year', 'LIKE', "%{$academicYearSearch}%");
-        })->paginate(10);
+        })
+            ->orWhere('intake', 'LIKE', "%{$academicYearSearch}%")
+            ->paginate(10);
 
         $academic_years = AcademicYear::paginate(10); // Keep academic years loaded
 

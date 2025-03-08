@@ -12,6 +12,7 @@ class InquiryController extends Controller
     {
         $sort = $request->input('sort', 'desc'); // Get the sort parameter from the request
         $search = $request->input('search'); // Get the search parameter from the request
+        $filter = $request->input('filter'); // Get the filter parameter from the request
 
         // Base query
         $inquiries = Inquiry::query();
@@ -30,6 +31,15 @@ class InquiryController extends Controller
             });
         }
 
+        // Apply filter if filter is provided
+        if ($filter) {
+            if ($filter === 'Pending') {
+                $inquiries->where('inquiry_status', 'Pending');
+            } elseif ($filter === 'Resolved') {
+                $inquiries->where('inquiry_status', 'Resolved');
+            }
+        }
+
         // Apply sorting
         $inquiries->orderBy('created_at', $sort);
 
@@ -37,9 +47,10 @@ class InquiryController extends Controller
         $inquiries = $inquiries->paginate(10)->appends([
             'sort' => $sort,
             'search' => $search, // Keep the search parameter in pagination links
+            'filter' => $filter, // Keep the filter parameter in pagination links
         ]);
 
-        return view('admin.notificationsinquiry', compact('inquiries', 'sort', 'search'));
+        return view('admin.notificationsinquiry', compact('inquiries', 'sort', 'search', 'filter'));
     }
 
     //Store inquiry from user

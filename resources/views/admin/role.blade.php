@@ -33,7 +33,10 @@
             @include('admin.header')
 
             <div class="p-8 bg-white m-5 shadow-lg">
-                <h1 class="text-2xl font-bold mb-6">List of Roles ({{ $roles->count() }})</h1>
+                <h1 class="text-2xl font-bold mb-6">List of Roles</h1>
+                <h2 class=" text-lg font-semibold text-gray-400 mb-4">
+                    Total - {{ $roles->count() }}
+                </h2>
 
                 <!-- Tabs -->
                 <div class="flex gap-8 border-b">
@@ -53,7 +56,7 @@
                 {{-- Add Role Button --}}
                 <div class="flex justify-end my-4">
                     <button onclick="openModal()"
-                        class="px-12 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        class="px-12 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 select-none">
                         Add Role
                     </button>
                 </div>
@@ -212,7 +215,7 @@
                             <!-- Save Button -->
                             <div class="flex justify-center">
                                 <button type="submit"
-                                    class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                                    class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 select-none">
                                     Save
                                 </button>
                             </div>
@@ -264,7 +267,7 @@
                         <!-- Save Button -->
                         <div class="flex justify-center">
                             <button type="submit"
-                                class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                                class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 select-none">
                                 Update
                             </button>
                         </div>
