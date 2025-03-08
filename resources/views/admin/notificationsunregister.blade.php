@@ -116,6 +116,9 @@
                         <div class="p-8 bg-white  shadow-lg">
                             <!-- Header -->
                             <h1 class="text-2xl font-bold mb-6">List of Notifications</h1>
+                            <h2 class=" text-lg font-semibold text-gray-400 mb-4">
+                                Total - {{ $users->count() }}
+                            </h2>
 
                             <!-- Tabs -->
                             <div class="flex gap-8 border-b mb-6">

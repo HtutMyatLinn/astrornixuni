@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Load Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css"
+        integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite('resources/css/app.css')
@@ -116,6 +119,9 @@
                         <div class="p-8 bg-white  shadow-lg">
                             <!-- Header -->
                             <h1 class="text-2xl font-bold mb-6">List of Notifications</h1>
+                            <h2 class=" text-lg font-semibold text-gray-400 mb-4">
+                                Total - {{ $inquiries->count() }}
+                            </h2>
 
                             <!-- Tabs -->
                             <div class="flex gap-8 border-b mb-6">
@@ -154,16 +160,32 @@
                                             class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                                     </div>
 
-                                    <!-- Sort Option -->
-                                    <select name="sort" onchange="this.form.submit()"
-                                        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>
-                                            Newest
-                                        </option>
-                                        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>
-                                            Oldest
-                                        </option>
-                                    </select>
+                                    <div class="flex flex-wrap gap-4">
+                                        <!-- Filter Option -->
+                                        <select name="filter" onchange="this.form.submit()"
+                                            class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                            <option value="">All</option>
+                                            <option value="Pending"
+                                                {{ request('filter') == 'Pending' ? 'selected' : '' }}>
+                                                Pending
+                                            </option>
+                                            <option value="Resolved"
+                                                {{ request('filter') == 'Resolved' ? 'selected' : '' }}>
+                                                Resolved
+                                            </option>
+                                        </select>
+
+                                        <!-- Sort Option -->
+                                        <select name="sort" onchange="this.form.submit()"
+                                            class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                            <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>
+                                                Newest
+                                            </option>
+                                            <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>
+                                                Oldest
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                             </form>
 
@@ -210,7 +232,7 @@
                                                             </div>
                                                         </td>
                                                         <td class="px-6 py-4 text-gray-600">
-                                                            {{ $inquiry->inquiry }}
+                                                            {{ Str::limit($inquiry->inquiry, 50, '...') }}
                                                         </td>
                                                         <td class="px-6 py-4 text-gray-600">
                                                             {{ optional($inquiry->created_at)->format('M d, Y') ?? 'N/A' }}
@@ -223,12 +245,15 @@
                                                                     class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Pending</span>
                                                             @else
                                                                 <span
-                                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Resolve</span>
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Resolved</span>
                                                             @endif
                                                         </td>
                                                         <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                            <a href="mailto:mary123@gmail.com"
-                                                                class="hover:underline">Response</a>
+                                                            <a href="#"
+                                                                onclick="openModal('{{ $inquiry->user->first_name }} {{ $inquiry->user->last_name }}', '{{ $inquiry->user->email }}', '{{ $inquiry->priority_level }}', '{{ $inquiry->inquiry }}', '{{ $inquiry->created_at->format('M d, Y h:i A') }}', '{{ $inquiry->inquiry_status }}')"
+                                                                class="hover:underline">
+                                                                <i class="ri-eye-line text-xl"></i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -250,6 +275,118 @@
                                     @endif
                                 </div>
                             </div>
+
+                            <!-- Dark Overlay for Inquiry Modal -->
+                            <div id="darkOverlay"
+                                class="fixed inset-0 z-40 bg-black bg-opacity-50 opacity-0 invisible transition-opacity duration-300">
+                            </div>
+
+                            <!-- Inquiry Modal -->
+                            <div id="inquiryModal"
+                                class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
+                                <div class="max-w-xl w-full bg-white p-8 rounded-md shadow-lg relative">
+                                    <button onclick="closeInquiryModal()" class="absolute top-2 right-2 text-black">
+                                        ✖
+                                    </button>
+
+                                    <!-- Modal Title -->
+                                    <h1 class="text-2xl font-bold text-center mb-6">
+                                        Inquiry <span class="border-b-2 border-blue-600">Detail</span>
+                                    </h1>
+
+                                    <!-- Inquiry Details -->
+                                    <div class="space-y-4 max-h-[60vh]">
+                                        <div class="flex justify-between items-center">
+                                            <!-- Sender Name -->
+                                            <p class="text-sm text-gray-500">
+                                                <span class="text-gray-800 font-semibold text-base">Sender:</span>
+                                                <span id="modalUser" class="block mt-1 text-gray-800"></span>
+                                                <span id="modalEmail" class="block mt-1"></span>
+                                            </p>
+                                            <!-- Date & Time -->
+                                            <p class="text-sm text-gray-500">
+                                                <span class="text-gray-800 font-semibold text-base">Date & Time:</span>
+                                                <span id="modalDate" class="block mt-1"></span>
+                                            </p>
+                                        </div>
+
+                                        <!-- Priority Level -->
+                                        <p class="text-sm text-gray-500">
+                                            <span class="text-gray-800 font-semibold text-base">Priority Level:</span>
+                                            <span id="modalPriorityLevel" class="block mt-1"></span>
+                                        </p>
+
+                                        <!-- Status -->
+                                        <p class="text-sm text-gray-500">
+                                            <span class="text-gray-800 font-semibold text-base">Status:</span>
+                                            <span id="modalStatus" class="block mt-1"></span>
+                                        </p>
+
+                                        <!-- Message Content -->
+                                        <div class="text-sm text-gray-500">
+                                            <span class="text-gray-800 font-semibold text-base">Message Content:</span>
+                                            <textarea id="modalInquiry" cols="30" rows="10"
+                                                class="mt-1 max-h-40 w-full overflow-y-auto bg-gray-50 p-2 rounded-lg" disabled></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Response Button -->
+                                    <div class="flex justify-end mt-6">
+                                        <a id="responseButton" href="#"
+                                            class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 cursor-not-allowed">
+                                            Response
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                // Get references to the dark overlay and inquiry modal
+                                const darkOverlay = document.getElementById('darkOverlay');
+                                const inquiryModal = document.getElementById('inquiryModal');
+
+                                // Function to open the inquiry modal
+                                // Function to open the inquiry modal
+                                function openModal(user, email, priority_level, inquiry, date, status) {
+                                    // Populate modal content
+                                    document.getElementById('modalUser').textContent = user;
+                                    document.getElementById('modalEmail').textContent = email;
+                                    document.getElementById('modalPriorityLevel').textContent = priority_level;
+                                    document.getElementById('modalInquiry').textContent = inquiry;
+                                    document.getElementById('modalDate').textContent = date;
+                                    document.getElementById('modalStatus').textContent = status;
+
+                                    // Set the mailto link
+                                    const responseLink = document.getElementById('responseButton');
+                                    responseLink.href = `mailto:${email}`;
+
+                                    // Update the button based on inquiry status
+                                    if (status === 'Resolved') {
+                                        responseLink.textContent = 'Resolved';
+                                        responseLink.classList.add('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
+                                        responseLink.disabled = true;
+                                    } else {
+                                        responseLink.textContent = 'Response';
+                                        responseLink.classList.remove('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
+                                        responseLink.disabled = false;
+                                    }
+
+                                    // Show the dark overlay and modal
+                                    darkOverlay.classList.remove('opacity-0', 'invisible');
+                                    darkOverlay.classList.add('opacity-100');
+                                    inquiryModal.classList.remove('opacity-0', 'invisible', '-translate-y-5');
+                                    inquiryModal.classList.add('opacity-100', 'visible', 'translate-y-0');
+                                }
+
+                                // Function to close the inquiry modal
+                                function closeInquiryModal() {
+                                    // Hide the dark overlay and modal
+                                    darkOverlay.classList.add('opacity-0', 'invisible');
+                                    darkOverlay.classList.remove('opacity-100');
+                                    inquiryModal.classList.add('opacity-0', 'invisible', '-translate-y-5');
+                                    inquiryModal.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>

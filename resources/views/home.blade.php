@@ -12,14 +12,15 @@
             <div class="swiper mySwiper w-full h-full">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                        <img src="{{ asset('images/809812e35ca241ddeca6bd1f191e857e.jfif') }}" alt="Book Cover 1"
+                        <img src="{{ asset('images/history.jpeg') }}" alt="Book Cover 1"
                             class="w-full h-full object-cover">
                     </div>
                     <div class="swiper-slide">
-                        <img src="{{ asset('images/com.png') }}" alt="Book Cover 2" class="w-full h-full object-cover">
+                        <img src="{{ asset('images/magazine2.jpg') }}" alt="Book Cover 3"
+                            class="w-full h-full object-cover object-bottom">
                     </div>
                     <div class="swiper-slide">
-                        <img src="{{ asset('images/809812e35ca241ddeca6bd1f191e857e.jfif') }}" alt="Book Cover 3"
+                        <img src="{{ asset('images/collection-newspapers.webp') }}" alt="Book Cover 2"
                             class="w-full h-full object-cover">
                     </div>
                 </div>

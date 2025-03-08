@@ -35,7 +35,10 @@
             <!-- Main Content Container -->
             <div class="p-8 bg-white m-5 shadow-lg">
                 <!-- Header -->
-                <h1 class="text-2xl font-bold mb-6">List of Users ({{ $marketing_managers->count() }})</h1>
+                <h1 class="text-2xl font-bold mb-6">List of Users</h1>
+                <h2 class=" text-lg font-semibold text-gray-400 mb-4">
+                    Total - {{ $marketing_managers->count() }}
+                </h2>
 
                 <!-- Tabs -->
                 <div class="flex gap-8 border-b mb-6">
