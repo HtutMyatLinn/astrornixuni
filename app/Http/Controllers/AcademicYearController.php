@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 
 class AcademicYearController extends Controller
 {
+
+
     // Search functionality
     public function search(Request $request)
     {
@@ -29,32 +31,47 @@ class AcademicYearController extends Controller
     // Search functionality for intake
     public function intake_search(Request $request)
     {
-        $intake_search = $request->input('intake_search');
+        $academicYearSearch = $request->input('academic_year');
 
-        if (!$intake_search) {
+        // If no search query, return all records
+        if (!$academicYearSearch) {
             return redirect()->route('academic-years.index');
         }
 
-        $intakes = AcademicYear::where('academic_year', 'LIKE', "%{$intake_search}%")->paginate(10);
-        $intakes = Intake::paginate(10);
+        // Find intakes that belong to the searched academic year
+        $intakes = Intake::whereHas('academicYear', function ($query) use ($academicYearSearch) {
+            $query->where('academic_year', 'LIKE', "%{$academicYearSearch}%");
+        })->paginate(10);
 
-        return view('admin.closuredate', compact('intakes', 'intake_search'));
+        $academic_years = AcademicYear::paginate(10); // Keep academic years loaded
+
+        return view('admin.closuredate', compact('intakes', 'academic_years', 'academicYearSearch'));
     }
+
 
     /**
      * Display a listing of the resource.
-     */ public function index(Request $request)
-    {
-        $sort = $request->input('sort', 'desc'); // Default to 'desc'
+     */
 
+    public function index(Request $request)
+    {
+        $sort = $request->input('sort', 'desc'); // Sorting for academic years
+        $sortFinalClosureDate = $request->input('sort_final_closure_date', 'desc'); // Sorting for final closure date
+
+        // Sorting academic years by created_at
         $academic_years = AcademicYear::orderBy('created_at', $sort)
             ->paginate(10)
-            ->appends(['sort' => $sort]); // Keep the sort on pagination
+            ->appends(['sort' => $sort]); // Keep sorting on pagination
 
-        $intakes = Intake::paginate(10);
+        // Sorting intakes by final_closure_date
+        $intakes = Intake::orderBy('final_closure_date', $sortFinalClosureDate)
+            ->paginate(10)
+            ->appends(['sort_final_closure_date' => $sortFinalClosureDate]); // Keep sorting on pagination
 
-        return view('admin.closuredate', compact('academic_years', 'intakes', 'sort'));
+        return view('admin.closuredate', compact('academic_years', 'intakes', 'sort', 'sortFinalClosureDate'));
     }
+
+
 
 
     /**

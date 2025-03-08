@@ -37,13 +37,18 @@
                     <div class="p-8 bg-white  shadow-lg">
                         <!-- Header -->
                         <div
-                            class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-6">
-                            <h1 class="text-2xl font-bold">List of Academic Years ({{ $academic_years->count() }})</h1>
+                            class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mb-4">
+                            <h1 class="text-2xl font-bold">List of Academic Years
+                                </h1>
+
                             <button onclick="openModal()"
                                 class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                                 Add Academic Year
                             </button>
                         </div>
+                        <h2 class=" text-lg font-semibold text-gray-400 mb-4">
+                               Total - {{ $academic_years->count() }}
+                                </h2>
 
                         @if (session('success'))
                             <div id="success-message"
@@ -239,11 +244,11 @@
                         </div>
                     </div>
 
-                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Manage Intake & Closure Date</h1>
+                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900 py-4">Manage Intake & Closure Date</h1>
 
                     <div>
                         <!-- Intake -->
-                        <div class="bg-white rounded-xl shadow-lg p-8 mb-5">
+                        <div class="bg-white rounded-xl shadow-lg p-8 mb-10">
                             <h1 class="text-2xl md:text-xl font-bold text-gray-900 mb-8">Academic Year & Intake
                                 Management</h1>
 
@@ -350,8 +355,11 @@
                         </div>
                         <div class="p-8 bg-white shadow-lg">
                             <!-- Header -->
-                            <h1 class="text-2xl font-bold mb-6">List of Overall Information
-                                ({{ $intakes->count() }})</h1>
+                            <h1 class="text-2xl font-bold mb-4">List of Overall Information
+                                </h1>
+
+                                <h2 class=" text-lg font-semibold text-gray-400 mb-4">
+                                   Total - {{ $intakes->count() }}</h2>
 
                             <!-- Search and Filters -->
                             <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between mb-8">
@@ -364,53 +372,37 @@
                                         <path d="m21 21-4.3-4.3" />
                                     </svg>
                                     <form method="GET" action="{{ route('admin.intakes.search') }}">
-                                        <input type="text" name="search" value="{{ request('search') }}"
-                                            placeholder="Search..."
-                                            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-                                    </form>
+    <div class="relative w-full md:w-[300px] lg:w-[400px]">
+        <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+        </svg>
+        <input type="text" name="academic_year" value="{{ request('academic_year') }}"
+            placeholder="Search by Academic Year..."
+            class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+    </div>
+</form>
+
                                 </div>
 
                                 <div class="flex gap-4">
                                     <!-- Filter Dropdown -->
-                                    <div class="relative group">
-                                        <button
-                                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                            Filter By
-                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m6 9 6 6 6-6" />
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                            <div class="p-2">
-                                                <div class="relative group/faculty">
-                                                    <button
-                                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
-                                                        <span>Faculty</span>
-                                                        <svg class="h-4 w-4 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                            fill="none" stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="m9 18 6-6-6-6" />
-                                                        </svg>
-                                                    </button>
-                                                    <div
-                                                        class="absolute left-full top-0 ml-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover/faculty:opacity-100 group-hover/faculty:visible transition-all duration-200">
-                                                        <div class="p-2">
-                                                            <button
-                                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Science</button>
-                                                            <button
-                                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">IT</button>
-                                                            <button
-                                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Psychology</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <form method="GET" action="{{ route('academic-years.index') }}">
+    <select name="sort_final_closure_date" onchange="this.form.submit()"
+        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+        <option value="asc" {{ request('sort_final_closure_date') == 'asc' ? 'selected' : '' }}>
+            Earlier Final Closure Date
+        </option>
+        <option value="desc" {{ request('sort_final_closure_date') == 'desc' ? 'selected' : '' }}>
+            Later Final Closure Date
+        </option>
+    </select>
+</form>
+
+
                                 </div>
                             </div>
 

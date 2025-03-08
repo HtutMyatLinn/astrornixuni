@@ -76,6 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Academic year and Intake routes
         Route::resource('admin/academic-years', AcademicYearController::class);
         Route::get('/academic-years/search', [AcademicYearController::class, 'search'])->name('admin.academic-years.search');
+        Route::get('/academic-years', [AcademicYearController::class, 'index'])->name('academic-years.index');
 
         //Intake routes
         Route::post('/admin/intakes', [AcademicYearController::class, 'intake_store'])->name('admin.intakes');
