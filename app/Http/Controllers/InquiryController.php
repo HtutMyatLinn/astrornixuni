@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InquiryRequest;
+use App\Models\Contribution;
 use App\Models\Inquiry;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class InquiryController extends Controller
@@ -16,6 +18,10 @@ class InquiryController extends Controller
 
         // Base query
         $inquiries = Inquiry::query();
+        $total_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->get();
+        $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
         // Apply search filter if search term is provided
         if ($search) {
@@ -50,7 +56,7 @@ class InquiryController extends Controller
             'filter' => $filter, // Keep the filter parameter in pagination links
         ]);
 
-        return view('admin.notificationsinquiry', compact('inquiries', 'sort', 'search', 'filter'));
+        return view('admin.notificationsinquiry', compact('inquiries', 'sort', 'search', 'filter', 'total_students', 'contributions'));
     }
 
     //Store inquiry from user

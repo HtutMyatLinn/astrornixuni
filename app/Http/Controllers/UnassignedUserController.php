@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contribution;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -33,12 +34,16 @@ class UnassignedUserController extends Controller
     public function index(Request $request)
     {
         $sort = $request->input('sort', 'desc'); // Default to 'desc' if no sort is selected
+        $total_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->get();
+        $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
         $users = User::whereNull('role_id')
             ->orderBy('created_at', $sort)
             ->paginate(10)
             ->appends(['sort' => $sort]); // Keep sort on pagination links
 
-        return view('admin.notificationsunregister', compact('users', 'sort'));
+        return view('admin.notificationsunregister', compact('users', 'sort', 'total_students', 'contributions'));
     }
 }

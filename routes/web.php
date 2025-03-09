@@ -59,7 +59,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin dashboard.
     Route::middleware('admin')->group(function () {
         Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin')->middleware(TrackBrowser::class);
+
+        // Account setting routes
         Route::get('/admin/account-setting', [HomeController::class, 'adminAccountSetting'])->name('admin.account-setting');
+        Route::post('/admin/update-account-setting/{id}', [HomeController::class, 'adminEditAccountSetting'])->name('admin.update-account-setting');
+
         Route::get('/data-management/contribution-category', [HomeController::class, 'contributionCategory'])->name('data-management.contribution-category');
         Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
         Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');
@@ -69,7 +73,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('admin.notifications.inquiry');
         Route::get('/admin/inquiry', [HomeController::class, 'administratorInquiry'])->name('admin.inquiry');
 
-        // Route::get('/admin/edit-user-data', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
         Route::get('/admin/edit-user-data/{id}', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
         Route::post('/admin/update-user-data/{id}', [HomeController::class, 'administratorUpdateUserData'])->name('admin.update-user-data');
 

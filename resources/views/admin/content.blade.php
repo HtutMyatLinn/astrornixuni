@@ -64,6 +64,19 @@
                     plugins: {
                         legend: {
                             position: 'top',
+                            align: 'start', // Align the legend to the start (left) of the container
+                            labels: {
+                                boxWidth: 20, // Adjust the width of the color box
+                                padding: 10, // Adjust the padding between legend items
+                                usePointStyle: true, // Use point style for a cleaner look
+                            },
+                            display: true,
+                            layout: {
+                                padding: {
+                                    top: 10,
+                                    bottom: 10
+                                }
+                            }
                         }
                     }
                 }

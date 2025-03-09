@@ -44,7 +44,7 @@
 
         <!-- Dropdown Items -->
         <div x-show="open" x-transition class="mt-2 bg-[#1C2A3A] shadow-lg rounded-md overflow-hidden">
-            <a href="#"
+            <a href="{{ route('marketingcoordinator.account-setting') }}"
                 class="flex items-center px-4 py-3 text-sm text-[#D4D4D4] hover:bg-gray-700 transition-colors">
                 <img class="h-4 w-4 mr-3" src="{{ asset('images/editprofile.png') }}" alt="">
                 Edit Profile
