@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditAccountSettingRequest;
 use App\Http\Requests\UserEditRequest;
 use App\Models\BrowserStat;
 use App\Models\Contribution;
@@ -40,6 +41,20 @@ class HomeController extends Controller
         return view('admin.accountsetting');
     }
 
+    public function adminEditAccountSetting(EditAccountSettingRequest $request, string $id)
+    {
+        $user = User::find($id);
+
+        // Update user data
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->username = $request->username;
+        $user->save();
+
+        // Redirect to roles index page with a success message
+        return redirect()->back()->with('success', 'Your account updated successfully.');
+    }
+
     public function administratorNotifications()
     {
         return view('admin.notifications');
@@ -47,7 +62,12 @@ class HomeController extends Controller
 
     public function administratorNotificationsPassword()
     {
-        return view('admin.notificationspassword');
+        $total_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->get();
+        $contributions = Contribution::where('contribution_status', 'Upload')->get();
+
+        return view('admin.notificationspassword', compact('total_students', 'contributions'));
     }
 
     public function administratorEditUserData($id)

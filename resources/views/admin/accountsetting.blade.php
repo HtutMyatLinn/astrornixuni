@@ -52,16 +52,29 @@
 
             <!-- account setting -->
             <div class="container mx-auto p-4">
-                <div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <form action="{{ route('admin.update-account-setting', Auth::user()->user_id) }}" method="POST"
+                    enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                    @csrf
+
                     <h2 class="text-2xl font-medium mb-6">My Account</h2>
 
                     <div class="flex flex-col md:flex-row items-start gap-5 mb-8">
                         @if (Auth::check())
-                            <p
-                                class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
-                                {{ strtoupper(Auth::user()->username[0]) }}
-                            </p>
+                            @if (Auth::user()->profile_image)
+                                <!-- Check if profile_image exists -->
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden">
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Profile Image"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            @else
+                                <!-- Fallback to initials if profile_image is null -->
+                                <p
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
+                                    {{ strtoupper(Auth::user()->username[0]) }}
+                                </p>
+                            @endif
                         @else
+                            <!-- Guest user -->
                             <div class="w-24 h-24 select-none">
                                 <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
                                     class="w-full h-full rounded-full object-cover">
@@ -71,49 +84,83 @@
                             <h3 class="text-xl font-medium">{{ Auth::user()->username }}</h3>
                             <p class="text-gray-600">{{ Auth::user()->role->role }}</p>
                         </div>
+                        @if (Auth::user()->status == 1)
+                            <span class="px-10 py-1 rounded-lg bg-[#CAF4E0] text-green-800">Active</span>
+                        @else
+                            <span class="px-10 py-1 rounded-lg bg-[#FAAFBD] text-red-800">Inactive</span>
+                        @endif
                     </div>
 
+                    {{-- Message --}}
+                    @if (session('success'))
+                        <div id="success-message"
+                            class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                            role="alert">
+                            <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
+
+                        <script>
+                            setTimeout(() => {
+                                document.getElementById('success-message').style.display = 'none';
+                            }, 3000);
+                        </script>
+                    @endif
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
+                        <div class="relative">
                             <label for="firstName" class="block mb-2 font-medium">First Name</label>
-                            <input type="text" id="firstName"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                            <input type="text" id="firstName" name="first_name"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('first_name') border-red-500 @enderror"
                                 value="{{ Auth::user()->first_name }}">
+                            <div class="absolute left-2 -bottom-2 bg-white">
+                                @error('first_name')
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
-                        <div>
+                        <div class="relative">
                             <label for="lastName" class="block mb-2 font-medium">Last Name</label>
-                            <input type="text" id="lastName"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                            <input type="text" id="lastName" name="last_name"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('last_name') border-red-500 @enderror"
                                 value="{{ Auth::user()->last_name }}">
+                            <div class="absolute left-2 -bottom-2 bg-white">
+                                @error('last_name')
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
-                        <div>
+                        <div class="relative">
                             <label for="userName" class="block mb-2 font-medium">User Name</label>
-                            <input type="text" id="userName"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                            <input type="text" id="userName" name="username"
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('username') border-red-500 @enderror"
                                 value="{{ Auth::user()->username }}">
+                            <div class="absolute left-2 -bottom-2 bg-white">
+                                @error('username')
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
                         <div>
                             <label for="role" class="block mb-2 font-medium">Role</label>
                             <input type="text" id="role"
                                 class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="{{ Auth::user()->role->role }}">
+                                value="{{ Auth::user()->role->role }}" disabled>
                         </div>
 
                         <div>
                             <label for="faculty" class="block mb-2 font-medium">Faculty</label>
-                            <input type="text" id="faculty"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="{{ optional(Auth::user()->faculty)->faculty }}">
-                        </div>
-
-                        <div>
-                            <label for="status" class="block mb-2 font-medium">Status</label>
-                            <input type="text" id="status"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="{{ Auth::user()->status }}">
+                            @if (optional(Auth::user()->faculty)->faculty)
+                                <input type="text" id="faculty"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                    value="{{ Auth::user()->faculty->faculty }}" disabled>
+                            @else
+                                <input type="text" id="faculty"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                    value="No faculty assigned" disabled>
+                            @endif
                         </div>
 
                         <div>
@@ -126,17 +173,19 @@
                         <div>
                             <label for="password" class="block mb-2 font-medium">Password</label>
                             <input type="password" id="password"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="{{ Auth::user()->password }}" disabled>
-                            <button id="changePasswordBtn" class="text-[#4353E1] mt-2 border-b border-[#4353E1]">Change
+                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50" value="**********"
+                                disabled>
+                            <button id="changePasswordBtn"
+                                class="text-[#4353E1] mt-2 border-b border-[#4353E1]">Change
                                 Your Password ?</button>
                         </div>
                     </div>
 
                     <div class="mt-8 flex justify-end">
-                        <button class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-8 rounded-md">Save</button>
+                        <button type="submit"
+                            class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-8 rounded-md">Save</button>
                     </div>
-                </div>
+                </form>
             </div>
 
             <!-- Password Change Modal -->
@@ -148,7 +197,8 @@
                         </span> Your Password
                     </h2>
 
-                    <div class="space-y-6">
+                    <form action="" method="post" class="space-y-6">
+                        @csrf
                         <div>
                             <label for="oldPassword" class="block mb-2 font-medium">Old Password</label>
                             <input type="password" id="oldPassword" placeholder="Enter Current Password"
@@ -171,7 +221,7 @@
                             <button id="savePasswordBtn"
                                 class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-8 rounded-md">Save</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

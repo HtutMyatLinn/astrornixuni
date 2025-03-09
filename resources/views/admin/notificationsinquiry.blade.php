@@ -55,7 +55,7 @@
                                 <div class="flex items-end justify-between">
                                     <!-- Numbers -->
                                     <div class="space-y-1">
-                                        <h2 class="text-3xl font-bold">300</h2>
+                                        <h2 class="text-3xl font-bold">{{ $total_students->count() }}</h2>
                                         <p class="text-xl text-gray-400">Total Students</p>
                                     </div>
 
@@ -78,7 +78,7 @@
                                 <div class="flex items-end justify-between">
                                     <!-- Numbers -->
                                     <div class="space-y-1">
-                                        <h2 class="text-3xl font-bold">967</h2>
+                                        <h2 class="text-3xl font-bold">{{ $contributions->count() }}</h2>
                                         <p class="text-xl text-gray-400">Total Submissions</p>
                                     </div>
 
@@ -102,7 +102,7 @@
                                 <div class="flex items-end justify-between">
                                     <!-- Numbers -->
                                     <div class="space-y-1">
-                                        <h2 class="text-3xl font-bold">52</h2>
+                                        <h2 class="text-3xl font-bold">{{ $contributions->count() }}</h2>
                                         <p class="text-xl text-gray-400">Total Pending Contributions</p>
                                     </div>
 
@@ -345,7 +345,6 @@
                                 const darkOverlay = document.getElementById('darkOverlay');
                                 const inquiryModal = document.getElementById('inquiryModal');
 
-                                // Function to open the inquiry modal
                                 // Function to open the inquiry modal
                                 function openModal(user, email, priority_level, inquiry, date, status) {
                                     // Populate modal content
