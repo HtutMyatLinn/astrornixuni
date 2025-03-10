@@ -20,7 +20,7 @@
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="bg-white p-6 w-full flex flex-col items-center row-span-2">
+        <div class="bg-white p-6 w-full flex flex-col items-center row-span-2 rounded-lg">
             <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-5">Browser Usage Statistics</h1>
             <p>This chart displays the percentage of users accessing the system from different browsers.</p>
             <div style="width: 80%;">
@@ -83,10 +83,10 @@
             });
         </script>
         <!-- Total Students Card -->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -99,15 +99,21 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($student_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $student_percentage_change }}% ↑</span>
+                    @elseif ($student_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($student_percentage_change) }}% ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
         <!-- Total users Card-->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totaluser.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totaluser.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -120,15 +126,21 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $percentage_change }}% ↑</span>
+                    @elseif ($percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($percentage_change) }}% ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
         <!-- Total faculty Card -->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totalfaculty.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totalfaculty.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -146,10 +158,10 @@
             </div>
         </div>
         <!-- Total submissions Card -->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -167,10 +179,10 @@
             </div>
         </div>
         <!-- Total Pending Contributions Card -->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -188,10 +200,10 @@
             </div>
         </div>
         <!-- Total approved contributions Card-->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -209,10 +221,10 @@
             </div>
         </div>
         <!-- Total reject contributions Card-->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/rejectcontri.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/rejectcontri.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -230,10 +242,10 @@
             </div>
         </div>
         <!-- Total approved contributions Card-->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -252,26 +264,25 @@
         </div>
 
         <!-- total inquiries received -->
-        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full col-span-1 lg:col-span-2">
-            <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                <img class=" w-5 h-5" src="{{ asset('images/totalinquiry.png') }}" alt="">
+        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full rounded-lg col-span-1 lg:col-span-2">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                <img class="w-5 h-5" src="{{ asset('images/totalinquiry.png') }}" alt="">
             </div>
-
-            <!-- Stats Container with Flexbox -->
             <div class="flex items-end justify-between">
-                <!-- Numbers -->
                 <div class="space-y-1">
                     <h2 class="text-3xl font-bold">{{ $inquiries->count() }}</h2>
                     <p class="text-xl text-gray-400">Total Inquiries Received</p>
                 </div>
-
-                <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($inquiry_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $inquiry_percentage_change }}% ↑</span>
+                    @elseif ($inquiry_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($inquiry_percentage_change) }}% ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
-        <!-- Add more stat cards here -->
     </div>
 </main>

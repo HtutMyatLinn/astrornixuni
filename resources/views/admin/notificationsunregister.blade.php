@@ -41,11 +41,11 @@
                         <!-- Stats Grid -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                             <!-- Total Students Card -->
-                            <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+                            <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] rounded-lg p-6 w-full">
                                 <!-- Avatar Circle -->
                                 <div
-                                    class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                                    <img class=" w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
+                                    class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                                    <img class="w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
                                 </div>
 
                                 <!-- Stats Container with Flexbox -->
@@ -58,16 +58,26 @@
 
                                     <!-- Percentage -->
                                     <div class="flex items-center gap-1">
-                                        <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                                        @if ($student_percentage_change > 0)
+                                            <span
+                                                class="text-emerald-500 text-xl font-medium">{{ $student_percentage_change }}%
+                                                ↑</span>
+                                        @elseif ($student_percentage_change < 0)
+                                            <span
+                                                class="text-red-500 text-xl font-medium">{{ abs($student_percentage_change) }}%
+                                                ↓</span>
+                                        @else
+                                            <span class="text-gray-500 text-xl font-medium">0%</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             <!-- Total submissions Card -->
-                            <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+                            <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] rounded-lg p-6 w-full">
                                 <!-- Avatar Circle -->
                                 <div
-                                    class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                                    <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}"
+                                    class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                                    <img class="w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}"
                                         alt="">
                                 </div>
 
@@ -75,23 +85,33 @@
                                 <div class="flex items-end justify-between">
                                     <!-- Numbers -->
                                     <div class="space-y-1">
-                                        <h2 class="text-3xl font-bold">{{ $contributions->count() }}</h2>
-                                        <p class="text-xl text-gray-400">Total Submissions</p>
+                                        <h2 class="text-3xl font-bold">{{ $new_inquiries->count() }}</h2>
+                                        <p class="text-xl text-gray-400">New Inquiries</p>
                                     </div>
 
                                     <!-- Percentage -->
                                     <div class="flex items-center gap-1">
-                                        <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                                        @if ($new_inquiry_percentage_change > 0)
+                                            <span
+                                                class="text-emerald-500 text-xl font-medium">{{ $new_inquiry_percentage_change }}%
+                                                ↑</span>
+                                        @elseif ($new_inquiry_percentage_change < 0)
+                                            <span
+                                                class="text-red-500 text-xl font-medium">{{ abs($new_inquiry_percentage_change) }}%
+                                                ↓</span>
+                                        @else
+                                            <span class="text-gray-500 text-xl font-medium">0%</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             <!-- Total Pending Contributions Card -->
                             <div
-                                class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] col-span-0 sm:col-span-2 lg:col-span-1 p-6 w-full">
+                                class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] rounded-lg col-span-0 sm:col-span-2 lg:col-span-1 p-6 w-full">
                                 <!-- Avatar Circle -->
                                 <div
-                                    class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
-                                    <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
+                                    class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
+                                    <img class="w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
                                         alt="">
                                 </div>
 
@@ -99,13 +119,23 @@
                                 <div class="flex items-end justify-between">
                                     <!-- Numbers -->
                                     <div class="space-y-1">
-                                        <h2 class="text-3xl font-bold">{{ $contributions->count() }}</h2>
-                                        <p class="text-xl text-gray-400">Total Pending Contributions</p>
+                                        <h2 class="text-3xl font-bold">{{ $unassigned_users->count() }}</h2>
+                                        <p class="text-xl text-gray-400">Unassigned Users</p>
                                     </div>
 
                                     <!-- Percentage -->
                                     <div class="flex items-center gap-1">
-                                        <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                                        @if ($assigned_user_percentage_change > 0)
+                                            <span
+                                                class="text-emerald-500 text-xl font-medium">{{ $assigned_user_percentage_change }}%
+                                                ↑</span>
+                                        @elseif ($assigned_user_percentage_change < 0)
+                                            <span
+                                                class="text-red-500 text-xl font-medium">{{ abs($assigned_user_percentage_change) }}%
+                                                ↓</span>
+                                        @else
+                                            <span class="text-gray-500 text-xl font-medium">0%</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -122,10 +152,6 @@
 
                             <!-- Tabs -->
                             <div class="flex gap-8 border-b mb-6">
-                                <a href="{{ route('admin.notifications') }}"
-                                    class="px-1 py-4 hover:text-gray-900 text-gray-600">
-                                    All
-                                </a>
                                 <a href="{{ route('admin.notifications.inquiry') }}"
                                     class="px-1 py-4 text-gray-600 hover:text-gray-900">
                                     Inquiry

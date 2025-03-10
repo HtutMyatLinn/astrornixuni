@@ -10,6 +10,7 @@ use App\Models\Faculty;
 use App\Models\Inquiry;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -17,23 +18,90 @@ class HomeController extends Controller
     //
     public function administrator()
     {
-        // Fetch users where role is not null, sorted by newest first, with pagination
+        // Get the total number of users
         $total_users = User::all();
+
+        // Get the current month's user count
+        $current_month_users = User::whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's user count
+        $previous_month_users = User::whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $percentage_change = 0;
+        if ($previous_month_users > 0) {
+            $percentage_change = (($current_month_users - $previous_month_users) / $previous_month_users) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $percentage_change = round($percentage_change, 2);
+
+        // Inquiry
         $inquiries = Inquiry::all();
+
+        // Get the current month's inquiry count
+        $current_month_inquiries = User::whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's inquiry count
+        $previous_month_inquiries = User::whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $inquiry_percentage_change = 0;
+        if ($previous_month_users > 0) {
+            $inquiry_percentage_change = (($current_month_inquiries - $previous_month_inquiries) / $previous_month_inquiries) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
+
+        $total_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->get();
+
+        // Get the current month's student count
+        $current_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's student count
+        $previous_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $student_percentage_change = 0;
+        if ($previous_month_students > 0) {
+            $student_percentage_change = (($current_month_students - $previous_month_students) / $previous_month_students) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $student_percentage_change = round($student_percentage_change, 2);
+
         $faculties = Faculty::all();
         $contributions = Contribution::where('contribution_status', 'Upload')->paginate(10);
         $rejected_contributions = Contribution::where('contribution_status', 'Reject')->paginate(10);
         $published_contributions = Contribution::where('contribution_status', 'Publish')->paginate(10);
-        $total_students = User::whereHas('role', function ($query) {
-            $query->where('role', 'Student');
-        })->get();
 
         // Get browser data
         $browserStats = BrowserStat::all();
         $labels = $browserStats->pluck('browser_name');
         $data = $browserStats->pluck('visit_count');
 
-        return view('admin.index', compact('total_users', 'total_students', 'labels', 'data', 'inquiries', 'faculties', 'contributions', 'rejected_contributions', 'published_contributions'));
+        return view('admin.index', compact('total_users', 'total_students', 'student_percentage_change', 'percentage_change', 'labels', 'data', 'inquiries', 'inquiry_percentage_change', 'faculties', 'contributions', 'rejected_contributions', 'published_contributions'));
     }
 
     public function adminAccountSetting()
@@ -55,19 +123,87 @@ class HomeController extends Controller
         return redirect()->back()->with('success', 'Your account updated successfully.');
     }
 
-    public function administratorNotifications()
-    {
-        return view('admin.notifications');
-    }
-
     public function administratorNotificationsPassword()
     {
+        $unassigned_users = User::whereNull('role_id')->get();
+
+        // Get the current month's unassigned user count
+        $current_month_unassigned_users = User::whereNull('role_id')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's unassigned user count
+        $previous_month_unassigned_users = User::whereNull('role_id')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $assigned_user_percentage_change = 0;
+        if ($previous_month_unassigned_users > 0) {
+            $assigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $assigned_user_percentage_change = round($assigned_user_percentage_change, 2);
+
+        // New inquiry
+        $new_inquiries = Inquiry::where('inquiry_status', 'Pending')->get();
+
+        // Get the current month's new inquiry count
+        $current_month_new_inquiries = Inquiry::where('inquiry_status', 'Pending')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's new inquiry count
+        $previous_month_new_inquiries = Inquiry::where('inquiry_status', 'Pending')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $new_inquiry_percentage_change = 0;
+        if ($previous_month_new_inquiries > 0) {
+            $new_inquiry_percentage_change = (($current_month_new_inquiries - $previous_month_new_inquiries) / $previous_month_new_inquiries) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $new_inquiry_percentage_change = round($new_inquiry_percentage_change, 2);
+
+        // Total student
         $total_students = User::whereHas('role', function ($query) {
             $query->where('role', 'Student');
         })->get();
+
+        // Get the current month's student count
+        $current_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's student count
+        $previous_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $student_percentage_change = 0;
+        if ($previous_month_students > 0) {
+            $student_percentage_change = (($current_month_students - $previous_month_students) / $previous_month_students) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $student_percentage_change = round($student_percentage_change, 2);
         $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
-        return view('admin.notificationspassword', compact('total_students', 'contributions'));
+        return view('admin.notificationspassword', compact('unassigned_users', 'assigned_user_percentage_change', 'new_inquiries', 'new_inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions'));
     }
 
     public function administratorEditUserData($id)

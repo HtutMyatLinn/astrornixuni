@@ -85,9 +85,9 @@
                             <p class="text-gray-600">{{ Auth::user()->role->role }}</p>
                         </div>
                         @if (Auth::user()->status == 1)
-                            <span class="px-10 py-1 rounded-lg bg-[#CAF4E0] text-green-800">Active</span>
+                            <span class="px-10 py-1 rounded-lg bg-[#CAF4E0] text-green-800 select-none">Active</span>
                         @else
-                            <span class="px-10 py-1 rounded-lg bg-[#FAAFBD] text-red-800">Inactive</span>
+                            <span class="px-10 py-1 rounded-lg bg-[#FAAFBD] text-red-800 select-none">Inactive</span>
                         @endif
                     </div>
 
@@ -183,7 +183,7 @@
 
                     <div class="mt-8 flex justify-end">
                         <button type="submit"
-                            class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-8 rounded-md">Save</button>
+                            class="bg-gray-800 hover:bg-gray-900 text-white py-3 px-8 rounded-md select-none">Save</button>
                     </div>
                 </form>
             </div>

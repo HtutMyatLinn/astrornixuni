@@ -65,7 +65,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/admin/update-account-setting/{id}', [HomeController::class, 'adminEditAccountSetting'])->name('admin.update-account-setting');
 
         Route::get('/data-management/contribution-category', [HomeController::class, 'contributionCategory'])->name('data-management.contribution-category');
-        Route::get('/admin/notifications', [HomeController::class, 'administratorNotifications'])->name('admin.notifications');
         Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');
 
         // Inquiry routes
