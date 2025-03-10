@@ -47,43 +47,77 @@
         <div class="w-[800px] max-w-none bg-white rounded-lg p-6 border border-gray-200 shadow-md">
             <h2 class="text-xl font-semibold text-center mb-6">Upload Your Contribution</h2>
 
-            <form action="#" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('upload_contribution.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                {{-- User id --}}
+                <input type="hidden" name="user_id" value="{{ Auth::user()->user_id }}">
+
                 <!-- Title -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2">Title</label>
-                    <input type="text" placeholder="Enter your contribution title"
+                    <input type="text" name="contribution_title" placeholder="Enter your contribution title"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Intake</label>
+                    <select name="intake_id"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="" {{ old('intake_id') == '' ? 'selected' : '' }}>Select a
+                            intake</option>
+                        @if ($intakes->isEmpty())
+                            <option disabled>No data found</option>
+                        @else
+                            @foreach ($intakes as $intake)
+                                <option value="{{ $intake->intake_id }}"
+                                    {{ old('intake_id') == $intake->intake_id ? 'selected' : '' }}>
+                                    {{ $intake->intake }}
+                                </option>
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
 
                 <!-- Category -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2">Category</label>
-                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option>Select a Category</option>
-                        <option>Research Paper</option>
-                        <option>Creative Writing</option>
-                        <option>Photography</option>
-                        <option>Artwork</option>
+                    <select name="contribution_category_id"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="" {{ old('contribution_category_id') == '' ? 'selected' : '' }}>Select a
+                            category</option>
+                        @if ($contribution_categories->isEmpty())
+                            <option disabled>No data found</option>
+                        @else
+                            @foreach ($contribution_categories as $contribution_category)
+                                <option value="{{ $contribution_category->contribution_category_id }}"
+                                    {{ old('contribution_category_id') == $contribution_category->contribution_category_id ? 'selected' : '' }}>
+                                    {{ $contribution_category->contribution_category }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
 
                 <!-- Description -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2">Description</label>
-                    <textarea placeholder="Provide a brief summary of your contributions..."
+                    <textarea name="contribution_description" placeholder="Provide a brief summary of your contributions..."
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <!-- Cover Image Upload -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2">Cover Image (High-Quality JPG/PNG)</label>
-                    <input type="file" class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                    <input type="file" name="contribution_cover"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
                 </div>
 
                 <!-- Document Upload -->
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-2">Upload Word Document (.docx)</label>
-                    <input type="file" class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                    <input type="file" name="contribution_file_path"
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
                 </div>
 
                 <!-- Submit Button -->

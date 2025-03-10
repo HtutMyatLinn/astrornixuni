@@ -34,7 +34,7 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @if (Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student')
-                    <a href="{{ route('student.upload_contribution') }}"
+                    <a href="{{ route('upload_contribution.index') }}"
                         class="leading-4 font-medium text-blue-800 hover:text-blue-900 border-l-2 py-2 pl-4 transition-colors duration-200">
                         Contribute your article
                     </a>

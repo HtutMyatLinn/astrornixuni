@@ -296,6 +296,8 @@ class HomeController extends Controller
     }
     public function student()
     {
-        return view('student.index');
+        $contributions = Contribution::all();
+
+        return view('student.index', compact('contributions'));
     }
 }

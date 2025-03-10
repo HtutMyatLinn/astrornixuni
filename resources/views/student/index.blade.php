@@ -129,6 +129,21 @@
             </div>
         </div>
 
+        @if ($contributions->count() > 0)
+            @foreach ($contributions as $contribution)
+                <p>{{ $contribution->contribution_title }}</p>
+                <p>{{ $contribution->contribution_description }}</p>
+                <div class="w-16 h-16">
+                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                        class="w-full h-full object-cover">
+                </div>
+                <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
+                    download>Download Document</a>
+            @endforeach
+        @else
+            <p>No contributions found.</p>
+        @endif
+
         {{-- Magazine --}}
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 pt-8 py-14 flex flex-col gap-3">
             <div class="uppercase mb-5 sm:mb-16">
