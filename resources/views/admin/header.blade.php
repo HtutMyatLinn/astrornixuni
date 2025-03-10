@@ -2,7 +2,7 @@
     <div class="px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between">
             <!-- Left side -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 select-none">
                 <img src="{{ asset('images/logo.png') }}" class=" h-16 w-16" />
             </div>
 
@@ -10,7 +10,7 @@
             <div class="flex items-center space-x-4">
 
                 <!-- Notifications -->
-                <a href="{{ route('admin.notifications') }}"
+                <a href="{{ route('admin.notifications.inquiry') }}"
                     class="flex justify-center items-center w-10 h-10 rounded-full bg-gray-100 text-gray-400 hover:text-gray-500 relative">
                     <svg class="w-5 h-5" fill="#A2A2A2" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

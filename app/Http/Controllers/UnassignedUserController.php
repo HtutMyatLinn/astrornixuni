@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contribution;
+use App\Models\Inquiry;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UnassignedUserController extends Controller
@@ -34,16 +35,89 @@ class UnassignedUserController extends Controller
     public function index(Request $request)
     {
         $sort = $request->input('sort', 'desc'); // Default to 'desc' if no sort is selected
-        $total_students = User::whereHas('role', function ($query) {
-            $query->where('role', 'Student');
-        })->get();
-        $contributions = Contribution::where('contribution_status', 'Upload')->get();
+
+        //
+        $unassigned_users = User::whereNull('role_id')->get();
+
+        // Get the current month's unassigned user count
+        $current_month_unassigned_users = User::whereNull('role_id')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's unassigned user count
+        $previous_month_unassigned_users = User::whereNull('role_id')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $assigned_user_percentage_change = 0;
+        if ($previous_month_unassigned_users > 0) {
+            $assigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $assigned_user_percentage_change = round($assigned_user_percentage_change, 2);
+
+        // New inquiry
+        $new_inquiries = Inquiry::where('inquiry_status', 'Pending')->get();
+        // Get the current month's new inquiry count
+        $current_month_new_inquiries = Inquiry::where('inquiry_status', 'Pending')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's new inquiry count
+        $previous_month_new_inquiries = Inquiry::where('inquiry_status', 'Pending')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $new_inquiry_percentage_change = 0;
+        if ($previous_month_new_inquiries > 0) {
+            $new_inquiry_percentage_change = (($current_month_new_inquiries - $previous_month_new_inquiries) / $previous_month_new_inquiries) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $new_inquiry_percentage_change = round($new_inquiry_percentage_change, 2);
 
         $users = User::whereNull('role_id')
             ->orderBy('created_at', $sort)
             ->paginate(10)
             ->appends(['sort' => $sort]); // Keep sort on pagination links
 
-        return view('admin.notificationsunregister', compact('users', 'sort', 'total_students', 'contributions'));
+        // Total student
+        $total_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->get();
+
+        // Get the current month's student count
+        $current_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's student count
+        $previous_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $student_percentage_change = 0;
+        if ($previous_month_students > 0) {
+            $student_percentage_change = (($current_month_students - $previous_month_students) / $previous_month_students) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $student_percentage_change = round($student_percentage_change, 2);
+
+        return view('admin.notificationsunregister', compact('unassigned_users', 'assigned_user_percentage_change', 'new_inquiries', 'new_inquiry_percentage_change', 'users', 'total_students', 'student_percentage_change', 'sort'));
     }
 }

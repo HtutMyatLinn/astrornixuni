@@ -69,7 +69,7 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('admin') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/dashboard.png') }}" alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/dashboard.png') }}" alt="">
                     Dashboard
                 </a>
 
@@ -77,15 +77,16 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('admin.user-management') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/Usermanagement.png') }}" alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/Usermanagement.png') }}"
+                        alt="">
                     User Management
                 </a>
 
-                <a href="{{ route('admin.notifications') }}"
+                <a href="{{ route('admin.notifications.inquiry') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
-                          {{ request()->routeIs('admin.notifications') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
+                          {{ request()->routeIs('admin.notifications.inquiry') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/notifications.png') }}" alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/notifications.png') }}" alt="">
                     Notifications
                 </a>
 
@@ -93,23 +94,16 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
           {{ request()->routeIs('roles.index') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/report&analysis.png') }}" alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/report&analysis.png') }}"
+                        alt="">
                     Data Management
                 </a>
-            </div>
-        </div>
 
-        <!-- Settings Section -->
-        <div class="px-5">
-            <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">
-                Settings
-            </h2>
-            <div class="space-y-1">
                 <a href="{{ route('admin.inquiry') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                       {{ request()->routeIs('admin.inquiry') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                       hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/inquiry.png') }}" alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/inquiry.png') }}" alt="">
                     Reports
                 </a>
 
@@ -117,8 +111,8 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('academic-years.index') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/closuredate.png') }}" alt="">
-                    Closure Dates
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/closuredate.png') }}" alt="">
+                    Scheduled Closures
                 </a>
             </div>
         </div>
