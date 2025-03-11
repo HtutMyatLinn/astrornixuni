@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContributionCategoryController;
 use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\FacultyController;
@@ -26,6 +27,8 @@ Route::get('/', [ContributionController::class, 'guest_index'])->name('/')->midd
 Route::get('/contributions', [ContributionController::class, 'contribution_index'])->name('contributions');
 Route::get('/student/contribution-detail/{contribution}', [ContributionController::class, 'show'])->name('student.contribution-detail');
 Route::get('/student/contributions/search', [ContributionController::class, 'search'])->name('student.contribution.search');
+
+Route::resource('student/contributions/comment', CommentController::class);
 
 // Faculty route
 Route::get('/faculty', function () {
