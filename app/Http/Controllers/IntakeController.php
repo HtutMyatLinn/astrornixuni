@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IntakeEditRequest;
+use App\Models\Intake;
 use Illuminate\Http\Request;
 
 class IntakeController extends Controller
@@ -51,7 +53,16 @@ class IntakeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'edit_intake' => 'required|string|max:50',
+        ]);
+
+        $intake = Intake::findOrFail($id);
+        $intake->intake = $request->edit_intake;
+        $intake->save();
+
+        return redirect()->route('academic-years.index', ['#overall-information'])
+            ->with('intake_success', 'Intake updated successfully.');
     }
 
     /**

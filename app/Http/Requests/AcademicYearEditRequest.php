@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AcademicYearEditRequest extends FormRequest
 {
@@ -22,10 +23,20 @@ class AcademicYearEditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'edit_academic_year' => 'required|string|max:20|unique:academic_years,academic_year,' . $this->route('academic_year'),
+            'edit_academic_year' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('academic_years', 'academic_year')->ignore($this->route('academic_year'), 'academic_year_id')
+            ],
         ];
     }
 
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [

@@ -84,6 +84,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         //Intake routes
         Route::post('/admin/intakes', [AcademicYearController::class, 'intake_store'])->name('admin.intakes');
         Route::get('/intakes/search', [AcademicYearController::class, 'intake_search'])->name('admin.intakes.search');
+        Route::put('/admin/intakes/{id}', [IntakeController::class, 'update'])->name('intakes.update');
+
+
 
         // Role management routes.
         Route::resource('data-management/roles', RoleController::class);
