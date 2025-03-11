@@ -24,9 +24,9 @@ Route::get('/', function () {
 })->name('/')->middleware(TrackBrowser::class);
 
 // Contribution route
-Route::get('/contributions', function () {
-    return view('contributions.index');
-})->name('contributions');
+Route::get('/contributions', [ContributionController::class, 'contribution_index'])->name('contributions');
+Route::get('/student/contribution-detail/{contribution}', [ContributionController::class, 'show'])->name('student.contribution-detail');
+Route::get('/student/contributions/search', [ContributionController::class, 'search'])->name('student.contribution.search');
 
 // Faculty route
 Route::get('/faculty', function () {
@@ -42,10 +42,6 @@ Route::get('/aboutus', function () {
 Route::get('/contactus', function () {
     return view('contactus');
 })->name('contactus');
-
-Route::get('/student/contribution-detail', function () {
-    return view('contribution-detail');
-})->name('student.contribution-detail');
 
 // Contact us data store route
 Route::post('/inquiry', [InquiryController::class, 'store'])->name('inquiry.store');
@@ -85,8 +81,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/admin/intakes', [AcademicYearController::class, 'intake_store'])->name('admin.intakes');
         Route::get('/intakes/search', [AcademicYearController::class, 'intake_search'])->name('admin.intakes.search');
         Route::put('/admin/intakes/{id}', [IntakeController::class, 'update'])->name('intakes.update');
-
-
 
         // Role management routes.
         Route::resource('data-management/roles', RoleController::class);

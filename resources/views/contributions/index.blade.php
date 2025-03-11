@@ -13,8 +13,11 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input type="text" placeholder="Search contributions......"
-                    class="w-full rounded-lg bg-white py-3 pl-12 pr-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <form method="GET" action="{{ route('student.contribution.search') }}">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Search contributions..."
+                        class="w-full rounded-lg bg-white py-3 pl-12 pr-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </form>
             </div>
         </div>
 
@@ -24,57 +27,33 @@
                 <div class="grid gap-8 md:grid-cols-[250px,1fr]">
                     <!-- Filters Sidebar -->
                     <div class="rounded-lg bg-white p-6 shadow-sm">
-                        <h2 class="mb-6 text-lg font-semibold">Filters</h2>
-                        <div class="space-y-6">
+                        <div class="sticky top-20 space-y-6">
+                            <h2 class="mb-6 text-lg font-semibold">Filters</h2>
                             <div>
                                 <h3 class="mb-3 text-sm font-medium">Categories</h3>
                                 <div class="space-y-2">
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Science</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Math</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Business</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Medical</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Physics</span>
-                                    </label>
-                                </div>
-                            </div>
+                                    @foreach ($contribution_categories as $contribution_category)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 rounded border-gray-300"
+                                                name="contribution_category" value="{{ $contribution_category->id }}"
+                                                onclick="handleCheckbox(this)">
+                                            <span
+                                                class="ml-2 text-sm">{{ $contribution_category->contribution_category }}</span>
+                                        </label>
+                                    @endforeach
+                                    <script>
+                                        function handleCheckbox(checkbox) {
+                                            // Get all checkboxes with the same name
+                                            const checkboxes = document.querySelectorAll('input[name="contribution_category"]');
 
-                            <div>
-                                <h3 class="mb-3 text-sm font-medium">Tags</h3>
-                                <div class="space-y-2">
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Research</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Reviews</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Case Studies</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Innovations</span>
-                                    </label>
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300">
-                                        <span class="ml-2 text-sm">Events</span>
-                                    </label>
+                                            // Uncheck all other checkboxes
+                                            checkboxes.forEach((cb) => {
+                                                if (cb !== checkbox) {
+                                                    cb.checked = false;
+                                                }
+                                            });
+                                        }
+                                    </script>
                                 </div>
                             </div>
 
@@ -85,73 +64,49 @@
                         </div>
                     </div>
 
-                    <!-- Grid of Cards -->
-                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        <!-- Card 1 -->
-                        <div class="overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md">
-                            <img src="{{ asset('images/math.png') }}" alt="Mathematics textbook cover"
-                                class="h-48 w-full object-cover">
-                            <div class="p-4">
-                                <h3 class="mb-2 text-lg font-semibold">Mathematics</h3>
-                                <p class="mb-4 text-sm text-gray-600">
-                                    Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur.
-                                </p>
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">
-                                    Read more
-                                </a>
-                            </div>
+                    <div>
+                        <!-- Grid of Cards -->
+                        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            @if ($contributions->count() > 0)
+                                @foreach ($contributions as $contribution)
+                                    <a href="{{ route('student.contribution-detail', $contribution) }}"
+                                        class="block overflow-hidden rounded-lg bg-white shadow-sm group">
+                                        <div class="relative h-48 w-full overflow-hidden">
+                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                alt="{{ $contribution->contribution_title }}"
+                                                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                        </div>
+                                        <div class="p-4">
+                                            <h3 class="mb-2 text-lg font-semibold text-gray-800">
+                                                {{ $contribution->contribution_title }}
+                                            </h3>
+                                            <p class="mb-3 text-sm text-gray-600 line-clamp-2">
+                                                {{ $contribution->contribution_description }}
+                                            </p>
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <span class="mr-2">by {{ $contribution->user->username }}</span>
+                                                <span
+                                                    class="ml-auto text-xs text-gray-400">{{ $contribution->submitted_date }}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @else
+                                <div class="col-span-3 flex items-center justify-center py-32">
+                                    <p class="text-lg text-gray-500">No contributions found.</p>
+                                </div>
+                            @endif
                         </div>
 
-                        <!-- Card 2 -->
-                        <div class="overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md">
-                            <img src="{{ asset('images/math.png') }}" alt="Mathematics textbook cover"
-                                class="h-48 w-full object-cover">
-                            <div class="p-4">
-                                <h3 class="mb-2 text-lg font-semibold">Mathematics</h3>
-                                <p class="mb-4 text-sm text-gray-600">
-                                    Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur.
-                                </p>
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">
-                                    Read more
-                                </a>
+                        <!-- Pagination -->
+                        @if ($contributions->isNotEmpty())
+                            <div class="flex justify-end items-center gap-2 mt-6">
+                                {{ $contributions->appends(request()->query())->links('pagination::tailwind') }}
                             </div>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md">
-                            <img src="{{ asset('images/math.png') }}" alt="Mathematics textbook cover"
-                                class="h-48 w-full object-cover">
-                            <div class="p-4">
-                                <h3 class="mb-2 text-lg font-semibold">Mathematics</h3>
-                                <p class="mb-4 text-sm text-gray-600">
-                                    Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit amet consectetur.
-                                </p>
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">
-                                    Read more
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Add more cards as needed to fill the grid -->
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
-
-{{-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contributions | University of Astrornix</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body class="bg-gray-100">
-
-</body>
-
-</html> --}}

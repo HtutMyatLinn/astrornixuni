@@ -22,7 +22,8 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-w-[420px] min-h-screen bg-gray-100">
+    <div
+        class="min-w-[420px] min-h-screen bg-gray-100 {{ request()->routeIs('student.contribution-detail') ? 'bg-white' : '' }}">
         @include('layouts.navigation')
         <!-- Page Heading -->
         @isset($header)

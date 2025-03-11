@@ -129,21 +129,6 @@
             </div>
         </div>
 
-        @if ($contributions->count() > 0)
-            @foreach ($contributions as $contribution)
-                <p>{{ $contribution->contribution_title }}</p>
-                <p>{{ $contribution->contribution_description }}</p>
-                <div class="w-16 h-16">
-                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                        class="w-full h-full object-cover">
-                </div>
-                <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
-                    download>Download Document</a>
-            @endforeach
-        @else
-            <p>No contributions found.</p>
-        @endif
-
         {{-- Magazine --}}
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 pt-8 py-14 flex flex-col gap-3">
             <div class="uppercase mb-5 sm:mb-16">
@@ -151,49 +136,22 @@
                 <p class="text-gary-600">Contribution</p>
             </div>
 
-            <div>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1 sm:gap-5">
-                    <!-- Book Card -->
-                    <a href="" class="overflow-hidden flex flex-col items-center">
-                        <div class="w-48 select-none">
-                            <img src="{{ asset('images/2e92a52a02cfe1c2bb1f75d5faf45fbb.jfif') }}" alt="Book Cover"
-                                class="w-full h-70 object-cover rounded">
-                        </div>
-                        <p class="text-sm text-gray-600 mt-3">Lorem ipsum dolor sit amet consectetur.</p>
-                    </a>
-
-                    <a href="" class="overflow-hidden flex flex-col items-center">
-                        <div class="w-48 select-none">
-                            <img src="{{ asset('images/2e92a52a02cfe1c2bb1f75d5faf45fbb.jfif') }}" alt="Book Cover"
-                                class="w-full h-70 object-cover rounded">
-                        </div>
-                        <p class="text-sm text-gray-600 mt-3">Lorem ipsum dolor sit amet consectetur.</p>
-                    </a>
-
-                    <a href="" class="overflow-hidden flex flex-col items-center">
-                        <div class="w-48 select-none">
-                            <img src="{{ asset('images/2e92a52a02cfe1c2bb1f75d5faf45fbb.jfif') }}" alt="Book Cover"
-                                class="w-full h-70 object-cover rounded">
-                        </div>
-                        <p class="text-sm text-gray-600 mt-3">Lorem ipsum dolor sit amet consectetur.</p>
-                    </a>
-
-                    <a href="" class="overflow-hidden flex flex-col items-center">
-                        <div class="w-48 select-none">
-                            <img src="{{ asset('images/2e92a52a02cfe1c2bb1f75d5faf45fbb.jfif') }}" alt="Book Cover"
-                                class="w-full h-70 object-cover rounded">
-                        </div>
-                        <p class="text-sm text-gray-600 mt-3">Lorem ipsum dolor sit amet consectetur.</p>
-                    </a>
-
-                    <a href="" class="overflow-hidden flex flex-col items-center">
-                        <div class="w-48 select-none">
-                            <img src="{{ asset('images/2e92a52a02cfe1c2bb1f75d5faf45fbb.jfif') }}" alt="Book Cover"
-                                class="w-full h-70 object-cover rounded">
-                        </div>
-                        <p class="text-sm text-gray-600 mt-3">Lorem ipsum dolor sit amet consectetur.</p>
-                    </a>
-                </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1 sm:gap-5">
+                @if ($contributions->count() > 0)
+                    @foreach ($contributions as $contribution)
+                        <a href="{{ route('student.contribution-detail', $contribution) }}"
+                            class="overflow-hidden flex flex-col items-center">
+                            <div class="relative h-64 w-full overflow-hidden">
+                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                    alt="{{ $contribution->contribution_title }}"
+                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                            <p class="text-sm text-gray-600 mt-3">{{ $contribution->contribution_title }}</p>
+                        </a>
+                    @endforeach
+                @else
+                    <p>No contributions found.</p>
+                @endif
             </div>
             <a href="{{ route('contributions') }}" class="text-blue-600 underline underline-offset-2 mt-1">Read all
                 Contributions</a>
