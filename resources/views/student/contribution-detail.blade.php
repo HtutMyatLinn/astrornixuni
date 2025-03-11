@@ -11,7 +11,7 @@
             <p class="flex items-center text-sm text-gray-600 mt-2">
                 <i class="ri-group-line text-gray-500 mr-2"></i>
                 <span class="font-medium mr-1">{{ $contribution->view_count }}</span>
-                {{ $contribution->view_count === 1 ? 'view' : 'views' }}
+                {{ $contribution->view_count <= 1 ? 'view' : 'views' }}
                 <span>
                     <i
                         class="ri-fire-line {{ $contribution->view_count >= 1000
@@ -38,10 +38,44 @@
                 class="text-blue-500 mt-4 inline-block font-medium">Read
                 more</a>
 
-            <!-- Comment Section -->
-            <h3 class="text-lg font-semibold mt-6 text-gray-900">Comments</h3>
-            <textarea class="w-full p-3 border rounded-md mt-2 focus:ring-2 focus:ring-blue-500" placeholder="Leave a comment..."></textarea>
-            <button class="mt-3 bg-[#5A7BAF] text-white px-6 py-2 rounded hover:bg-[#4A6A99] transition">Submit</button>
+            <!-- Comment form -->
+            <form action="{{ route('comment.store') }}" method="POST">
+                @csrf
+                <h3 class="text-lg font-semibold mt-6 text-gray-900">Comments</h3>
+
+                {{-- Message --}}
+                @if (session('success'))
+                    <div id="success-message"
+                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                        role="alert">
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+
+                    <script>
+                        setTimeout(() => {
+                            document.getElementById('success-message').style.display = 'none';
+                        }, 3000);
+                    </script>
+                @endif
+
+                <div class="relative">
+                    @if (Auth::check())
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->user_id }}">
+                    @else
+                        <p class="text-red-500 text-sm">You must be logged in to comment.</p>
+                    @endif
+                    <input type="hidden" name="contribution_id" value="{{ $contribution->contribution_id }}">
+                    <textarea class="w-full p-3 border rounded-md mt-2 focus:ring-2 focus:ring-blue-500" name="comment_text"
+                        placeholder="Leave a comment..."></textarea>
+                    @error('comment_text')
+                        <p class="absolute left-2 -bottom-1 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+                <button type="submit"
+                    class="mt-3 bg-[#5A7BAF] text-white px-6 py-2 rounded hover:bg-[#4A6A99] transition select-none">Submit</button>
+            </form>
         </div>
 
         <!-- Right Sidebar (Trending Articles) -->
@@ -60,41 +94,43 @@
         </div>
     </div>
 
+    {{-- Comment section --}}
     <div class="space-y-6 max-w-6xl mx-auto border-b-2 py-10">
-        <h3 class="text-lg font-semibold text-gray-900">2 Comments</h3>
-        <!-- Single Comment -->
-        <div class="flex space-x-4">
-            <img src="https://i.pravatar.cc/40?img=1" alt="User Avatar" class="w-12 h-12 rounded-full">
-            <div class="w-full">
-                <div>
-                    <div class="flex items-center gap-3">
-                        <h4 class="font-semibold text-gray-800">John Doe</h4>
-                        <span class="text-xs text-gray-500">2 hours ago</span>
+        <h3 class="text-lg font-semibold text-gray-900">{{ $comments->count() }}
+            {{ $comments->count() <= 1 ? 'Comment' : 'Comments' }}</h3>
+
+        @if ($comments->count() > 0)
+            @foreach ($comments as $comment)
+                <div class="flex space-x-4">
+                    @if ($comment->user->profile_image)
+                        <img src="https://i.pravatar.cc/40?img=1" alt="User Avatar"
+                            class="w-12 h-12 rounded-full select-none">
+                    @else
+                        <p
+                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                            {{ strtoupper($comment->user->username[0]) }}
+                        </p>
+                    @endif
+                    <div class="w-full">
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <h4 class="font-semibold text-gray-800">{{ $comment->user->username }}</h4>
+                                <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-gray-700 mt-2">{{ $comment->comment_text }}</p>
+                        </div>
+                        <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
+                            @if (Auth::check() && Auth::user()->user_id === $comment->user_id)
+                                <button class="hover:text-blue-500">Edit</button>
+                                <button class="hover:text-red-500">Delete</button>
+                            @endif
+                        </div>
                     </div>
-                    <p class="text-gray-700 mt-2">This is a sample comment with some text content.</p>
                 </div>
-                <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
-                    <button class="hover:text-blue-500">Edit</button>
-                    <button class="hover:text-red-500">Delete</button>
-                </div>
-            </div>
-        </div>
-        <div class="flex space-x-4">
-            <img src="https://i.pravatar.cc/40?img=1" alt="User Avatar" class="w-12 h-12 rounded-full">
-            <div class="w-full">
-                <div>
-                    <div class="flex items-center gap-3">
-                        <h4 class="font-semibold text-gray-800">John Doe</h4>
-                        <span class="text-xs text-gray-500">2 hours ago</span>
-                    </div>
-                    <p class="text-gray-700 mt-2">This is a sample comment with some text content.</p>
-                </div>
-                <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
-                    <button class="hover:text-blue-500">Edit</button>
-                    <button class="hover:text-red-500">Delete</button>
-                </div>
-            </div>
-        </div>
+            @endforeach
+        @else
+            <p class="text-gray-600 py-10">No comments found.</p>
+        @endif
     </div>
 
     <!-- Related Contributions Section -->
@@ -108,7 +144,7 @@
                 @foreach ($contributions as $contribution)
                     <a href="{{ route('student.contribution-detail', $contribution) }}"
                         class="overflow-hidden flex flex-col items-center">
-                        <div class="relative h-64 w-full overflow-hidden">
+                        <div class="relative h-64 w-full overflow-hidden select-none">
                             <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
                                 alt="{{ $contribution->contribution_title }}"
                                 class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">

@@ -141,7 +141,7 @@
                     @foreach ($contributions as $contribution)
                         <a href="{{ route('student.contribution-detail', $contribution) }}"
                             class="overflow-hidden flex flex-col items-center">
-                            <div class="relative h-64 w-full overflow-hidden">
+                            <div class="relative h-64 w-full overflow-hidden select-none">
                                 <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
                                     alt="{{ $contribution->contribution_title }}"
                                     class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Contribution;
 use App\Models\ContributionCategory;
 use App\Models\Intake;
@@ -115,6 +116,7 @@ class ContributionController extends Controller
         // Eager load the user relationship
         $contribution->load('user');
         $contributions = Contribution::all();
+        $comments = Comment::all();
 
         // Get trending contributions (e.g., top 5 most viewed)
         $trendingContributions = Contribution::orderBy('view_count', 'desc')
@@ -122,7 +124,7 @@ class ContributionController extends Controller
             ->get();
 
         // Pass the contribution and trending contributions to the view
-        return view('student.contribution-detail', compact('contributions', 'contribution', 'trendingContributions'));
+        return view('student.contribution-detail', compact('contributions', 'contribution', 'comments', 'trendingContributions'));
     }
 
     /**
