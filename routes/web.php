@@ -3,6 +3,7 @@
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContributionCategoryController;
+use App\Http\Controllers\ContributionController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
@@ -149,9 +150,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Student dashboard.
     Route::middleware('student')->group(function () {
         Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard')->middleware(TrackBrowser::class);
-        Route::get('/student/upload_contribution', function () {
-            return view('upload_contribution');
-        })->name('student.upload_contribution');
+        Route::resource('/student/upload_contribution', ContributionController::class);
     });
 });
 
