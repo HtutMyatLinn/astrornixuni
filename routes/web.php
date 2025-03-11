@@ -19,9 +19,8 @@ use App\Http\Middleware\TrackBrowser;
 use Illuminate\Support\Facades\Route;
 
 // Primary route
-Route::get('/', function () {
-    return view('home');
-})->name('/')->middleware(TrackBrowser::class);
+Route::get('/', [ContributionController::class, 'guest_index'])->name('/')->middleware(TrackBrowser::class);
+
 
 // Contribution route
 Route::get('/contributions', [ContributionController::class, 'contribution_index'])->name('contributions');
