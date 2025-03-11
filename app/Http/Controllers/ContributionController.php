@@ -44,6 +44,13 @@ class ContributionController extends Controller
         return view('contributions.index', compact('contributions', 'contribution_categories'));
     }
 
+    public function guest_index()
+    {
+        $contributions = Contribution::paginate(20);
+
+        return view('home', compact('contributions'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

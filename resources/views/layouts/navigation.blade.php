@@ -14,7 +14,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="Auth::check() ? (Auth::user()->role->role === 'Student' ? route('student.dashboard') : url('/')) : url('/')" :active="request()->routeIs('student.dashboard') || request()->is('/')">
+                    <x-nav-link :href="Auth::check() && Auth::user()->role ? (Auth::user()->role->role === 'Student' ? route('student.dashboard') : url('/')) : url('/')" :active="request()->routeIs('student.dashboard') || request()->is('/')">
                         {{ __('Home') }}
                     </x-nav-link>
                     <x-nav-link :href="route('contributions')" :active="request()->routeIs('contributions')">
