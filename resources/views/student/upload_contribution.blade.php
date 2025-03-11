@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <!-- Hero Section -->
-    <section class="bg-[#2D5DA9] text-white py-14 text-center">
+    <section class="bg-[#5A7BAF] text-white py-14 text-center">
         <h1 class="text-3xl font-bold">Upload Your <br> Contributions</h1>
         <p class="mt-2 text-lg">
             Showcase your work in the University Magazine. Submit your research,
@@ -46,6 +46,21 @@
     <section class="py-10 px-4 flex justify-center bg-gray-100">
         <div class="w-[800px] max-w-none bg-white rounded-lg p-6 border border-gray-200 shadow-md">
             <h2 class="text-xl font-semibold text-center mb-6">Upload Your Contribution</h2>
+
+            {{-- Message --}}
+            @if (session('success'))
+                <div id="success-message"
+                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                    role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+
+                <script>
+                    setTimeout(() => {
+                        document.getElementById('success-message').style.display = 'none';
+                    }, 3000);
+                </script>
+            @endif
 
             <form action="{{ route('upload_contribution.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf

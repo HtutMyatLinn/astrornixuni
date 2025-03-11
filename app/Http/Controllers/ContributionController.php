@@ -20,6 +20,30 @@ class ContributionController extends Controller
         return view('student.upload_contribution', compact('intakes', 'contribution_categories'));
     }
 
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+
+        $contributions = Contribution::where('contribution_title', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('contribution_description', 'LIKE', "%{$searchTerm}%")
+            ->orWhereHas('user', function ($query) use ($searchTerm) {
+                $query->where('username', 'LIKE', "%{$searchTerm}%");
+            })
+            ->paginate(20);
+        $contribution_categories = ContributionCategory::all();
+
+
+        return view('contributions.index', compact('contributions', 'contribution_categories'));
+    }
+
+    public function contribution_index()
+    {
+        $contributions = Contribution::paginate(20);
+        $contribution_categories = ContributionCategory::all();
+
+        return view('contributions.index', compact('contributions', 'contribution_categories'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -31,21 +55,6 @@ class ContributionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     $contribution = new Contribution();
-    //     $contribution->intake_id = $request->intake_id;
-    //     $contribution->contribution_category_id = $request->contribution_category_id;
-    //     $contribution->user_id = $request->user_id;
-    //     $contribution->contribution_cover = $request->contribution_cover;
-    //     $contribution->contribution_title = $request->contribution_title;
-    //     $contribution->contribution_description = $request->contribution_description;
-    //     $contribution->contribution_file_path = $request->contribution_file_path;
-    //     $contribution->save();
-
-    //     // Redirect back with a success message
-    //     return redirect()->back()->with('success', 'Your contribution has been submitted successfully!');
-    // }
     public function store(Request $request)
     {
         // Validate the request
@@ -91,9 +100,22 @@ class ContributionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Contribution $contribution)
     {
-        //
+        // Increment the view count
+        $contribution->increment('view_count');
+
+        // Eager load the user relationship
+        $contribution->load('user');
+        $contributions = Contribution::all();
+
+        // Get trending contributions (e.g., top 5 most viewed)
+        $trendingContributions = Contribution::orderBy('view_count', 'desc')
+            ->limit(5) // Adjust the limit as needed
+            ->get();
+
+        // Pass the contribution and trending contributions to the view
+        return view('student.contribution-detail', compact('contributions', 'contribution', 'trendingContributions'));
     }
 
     /**

@@ -23,11 +23,14 @@
             <!-- Department Lists -->
             <div class="flex justify-center gap-10 sm:gap-32 my-10">
                 <ul class="space-y-2 border-l px-7 flex flex-col">
-                    <a href="">Home</a>
-                    <a href="">Contact Us</a>
-                    <a href="">About</a>
+                    <a href="{{ Auth::check() ? (Auth::user()->role->role === 'Student' ? route('student.dashboard') : url('/')) : url('/') }}"
+                        class="...">
+                        Home
+                    </a>
+                    <a href="{{ route('contactus') }}">Contact Us</a>
+                    <a href="{{ route('aboutus') }}">About</a>
                     <a href="">Departments</a>
-                    <a href="">Contributions</a>
+                    <a href="{{ route('contributions') }}">Contributions</a>
                 </ul>
                 <ul class="space-y-2 border-l px-7 flex flex-col">
                     {{-- Determine User Role --}}
