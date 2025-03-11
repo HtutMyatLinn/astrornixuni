@@ -50,8 +50,8 @@ class ProfileUpdateRequest extends FormRequest
             'password.confirmed' => 'Password confirmation does not match.',
             'password.min' => 'Password must be at least 8 characters.',
             'password.max' => 'Password must not exceed 16 characters.',
-            'password.regex' => 'Password does not meet requirements..',
-            'password.defaults' => 'Password does not meet requirements..',
+            'password.regex' => 'Password does not meet requirements.',
+            'password.defaults' => 'Password does not meet requirements.',
         ];
     }
 }
