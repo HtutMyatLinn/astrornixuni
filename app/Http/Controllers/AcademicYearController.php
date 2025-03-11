@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 
 class AcademicYearController extends Controller
 {
-
-
     // Search functionality
     public function search(Request $request)
     {
@@ -50,11 +48,9 @@ class AcademicYearController extends Controller
         return view('admin.closuredate', compact('intakes', 'academic_years', 'academicYearSearch'));
     }
 
-
     /**
      * Display a listing of the resource.
      */
-
     public function index(Request $request)
     {
         $sort = $request->input('sort', 'desc'); // Sorting for academic years
@@ -72,9 +68,6 @@ class AcademicYearController extends Controller
 
         return view('admin.closuredate', compact('academic_years', 'intakes', 'sort', 'sortFinalClosureDate'));
     }
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -114,7 +107,6 @@ class AcademicYearController extends Controller
         return redirect()->back()->with('intake_success', 'Intake created successfully.');
     }
 
-
     /**
      * Display the specified resource.
      */
@@ -134,16 +126,16 @@ class AcademicYearController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(AcademicYearEditRequest $request, string $id)
+    public function update(AcademicYearEditRequest $request, $id)
     {
         // Find the academic year
-        $academic_year = AcademicYear::find($id);
+        $academic_year = AcademicYear::findOrFail($id);
 
-        // Update role data
-        $academic_year->academic_year = $request->edit_academic;
+        // Update academic year data
+        $academic_year->academic_year = $request->edit_academic_year;
         $academic_year->save();
 
-        // Redirect to roles index page with a success message
+        // Redirect to academic years index page with a success message
         return redirect()->route('academic-years.index')->with('success', 'Academic year updated successfully.');
     }
 
