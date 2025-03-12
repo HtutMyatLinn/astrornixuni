@@ -150,6 +150,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('student')->group(function () {
         Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard')->middleware(TrackBrowser::class);
         Route::resource('/student/upload_contribution', ContributionController::class);
+        Route::put('/profile/update', [StudentController::class, 'update'])->name('profile.update');
     });
 });
 
