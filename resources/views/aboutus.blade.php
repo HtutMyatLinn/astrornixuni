@@ -5,7 +5,7 @@
         <div
             class="container mx-auto px-3 sm:px-8 py-4 md:py-12 flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-12">
             <!-- Image Section -->
-            <div class="w-full md:w-1/2 sm:max-w-[90%] md:max-w-md flex justify-center">
+            <div class="w-full md:w-1/2 sm:max-w-[90%] md:max-w-md flex justify-center select-none">
                 <img src="{{ asset('images/img1.png') }}" alt="Graduation Celebration"
                     class="w-full h-full rounded-lg object-cover">
             </div>
@@ -51,19 +51,19 @@
             class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 text-center mt-20 mb-6 md:mb-12 font-poppins w-full max-w-screen-lg mx-auto px-3">
             <div class="px-2">
                 <img src="{{ asset('images/fluent.png') }}" alt="Academic Excellence"
-                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12">
+                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
                 <h3 class="text-sm md:text-xl font-semibold text-black">Academic Excellence</h3>
                 <p class="text-gray-600 text-xs md:text-base">Showcasing top research and academic works</p>
             </div>
             <div class="px-2">
                 <img src="{{ asset('images/newspaper.png') }}" alt="Latest News"
-                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12">
+                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
                 <h3 class="text-sm md:text-xl font-semibold text-black">Latest News</h3>
                 <p class="text-gray-600 text-xs md:text-base">Bringing you the latest updates from the university</p>
             </div>
             <div class="px-2">
                 <img src="{{ asset('images/graduation.png') }}" alt="Student Engagement"
-                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12">
+                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
                 <h3 class="text-sm md:text-xl font-semibold text-black">Student Engagement</h3>
                 <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
             </div>
@@ -75,19 +75,19 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8 px-3">
                 <div class="text-center">
                     <img src="{{ asset('images/i1.png') }}" alt="Jason Wan"
-                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44">
+                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44 select-none">
                     <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
                     <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
                 </div>
                 <div class="text-center">
                     <img src="{{ asset('images/i2.png') }}" alt="Jason Wan"
-                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44">
+                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44 select-none">
                     <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
                     <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
                 </div>
                 <div class="text-center">
                     <img src="{{ asset('images/i3.png') }}" alt="Jason Wan"
-                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44">
+                        class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44 select-none">
                     <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
                     <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
                 </div>

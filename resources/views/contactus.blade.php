@@ -15,7 +15,7 @@
 
         <!-- Bottom Right Circular Image -->
         <div
-            class="absolute bottom-[-60px] sm:bottom-[-70px] right-1/2 md:right-6 transform md:translate-x-0 translate-x-1/2">
+            class="absolute bottom-[-60px] sm:bottom-[-70px] right-1/2 md:right-6 transform md:translate-x-0 translate-x-1/2 select-none">
             <img src="{{ asset('images/Ellipse2.png') }}" alt="Profile"
                 class="w-32 h-32 sm:w-40 sm:h-40 rounded-full shadow-lg object-cover">
         </div>
@@ -52,6 +52,12 @@
 
                     <!-- Hidden input for user_id -->
                     <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+
+                    @if (Auth::check())
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->user_id }}">
+                    @else
+                        <p class="text-red-500 text-sm">You must be logged in to comment.</p>
+                    @endif
 
                     <!-- Priority Level -->
                     <div class="relative">
@@ -91,10 +97,18 @@
                     </p>
 
                     <!-- Submit Button -->
-                    <button type="submit"
-                        class="w-full bg-[#5A7BAF] text-white py-2 md:py-2.5 rounded-md hover:bg-[#4a6a9a] transition text-sm md:text-base">
-                        Submit your inquiry
-                    </button>
+                    @if (Auth::check())
+                        <button type="submit"
+                            class="w-full bg-[#5A7BAF] text-white py-2 md:py-2.5 rounded-md hover:bg-[#4a6a9a] transition text-sm md:text-base select-none">
+                            Submit your inquiry
+                        </button>
+                    @else
+                        <button type="button" disabled
+                            class="w-full bg-[#5A7BAF] text-white py-2 md:py-2.5 rounded-md hover:bg-[#4a6a9a] transition text-sm md:text-base cursor-not-allowed opacity-50 select-none">
+                            Submit your inquiry
+                        </button>
+                    @endif
+
                 </form>
             </div>
 
@@ -107,19 +121,23 @@
 
                     <div class="space-y-3 md:space-y-4">
                         <p class="flex items-center text-sm md:text-base">
-                            <img src="{{ asset('images/location.png') }}" class="w-5 h-5 md:w-6 md:h-6" alt="Location">
+                            <img src="{{ asset('images/location.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
+                                alt="Location">
                             <span class="ml-2">123 University Street, City, Country</span>
                         </p>
                         <p class="flex items-center text-sm md:text-base">
-                            <img src="{{ asset('images/phone.png') }}" class="w-5 h-5 md:w-6 md:h-6" alt="Phone">
+                            <img src="{{ asset('images/phone.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
+                                alt="Phone">
                             <span class="ml-2">+123 46 78905</span>
                         </p>
                         <p class="flex items-center text-sm md:text-base">
-                            <img src="{{ asset('images/Message.png') }}" class="w-5 h-5 md:w-6 md:h-6" alt="Email">
+                            <img src="{{ asset('images/Message.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
+                                alt="Email">
                             <span class="ml-2">contact@universitymagazine.com</span>
                         </p>
                         <p class="flex items-start text-sm md:text-base">
-                            <img src="{{ asset('images/clock.png') }}" class="w-5 h-5 md:w-6 md:h-6" alt="Clock">
+                            <img src="{{ asset('images/clock.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
+                                alt="Clock">
                             <span class="ml-2">
                                 <strong>Office Hours:</strong><br>
                                 Monday - Friday: 9:00 AM - 5:00 PM<br>

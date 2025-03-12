@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContributionRequest;
 use App\Models\Comment;
 use App\Models\Contribution;
 use App\Models\ContributionCategory;
@@ -25,21 +26,24 @@ class ContributionController extends Controller
     {
         $searchTerm = $request->input('search');
 
-        $contributions = Contribution::where('contribution_title', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('contribution_description', 'LIKE', "%{$searchTerm}%")
-            ->orWhereHas('user', function ($query) use ($searchTerm) {
-                $query->where('username', 'LIKE', "%{$searchTerm}%");
+        $contributions = Contribution::where('contribution_status', 'Publish')
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('contribution_title', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('contribution_description', 'LIKE', "%{$searchTerm}%")
+                    ->orWhereHas('user', function ($query) use ($searchTerm) {
+                        $query->where('username', 'LIKE', "%{$searchTerm}%");
+                    });
             })
             ->paginate(20);
-        $contribution_categories = ContributionCategory::all();
 
+        $contribution_categories = ContributionCategory::all();
 
         return view('contributions.index', compact('contributions', 'contribution_categories'));
     }
 
     public function contribution_index()
     {
-        $contributions = Contribution::paginate(20);
+        $contributions = Contribution::where('contribution_status', 'Publish')->paginate(20);
         $contribution_categories = ContributionCategory::all();
 
         return view('contributions.index', compact('contributions', 'contribution_categories'));
@@ -47,9 +51,12 @@ class ContributionController extends Controller
 
     public function guest_index()
     {
-        $contributions = Contribution::paginate(20);
+        $contributions = Contribution::limit(5)->get();
+        $trendingContributions = Contribution::orderBy('view_count', 'desc')
+            ->limit(4) // Adjust the limit as needed
+            ->get();
 
-        return view('home', compact('contributions'));
+        return view('home', compact('contributions', 'trendingContributions'));
     }
 
     /**
@@ -63,18 +70,8 @@ class ContributionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContributionRequest $request)
     {
-        // Validate the request
-        $request->validate([
-            'contribution_title' => 'required|string|max:255',
-            'intake_id' => 'required|exists:intakes,intake_id',
-            'contribution_category_id' => 'required|exists:contribution_categories,contribution_category_id',
-            'contribution_description' => 'required|string',
-            'contribution_cover' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Max 2MB
-            'contribution_file_path' => 'required|mimes:doc,docx|max:5120', // Max 5MB
-        ]);
-
         // Handle the cover image upload
         if ($request->contribution_cover) {
             $file = $request->contribution_cover;
@@ -101,7 +98,7 @@ class ContributionController extends Controller
         $contribution->submitted_date = now();
         $contribution->save();
 
-        // Redirect back with a success message
+        // // Redirect back with a success message
         return redirect()->back()->with('success', 'Your contribution has been submitted successfully!');
     }
 
@@ -115,15 +112,20 @@ class ContributionController extends Controller
 
         // Eager load the user relationship
         $contribution->load('user');
-        $contributions = Contribution::all();
-        $comments = Comment::all();
 
-        // Get trending contributions (e.g., top 5 most viewed)
-        $trendingContributions = Contribution::orderBy('view_count', 'desc')
+        // Get 5 random contributions excluding the current one
+        $contributions = Contribution::where('contribution_id', '!=', $contribution->contribution_id)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+        $comments = Comment::where('contribution_id', $contribution->contribution_id)->get();
+
+        // Get trending contributions excluding the current one
+        $trendingContributions = Contribution::where('contribution_id', '!=', $contribution->contribution_id)
+            ->orderBy('view_count', 'desc')
             ->limit(5) // Adjust the limit as needed
             ->get();
 
-        // Pass the contribution and trending contributions to the view
         return view('student.contribution-detail', compact('contributions', 'contribution', 'comments', 'trendingContributions'));
     }
 
