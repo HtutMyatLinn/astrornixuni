@@ -2,50 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Faculty;
-use Illuminate\Http\Request;
+use App\Http\Requests\UserEditRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class StudentController extends Controller
 {
-    public function search(Request $request)
+    public function update(UserEditRequest $request)
     {
-        $search = $request->input('search');
-        $facultyId = $request->input('faculty');
-        $sortOrder = $request->input('sort', 'desc');
+        // Get the currently authenticated user
+        $user = Auth::user();
 
-        $studentsQuery = User::whereHas('role', function ($query) {
-            $query->where('role', 'Student');
-        });
+        // Handle profile image upload
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
 
-        if ($search) {
-            $studentsQuery->where(function ($query) use ($search) {
-                $query->where('username', 'LIKE', "%{$search}%")
-                    ->orWhere('user_code', 'LIKE', "%{$search}%")
-                    ->orWhere('email', 'LIKE', "%{$search}%")
-                    ->orWhere('first_name', 'LIKE', "%{$search}%")
-                    ->orWhere('last_name', 'LIKE', "%{$search}%");
-            });
+            // Define the path to store the image in the public folder
+            $imagePath = public_path('profile_images');
+
+            // Create the directory if it doesn't exist
+            if (!File::isDirectory($imagePath)) {
+                File::makeDirectory($imagePath, 0777, true, true);
+            }
+
+            // Move the image to the public folder
+            $image->move($imagePath, $imageName);
+
+            // Delete the old profile image if it exists
+            if ($user->profile_image && File::exists(public_path('profile_images/' . $user->profile_image))) {
+                File::delete(public_path('profile_images/' . $user->profile_image));
+            }
+
+            // Update user's profile image
+            $user->profile_image = $imageName;
         }
 
-        if ($facultyId) {
-            $studentsQuery->where('faculty_id', $facultyId);
-        }
+        // Update user's personal details
+        $user->username = $request->input('username');
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
 
-        $students = $studentsQuery->orderBy('last_login_date', $sortOrder)->paginate(10)->appends($request->all());
-        $faculties = Faculty::all();
+        // Save changes
+        $user->save();
 
-        return view('admin.usermanagementstudent', compact('students', 'search', 'faculties', 'facultyId', 'sortOrder'));
-    }
-
-    public function index()
-    {
-        $students = User::whereHas('role', function ($query) {
-            $query->where('role', 'Student');
-        })->orderBy('last_login_date', 'desc')->paginate(10);
-
-        $faculties = Faculty::all();
-
-        return view('admin.usermanagementstudent', compact('students', 'faculties'));
+        // Flash a success message to the session
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 }
