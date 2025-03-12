@@ -69,13 +69,18 @@
                 <input type="hidden" name="user_id" value="{{ Auth::user()->user_id }}">
 
                 <!-- Title -->
-                <div class="mb-4">
+                <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Title</label>
                     <input type="text" name="contribution_title" placeholder="Enter your contribution title"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @error('contribution_title')
+                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Intake</label>
                     <select name="intake_id"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -92,10 +97,15 @@
                             @endforeach
                         @endif
                     </select>
+                    @error('intake_id')
+                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Category -->
-                <div class="mb-4">
+                <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Category</label>
                     <select name="contribution_category_id"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -112,27 +122,47 @@
                             @endforeach
                         @endif
                     </select>
+                    @error('contribution_category_id')
+                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Description -->
-                <div class="mb-4">
+                <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Description</label>
                     <textarea name="contribution_description" placeholder="Provide a brief summary of your contributions..."
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    @error('contribution_description')
+                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Cover Image Upload -->
-                <div class="mb-4">
+                <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Cover Image (High-Quality JPG/PNG)</label>
                     <input type="file" name="contribution_cover"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                    @error('contribution_cover')
+                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Document Upload -->
-                <div class="mb-4">
+                <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Upload Word Document (.docx)</label>
                     <input type="file" name="contribution_file_path"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                    @error('contribution_file_path')
+                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 <!-- Submit Button -->

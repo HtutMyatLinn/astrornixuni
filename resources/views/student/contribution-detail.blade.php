@@ -4,8 +4,8 @@
         class="max-w-6xl w-full flex flex-col md:flex-row gap-6 mx-auto md:items-start items-center text-center md:text-left">
         <!-- Left Content Section -->
         <div class="w-full md:w-2/3 bg-white p-6 border-x-2 border-x-slate-100">
-            <h1 class="text-2xl font-semibold text-gray-900">{{ $contribution->contribution_title }}</h1>
-            <p class="text-gray-600 text-sm">By {{ $contribution->user->username }} |
+            <h1 class="text-2xl font-semibold text-start text-gray-900">{{ $contribution->contribution_title }}</h1>
+            <p class="text-gray-600 text-sm text-start">By {{ $contribution->user->username }} |
                 {{ $contribution->user->faculty->faculty }} | Published:
                 {{ $contribution->created_at->diffForHumans() }}</p>
             <p class="flex items-center text-sm text-gray-600 mt-2">
@@ -29,14 +29,27 @@
                     alt="{{ $contribution->contribution_title }}" class="h-full w-full object-cover">
             </div>
 
-            <h2 class="text-xl font-bold mt-6 text-gray-900">{{ $contribution->contribution_title }}</h2>
-            <p class="mt-2 text-gray-700">
-                {!! nl2br(e($contribution->contribution_description)) !!}
-            </p>
+            <h2 class="text-xl font-bold mt-6 text-gray-900 text-start">{{ $contribution->contribution_title }}</h2>
+            <div x-data="{ expanded: false }">
+                <p class="mt-2 text-gray-700 text-start">
+                    <span x-show="!expanded">
+                        {!! nl2br(e(Str::limit($contribution->contribution_description, 350))) !!}
+                    </span>
+                    <span x-show="expanded">
+                        {!! nl2br(e($contribution->contribution_description)) !!}
+                    </span>
+                </p>
 
-            <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
-                class="text-blue-500 mt-4 inline-block font-medium">Read
-                more</a>
+                @if (strlen($contribution->contribution_description) > 350)
+                    <button @click="expanded = !expanded" class="text-blue-500 hover:underline mt-2 flex justify-start">
+                        <span x-show="!expanded">Read more</span>
+                        <span x-show="expanded">Show less</span>
+                    </button>
+                @endif
+            </div>
+
+            {{-- <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
+                class="text-blue-500 mt-4 inline-block font-medium">Download</a> --}}
 
             <!-- Comment form -->
             <form action="{{ route('comment.store') }}" method="POST">
@@ -73,8 +86,17 @@
                         </p>
                     @enderror
                 </div>
-                <button type="submit"
-                    class="mt-3 bg-[#5A7BAF] text-white px-6 py-2 rounded hover:bg-[#4A6A99] transition select-none">Submit</button>
+                @if (Auth::check())
+                    <button type="submit"
+                        class="mt-3 bg-[#5A7BAF] text-white w-full sm:w-auto px-6 py-2 rounded hover:bg-[#4A6A99] transition select-none">
+                        Submit
+                    </button>
+                @else
+                    <button type="button" disabled
+                        class="mt-3 bg-[#5A7BAF] text-white w-full sm:w-auto px-6 py-2 rounded cursor-not-allowed opacity-50 select-none">
+                        Submit
+                    </button>
+                @endif
             </form>
         </div>
 
@@ -95,7 +117,7 @@
     </div>
 
     {{-- Comment section --}}
-    <div class="space-y-6 max-w-6xl mx-auto border-b-2 py-10">
+    <div class="space-y-6 max-w-6xl mx-auto border-b-2 py-10 px-3">
         <h3 class="text-lg font-semibold text-gray-900">{{ $comments->count() }}
             {{ $comments->count() <= 1 ? 'Comment' : 'Comments' }}</h3>
 
@@ -117,7 +139,24 @@
                                 <h4 class="font-semibold text-gray-800">{{ $comment->user->username }}</h4>
                                 <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
-                            <p class="text-gray-700 mt-2">{{ $comment->comment_text }}</p>
+
+                            <!-- Alpine.js for Read More Feature -->
+                            <div x-data="{ expanded: false }">
+                                <p class="text-gray-700 mt-2">
+                                    <span x-show="!expanded">
+                                        {{ Str::limit($comment->comment_text, 150) }}
+                                    </span>
+                                    <span x-show="expanded">
+                                        {{ $comment->comment_text }}
+                                    </span>
+                                </p>
+                                @if (strlen($comment->comment_text) > 150)
+                                    <button @click="expanded = !expanded" class="text-gray-400 hover:underline">
+                                        <span x-show="!expanded">Read more</span>
+                                        <span x-show="expanded">Show less</span>
+                                    </button>
+                                @endif
+                            </div>
                         </div>
                         <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
                             @if (Auth::check() && Auth::user()->user_id === $comment->user_id)
@@ -134,7 +173,7 @@
     </div>
 
     <!-- Related Contributions Section -->
-    <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 pt-8 mb-10 py-10 flex flex-col gap-3 border-b-2">
+    <div class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pt-8 mb-10 py-10 flex flex-col gap-3 border-b-2">
         <div class="mb-5 sm:mb-16">
             <h1 class="text-2xl font-bold underline">Related Contributions</h1>
         </div>

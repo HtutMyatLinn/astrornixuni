@@ -84,46 +84,60 @@
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 py-24">
                     <!-- Large Image -->
-                    <div class="relative col-span-1">
-                        <img src="{{ asset('images/809812e35ca241ddeca6bd1f191e857e.jfif') }}"
-                            class="w-full h-full object-cover select-none" alt="Adventure">
-                        <div class="absolute bottom-0 left-0 text-white p-4">
-                            <span class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">Adventure</span>
-                            <p class="text-sm mt-2">Lorem ipsum dolor sit amet consectetur. In tincidunt volutpat
-                                ullamcorper diam dui molestie ullamcorper</p>
-                        </div>
-                    </div>
+                    @if ($trendingContributions->count() > 0)
+                        <a href="{{ route('student.contribution-detail', $trendingContributions[0]->contribution_id) }}"
+                            class="relative col-span-1">
+                            <img src="{{ asset('storage/contribution-images/' . $trendingContributions[0]->contribution_cover) }}"
+                                class="w-full h-full object-cover select-none"
+                                alt="{{ $trendingContributions[0]->contribution_title }}">
+                            <div
+                                class="absolute bottom-0 left-0 text-white p-4 bg-gradient-to-t from-gray-500 via-transparent to-transparent w-full">
+                                <span
+                                    class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">{{ $trendingContributions[0]->category->contribution_category }}</span>
+                                <p class="text-sm mt-2">
+                                    {{ Str::limit($trendingContributions[0]->contribution_description, 100) }}
+                                </p>
+                            </div>
+                        </a>
+                    @endif
 
                     <!-- Right Grid -->
                     <div class="grid grid-cols-2">
                         <!-- Medium Image -->
-                        <div class="relative col-span-2 md:col-span-2">
-                            <img src="{{ asset('images/809812e35ca241ddeca6bd1f191e857e.jfif') }}"
-                                class="w-full h-full object-cover select-none" alt="Business">
-                            <div class="absolute bottom-0 left-0 text-white p-4">
-                                <span class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">Business</span>
-                                <p class="text-sm mt-2">Lorem ipsum dolor sit amet consectetur. In tincidunt volutpat
-                                    ullamcorper diam dui molestie ullamcorper</p>
-                            </div>
-                        </div>
+                        @if ($trendingContributions->count() > 1)
+                            <a href="{{ route('student.contribution-detail', $trendingContributions[1]->contribution_id) }}"
+                                class="relative col-span-2 md:col-span-2">
+                                <img src="{{ asset('storage/contribution-images/' . $trendingContributions[1]->contribution_cover) }}"
+                                    class="w-full h-full object-cover select-none"
+                                    alt="{{ $trendingContributions[1]->contribution_title }}">
+                                <div
+                                    class="absolute bottom-0 left-0 text-white p-4 bg-gradient-to-t from-gray-500 via-transparent to-transparent w-full">
+                                    <span class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">
+                                        {{ $trendingContributions[1]->category->contribution_category }}
+                                    </span>
+                                    <p class="text-sm mt-2">
+                                        {{ Str::limit($trendingContributions[1]->contribution_description, 100) }}
+                                    </p>
+                                </div>
+                            </a>
+                        @endif
 
                         <!-- Two Smaller Images -->
-                        <div class="relative col-span-1">
-                            <img src="{{ asset('images/809812e35ca241ddeca6bd1f191e857e.jfif') }}"
-                                class="w-full h-full object-cover select-none" alt="Digital">
-                            <div class="absolute bottom-0 left-0 text-white p-4">
-                                <span class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">Digital</span>
-                                <p class="text-sm mt-2">Lorem ipsum dolor sit amet consectetur.</p>
-                            </div>
-                        </div>
-                        <div class="relative col-span-1">
-                            <img src="{{ asset('images/809812e35ca241ddeca6bd1f191e857e.jfif') }}"
-                                class="w-full h-full object-cover select-none" alt="Digital">
-                            <div class="absolute bottom-0 left-0 text-white p-4">
-                                <span class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">Digital</span>
-                                <p class="text-sm mt-2">Lorem ipsum dolor sit amet consectetur.</p>
-                            </div>
-                        </div>
+                        @foreach ($trendingContributions->skip(2)->take(2) as $contribution)
+                            <a href="{{ route('student.contribution-detail', $contribution) }}"
+                                class="relative col-span-1">
+                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                    class="w-full h-full object-cover select-none"
+                                    alt="{{ $contribution->contribution_title }}">
+                                <div
+                                    class="absolute bottom-0 left-0 text-white p-4 bg-gradient-to-t from-gray-500 via-transparent to-transparent w-full">
+                                    <span
+                                        class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">{{ $contribution->category->contribution_category }}</span>
+                                    <p class="text-sm mt-2">
+                                        {{ Str::limit($contribution->contribution_description, 50) }}</p>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             </div>
