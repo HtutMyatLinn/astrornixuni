@@ -58,7 +58,7 @@
                 <script>
                     setTimeout(() => {
                         document.getElementById('success-message').style.display = 'none';
-                    }, 3000);
+                    }, 5000);
                 </script>
             @endif
 

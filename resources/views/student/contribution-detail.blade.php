@@ -48,8 +48,8 @@
                 @endif
             </div>
 
-            {{-- <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
-                class="text-blue-500 mt-4 inline-block font-medium">Download</a> --}}
+            <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
+                class="text-blue-500 mt-4 inline-block font-medium">Download</a>
 
             <!-- Comment form -->
             <form action="{{ route('comment.store') }}" method="POST">
@@ -67,7 +67,7 @@
                     <script>
                         setTimeout(() => {
                             document.getElementById('success-message').style.display = 'none';
-                        }, 3000);
+                        }, 5000);
                     </script>
                 @endif
 
@@ -124,13 +124,13 @@
         @if ($comments->count() > 0)
             @foreach ($comments as $comment)
                 <div class="flex space-x-4">
-                    @if ($comment->user->profile_image)
-                        <img src="https://i.pravatar.cc/40?img=1" alt="User Avatar"
+                    @if ($comment->user && $comment->user->profile_image)
+                        <img src="{{ asset('profile_images/' . $comment->user->profile_image) }}" alt="User Profile"
                             class="w-12 h-12 rounded-full select-none">
                     @else
                         <p
                             class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                            {{ strtoupper($comment->user->username[0]) }}
+                            {{ $comment->user ? strtoupper($comment->user->username[0]) : '?' }}
                         </p>
                     @endif
                     <div class="w-full">
@@ -160,9 +160,55 @@
                         </div>
                         <div class="flex items-center space-x-2 mt-2 text-sm text-gray-500">
                             @if (Auth::check() && Auth::user()->user_id === $comment->user_id)
-                                <button class="hover:text-blue-500">Edit</button>
-                                <button class="hover:text-red-500">Delete</button>
+                                <div x-data="{ editing: false, commentText: '{{ $comment->comment_text }}' }" class="w-full">
+                                    <!-- Textarea for editing -->
+                                    <textarea x-show="editing" x-model="commentText" name="comment_text" class="w-full p-2 border rounded mt-2"></textarea>
+
+                                    <!-- Buttons for Save & Cancel -->
+                                    <div x-show="editing" class="mt-2 flex space-x-2">
+                                        <button @click="editing = false"
+                                            class="text-gray-500 hover:text-gray-700">Cancel</button>
+                                        <button @click="updateComment({{ $comment->comment_id }}, commentText)"
+                                            class="text-blue-500 hover:underline">Save</button>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <!-- Edit Button -->
+                                        <button @click="editing = true" x-show="!editing"
+                                            class="hover:text-blue-500">Edit</button>
+
+                                        <!-- Delete Button (Hidden when editing) -->
+                                        <form method="POST"
+                                            action="{{ route('comments.destroy', $comment->comment_id) }}"
+                                            class="delete-form" x-show="!editing">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="hover:text-red-500">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
                             @endif
+
+                            <script>
+                                function updateComment(commentId, newText) {
+                                    fetch(`/comments/${commentId}`, {
+                                            method: 'PATCH',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                            },
+                                            body: JSON.stringify({
+                                                comment_text: newText
+                                            })
+                                        })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                window.location.reload(); // Redirect back without showing a message
+                                            }
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
