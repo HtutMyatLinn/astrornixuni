@@ -65,10 +65,17 @@
                         {{-- Profile --}}
                         <div class="flex items-center gap-3 p-2">
                             @if (Auth::check())
-                                <p
-                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                    {{ strtoupper(Auth::user()->username[0]) }}
-                                </p>
+                                @if (Auth::user()->profile_image)
+                                    <img id="profilePreview"
+                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                        src="{{ asset('profile_images/' . Auth::user()->profile_image) }}"
+                                        alt="Profile">
+                                @else
+                                    <p
+                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                        {{ strtoupper(Auth::user()->username[0]) }}
+                                    </p>
+                                @endif
                             @else
                                 <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
                                     <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
@@ -77,11 +84,12 @@
                             @endif
                             <div class="flex-1 min-w-0">
                                 @if (Auth::check())
-                                    <p class="text-xs sm:text-sm text-gray-500" title="{{ Auth::user()->email }}">
+                                    <p class="text-xs sm:text-sm text-gray-500 text-wrap w-56"
+                                        title="{{ Auth::user()->email }}">
                                         {{ Auth::user()->email }}
                                     </p>
                                 @else
-                                    <p class="text-xs sm:text-sm text-gray-500 w-44" title="Guest">
+                                    <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">
                                         Register to get access to all features
                                     </p>
                                 @endif

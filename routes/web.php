@@ -22,13 +22,14 @@ use Illuminate\Support\Facades\Route;
 // Primary route
 Route::get('/', [ContributionController::class, 'guest_index'])->name('/')->middleware(TrackBrowser::class);
 
-
 // Contribution route
 Route::get('/contributions', [ContributionController::class, 'contribution_index'])->name('contributions');
 Route::get('/student/contribution-detail/{contribution}', [ContributionController::class, 'show'])->name('student.contribution-detail');
 Route::get('/student/contributions/search', [ContributionController::class, 'search'])->name('student.contribution.search');
 
 Route::resource('student/contributions/comment', CommentController::class);
+Route::patch('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 // Faculty route
 Route::get('/faculty', function () {

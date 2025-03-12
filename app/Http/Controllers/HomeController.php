@@ -296,7 +296,9 @@ class HomeController extends Controller
     }
     public function student()
     {
-        $contributions = Contribution::limit(5)->get();
+        $contributions = Contribution::orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
         $trendingContributions = Contribution::orderBy('view_count', 'desc')
             ->limit(4) // Adjust the limit as needed
             ->get();
