@@ -46,7 +46,7 @@ class RegisteredUserController extends Controller
             'last_password_changed_date' => now(),
             'password_expired_date' => now()->addMonths(2),
             'login_count' => 0,
-            'status' => false,
+            'status' => true,
         ]);
 
         event(new Registered($user));
