@@ -10,7 +10,8 @@ class Intake extends Model
     use HasFactory;
 
     protected $primaryKey = 'intake_id';
-    protected $fillable = ['intake', 'academic_year_id', 'closure_date', 'final_closure_date'];
+    protected $fillable = ['intake', 'academic_year_id', 'closure_date', 'final_closure_date',
+    'status',];
 
     public function academicYear()
     {

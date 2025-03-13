@@ -465,14 +465,16 @@
                                                             {{ $intake->final_closure_date ?? 'N/A' }}
                                                         </td>
                                                         <td class="px-6 py-4">
-                                                            @if ($intake->status == 'active')
-                                                                <span
-                                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
-                                                            @else
-                                                                <span
-                                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
-                                                            @endif
-                                                        </td>
+        @if ($intake->status == 'active')
+            <span class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
+        @elseif ($intake->status == 'finished')
+            <span class="px-3 py-1 rounded-full text-sm bg-[#E2E8F0] text-gray-800">Finished</span>
+        @elseif ($intake->status == 'upcoming')
+            <span class="px-3 py-1 rounded-full text-sm bg-[#FEF3C7] text-amber-800">Upcoming</span>
+        @else
+            <span class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
+        @endif
+    </td>
                                                         <td class="px-6 py-4">
     <button
         onclick="openEditIntakeModal('{{ $intake->intake_id }}', '{{ $intake->intake }}', '{{ $intake->academic_year_id }}', '{{ $intake->closure_date }}')"
@@ -526,6 +528,18 @@
                 <input type="text" id="editIntake" name="edit_intake" placeholder="Enter intake..."
                     class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
+
+
+            <!-- intake status -->
+            <div class="mb-4 relative">
+    <label class="block text-sm font-medium mb-2">Status :</label>
+    <select name="status" id="editStatus"
+    class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <option value="active" {{ $intake->status === 'active' ? 'selected' : '' }}>Active</option>
+    <option value="finished" {{ $intake->status === 'finished' ? 'selected' : '' }}>Finished</option>
+    <option value="upcoming" {{ $intake->status === 'upcoming' ? 'selected' : '' }}>Upcoming</option>
+</select>
+</div>
 
             <!-- Save Button -->
             <div class="flex justify-center">
@@ -620,6 +634,20 @@ document.querySelectorAll('.edit-intake-btn').forEach(btn => {
         openEditIntakeModal(intakeId, intake);
     });
 });
+
+function populateEditForm(intakeId, intakeName, intakeStatus) {
+    document.getElementById('editIntakeId').value = intakeId;
+    document.getElementById('editIntake').value = intakeName;
+
+    // Set the selected status
+    const statusSelect = document.getElementById('editStatus');
+    for (let i = 0; i < statusSelect.options.length; i++) {
+        if (statusSelect.options[i].value === intakeStatus) {
+            statusSelect.selectedIndex = i;
+            break;
+        }
+    }
+}
 
     // ... other JavaScript functions ...
 
