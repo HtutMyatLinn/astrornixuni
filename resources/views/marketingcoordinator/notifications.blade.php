@@ -11,7 +11,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-w-[420px]">
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar Toggle Button (Mobile) -->
@@ -23,21 +23,26 @@
         </button>
 
         <!-- Sidebar -->
-        @include('marketingcoordinator.sidebar')
+        <aside id="sidebar"
+            class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
+            @include('marketingcoordinator.sidebar')
+        </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-64">
             @include('marketingcoordinator.header')
             <!-- here to add content -->
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
-                <div class="max-w-7xl mx-auto space-y-4 mb-4">
+                <div class="space-y-4 mb-4">
                     <h1 class=" text-2xl sm:text-2xl font-bold text-gray-900">System Notifications & Alerts</h1>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <!-- Total Students Card -->
-                        <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                             <!-- Avatar Circle -->
-                            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+                            <div
+                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                                 <img class=" w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
                             </div>
 
@@ -56,9 +61,10 @@
                             </div>
                         </div>
                         <!-- Total submissions Card -->
-                        <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                             <!-- Avatar Circle -->
-                            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+                            <div
+                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                                 <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
                             </div>
 
@@ -77,9 +83,10 @@
                             </div>
                         </div>
                         <!-- Total Pending Contributions Card -->
-                        <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                             <!-- Avatar Circle -->
-                            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+                            <div
+                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                                 <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
                                     alt="">
                             </div>
@@ -99,9 +106,10 @@
                             </div>
                         </div>
                         <!-- Total Students Card -->
-                        <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                             <!-- Avatar Circle -->
-                            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+                            <div
+                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                                 <img class=" w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
                             </div>
 
@@ -120,9 +128,10 @@
                             </div>
                         </div>
                         <!-- Total submissions Card -->
-                        <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                             <!-- Avatar Circle -->
-                            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+                            <div
+                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                                 <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
                             </div>
 
@@ -141,9 +150,10 @@
                             </div>
                         </div>
                         <!-- Total Pending Contributions Card -->
-                        <div class="bg-white shadow-[0px_14px_19px_-12px_#4353E1] p-6 w-full">
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
                             <!-- Avatar Circle -->
-                            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+                            <div
+                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                                 <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
                                     alt="">
                             </div>
@@ -246,61 +256,68 @@
 
                         <!-- Table -->
                         <div class="bg-white rounded-lg overflow-hidden">
-                            <table class="w-full">
-                                <thead class="bg-[#F9F8F8]">
-                                    <tr>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions
-                                            Title</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions
-                                            Type</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student Name
-                                        </th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
-                                            Date</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <!-- Row 1 -->
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div>
-                                                    <div class="font-medium">AI in Marketing</div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-[#F9F8F8]">
+                                        <tr>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions
+                                                Title</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions
+                                                Type</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student
+                                                Name
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
+                                                Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <!-- Row 1 -->
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div>
+                                                        <div class="font-medium">AI in Marketing</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">Story</td>
-                                        <td class="px-6 py-4 text-gray-600">Mi Mi</td>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">Story</td>
+                                            <td class="px-6 py-4 text-gray-600">Mi Mi</td>
 
-                                        <td class="px-6 py-4 text-gray-600">5/7/16</td>
+                                            <td class="px-6 py-4 text-gray-600">5/7/16</td>
 
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <button class="text-blue-600 hover:text-blue-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                        <path d="m15 5 4 4" />
-                                                    </svg>
-                                                </button>
-                                                <button class="text-red-600 hover:text-red-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M3 6h18" />
-                                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <button class="text-blue-600 hover:text-blue-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                            <path d="m15 5 4 4" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="text-red-600 hover:text-red-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M3 6h18" />
+                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Pagination -->
@@ -394,61 +411,68 @@
 
                         <!-- Table -->
                         <div class="bg-white rounded-lg overflow-hidden">
-                            <table class="w-full">
-                                <thead class="bg-[#F9F8F8]">
-                                    <tr>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions
-                                            Title</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions
-                                            Type</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student Name
-                                        </th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
-                                            Date</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <!-- Row 1 -->
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div>
-                                                    <div class="font-medium">AI in Marketing</div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-[#F9F8F8]">
+                                        <tr>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions
+                                                Title</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions
+                                                Type</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student
+                                                Name
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
+                                                Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <!-- Row 1 -->
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div>
+                                                        <div class="font-medium">AI in Marketing</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">Story</td>
-                                        <td class="px-6 py-4 text-gray-600">Hla Hla</td>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">Story</td>
+                                            <td class="px-6 py-4 text-gray-600">Hla Hla</td>
 
-                                        <td class="px-6 py-4 text-gray-600">5/7/16</td>
+                                            <td class="px-6 py-4 text-gray-600">5/7/16</td>
 
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <button class="text-blue-600 hover:text-blue-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                        <path d="m15 5 4 4" />
-                                                    </svg>
-                                                </button>
-                                                <button class="text-red-600 hover:text-red-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M3 6h18" />
-                                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <button class="text-blue-600 hover:text-blue-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                            <path d="m15 5 4 4" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="text-red-600 hover:text-red-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M3 6h18" />
+                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Pagination -->
@@ -542,149 +566,155 @@
 
                         <!-- Table -->
                         <div class="bg-white rounded-lg overflow-hidden">
-                            <table class="w-full">
-                                <thead class="bg-[#F9F8F8]">
-                                    <tr>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Last Login
-                                            Date</th>
-                                        <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <!-- Row 1 -->
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div>
-                                                    <img src="" alt="">
-                                                    <div class="font-medium">AI in Marketing</div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-[#F9F8F8]">
+                                        <tr>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Last
+                                                Login
+                                                Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <!-- Row 1 -->
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div>
+                                                        <img src="" alt="">
+                                                        <div class="font-medium">AI in Marketing</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">Story</td>
-                                        <td class="px-6 py-4 text-gray-600">Mi Mi</td>
-                                        <td class="px-6 py-4">
-                                            <span
-                                                class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-black">Active</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">5/7/16</td>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">Story</td>
+                                            <td class="px-6 py-4 text-gray-600">Mi Mi</td>
+                                            <td class="px-6 py-4">
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-black">Active</span>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">5/7/16</td>
 
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <button class="text-blue-600 hover:text-blue-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                        <path d="m15 5 4 4" />
-                                                    </svg>
-                                                </button>
-                                                <button class="text-red-600 hover:text-red-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M3 6h18" />
-                                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!-- Row 2 -->
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div>
-                                                    <div class="font-medium">AI in Marketing</div>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <button class="text-blue-600 hover:text-blue-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                            <path d="m15 5 4 4" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="text-red-600 hover:text-red-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M3 6h18" />
+                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                        </svg>
+                                                    </button>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">Story</td>
-                                        <td class="px-6 py-4 text-gray-600">Mi Mi</td>
-                                        <td class="px-6 py-4">
-                                            <span
-                                                class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-black">Active</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">5/7/16</td>
-
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <button class="text-blue-600 hover:text-blue-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                        <path d="m15 5 4 4" />
-                                                    </svg>
-                                                </button>
-                                                <button class="text-red-600 hover:text-red-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M3 6h18" />
-                                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Row 3 -->
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div>
-                                                    <div class="font-medium">AI in Marketing</div>
+                                            </td>
+                                        </tr>
+                                        <!-- Row 2 -->
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div>
+                                                        <div class="font-medium">AI in Marketing</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">Story</td>
-                                        <td class="px-6 py-4 text-gray-600">Mi Mi</td>
-                                        <td class="px-6 py-4">
-                                            <span
-                                                class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-black">InActive</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-gray-600">5/7/16</td>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">Story</td>
+                                            <td class="px-6 py-4 text-gray-600">Mi Mi</td>
+                                            <td class="px-6 py-4">
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-black">Active</span>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">5/7/16</td>
 
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <button class="text-blue-600 hover:text-blue-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                        <path d="m15 5 4 4" />
-                                                    </svg>
-                                                </button>
-                                                <button class="text-red-600 hover:text-red-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M3 6h18" />
-                                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-                                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <button class="text-blue-600 hover:text-blue-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                            <path d="m15 5 4 4" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="text-red-600 hover:text-red-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M3 6h18" />
+                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
 
+                                        <!-- Row 3 -->
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div>
+                                                        <div class="font-medium">AI in Marketing</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">Story</td>
+                                            <td class="px-6 py-4 text-gray-600">Mi Mi</td>
+                                            <td class="px-6 py-4">
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-black">InActive</span>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">5/7/16</td>
 
-                                    <!-- Add more rows as needed -->
-                                </tbody>
-                            </table>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <button class="text-blue-600 hover:text-blue-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path
+                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                            <path d="m15 5 4 4" />
+                                                        </svg>
+                                                    </button>
+                                                    <button class="text-red-600 hover:text-red-700">
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path d="M3 6h18" />
+                                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Pagination -->
@@ -696,19 +726,15 @@
                                 class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">Next</button>
                         </div>
                     </div>
-
-
-
                 </div>
             </main>
-
         </div>
     </div>
 
     <!-- JavaScript for Sidebar Toggle -->
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
         });
     </script>
 </body>

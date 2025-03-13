@@ -223,6 +223,7 @@ class HomeController extends Controller
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->username = $request->username;
+        $user->status = $request->status;
         $user->role_id = $request->role_id;
         $user->faculty_id = $request->faculty_id;
         $user->save();

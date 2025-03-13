@@ -12,6 +12,7 @@ use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\IntakeController;
 use App\Http\Controllers\MarketingCoordinatorControllerr;
 use App\Http\Controllers\MarketingManagerController;
+use App\Http\Controllers\MostActiveUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UnassignedUserController;
@@ -61,9 +62,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin')->middleware(TrackBrowser::class);
 
         // Account setting routes
-        // Route::get('/admin/account-setting', [HomeController::class, 'adminAccountSetting'])->name('admin.account-setting');
-        // Route::post('/admin/update-account-setting/{id}', [HomeController::class, 'adminEditAccountSetting'])->name('admin.update-account-setting');
-
         Route::get('/admin/account-setting', [AdminController::class, 'accountSetting'])->name('admin.account-setting');
         Route::post('/admin/update-account-setting/{id}', [AdminController::class, 'updateAccountSetting'])->name('admin.update-account-setting');
         Route::post('/admin/change-password', [AdminController::class, 'changePassword'])->name('admin.change-password');
@@ -121,6 +119,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Student management routes.
         Route::get('/admin/user-management/student', [StudentController::class, 'index'])->name('admin.user-management.student');
         Route::get('/admin/user-management/student/search', [StudentController::class, 'search'])->name('admin.user-management.student.search');
+
+        // Most active users routes
+        Route::get('/admin/user-management/most-active-user', [MostActiveUserController::class, 'index'])->name('admin.user-management.most-active-user');
+        Route::get('/admin/user-management/mostactiveuser/search', [MostActiveUserController::class, 'search'])->name('admin.user-management.mostactiveuser.search');
     });
 
     // Marketing Manager dashboard.

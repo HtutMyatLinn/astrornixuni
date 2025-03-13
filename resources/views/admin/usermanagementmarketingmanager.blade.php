@@ -57,6 +57,10 @@
                         class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                         Marketing Manager
                     </a>
+                    <a href="{{ route('admin.user-management.most-active-user') }}"
+                        class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                        Most Active Users
+                    </a>
                 </div>
 
                 <!-- Search and Filters -->
@@ -93,6 +97,7 @@
                         <table class="w-full">
                             <thead class="bg-[#F9F8F8]">
                                 <tr>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User Code</th>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty</th>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
@@ -111,10 +116,17 @@
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-3">
-                                                    <p
-                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                        {{ strtoupper($marketing_manager->username[0]) }}
-                                                    </p>
+                                                    @if ($marketing_manager->profile_image)
+                                                        <img id="profilePreview"
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                            src="{{ asset('storage/profile_images/' . $marketing_manager->profile_image) }}"
+                                                            alt="Profile">
+                                                    @else
+                                                        <p
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                            {{ strtoupper($marketing_manager->username[0]) }}
+                                                        </p>
+                                                    @endif
                                                     <div>
                                                         <div class="font-medium">
                                                             {{ $marketing_manager->first_name . ' ' . $marketing_manager->last_name }}
@@ -124,6 +136,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ optional($marketing_manager->faculty)->faculty ?? 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">
                                                 {{ optional($marketing_manager->role)->role ?? 'N/A' }}

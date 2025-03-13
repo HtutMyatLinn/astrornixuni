@@ -11,7 +11,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-w-[420px]">
     <!-- Main Container -->
     <div class="flex min-h-screen relative">
         <!-- Sidebar Toggle Button (Mobile) -->
@@ -23,99 +23,100 @@
         </button>
 
         <!-- Sidebar -->
-        @include('marketingcoordinator.sidebar')
+        <aside id="sidebar"
+            class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
+            @include('marketingcoordinator.sidebar')
+        </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-64">
             @include('marketingcoordinator.header')
             <!-- here to add content -->
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
-                <div class="max-w-7xl mx-auto space-y-4 mb-4">
+                <div class="space-y-4 mb-4">
                     <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Guest Management</h1>
+                    <div class="p-8 bg-white  shadow-lg">
+                        <!-- Header -->
+                        <h1 class="text-xl font-bold mb-6">List of guest</h1>
+                        <!-- Search and Filters -->
+                        <div class="flex justify-between mb-8">
+                            <div class="relative w-[400px]">
+                                <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                                <input type="text" placeholder="Search..."
+                                    class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                            </div>
 
-                    <div class="max-w-7xl mx-auto">
-
-                        <div class="p-8 bg-white  shadow-lg">
-                            <!-- Header -->
-                            <h1 class="text-xl font-bold mb-6">List of guest</h1>
-                            <!-- Search and Filters -->
-                            <div class="flex justify-between mb-8">
-                                <div class="relative w-[400px]">
-                                    <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <circle cx="11" cy="11" r="8" />
-                                        <path d="m21 21-4.3-4.3" />
-                                    </svg>
-                                    <input type="text" placeholder="Search..."
-                                        class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-                                </div>
-
-                                <div class="flex gap-4">
-                                    <!-- Filter Dropdown -->
-                                    <div class="relative group">
-                                        <button
-                                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                            Filter By
-                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m6 9 6 6 6-6" />
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                            <div class="p-2">
-                                                <div class="relative group/faculty">
-                                                    <button
-                                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
-                                                        <span>Selected</span>
-                                                    </button>
-                                                    <button
-                                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
-                                                        <span>Pending</span>
-                                                    </button>
-                                                    <button
-                                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
-                                                        <span>Published</span>
-                                                    </button>
-                                                    <button
-                                                        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
-                                                        <span>Reviewed</span>
-                                                    </button>
-                                                </div>
+                            <div class="flex gap-4">
+                                <!-- Filter Dropdown -->
+                                <div class="relative group">
+                                    <button
+                                        class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
+                                        Filter By
+                                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m6 9 6 6 6-6" />
+                                        </svg>
+                                    </button>
+                                    <div
+                                        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <div class="p-2">
+                                            <div class="relative group/faculty">
+                                                <button
+                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
+                                                    <span>Selected</span>
+                                                </button>
+                                                <button
+                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
+                                                    <span>Pending</span>
+                                                </button>
+                                                <button
+                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
+                                                    <span>Published</span>
+                                                </button>
+                                                <button
+                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left flex items-center justify-between">
+                                                    <span>Reviewed</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <!-- Sort Dropdown -->
-                                    <div class="relative group">
-                                        <button
-                                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                            Sort By
-                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="m6 9 6 6 6-6" />
-                                            </svg>
-                                        </button>
-                                        <div
-                                            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                            <div class="p-2">
-                                                <button
-                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Newest</button>
-                                                <button
-                                                    class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Oldest</button>
-                                            </div>
+                                <!-- Sort Dropdown -->
+                                <div class="relative group">
+                                    <button
+                                        class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
+                                        Sort By
+                                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m6 9 6 6 6-6" />
+                                        </svg>
+                                    </button>
+                                    <div
+                                        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                                        <div class="p-2">
+                                            <button
+                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Newest</button>
+                                            <button
+                                                class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Oldest</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Table -->
-                            <div class="bg-white rounded-lg overflow-hidden">
+                        <!-- Table -->
+                        <div class="bg-white rounded-lg overflow-hidden">
+                            <div class="overflow-x-auto">
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
@@ -260,27 +261,21 @@
                                                 </div>
                                             </td>
                                         </tr>
-
-
-                                        <!-- Add more rows as needed -->
                                     </tbody>
                                 </table>
                             </div>
-
-                            <!-- Pagination -->
-                            <div class="flex justify-end items-center gap-2 mt-6">
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">1</button>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">2</button>
-                                <span class="text-gray-600">...</span>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">Next</button>
-                            </div>
                         </div>
 
-
+                        <!-- Pagination -->
+                        <div class="flex justify-end items-center gap-2 mt-6">
+                            <button class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">1</button>
+                            <button class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">2</button>
+                            <span class="text-gray-600">...</span>
+                            <button
+                                class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">Next</button>
+                        </div>
                     </div>
+                </div>
             </main>
         </div>
     </div>
@@ -288,7 +283,7 @@
     <!-- JavaScript for Sidebar Toggle -->
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
         });
     </script>
 </body>
