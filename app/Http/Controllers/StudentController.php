@@ -13,7 +13,9 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = User::paginate(10);  // Fetch students with pagination (10 per page)
+        $students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->orderBy('last_login_date', 'desc')->paginate(10); // Fetch students with pagination (10 per page)
         $faculties = Faculty::all();     // Fetch all faculties from the database
         return view('admin.usermanagementstudent', compact('students', 'faculties'));
     }
@@ -25,7 +27,9 @@ class StudentController extends Controller
         $faculty = $request->input('faculty');  // Get the selected faculty ID
 
         // Build the query for students
-        $studentsQuery = User::query();
+        $studentsQuery = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        });
 
         // Apply search filters (username, first name, last name, email)
         if ($search) {
@@ -54,8 +58,6 @@ class StudentController extends Controller
         // Pass data to the view
         return view('admin.usermanagementstudent', compact('students', 'search', 'sortOrder', 'faculties', 'faculty'));
     }
-
-
 
     public function update(UserEditRequest $request)
     {

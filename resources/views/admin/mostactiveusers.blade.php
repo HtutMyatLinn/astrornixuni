@@ -37,7 +37,7 @@
                 <!-- Header -->
                 <h1 class="text-2xl font-bold mb-6">List of Users</h1>
                 <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                    Total - {{ $students->count() }}
+                    Total - {{ $users->count() }}
                 </h2>
 
                 <!-- Tabs -->
@@ -46,7 +46,7 @@
                         Admin
                     </a>
                     <a href="{{ route('admin.user-management.student') }}"
-                        class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
+                        class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Student
                     </a>
                     <a href="{{ route('admin.user-management.marketing-coordinator') }}"
@@ -58,12 +58,12 @@
                         Marketing Manager
                     </a>
                     <a href="{{ route('admin.user-management.most-active-user') }}"
-                        class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                        class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                         Most Active Users
                     </a>
                 </div>
 
-                <form method="GET" action="{{ route('admin.user-management.student.search') }}">
+                <form method="GET" action="{{ route('admin.user-management.mostactiveuser.search') }}">
                     <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
                         <!-- Search Input -->
                         <div class="relative max-w-[400px]">
@@ -78,14 +78,14 @@
                         </div>
 
                         <div class="flex flex-wrap gap-4">
-                            <!-- Faculty Filter -->
-                            <select name="faculty" onchange="this.form.submit()"
+                            <!-- Role Filter -->
+                            <select name="role" onchange="this.form.submit()"
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                <option value="">All Faculties</option>
-                                @foreach ($faculties as $faculty)
-                                    <option value="{{ $faculty->faculty_id }}"
-                                        {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
-                                        {{ $faculty->faculty }}
+                                <option value="">All Roles</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->role_id }}"
+                                        {{ request('role') == $role->role_id ? 'selected' : '' }}>
+                                        {{ $role->role }}
                                     </option>
                                 @endforeach
                             </select>
@@ -93,14 +93,12 @@
                             <!-- Sort Option -->
                             <select name="sort" onchange="this.form.submit()"
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest Login
+                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Most Active
                                 </option>
-                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest Login
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Least Active
                                 </option>
                             </select>
-
                         </div>
-
                     </div>
                 </form>
 
@@ -114,15 +112,12 @@
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty</th>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role</th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Last Login Date
-                                    </th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Total Login</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                @if ($students->isNotEmpty())
-                                    @foreach ($students as $student)
+                                @if ($users->isNotEmpty())
+                                    @foreach ($users as $student)
                                         <tr class="hover:bg-gray-50">
                                             <td class="px-6 py-4 text-gray-600">
                                                 {{ $student->user_code }}
@@ -130,10 +125,26 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-3">
                                                     @if ($student->profile_image)
-                                                        <img id="profilePreview"
-                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                            src="{{ asset('profile_images/' . $student->profile_image) }}"
-                                                            alt="Profile">
+                                                        @php
+                                                            $publicPath = 'profile_images/' . $student->profile_image;
+                                                            $storagePath =
+                                                                'storage/profile_images/' . $student->profile_image;
+                                                        @endphp
+
+                                                        @if (file_exists(public_path($publicPath)))
+                                                            <img id="profilePreview"
+                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                                src="{{ asset($publicPath) }}" alt="Profile">
+                                                        @elseif (file_exists(public_path($storagePath)))
+                                                            <img id="profilePreview"
+                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                                src="{{ asset($storagePath) }}" alt="Profile">
+                                                        @else
+                                                            <p
+                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                {{ strtoupper($student->username[0]) }}
+                                                            </p>
+                                                        @endif
                                                     @else
                                                         <p
                                                             class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
@@ -153,32 +164,11 @@
                                             <td class="px-6 py-4 text-gray-600">
                                                 {{ optional($student->faculty)->faculty ?? 'N/A' }}
                                             </td>
-                                            <td class="px-6 py-4 text-gray-600">
+                                            <td class="px-6 py-4">
                                                 {{ optional($student->role)->role ?? 'N/A' }}
                                             </td>
-                                            <td class="px-6 py-4">
-                                                @if ($student->status == 1)
-                                                    <span
-                                                        class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
-                                                @else
-                                                    <span
-                                                        class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
-                                                @endif
-                                            </td>
                                             <td class="px-6 py-4 text-gray-600">
-                                                {{ $student->last_login_date ?? 'N/A' }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <a href="{{ route('admin.edit-user-data', ['id' => $student->user_id]) }}"
-                                                    class="text-blue-600 hover:text-blue-700">
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                        <path d="m15 5 4 4" />
-                                                    </svg>
-                                                </a>
+                                                {{ $student->login_count }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -194,9 +184,9 @@
                     </div>
                 </div>
 
-                @if ($students->isNotEmpty())
+                @if ($users->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
-                        {{ $students->appends(request()->query())->links('pagination::tailwind') }}
+                        {{ $users->appends(request()->query())->links('pagination::tailwind') }}
                         <!-- Paginate the links -->
                     </div>
                 @endif

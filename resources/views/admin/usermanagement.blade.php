@@ -58,6 +58,10 @@
                         class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Marketing Manager
                     </a>
+                    <a href="{{ route('admin.user-management.most-active-user') }}"
+                        class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                        Most Active Users
+                    </a>
                 </div>
 
                 <!-- Search and Filters -->
@@ -129,10 +133,17 @@
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-3">
-                                                    <p
-                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                        {{ strtoupper($admin->username[0]) }}
-                                                    </p>
+                                                    @if ($admin->profile_image)
+                                                        <img id="profilePreview"
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                            src="{{ asset('storage/profile_images/' . $admin->profile_image) }}"
+                                                            alt="Profile">
+                                                    @else
+                                                        <p
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                            {{ strtoupper($admin->username[0]) }}
+                                                        </p>
+                                                    @endif
                                                     <div>
                                                         <div class="font-medium">
                                                             {{ $admin->first_name . ' ' . $admin->last_name }}
@@ -161,7 +172,8 @@
                                                     class="text-blue-600 hover:text-blue-700">
                                                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
                                                         <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                                                         <path d="m15 5 4 4" />
                                                     </svg>

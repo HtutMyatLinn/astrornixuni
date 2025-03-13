@@ -49,10 +49,32 @@
                 <div class="flex flex-col sm:flex-row gap-8">
                     {{-- Profile --}}
                     @if (Auth::check())
-                        <p
-                            class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
-                            {{ strtoupper($user->username[0]) }}
-                        </p>
+                        @if ($user->profile_image)
+                            @php
+                                $publicPath = 'profile_images/' . $user->profile_image;
+                                $storagePath = 'storage/profile_images/' . $user->profile_image;
+                            @endphp
+
+                            @if (file_exists(public_path($publicPath)))
+                                <img id="profilePreview"
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl"
+                                    src="{{ asset($publicPath) }}" alt="Profile">
+                            @elseif (file_exists(public_path($storagePath)))
+                                <img id="profilePreview"
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl"
+                                    src="{{ asset($storagePath) }}" alt="Profile">
+                            @else
+                                <p
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
+                                    {{ strtoupper($user->username[0]) }}
+                                </p>
+                            @endif
+                        @else
+                            <p
+                                class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
+                                {{ strtoupper($user->username[0]) }}
+                            </p>
+                        @endif
                     @else
                         <div class="w-24 h-24 select-none">
                             <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
@@ -168,9 +190,26 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Status</label>
+                                <div class="relative">
+                                    <select
+                                        class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none pr-10"
+                                        name="status">
+                                        <option value="" disabled>Choose Status</option>
+                                        <option value="1"
+                                            {{ isset($user) && $user->status == 1 ? 'selected' : '' }}>
+                                            Active</option>
+                                        <option value="0"
+                                            {{ isset($user) && $user->status == 0 ? 'selected' : '' }}>
+                                            Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex justify-end mt-8 gap-4">
-                            <a href="{{ url()->previous() }}"
+                        <div class="flex justify-end mt-8 gap-4 select-none">
+                            <a href="javascript:history.back()"
                                 class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 inline-block">
                                 Back
                             </a>
@@ -179,7 +218,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
