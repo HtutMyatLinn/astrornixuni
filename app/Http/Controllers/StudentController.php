@@ -3,11 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
+use App\Models\Faculty;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
+    public function index()
+    {
+        $students = User::paginate(10);  // Fetch students with pagination (10 per page)
+        $faculties = Faculty::all();     // Fetch all faculties from the database
+        return view('admin.usermanagementstudent', compact('students', 'faculties'));
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $sortOrder = $request->input('sort', 'desc');
+        $faculty = $request->input('faculty');  // Get the selected faculty ID
+
+        // Build the query for students
+        $studentsQuery = User::query();
+
+        // Apply search filters (username, first name, last name, email)
+        if ($search) {
+            $studentsQuery->where(function ($query) use ($search) {
+                $query->where('username', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('last_name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply faculty filter if a faculty is selected
+        if ($faculty) {
+            $studentsQuery->where('faculty_id', $faculty);
+        }
+
+        // Get paginated results
+        $students = $studentsQuery
+            ->orderBy('last_login_date', $sortOrder)
+            ->paginate(10)
+            ->appends($request->all());
+
+        // Fetch all faculties for the filter dropdown
+        $faculties = Faculty::all();
+
+        // Pass data to the view
+        return view('admin.usermanagementstudent', compact('students', 'search', 'sortOrder', 'faculties', 'faculty'));
+    }
+
+
+
     public function update(UserEditRequest $request)
     {
         // Get the currently authenticated user
