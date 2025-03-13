@@ -75,16 +75,15 @@
 
                         <div class="flex flex-wrap gap-4">
                             <!-- Faculty Filter -->
-                            <select name="faculty" onchange="this.form.submit()"
-                                class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                <option value="">All Faculties</option>
-                                @foreach ($faculties as $faculty)
-                                    <option value="{{ $faculty->faculty_id }}"
-                                        {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
-                                        {{ $faculty->faculty }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <select name="faculty" onchange="this.form.submit()" class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+    <option value="">All Faculties</option>
+    @foreach ($faculties as $faculty)
+        <option value="{{ $faculty->faculty_id }}" {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
+            {{ $faculty->faculty }}
+        </option>
+    @endforeach
+</select>
+
 
                             <!-- Sort Option -->
                             <select name="sort" onchange="this.form.submit()"
@@ -178,12 +177,11 @@
                     </div>
                 </div>
 
-                <!-- Pagination -->
                 @if ($students->isNotEmpty())
-                    <div class="flex justify-end items-center gap-2 mt-6">
-                        {{ $students->appends(request()->query())->links('pagination::tailwind') }}
-                    </div>
-                @endif
+    <div class="flex justify-end items-center gap-2 mt-6">
+        {{ $students->appends(request()->query())->links('pagination::tailwind') }}  <!-- Paginate the links -->
+    </div>
+@endif
             </div>
         </div>
     </div>
