@@ -28,19 +28,22 @@ class UserEditRequest extends FormRequest
         ];
     }
 
+    /**
+     * Custom messages for validation errors.
+     */
     public function messages()
     {
         return [
-            // First name messages
-            'first_name.required' => 'First name is required.',
+            // Custom messages for first name
+            'first_name.required' => 'First name must not be empty.',
             'first_name.max' => 'First name must not exceed 30 characters.',
 
-            // Last name messages
+            // Custom messages for last name
             'last_name.max' => 'Last name must not exceed 30 characters.',
 
-            // Username messages
-            'username.required' => 'Username is required.',
-            'username.max' => 'Username must not exceed 30 characters.',
+            // Custom messages for username
+            'username.required' => 'User name must not be empty.',
+            'username.max' => 'User name must not exceed 30 characters.',
         ];
     }
 }

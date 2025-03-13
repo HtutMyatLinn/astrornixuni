@@ -53,22 +53,45 @@
             <h3 class="font-semibold text-gray-800">Personal Details</h3>
 
             <div class="flex flex-col sm:flex-row gap-4">
-                <div class="flex-1">
-                    <label class="block text-sm md:text-base font-semibold">UserName<span
-                            class="text-red-500">*</span></label>
-                    <input type="text" name="username" placeholder="Enter your username"
-                        value="{{ old('username', Auth::user()->username) }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 text-sm md:text-base">
-                </div>
+    <!-- Username Field -->
+    <div class="flex-1">
+        <label class="block text-sm md:text-base font-semibold">
+            User Name<span class="text-red-500">*</span>
+        </label>
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter your username"
+            
+            value="{{ old('username', Auth::user()->username) }}"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 text-sm md:text-base"
+        >
+        <!-- Show error if validation fails -->
+        @error('username')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
+    </div>
 
-                <div class="flex-1">
-                    <label class="block text-sm md:text-base font-semibold">First Name<span
-                            class="text-red-500">*</span></label>
-                    <input type="text" name="first_name" placeholder="Enter your first name"
-                        value="{{ old('first_name', Auth::user()->first_name) }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 text-sm md:text-base">
-                </div>
-            </div>
+    <!-- First Name Field -->
+    <div class="flex-1">
+        <label class="block text-sm md:text-base font-semibold">
+            First Name<span class="text-red-500">*</span>
+        </label>
+        <input
+            type="text"
+            name="first_name"
+            placeholder="Enter your first name"
+
+            value="{{ old('first_name', Auth::user()->first_name) }}"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 text-sm md:text-base"
+        >
+        <!-- Show error if validation fails -->
+        @error('first_name')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+        @enderror
+    </div>
+</div>
+
 
             <div class="flex-1">
                 <label class="block text-sm md:text-base font-semibold">Last Name <span>(Optional)</span></label>
