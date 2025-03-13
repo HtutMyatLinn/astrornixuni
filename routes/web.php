@@ -61,8 +61,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/dashboard', [HomeController::class, 'administrator'])->name('admin')->middleware(TrackBrowser::class);
 
         // Account setting routes
-        Route::get('/admin/account-setting', [HomeController::class, 'adminAccountSetting'])->name('admin.account-setting');
-        Route::post('/admin/update-account-setting/{id}', [HomeController::class, 'adminEditAccountSetting'])->name('admin.update-account-setting');
+        // Route::get('/admin/account-setting', [HomeController::class, 'adminAccountSetting'])->name('admin.account-setting');
+        // Route::post('/admin/update-account-setting/{id}', [HomeController::class, 'adminEditAccountSetting'])->name('admin.update-account-setting');
+
+        Route::get('/admin/account-setting', [AdminController::class, 'accountSetting'])->name('admin.account-setting');
+        Route::post('/admin/update-account-setting/{id}', [AdminController::class, 'updateAccountSetting'])->name('admin.update-account-setting');
+        Route::post('/admin/change-password', [AdminController::class, 'changePassword'])->name('admin.change-password');
 
         Route::get('/data-management/contribution-category', [HomeController::class, 'contributionCategory'])->name('data-management.contribution-category');
         Route::get('/admin/notifications/password-reset', [HomeController::class, 'administratorNotificationsPassword'])->name('admin.notifications.password-reset');

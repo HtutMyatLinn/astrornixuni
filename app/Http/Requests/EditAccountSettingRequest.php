@@ -24,23 +24,22 @@ class EditAccountSettingRequest extends FormRequest
         return [
             'username' => ['required', 'string', 'max:30'],
             'first_name' => ['required', 'string', 'max:30'],
-            'last_name' => ['max:30'],
+            'last_name' => ['nullable', 'string', 'max:30'],
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // 2MB max
         ];
     }
 
     public function messages(): array
     {
         return [
-            // Username messages
             'username.required' => 'Username is required.',
             'username.max' => 'Username must not exceed 30 characters.',
-
-            // First name messages
             'first_name.required' => 'First name is required.',
             'first_name.max' => 'First name must not exceed 30 characters.',
-
-            // Last name messages
             'last_name.max' => 'Last name must not exceed 30 characters.',
+            'profile_image.image' => 'The file must be an image.',
+            'profile_image.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
+            'profile_image.max' => 'The image may not be greater than 2MB.',
         ];
     }
 }
