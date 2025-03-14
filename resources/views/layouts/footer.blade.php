@@ -75,7 +75,7 @@
         <!-- Country/Region -->
         <div class="text-center mt-4 text-sm font-medium">
             <p>Country/Region</p>
-            <p>Myanmar/Yangon</p>
+            <p>Myanmar/Pyin Oo Lwin</p>
         </div>
     </div>
 </footer>

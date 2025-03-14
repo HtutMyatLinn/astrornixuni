@@ -28,6 +28,7 @@ class ContributionRequest extends FormRequest
             'contribution_description' => 'required|string',
             'contribution_cover' => 'required', // Max 2MB
             'contribution_file_path' => 'required', // Max 5MB
+            'terms_and_conditions' => 'required|accepted'
         ];
     }
 
@@ -54,6 +55,9 @@ class ContributionRequest extends FormRequest
             'contribution_file_path.required' => 'The contribution file path is required.',
             'contribution_file_path.file' => 'The contribution file must be a valid file.',
             'contribution_file_path.max' => 'The contribution file must not exceed 5MB.',
+
+            'terms_and_conditions.required' => 'You must agree to the terms and conditions.',
+            'terms_and_conditions.accepted' => 'You must agree to the terms and conditions.',
         ];
     }
 }

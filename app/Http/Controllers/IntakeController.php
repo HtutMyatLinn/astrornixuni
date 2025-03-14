@@ -52,21 +52,21 @@ class IntakeController extends Controller
      * Update the specified resource in storage.
      */
 
-public function update(Request $request, string $id)
-{
-    $request->validate([
-        'edit_intake' => 'required|string|max:50',
-        'status' => 'required|in:active,finished,upcoming',
-    ]);
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'edit_intake' => 'required|string|max:50',
+            'status' => 'required|in:active,finished,upcoming',
+        ]);
 
-    $intake = Intake::findOrFail($id);
-    $intake->intake = $request->edit_intake;
-    $intake->status = $request->status;
-    $intake->save();
+        $intake = Intake::findOrFail($id);
+        $intake->intake = $request->edit_intake;
+        $intake->status = $request->status;
+        $intake->save();
 
-    return redirect()->route('academic-years.index', ['#overall-information'])
-        ->with('intake_success', 'Intake updated successfully.');
-}
+        return redirect()->route('academic-years.index', ['#overall-information'])
+            ->with('intake_update_success', 'Intake updated successfully.');
+    }
 
     /**
      * Remove the specified resource from storage.

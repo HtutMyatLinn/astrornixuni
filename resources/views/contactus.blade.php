@@ -123,7 +123,7 @@
                         <p class="flex items-center text-sm md:text-base">
                             <img src="{{ asset('images/location.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
                                 alt="Location">
-                            <span class="ml-2">123 University Street, City, Country</span>
+                            <span class="ml-2">Taung Hlay Kar st, Pyin Oo Lwin, Myanmar</span>
                         </p>
                         <p class="flex items-center text-sm md:text-base">
                             <img src="{{ asset('images/phone.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
@@ -133,7 +133,7 @@
                         <p class="flex items-center text-sm md:text-base">
                             <img src="{{ asset('images/Message.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
                                 alt="Email">
-                            <span class="ml-2">contact@universitymagazine.com</span>
+                            <span class="ml-2">astrornixuni27@gmail.com</span>
                         </p>
                         <p class="flex items-start text-sm md:text-base">
                             <img src="{{ asset('images/clock.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
@@ -151,7 +151,7 @@
                 <div class="bg-white p-4 md:p-8 rounded-lg shadow-md w-full">
                     <h3 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4">Our Location</h3>
                     <iframe class="w-full h-48 md:h-72 rounded-md"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345086165!2d144.95373631590485!3d-37.81720974202178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d5df6f6d85f%3A0x4e84c5ef31b4d0f1!2sMarvel%20Stadium!5e0!3m2!1sen!2us!4v1617654460081!5m2!1sen!2us"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1337.1271387891006!2d96.45299202258343!3d22.058375233718888!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30cb6dce604dd19f%3A0x78f9e343e467d34d!2zWlBBIFBvbCDhgKHhgK3hgJnhgLo!5e0!3m2!1sen!2smm!4v1741951503173!5m2!1sen!2smm"
                         allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
