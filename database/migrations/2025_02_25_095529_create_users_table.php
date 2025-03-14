@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('profile_image', 255)->nullable();
             $table->unsignedBigInteger('faculty_id')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
-            $table->date('last_login_date')->nullable();
+            $table->timestamp('last_login_date')->nullable();
             $table->date('last_password_changed_date')->nullable();
             $table->date('password_expired_date')->nullable();
             $table->integer('login_count')->default(0);
