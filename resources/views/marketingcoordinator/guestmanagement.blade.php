@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Load Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css"
+        integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite('resources/css/app.css')
@@ -62,8 +65,8 @@
                                             class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
                                             Filter By
                                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="m6 9 6 6 6-6" />
                                             </svg>
                                         </button>
@@ -84,8 +87,8 @@
                                             class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
                                             Sort By
                                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="m6 9 6 6 6-6" />
                                             </svg>
                                         </button>
@@ -109,6 +112,8 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User Code
+                                            </th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty
                                             </th>
@@ -122,40 +127,90 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
-                                        @foreach ($guests as $guest)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <div>
-                                                        <div class="font-medium">{{ $guest->username }}</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">{{ $guest->faculty->faculty }}</td>
-                                            <td class="px-6 py-4 text-gray-600">Guest</td> <!-- Hardcoded as "Guest" -->
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm {{ $guest->status ? 'bg-[#CAF4E0]' : 'bg-[#FAAFBD]' }} text-black">
-                                                    {{ $guest->status ? 'Active' : 'Inactive' }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">{{ $guest->last_login_date }}</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <!-- Edit Button -->
-                                                    <button class="text-blue-600 hover:text-blue-700" onclick="openEditModal('{{ $guest->user_id }}', '{{ $guest->status }}')">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <path
-                                                                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                            <path d="m15 5 4 4" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                        @if ($guests->isNotEmpty())
+                                            @foreach ($guests as $guest)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $guest->user_code }}
+                                                    </td>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center gap-3">
+                                                            @if ($guest->profile_image)
+                                                                @php
+                                                                    $publicPath =
+                                                                        'profile_images/' . $guest->profile_image;
+                                                                    $storagePath =
+                                                                        'storage/profile_images/' .
+                                                                        $guest->profile_image;
+                                                                @endphp
+
+                                                                @if (file_exists(public_path($publicPath)))
+                                                                    <img id="profilePreview"
+                                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                                        src="{{ asset($publicPath) }}" alt="Profile">
+                                                                @elseif (file_exists(public_path($storagePath)))
+                                                                    <img id="profilePreview"
+                                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                                        src="{{ asset($storagePath) }}"
+                                                                        alt="Profile">
+                                                                @else
+                                                                    <p
+                                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                        {{ strtoupper($guest->username[0]) }}
+                                                                    </p>
+                                                                @endif
+                                                            @else
+                                                                <p
+                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                    {{ strtoupper($guest->username[0]) }}
+                                                                </p>
+                                                            @endif
+                                                            <div>
+                                                                <div class="font-medium">
+                                                                    {{ $guest->first_name . ' ' . $guest->last_name }}
+                                                                </div>
+                                                                <div class="text-sm text-gray-500">
+                                                                    {{ $guest->email }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">{{ $guest->faculty->faculty }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">Guest</td>
+                                                    <!-- Hardcoded as "Guest" -->
+                                                    <td class="px-6 py-4">
+                                                        @if ($guest->status == 1)
+                                                            <span
+                                                                class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
+                                                        @else
+                                                            <span
+                                                                class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $guest->last_login_date ?? 'N/A' }}
+                                                    </td>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center gap-3">
+                                                            <!-- Edit Button -->
+                                                            <a href="{{ route('marketingcoordinator.edit-user-data', ['id' => $guest->user_id]) }}"
+                                                                class="text-[#2F64AA] hover:text-blue-700">
+                                                                <i class="ri-eye-line text-xl"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="7">
+                                                    No users found.
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -180,13 +235,15 @@
                 @method('PUT')
                 <div class="mb-4">
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                    <select name="status" id="status" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
+                    <select name="status" id="status"
+                        class="mt-1 block w-full p-2 border border-gray-300 rounded-lg">
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                     </select>
                 </div>
                 <div class="flex justify-end">
-                    <button type="button" onclick="closeEditModal()" class="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
+                    <button type="button" onclick="closeEditModal()"
+                        class="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Update</button>
                 </div>
             </form>

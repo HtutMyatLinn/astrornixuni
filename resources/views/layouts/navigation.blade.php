@@ -20,7 +20,7 @@
                     <x-nav-link :href="route('contributions')" :active="request()->routeIs('contributions')">
                         {{ __('Contributions') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('faculty')" :active="request()->routeIs('faculty')">
+                    <x-nav-link :href="route('faculty')" :active="request()->routeIs('faculty')" id="faculty-link">
                         {{ __('Faculty') }}
                     </x-nav-link>
                     <x-nav-link :href="route('aboutus')" :active="request()->routeIs('aboutus')">
@@ -30,6 +30,75 @@
                         {{ __('Contact') }}
                     </x-nav-link>
                 </div>
+
+                <!-- Mega Menu Dropdown -->
+                <div id="mega-menu"
+                    class="absolute left-0 top-full w-full bg-white shadow-lg p-6 flex-col space-y-4 border border-gray-200 opacity-0 invisible transition-all duration-300 transform -translate-y-2">
+                    <div class="grid grid-cols-3 gap-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Departments</h3>
+                            <ul class="mt-2 space-y-2">
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Science</a></li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Engineering</a>
+                                </li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Arts</a></li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Business</a></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Resources</h3>
+                            <ul class="mt-2 space-y-2">
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Research</a></li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Events</a></li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Publications</a>
+                                </li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Scholarships</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Departments</h3>
+                            <ul class="mt-2 space-y-2">
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Science</a></li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Engineering</a>
+                                </li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Arts</a></li>
+                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Business</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    // Get the Faculty link and Mega Menu elements
+                    const facultyLink = document.getElementById('faculty-link');
+                    const megaMenu = document.getElementById('mega-menu');
+
+                    // Show Mega Menu on hover
+                    facultyLink.addEventListener('mouseenter', () => {
+                        megaMenu.classList.remove('opacity-0', 'invisible', '-translate-y-2');
+                        megaMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
+                    });
+
+                    // Hide Mega Menu when mouse leaves
+                    facultyLink.addEventListener('mouseleave', () => {
+                        megaMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                        megaMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+                    });
+
+                    // Optional: Keep Mega Menu open if mouse is over it
+                    megaMenu.addEventListener('mouseenter', () => {
+                        megaMenu.classList.remove('opacity-0', 'invisible', '-translate-y-2');
+                        megaMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
+                    });
+
+                    megaMenu.addEventListener('mouseleave', () => {
+                        megaMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
+                        megaMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
+                    });
+                </script>
             </div>
 
             <!-- Settings Dropdown -->
@@ -140,6 +209,7 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
+    <!-- Mobile Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('/')" :active="request()->routeIs('/')">
@@ -148,9 +218,48 @@
             <x-responsive-nav-link :href="route('contributions')" :active="request()->routeIs('contributions')">
                 {{ __('Contributions') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('faculty')" :active="request()->routeIs('faculty')">
-                {{ __('Faculty') }}
-            </x-responsive-nav-link>
+
+            <!-- Faculty Link with Mega Menu Toggle -->
+            <div x-data="{ isFacultyOpen: false }">
+                <x-responsive-nav-link @click="isFacultyOpen = !isFacultyOpen" :active="request()->routeIs('faculty')">
+                    {{ __('Faculty') }}
+                    <svg class="w-4 h-4 inline ml-1 transition-transform" :class="{ 'rotate-180': isFacultyOpen }"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </x-responsive-nav-link>
+
+                <!-- Mega Menu for Mobile -->
+                <div x-show="isFacultyOpen" x-collapse class="pl-4 space-y-1">
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Departments</h3>
+                            <ul class="mt-2 space-y-2">
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Science</a></li>
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Engineering</a>
+                                </li>
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Arts</a></li>
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Business</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Resources</h3>
+                            <ul class="mt-2 space-y-2">
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Research</a>
+                                </li>
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Events</a></li>
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Publications</a>
+                                </li>
+                                <li><a href="#" class="block text-gray-600 hover:text-blue-600">Scholarships</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <x-responsive-nav-link :href="route('aboutus')" :active="request()->routeIs('aboutus')">
                 {{ __('About') }}
             </x-responsive-nav-link>
@@ -179,7 +288,7 @@
 
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                                    this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>

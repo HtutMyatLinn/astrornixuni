@@ -148,29 +148,27 @@ class HomeController extends Controller
         // Round the percentage to 2 decimal places
         $assigned_user_percentage_change = round($assigned_user_percentage_change, 2);
 
-        // New inquiry
-        $new_inquiries = Inquiry::where('inquiry_status', 'Pending')->get();
+        // Inquiry
+        $inquiries = Inquiry::all();
 
         // Get the current month's new inquiry count
-        $current_month_new_inquiries = Inquiry::where('inquiry_status', 'Pending')
-            ->whereYear('created_at', Carbon::now()->year)
+        $current_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
 
         // Get the previous month's new inquiry count
-        $previous_month_new_inquiries = Inquiry::where('inquiry_status', 'Pending')
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+        $previous_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->subMonth()->year)
             ->whereMonth('created_at', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change
-        $new_inquiry_percentage_change = 0;
-        if ($previous_month_new_inquiries > 0) {
-            $new_inquiry_percentage_change = (($current_month_new_inquiries - $previous_month_new_inquiries) / $previous_month_new_inquiries) * 100;
+        $inquiry_percentage_change = 0;
+        if ($previous_month_inquiries > 0) {
+            $inquiry_percentage_change = (($current_month_inquiries - $previous_month_inquiries) / $previous_month_inquiries) * 100;
         }
 
         // Round the percentage to 2 decimal places
-        $new_inquiry_percentage_change = round($new_inquiry_percentage_change, 2);
+        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
 
         // Total student
         $total_students = User::whereHas('role', function ($query) {
@@ -203,7 +201,7 @@ class HomeController extends Controller
         $student_percentage_change = round($student_percentage_change, 2);
         $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
-        return view('admin.notificationspassword', compact('unassigned_users', 'assigned_user_percentage_change', 'new_inquiries', 'new_inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions'));
+        return view('admin.notificationspassword', compact('unassigned_users', 'assigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions'));
     }
 
     public function administratorEditUserData($id)
@@ -213,6 +211,15 @@ class HomeController extends Controller
         $faculties = Faculty::all();
 
         return view('admin.edituserdata', compact('user', 'roles', 'faculties'));
+    }
+
+    public function marketingcoordinatorEditUserData($id)
+    {
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $faculties = Faculty::all();
+
+        return view('marketingcoordinator.edituserdata', compact('user', 'roles', 'faculties'));
     }
 
     public function administratorUpdateUserData(UserEditRequest $request, string $id)
@@ -279,14 +286,17 @@ class HomeController extends Controller
         $facultyId = $coordinator->faculty_id;
 
         // Start building the query
-        $query = User::where('faculty_id', $facultyId)
-            ->where('role_id', 5); // Assuming 'guest' is the role_id for guests
+        $query = User::where('faculty_id', $facultyId) // Filter by faculty_id
+            ->whereHas('role', function ($query) {
+                $query->where('role', 'Guest'); // Filter by role
+            });
 
         // Apply search filter
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('username', 'LIKE', "%{$search}%")
+                $q->where('user_code', 'LIKE', "%{$search}%")
+                    ->orWhere('username', 'LIKE', "%{$search}%")
                     ->orWhere('first_name', 'LIKE', "%{$search}%")
                     ->orWhere('last_name', 'LIKE', "%{$search}%");
             });
@@ -307,19 +317,6 @@ class HomeController extends Controller
         $guests = $query->paginate(10);
 
         return view('marketingcoordinator.guestmanagement', compact('guests'));
-    }
-
-    public function updateGuestStatus(Request $request, $userId)
-    {
-        $request->validate([
-            'status' => 'required|in:0,1', // Ensure status is either 0 or 1
-        ]);
-
-        $user = User::findOrFail($userId);
-        $user->status = (int) $request->status; // Cast to integer
-        $user->save();
-
-        return redirect()->route('marketingcoordinator.guest-management')->with('success', 'Status updated successfully.');
     }
 
     public function marketingcoordinatorSubmissionManagement()
