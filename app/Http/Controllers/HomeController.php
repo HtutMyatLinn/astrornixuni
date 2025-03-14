@@ -270,10 +270,58 @@ class HomeController extends Controller
     {
         return view('marketingcoordinator.accountsetting');
     }
-    public function marketingcoordinatorGuestManagement()
+    public function marketingcoordinatorGuestManagement(Request $request)
     {
-        return view('marketingcoordinator.guestmanagement');
+        // Get the logged-in user
+        $coordinator = auth()->user();
+
+        // Get the faculty ID of the logged-in coordinator
+        $facultyId = $coordinator->faculty_id;
+
+        // Start building the query
+        $query = User::where('faculty_id', $facultyId)
+            ->where('role_id', 5); // Assuming 'guest' is the role_id for guests
+
+        // Apply search filter
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('username', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('last_name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply status filter
+        if ($request->has('status')) {
+            $status = $request->input('status');
+            $query->where('status', $status);
+        }
+
+        // Apply sorting
+        $sort = $request->input('sort', 'last_login_date');
+        $order = $request->input('order', 'desc');
+        $query->orderBy($sort, $order);
+
+        // Paginate the results
+        $guests = $query->paginate(10);
+
+        return view('marketingcoordinator.guestmanagement', compact('guests'));
     }
+
+    public function updateGuestStatus(Request $request, $userId)
+    {
+        $request->validate([
+            'status' => 'required|in:0,1', // Ensure status is either 0 or 1
+        ]);
+
+        $user = User::findOrFail($userId);
+        $user->status = (int) $request->status; // Cast to integer
+        $user->save();
+
+        return redirect()->route('marketingcoordinator.guest-management')->with('success', 'Status updated successfully.');
+    }
+
     public function marketingcoordinatorSubmissionManagement()
     {
         return view('marketingcoordinator.submissionmanagement');
