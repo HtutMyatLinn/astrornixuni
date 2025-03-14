@@ -144,6 +144,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/marketingcoordinator/guest-management', [HomeController::class, 'marketingcoordinatorGuestManagement'])->name('marketingcoordinator.guest-management');
 
+        Route::put('/marketingcoordinator/guest-management/{user}', [HomeController::class, 'updateGuestStatus'])->name('marketingcoordinator.update-guest-status');
+
         Route::get('/marketingcoordinator/submission-management', [HomeController::class, 'marketingcoordinatorSubmissionManagement'])->name('marketingcoordinator.submission-management');
 
         Route::get('/marketingcoordinator/submission-management/view-detail-contribution', [HomeController::class, 'marketingcoordinatorSubmissionManagementViewDetailContribution'])->name('marketingcoordinator.submission-management.view-detail-contribution');
