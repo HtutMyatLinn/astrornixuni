@@ -76,6 +76,7 @@ class CommentController extends Controller
         ]);
 
         $comment->comment_text = $request->comment_text;
+        $comment->updated_at = now();
         $comment->save();
 
         return response()->json(['message' => 'Comment updated successfully']);

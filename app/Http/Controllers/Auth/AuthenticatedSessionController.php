@@ -32,9 +32,6 @@ class AuthenticatedSessionController extends Controller
 
         // Increase login count
         $user->increment('login_count');
-
-        // Change the user's status to active (1)
-        $user->status = 1;
         $user->save();
 
         // Check if the user has a role assigned

@@ -137,7 +137,15 @@
                         <div>
                             <div class="flex items-center gap-3">
                                 <h4 class="font-semibold text-gray-800">{{ $comment->user->username }}</h4>
-                                <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                                <div>
+                                    <span
+                                        class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
+                                    <span>
+                                        @if ($comment->created_at != $comment->updated_at)
+                                            <span class="text-sm text-gray-400">(Edited)</span>
+                                        @endif
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- Alpine.js for Read More Feature -->

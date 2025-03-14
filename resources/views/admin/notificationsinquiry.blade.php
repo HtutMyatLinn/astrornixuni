@@ -88,19 +88,19 @@
                                 <div class="flex items-end justify-between">
                                     <!-- Numbers -->
                                     <div class="space-y-1">
-                                        <h2 class="text-3xl font-bold">{{ $new_inquiries->count() }}</h2>
+                                        <h2 class="text-3xl font-bold">{{ $inquiries->count() }}</h2>
                                         <p class="text-xl text-gray-400">New Inquiries</p>
                                     </div>
 
                                     <!-- Percentage -->
                                     <div class="flex items-center gap-1">
-                                        @if ($new_inquiry_percentage_change > 0)
+                                        @if ($inquiry_percentage_change > 0)
                                             <span
-                                                class="text-emerald-500 text-xl font-medium">{{ $new_inquiry_percentage_change }}%
+                                                class="text-emerald-500 text-xl font-medium">{{ $inquiry_percentage_change }}%
                                                 ↑</span>
-                                        @elseif ($new_inquiry_percentage_change < 0)
+                                        @elseif ($inquiry_percentage_change < 0)
                                             <span
-                                                class="text-red-500 text-xl font-medium">{{ abs($new_inquiry_percentage_change) }}%
+                                                class="text-red-500 text-xl font-medium">{{ abs($inquiry_percentage_change) }}%
                                                 ↓</span>
                                         @else
                                             <span class="text-gray-500 text-xl font-medium">0%</span>

@@ -15,7 +15,7 @@
     <!-- User Profile Section with Dropdown -->
     <div class="p-4 text-white bg-[#1C2434]" x-data="{ open: false }">
         <button @click="open = !open" class="flex items-center justify-between w-full space-x-3 py-2 focus:outline-none">
-            <div class="flex float-start space-x-3">
+            <div class="flex  items-center space-x-3">
                 <!-- Centered Profile Picture -->
                 @if (Auth::check())
                     @if (Auth::user()->profile_image)
