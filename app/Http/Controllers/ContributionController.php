@@ -16,7 +16,7 @@ class ContributionController extends Controller
      */
     public function index()
     {
-        $intakes = Intake::all();
+        $intakes = Intake::where('status', 'active')->get();
         $contribution_categories = ContributionCategory::all();
 
         return view('student.upload_contribution', compact('intakes', 'contribution_categories'));

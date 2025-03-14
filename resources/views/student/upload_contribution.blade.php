@@ -84,10 +84,8 @@
                     <label class="block text-gray-700 font-medium mb-2">Intake</label>
                     <select name="intake_id"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="" {{ old('intake_id') == '' ? 'selected' : '' }}>Select a
-                            intake</option>
                         @if ($intakes->isEmpty())
-                            <option disabled>No data found</option>
+                            <option disabled>No active intakes found</option>
                         @else
                             @foreach ($intakes as $intake)
                                 <option value="{{ $intake->intake_id }}"
@@ -135,7 +133,7 @@
                     <textarea name="contribution_description" placeholder="Provide a brief summary of your contributions..."
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                     @error('contribution_description')
-                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                        <p class="absolute left-2 -bottom-1 bg-white text-red-500 text-sm mt-1">
                             {{ $message }}
                         </p>
                     @enderror
@@ -147,7 +145,7 @@
                     <input type="file" name="contribution_cover"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
                     @error('contribution_cover')
-                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                        <p class="absolute left-2 -bottom-3 bg-white text-red-500 text-sm mt-1">
                             {{ $message }}
                         </p>
                     @enderror
@@ -159,7 +157,24 @@
                     <input type="file" name="contribution_file_path"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
                     @error('contribution_file_path')
-                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                        <p class="absolute left-2 -bottom-3 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center">
+                        <input type="checkbox" name="terms_and_conditions" id="terms_and_conditions"
+                            class="w-4 h-4 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
+                        <label for="terms_and_conditions" class="ml-2 text-sm text-gray-600">
+                            I agree to the <a href="{{ asset('pdfs/Term&Conditionforstudent.pdf') }}" target="-blank"
+                                class="text-blue-500 hover:underline">terms and
+                                conditions</a>.
+                        </label>
+                    </div>
+                    @error('terms_and_conditions')
+                        <p class="bg-white text-red-500 text-sm mt-1">
                             {{ $message }}
                         </p>
                     @enderror

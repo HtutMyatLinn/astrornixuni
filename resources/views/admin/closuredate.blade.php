@@ -60,7 +60,7 @@
                             <script>
                                 setTimeout(() => {
                                     document.getElementById('success-message').style.display = 'none';
-                                }, 3000);
+                                }, 5000);
                             </script>
                         @endif
 
@@ -262,7 +262,7 @@
                                 <script>
                                     setTimeout(() => {
                                         document.getElementById('intake-success-message').style.display = 'none';
-                                    }, 3000);
+                                    }, 5000);
                                 </script>
                             @endif
 
@@ -289,7 +289,7 @@
                                         @endif
                                     </select>
                                     @error('academic_year_select')
-                                        <p class="text-red-500 text-sm mt-1">
+                                        <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
                                             {{ $message }}
                                         </p>
                                     @enderror
@@ -361,19 +361,19 @@
                             <h2 class=" text-lg font-semibold text-gray-400 mb-4">
                                 Total - {{ $intakes->count() }}</h2>
 
-                                @if (session('intake_success'))
-        <div id="intake-success-message"
-            class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
-            role="alert">
-            <span class="block sm:inline">{{ session('intake_success') }}</span>
-        </div>
+                            @if (session('intake_update_success'))
+                                <div id="intake-success-message"
+                                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                                    role="alert">
+                                    <span class="block sm:inline">{{ session('intake_update_success') }}</span>
+                                </div>
 
-        <script>
-            setTimeout(() => {
-                document.getElementById('intake-success-message').style.display = 'none';
-            }, 3000);
-        </script>
-    @endif
+                                <script>
+                                    setTimeout(() => {
+                                        document.getElementById('intake-success-message').style.display = 'none';
+                                    }, 5000);
+                                </script>
+                            @endif
 
                             <!-- Search and Filters -->
                             <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between mb-8">
@@ -465,26 +465,35 @@
                                                             {{ $intake->final_closure_date ?? 'N/A' }}
                                                         </td>
                                                         <td class="px-6 py-4">
-        @if ($intake->status == 'active')
-            <span class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
-        @elseif ($intake->status == 'finished')
-            <span class="px-3 py-1 rounded-full text-sm bg-[#E2E8F0] text-gray-800">Finished</span>
-        @elseif ($intake->status == 'upcoming')
-            <span class="px-3 py-1 rounded-full text-sm bg-[#FEF3C7] text-amber-800">Upcoming</span>
-        @else
-            <span class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
-        @endif
-    </td>
+                                                            @if ($intake->status == 'active')
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
+                                                            @elseif ($intake->status == 'finished')
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#E2E8F0] text-gray-800">Finished</span>
+                                                            @elseif ($intake->status == 'upcoming')
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#FEF3C7] text-amber-800">Upcoming</span>
+                                                            @else
+                                                                <span
+                                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
+                                                            @endif
+                                                        </td>
                                                         <td class="px-6 py-4">
-    <button
-        onclick="openEditIntakeModal('{{ $intake->intake_id }}', '{{ $intake->intake }}', '{{ $intake->academic_year_id }}', '{{ $intake->closure_date }}')"
-        class="text-blue-600 hover:text-blue-700">
-        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-            <path d="m15 5 4 4" />
-        </svg>
-    </button>
-</td>
+                                                            <button
+                                                                onclick="openEditIntakeModal('{{ $intake->intake_id }}', '{{ $intake->intake }}', '{{ $intake->academic_year_id }}', '{{ $intake->closure_date }}')"
+                                                                class="text-blue-600 hover:text-blue-700">
+                                                                <svg class="h-5 w-5"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path
+                                                                        d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                                                    <path d="m15 5 4 4" />
+                                                                </svg>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -507,50 +516,63 @@
                             @endif
                         </div>
 
-                        <div id="editIntakeModal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
-    <div class="max-w-md w-full bg-white p-8 rounded-md shadow-lg relative">
-        <button onclick="closeEditIntakeModal()" class="absolute top-2 right-2 text-black">✖</button>
+                        <div id="editIntakeModal"
+                            class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
+                            <div class="max-w-md w-full bg-white p-8 rounded-md shadow-lg relative">
+                                <button onclick="closeEditIntakeModal()"
+                                    class="absolute top-2 right-2 text-black">✖</button>
 
-        <h1 class="text-2xl font-bold text-center mb-6">
-            Edit <span class="border-b-2 border-blue-600">Intake</span>
-        </h1>
+                                <h1 class="text-2xl font-bold text-center mb-6">
+                                    Edit <span class="border-b-2 border-blue-600">Intake</span>
+                                </h1>
 
-        <form id="editIntakeForm" method="POST">
-            @csrf
-            @method('PUT')
+                                <form id="editIntakeForm" method="POST">
+                                    @csrf
+                                    @method('PUT')
 
-            <!-- Hidden ID Input -->
-            <input type="hidden" id="editIntakeId" name="intake_id">
+                                    <!-- Hidden ID Input -->
+                                    <input type="hidden" id="editIntakeId" name="intake_id">
 
-            <!-- Intake Input -->
-            <div class="mb-4 relative">
-                <label class="block text-sm font-medium mb-2">Intake :</label>
-                <input type="text" id="editIntake" name="edit_intake" placeholder="Enter intake..."
-                    class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+                                    <!-- Intake Input -->
+                                    <div class="mb-4 relative">
+                                        <label class="block text-sm font-medium mb-2">Intake :</label>
+                                        <input type="text" id="editIntake" name="edit_intake"
+                                            placeholder="Enter intake..."
+                                            class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    </div>
 
 
-            <!-- intake status -->
-            <div class="mb-4 relative">
-    <label class="block text-sm font-medium mb-2">Status :</label>
-    <select name="status" id="editStatus"
-    class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-    <option value="active" {{ $intake->status === 'active' ? 'selected' : '' }}>Active</option>
-    <option value="finished" {{ $intake->status === 'finished' ? 'selected' : '' }}>Finished</option>
-    <option value="upcoming" {{ $intake->status === 'upcoming' ? 'selected' : '' }}>Upcoming</option>
-</select>
-</div>
+                                    <!-- intake status -->
+                                    <div class="mb-4 relative">
+                                        <label class="block text-sm font-medium mb-2">Status :</label>
+                                        @if (isset($intake) && $intake)
+                                            <select name="status" id="editStatus"
+                                                class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                <option value="active"
+                                                    {{ $intake->status === 'active' ? 'selected' : '' }}>Active
+                                                </option>
+                                                <option value="finished"
+                                                    {{ $intake->status === 'finished' ? 'selected' : '' }}>Finished
+                                                </option>
+                                                <option value="upcoming"
+                                                    {{ $intake->status === 'upcoming' ? 'selected' : '' }}>Upcoming
+                                                </option>
+                                            </select>
+                                        @else
+                                            <p class="text-sm text-gray-500">No data available.</p>
+                                        @endif
+                                    </div>
 
-            <!-- Save Button -->
-            <div class="flex justify-center">
-                <button type="submit"
-                    class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 select-none">
-                    Update
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+                                    <!-- Save Button -->
+                                    <div class="flex justify-center">
+                                        <button type="submit"
+                                            class="px-12 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 select-none">
+                                            Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -607,71 +629,72 @@
             document.getElementById('editAcademicYearModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
         }
 
-       // intake
+        // intake
 
-       function openEditIntakeModal(intakeId, intake) {
-    document.getElementById('editIntakeId').value = intakeId;
-    document.getElementById('editIntake').value = intake;
+        function openEditIntakeModal(intakeId, intake) {
+            document.getElementById('editIntakeId').value = intakeId;
+            document.getElementById('editIntake').value = intake;
 
-    document.getElementById('editIntakeForm').action = `/admin/intakes/${intakeId}`;
+            document.getElementById('editIntakeForm').action = `/admin/intakes/${intakeId}`;
 
-    document.getElementById('editIntakeModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
-    document.getElementById('darkOverlay2').classList.remove('opacity-0', 'invisible');
-    document.getElementById('darkOverlay2').classList.add('opacity-100');
-}
-
-function closeEditIntakeModal() {
-    document.getElementById('editIntakeModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
-    document.getElementById('darkOverlay2').classList.add('opacity-0', 'invisible');
-    document.getElementById('darkOverlay2').classList.remove('opacity-100');
-}
-
-// Update the onclick attribute in the table row
-document.querySelectorAll('.edit-intake-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const intakeId = this.dataset.intakeId;
-        const intake = this.dataset.intake;
-        openEditIntakeModal(intakeId, intake);
-    });
-});
-
-function populateEditForm(intakeId, intakeName, intakeStatus) {
-    document.getElementById('editIntakeId').value = intakeId;
-    document.getElementById('editIntake').value = intakeName;
-
-    // Set the selected status
-    const statusSelect = document.getElementById('editStatus');
-    for (let i = 0; i < statusSelect.options.length; i++) {
-        if (statusSelect.options[i].value === intakeStatus) {
-            statusSelect.selectedIndex = i;
-            break;
+            document.getElementById('editIntakeModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
+            document.getElementById('darkOverlay2').classList.remove('opacity-0', 'invisible');
+            document.getElementById('darkOverlay2').classList.add('opacity-100');
         }
-    }
-}
 
-    // ... other JavaScript functions ...
-
-    // Auto-scroll function
-    function scrollToElement(elementId) {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        function closeEditIntakeModal() {
+            document.getElementById('editIntakeModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+            document.getElementById('darkOverlay2').classList.add('opacity-0', 'invisible');
+            document.getElementById('darkOverlay2').classList.remove('opacity-100');
         }
-    }
 
-    // Call this function when the page loads
-    window.onload = function() {
-        @if ($errors->any())
-            openModal();
-        @endif
+        // Update the onclick attribute in the table row
+        document.querySelectorAll('.edit-intake-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const intakeId = this.dataset.intakeId;
+                const intake = this.dataset.intake;
+                openEditIntakeModal(intakeId, intake);
+            });
+        });
 
-        // Check if there's a hash in the URL and scroll to that element
-        if (window.location.hash) {
-            scrollToElement(window.location.hash.substring(1));
+        function populateEditForm(intakeId, intakeName, intakeStatus) {
+            document.getElementById('editIntakeId').value = intakeId;
+            document.getElementById('editIntake').value = intakeName;
+
+            // Set the selected status
+            const statusSelect = document.getElementById('editStatus');
+            for (let i = 0; i < statusSelect.options.length; i++) {
+                if (statusSelect.options[i].value === intakeStatus) {
+                    statusSelect.selectedIndex = i;
+                    break;
+                }
+            }
         }
-    };
 
+        // ... other JavaScript functions ...
 
+        // Auto-scroll function
+        function scrollToElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        // Call this function when the page loads
+        window.onload = function() {
+            @if ($errors->any())
+                openModal();
+            @endif
+
+            // Check if there's a hash in the URL and scroll to that element
+            if (window.location.hash) {
+                scrollToElement(window.location.hash.substring(1));
+            }
+        };
     </script>
 
     <!-- JavaScript for Sidebar Toggle -->
