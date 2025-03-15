@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EditAccountSettingRequest;
+use App\Models\PasswordResetRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,8 +66,6 @@ class AdminController extends Controller
         return view('admin.accountsetting', compact('user'));
     }
 
-
-
     // Update the admin's account settings
     public function updateAccountSetting(EditAccountSettingRequest $request, $id)
     {
@@ -120,5 +119,25 @@ class AdminController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Password changed successfully.');
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,user_id',
+            'password' => 'required|min:6',
+        ]);
+
+        $user = User::where('user_id', $request->user_id)->first();
+        $user->password = Hash::make($request->password);
+
+        // Update the PasswordResetRequest status
+        PasswordResetRequest::where('user_id', $request->user_id)
+            ->where('status', 'Pending') // Ensure only pending requests are updated
+            ->update(['status' => 'Completed']);
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password reset successfully.');
     }
 }
