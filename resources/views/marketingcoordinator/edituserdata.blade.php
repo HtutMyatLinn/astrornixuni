@@ -56,15 +56,15 @@
 
                             @if (file_exists(public_path($publicPath)))
                                 <img id="profilePreview"
-                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl"
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl"
                                     src="{{ asset($publicPath) }}" alt="Profile">
                             @elseif (file_exists(public_path($storagePath)))
                                 <img id="profilePreview"
-                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl"
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl"
                                     src="{{ asset($storagePath) }}" alt="Profile">
                             @else
                                 <p
-                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
                                     {{ strtoupper($user->username[0]) }}
                                 </p>
                             @endif

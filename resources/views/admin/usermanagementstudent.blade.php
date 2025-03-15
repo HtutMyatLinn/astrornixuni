@@ -131,12 +131,12 @@
                                                 <div class="flex items-center gap-3">
                                                     @if ($student->profile_image)
                                                         <img id="profilePreview"
-                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
                                                             src="{{ asset('profile_images/' . $student->profile_image) }}"
                                                             alt="Profile">
                                                     @else
                                                         <p
-                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
                                                             {{ strtoupper($student->username[0]) }}
                                                         </p>
                                                     @endif
@@ -166,7 +166,7 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">
-                                                {{ $student->last_login_date ?? 'N/A' }}
+                                                {{ $student->last_login_date ? \Carbon\Carbon::parse($student->last_login_date)->format('M d, Y') : 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4">
                                                 <a href="{{ route('admin.edit-user-data', ['id' => $student->user_id]) }}"

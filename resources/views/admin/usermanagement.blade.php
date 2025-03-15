@@ -135,12 +135,12 @@
                                                 <div class="flex items-center gap-3">
                                                     @if ($admin->profile_image)
                                                         <img id="profilePreview"
-                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
                                                             src="{{ asset('storage/profile_images/' . $admin->profile_image) }}"
                                                             alt="Profile">
                                                     @else
                                                         <p
-                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
                                                             {{ strtoupper($admin->username[0]) }}
                                                         </p>
                                                     @endif
@@ -165,7 +165,8 @@
                                                         class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
                                                 @endif
                                             </td>
-                                            <td class="px-6 py-4 text-gray-600">{{ $admin->last_login_date ?? 'N/A' }}
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $admin->last_login_date ? \Carbon\Carbon::parse($admin->last_login_date)->format('M d, Y') : 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4">
                                                 <a href="{{ route('admin.edit-user-data', ['id' => $admin->user_id]) }}"

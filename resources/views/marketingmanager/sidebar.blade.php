@@ -20,11 +20,11 @@
                 @if (Auth::check())
                     @if (Auth::user()->profile_image)
                         <img id="profilePreview"
-                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
                             src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
                     @else
                         <p
-                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
                             {{ strtoupper(Auth::user()->username[0]) }}
                         </p>
                     @endif

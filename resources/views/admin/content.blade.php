@@ -150,11 +150,6 @@
                     <h2 class="text-3xl font-bold">{{ $faculties->count() }}</h2>
                     <p class="text-xl text-gray-400">Total Faculties</p>
                 </div>
-
-                <!-- Percentage -->
-                <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
-                </div>
             </div>
         </div>
         <!-- Total submissions Card -->
@@ -168,7 +163,7 @@
             <div class="flex items-end justify-between">
                 <!-- Numbers -->
                 <div class="space-y-1">
-                    <h2 class="text-3xl font-bold">{{ $contributions->count() }}</h2>
+                    <h2 class="text-3xl font-bold">{{ $total_contributions->count() }}</h2>
                     <p class="text-xl text-gray-400">Total Submissions</p>
                 </div>
 
@@ -189,13 +184,8 @@
             <div class="flex items-end justify-between">
                 <!-- Numbers -->
                 <div class="space-y-1">
-                    <h2 class="text-3xl font-bold">{{ $contributions->count() }}</h2>
+                    <h2 class="text-3xl font-bold">{{ $pending_contributions->count() }}</h2>
                     <p class="text-xl text-gray-400">Total Pending Contributions</p>
-                </div>
-
-                <!-- Percentage -->
-                <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
                 </div>
             </div>
         </div>
@@ -210,7 +200,7 @@
             <div class="flex items-end justify-between">
                 <!-- Numbers -->
                 <div class="space-y-1">
-                    <h2 class="text-3xl font-bold">{{ $published_contributions->count() }}</h2>
+                    <h2 class="text-3xl font-bold">{{ $selected_contributions->count() }}</h2>
                     <p class="text-xl text-gray-400">Approved Contributions</p>
                 </div>
 
