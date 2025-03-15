@@ -8,6 +8,7 @@ use App\Models\BrowserStat;
 use App\Models\Contribution;
 use App\Models\Faculty;
 use App\Models\Inquiry;
+use App\Models\PasswordResetRequest;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
@@ -199,11 +200,14 @@ class HomeController extends Controller
             $student_percentage_change = (($current_month_students - $previous_month_students) / $previous_month_students) * 100;
         }
 
+        // Reset password users
+        $reset_password_users = PasswordResetRequest::where('status', 'Pending')->paginate(10);
+
         // Round the percentage to 2 decimal places
         $student_percentage_change = round($student_percentage_change, 2);
         $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
-        return view('admin.notificationspassword', compact('unassigned_users', 'assigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions'));
+        return view('admin.notificationspassword', compact('unassigned_users', 'assigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions', 'reset_password_users'));
     }
 
     public function administratorEditUserData($id)

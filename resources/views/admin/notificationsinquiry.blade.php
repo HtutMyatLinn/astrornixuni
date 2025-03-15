@@ -262,8 +262,9 @@
                                                         </td>
                                                         <td class="px-6 py-4 text-gray-600">
                                                             {{ optional($inquiry->created_at)->format('M d, Y') ?? 'N/A' }}
-                                                            <span
-                                                                class="text-gray-400">{{ optional($inquiry->created_at)->format('h:i A') }}</span>
+                                                            <p class="text-gray-400">
+                                                                {{ optional($inquiry->created_at)->format('h:i A') }}
+                                                            </p>
                                                         </td>
                                                         <td class="px-6 py-4">
                                                             @if ($inquiry->inquiry_status == 'Pending')

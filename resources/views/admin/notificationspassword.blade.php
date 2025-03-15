@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Load Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css"
+        integrity="sha512-kJlvECunwXftkPwyvHbclArO8wszgBGisiLeuDFwNM8ws+wKIw0sv1os3ClWZOcrEB2eRXULYUsm8OVRGJKwGA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite('resources/css/app.css')
@@ -147,8 +150,23 @@
                             <!-- Header -->
                             <h1 class="text-2xl font-bold mb-6">List of Notifications</h1>
                             <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                                Total - 0
+                                Total - {{ $reset_password_users->count() }}
                             </h2>
+
+                            {{-- Message --}}
+                            @if (session('success'))
+                                <div id="success-message"
+                                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                                    role="alert">
+                                    <span class="block sm:inline">{{ session('success') }}</span>
+                                </div>
+
+                                <script>
+                                    setTimeout(() => {
+                                        document.getElementById('success-message').style.display = 'none';
+                                    }, 5000);
+                                </script>
+                            @endif
 
                             <!-- Tabs -->
                             <div class="flex gap-8 border-b mb-6">
@@ -252,112 +270,186 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                Notification Type</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Message
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User Code
                                             </th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date &
-                                                Time</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Role
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Request
+                                                Date & Time
                                             </th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
-                                        <!-- Row 1 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">Science</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Read</span>
-                                            </td>
+                                        @if ($reset_password_users->isNotEmpty())
+                                            @foreach ($reset_password_users as $reset_password_user)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $reset_password_user->user->user_code }}
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center gap-3">
+                                                            @if ($reset_password_user->user->profile_image)
+                                                                <img id="profilePreview"
+                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                                    src="{{ asset('profile_images/' . $reset_password_user->user->profile_image) }}"
+                                                                    alt="Profile">
+                                                            @else
+                                                                <p
+                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                    {{ strtoupper($reset_password_user->user->username[0]) }}
+                                                                </p>
+                                                            @endif
+                                                            <div>
+                                                                <div class="font-medium">
+                                                                    {{ $reset_password_user->user->first_name . ' ' . $reset_password_user->user->last_name }}
+                                                                </div>
+                                                                <div class="text-sm text-gray-500">
+                                                                    {{ $reset_password_user->user->email }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ optional($reset_password_user->user->faculty)->faculty ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ optional($reset_password_user->user->role)->role ?? 'N/A' }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ optional($reset_password_user->created_at)->format('M d, Y') ?? 'N/A' }}
+                                                        <p class="text-gray-400">
+                                                            {{ optional($reset_password_user->created_at)->format('h:i A') }}
+                                                        </p>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <a href="#"
+                                                            class="text-blue-600 hover:text-blue-700 reset-password-btn"
+                                                            data-user-id="{{ $reset_password_user->user_id }}">
+                                                            Reset Password
+                                                        </a>
+                                                    </td>
 
-                                            <td class="px-6 py-4">
-                                                Edit
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 2 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">IT</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-green-50 text-green-700">Read</span>
-                                            </td>
-
-                                            <td class="px-6 py-4">
-                                                Edit
-                                            </td>
-                                        </tr>
-
-                                        <!-- Row 3 -->
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <img src="{{ asset('images/totaluser.png') }}" alt="Avatar"
-                                                        class="w-10 h-10 rounded-full">
-                                                    <div>
-                                                        <div class="font-medium">Aung Aung</div>
-                                                        <div class="text-sm text-gray-500">Aung1@gmail.com</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">Psychology</td>
-                                            <td class="px-6 py-4 text-gray-600">Student</td>
-                                            <td class="px-6 py-4">
-                                                <span
-                                                    class="px-3 py-1 rounded-full text-sm bg-red-50 text-red-700">Unread</span>
-                                            </td>
-
-                                            <td class="px-6 py-4">
-                                                Edit
-                                            </td>
-                                        </tr>
-
-                                        <!-- Add more rows as needed -->
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
+                                                    No users found.
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
-
-                            <!-- Pagination -->
-                            <div class="flex justify-end items-center gap-2 mt-6">
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">1</button>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">2</button>
-                                <span class="text-gray-600">...</span>
-                                <button
-                                    class="px-4 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100">Next</button>
-                            </div>
                         </div>
 
-
+                        {{-- <!-- Pagination -->
+                        @if ($reset_password_users->isNotEmpty())
+                            <div class="flex justify-end items-center gap-2 mt-6">
+                                {{ $reset_password_users->appends(request()->query())->links('pagination::tailwind') }}
+                            </div>
+                        @endif --}}
                     </div>
+
+                    <!-- Password Reset Modal -->
+                    <div id="resetPasswordModal"
+                        class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300"">
+                        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                            <h2 class="text-xl font-semibold mb-4">Reset Password</h2>
+                            <form id="resetPasswordForm" method="POST"
+                                action="{{ route('admin.reset-password') }}">
+                                @csrf
+
+                                <input type="hidden" id="resetUserId" name="user_id">
+
+                                <div class="w-full relative">
+                                    <label for="password" class="block text-gray-700 font-semibold">
+                                        New Password
+                                    </label>
+                                    <div class="relative">
+                                        <input id="password" type="password"
+                                            class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none pr-10"
+                                            name="password" placeholder="Enter a secure password">
+                                        <button type="button" class="absolute right-3 top-3 text-gray-500"
+                                            onclick="togglePassword('password', this)">
+                                            <i class="ri-eye-off-line"></i>
+                                        </button>
+                                    </div>
+                                    <div class="absolute left-2 -bottom-2 bg-white">
+                                        @error('password')
+                                            <p class="text-red-500 text-sm">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end mt-4">
+                                    <button type="button" id="closeModal"
+                                        class="mr-2 px-4 py-2 bg-gray-400 text-white rounded-lg">Cancel</button>
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const resetButtons = document.querySelectorAll(".reset-password-btn");
+                            const modal = document.getElementById("resetPasswordModal");
+                            const closeModal = document.getElementById("closeModal");
+                            const userIdInput = document.getElementById("resetUserId");
+
+                            resetButtons.forEach(button => {
+                                button.addEventListener("click", function(event) {
+                                    event.preventDefault();
+                                    const userId = this.getAttribute("data-user-id");
+                                    userIdInput.value = userId;
+                                    darkOverlay2.classList.remove('opacity-0', 'invisible');
+                                    darkOverlay2.classList.add('opacity-100');
+                                    modal.classList.remove('opacity-0', 'invisible',
+                                        '-translate-y-5');
+                                });
+                            });
+
+                            closeModal.addEventListener("click", function() {
+                                darkOverlay2.classList.add('opacity-0', 'invisible');
+                                darkOverlay2.classList.remove('opacity-100');
+
+                                modal.classList.add('opacity-0', 'invisible', '-translate-y-5');
+                            });
+
+                            window.onload = function() {
+                                @if ($errors->any())
+                                    openModal();
+                                @endif
+                            };
+                        });
+
+                        // Password toggle
+                        function togglePassword(fieldId, icon) {
+                            const field = document.getElementById(fieldId);
+                            if (field.type === "password") {
+                                field.type = "text";
+                                icon.innerHTML = '<i class="ri-eye-line"></i>'; // Change to eye open
+                            } else {
+                                field.type = "password";
+                                icon.innerHTML = '<i class="ri-eye-off-line"></i>'; // Change to eye closed
+                            }
+                        }
+                    </script>
+                </div>
             </main>
         </div>
+    </div>
+
+    <!-- Dark Overlay -->
+    <div id="darkOverlay2"
+        class="fixed inset-0 bg-black bg-opacity-50 opacity-0 invisible  z-40 transition-opacity duration-300">
     </div>
 
     <!-- JavaScript for Sidebar Toggle -->

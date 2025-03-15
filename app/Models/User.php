@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'user_id');
     }
 
+    public function passwordreset()
+    {
+        return $this->hasMany(PasswordResetRequest::class, 'request_id');
+    }
+
     public function browserStats()
     {
         return $this->belongsToMany(BrowserStat::class, 'user_browser_stats', 'user_id', 'browser_id');
