@@ -92,16 +92,18 @@ class HomeController extends Controller
         $student_percentage_change = round($student_percentage_change, 2);
 
         $faculties = Faculty::all();
-        $contributions = Contribution::where('contribution_status', 'Upload')->paginate(10);
-        $rejected_contributions = Contribution::where('contribution_status', 'Reject')->paginate(10);
-        $published_contributions = Contribution::where('contribution_status', 'Publish')->paginate(10);
+        $total_contributions = Contribution::all();
+        $pending_contributions = Contribution::where('contribution_status', 'Upload')->get();
+        $selected_contributions = Contribution::where('contribution_status', 'Select')->get();
+        $rejected_contributions = Contribution::where('contribution_status', 'Reject')->get();
+        $published_contributions = Contribution::where('contribution_status', 'Publish')->get();
 
         // Get browser data
         $browserStats = BrowserStat::all();
         $labels = $browserStats->pluck('browser_name');
         $data = $browserStats->pluck('visit_count');
 
-        return view('admin.index', compact('total_users', 'total_students', 'student_percentage_change', 'percentage_change', 'labels', 'data', 'inquiries', 'inquiry_percentage_change', 'faculties', 'contributions', 'rejected_contributions', 'published_contributions'));
+        return view('admin.index', compact('total_users', 'total_students', 'student_percentage_change', 'percentage_change', 'labels', 'data', 'inquiries', 'inquiry_percentage_change', 'faculties', 'total_contributions', 'pending_contributions', 'selected_contributions', 'rejected_contributions', 'published_contributions'));
     }
 
     public function adminAccountSetting()

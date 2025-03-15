@@ -62,14 +62,14 @@
                         @if (Auth::check())
                             @if (Auth::user()->profile_image)
                                 <!-- Check if profile_image exists -->
-                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden">
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-full overflow-hidden">
                                     <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Profile Image"
                                         class="w-full h-full object-cover">
                                 </div>
                             @else
                                 <!-- Fallback to initials if profile_image is null -->
                                 <p
-                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
+                                    class="m-0 w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
                                     {{ strtoupper(Auth::user()->username[0]) }}
                                 </p>
                             @endif
