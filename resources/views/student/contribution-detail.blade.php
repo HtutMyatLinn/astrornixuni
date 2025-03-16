@@ -5,9 +5,11 @@
         <!-- Left Content Section -->
         <div class="w-full md:w-2/3 bg-white p-6 border-x-2 border-x-slate-100">
             <h1 class="text-2xl font-semibold text-start text-gray-900">{{ $contribution->contribution_title }}</h1>
-            <p class="text-gray-600 text-sm text-start">By {{ $contribution->user->username }} |
-                {{ $contribution->user->faculty->faculty }} | Published:
-                {{ $contribution->created_at->diffForHumans() }}</p>
+            <p class="text-gray-600 text-sm text-start">
+                By {{ $contribution->user->username }} |
+                {{ $contribution->user->faculty->faculty }} |
+                Published: {{ \Carbon\Carbon::parse($contribution->published_date)->format('F j, Y') }}
+            </p>
             <p class="flex items-center text-sm text-gray-600 mt-2">
                 <i class="ri-group-line text-gray-500 mr-2"></i>
                 <span class="font-medium mr-1">{{ $contribution->view_count }}</span>

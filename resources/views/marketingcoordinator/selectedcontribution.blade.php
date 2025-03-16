@@ -42,7 +42,15 @@
                         <!-- Search and Filters -->
                         <div class="flex justify-between mb-8">
                             <div class="relative w-[400px]">
-                                <input type="text" placeholder="Search..." name="search" class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                                <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                                <input type="text" placeholder="Search..." name="search"
+                                    class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                             </div>
                             <div class="flex gap-4">
                                 <!-- Sort Dropdown -->
@@ -59,36 +67,55 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions Title</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions Type</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student Name</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted Date</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions Title</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions Type</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student
+                                                Name</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
+                                                Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
-                                        @foreach ($contributions as $contribution)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">{{ $contribution->contribution_title }}</td>
-                                            <td class="px-6 py-4">{{ $contribution->category->contribution_category }}</td>
-                                            <td class="px-6 py-4">{{ $contribution->user->username }}</td>
-                                            <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm {{ $contribution->contribution_status == 'Upload' ? 'bg-[#FCD53F]' : ($contribution->contribution_status == 'Reviewed' ? 'bg-[#CAF4E0]' : ($contribution->contribution_status == 'Published' ? 'bg-[#65FF51]' : 'bg-[#81CBEF]')) }} text-black">
-                                                    {{ $contribution->contribution_status }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <form action="{{ route('marketingcoordinator.submission-management.publish-contribution', $contribution->contribution_id) }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
-                                                        Publish
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                        @if ($contributions->isNotEmpty())
+                                            @foreach ($contributions as $contribution)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4">{{ $contribution->contribution_title }}</td>
+                                                    <td class="px-6 py-4">
+                                                        {{ $contribution->category->contribution_category }}</td>
+                                                    <td class="px-6 py-4">{{ $contribution->user->username }}</td>
+                                                    <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
+                                                    <td class="px-6 py-4">
+                                                        <span
+                                                            class="px-3 py-1 rounded-full text-sm {{ $contribution->contribution_status == 'Upload' ? 'bg-[#FCD53F]' : ($contribution->contribution_status == 'Reviewed' ? 'bg-[#CAF4E0]' : ($contribution->contribution_status == 'Published' ? 'bg-[#65FF51]' : 'bg-[#81CBEF]')) }} text-black">
+                                                            {{ $contribution->contribution_status }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <form
+                                                            action="{{ route('marketingcoordinator.submission-management.publish-contribution', $contribution->contribution_id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md select-none">
+                                                                Publish
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
+                                                    No contributions found.
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

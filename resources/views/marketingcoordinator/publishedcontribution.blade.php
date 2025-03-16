@@ -37,9 +37,10 @@
                 <div class="max-w-7xl mx-auto space-y-4 mb-4">
                     <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Published Contributions</h1>
 
-                    <div class="p-8 bg-white rounded-lg shadow-sm">
+                    <div class="p-8 bg-white rounded-lg shadow-lg">
                         <!-- Search Bar -->
-                        <form action="{{ route('marketingcoordinator.published-contribution') }}" method="GET" class="mb-8">
+                        <form action="{{ route('marketingcoordinator.published-contribution') }}" method="GET"
+                            class="mb-8">
                             <div class="relative w-[360px]">
                                 <input type="text" name="search" placeholder="Search by title or submitter..."
                                     value="{{ request('search') }}"
@@ -59,8 +60,10 @@
                             <form action="{{ route('marketingcoordinator.published-contribution') }}" method="GET">
                                 <select name="sort" onchange="this.form.submit()"
                                     class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                    <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest First</option>
-                                    <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First</option>
+                                    <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest
+                                        First</option>
+                                    <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest First
+                                    </option>
                                 </select>
                             </form>
                         </div>
@@ -72,39 +75,58 @@
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Title</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted By</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submission Date</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contribution Cover</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contribution File</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contribution Category</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
+                                                By</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submission
+                                                Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contribution Cover</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contribution File</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contribution Category</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
-                                        @foreach ($contributions as $contribution)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">{{ $contribution->contribution_title }}</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex flex-col">
-                                                    <span>{{ $contribution->user->username }}</span>
-                                                    <span class="text-sm text-gray-500">{{ $contribution->user->email }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
-                                            <td class="px-6 py-4">
-                                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}" alt="Cover Image" class="w-16 h-16 object-cover rounded-lg">
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}" class="text-blue-600 hover:underline">Download</a>
-                                            </td>
-                                            <td class="px-6 py-4">{{ $contribution->category->contribution_category }}</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
-                                                    {{ $contribution->contribution_status }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                        @if ($contributions->isNotEmpty())
+                                            @foreach ($contributions as $contribution)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4">{{ $contribution->contribution_title }}</td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex flex-col">
+                                                            <span>{{ $contribution->user->username }}</span>
+                                                            <span
+                                                                class="text-sm text-gray-500">{{ $contribution->user->email }}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
+                                                    <td class="px-6 py-4">
+                                                        <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                            alt="Cover Image" class="w-16 h-16 object-cover rounded-lg">
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
+                                                            class="text-blue-600 hover:underline">Download</a>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{ $contribution->category->contribution_category }}</td>
+                                                    <td class="px-6 py-4">
+                                                        <span
+                                                            class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                                                            {{ $contribution->contribution_status }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="7">
+                                                    No contributions found.
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

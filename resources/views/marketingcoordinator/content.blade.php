@@ -19,11 +19,12 @@
             @endif
         </div>
         <div class="text-right">
-            <p class="text-sm sm:text-base font-bold text-gray-900">
-                Last Login at :
+            <p class="text-sm sm:text-base font-normal text-gray-500">
+                Date: {{ \Carbon\Carbon::parse(Auth::user()->last_login_date)->format('j-F-Y') }}
             </p>
-            <p class="text-sm sm:text-base text-gray-500">{{ Auth::user()->last_login_date }}</p>
-            <p class="text-sm sm:text-base text-gray-500">25-February-2025</p>
+            <p class="text-sm sm:text-base font-normal text-gray-500">
+                {{ \Carbon\Carbon::parse(Auth::user()->last_login_date)->format('h:i A') }}
+            </p>
         </div>
     </div>
 

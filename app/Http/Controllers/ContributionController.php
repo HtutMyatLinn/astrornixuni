@@ -189,6 +189,7 @@ class ContributionController extends Controller
 
         // Update the status to "Publish"
         $contribution->contribution_status = 'Publish';
+        $contribution->published_date = now();
         $contribution->save();
 
         // Redirect back with a success message

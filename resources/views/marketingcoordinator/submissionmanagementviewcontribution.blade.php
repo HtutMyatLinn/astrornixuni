@@ -54,30 +54,33 @@
                                 <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date }}</div>
 
                                 <div class="font-semibold text-xl">Contribution Cover</div>
-                                <div class="md:col-span-2 text-xl">
-                                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}" alt="Cover Image" class="w-32 h-32 object-cover">
+                                <div class="md:col-span-2 text-xl select-none">
+                                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                        alt="Cover Image" class="w-32 h-32 object-cover">
                                 </div>
 
                                 <div class="font-semibold text-xl">Contribution File</div>
                                 <div class="md:col-span-2 text-xl">
-                                    <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}" class="text-blue-600 hover:underline">Download File</a>
+                                    <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
+                                        class="text-blue-600 hover:underline">Download File</a>
                                 </div>
 
                                 <div class="font-semibold text-xl">Contribution Category</div>
-                                <div class="md:col-span-2 text-xl">{{ $contribution->category->contribution_category }}</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->category->contribution_category }}
+                                </div>
 
                                 <div class="font-semibold text-xl">Status</div>
                                 <div class="md:col-span-2 text-xl flex items-center">
-                                    @if($contribution->contribution_status == 'Upload')
-                                    <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
+                                    @if ($contribution->contribution_status == 'Upload')
+                                        <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Reject')
-                                    <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
+                                        <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Update')
-                                    <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
+                                        <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Select')
-                                    <span class="w-4 h-4 bg-green-400 rounded-full mr-3"></span>
+                                        <span class="w-4 h-4 bg-green-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Publish')
-                                    <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
+                                        <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
                                     @endif
                                     {{ $contribution->contribution_status }}
                                 </div>
@@ -86,18 +89,24 @@
                             <!-- Approval Options -->
                             <div class="mt-12">
                                 <h2 class="text-3xl font-bold mb-8">Approval Options</h2>
-                                <form action="{{ route('marketingcoordinator.submission-management.update-status', $contribution->contribution_id) }}" method="POST" class="flex flex-wrap gap-4">
+                                <form
+                                    action="{{ route('marketingcoordinator.submission-management.update-status', $contribution->contribution_id) }}"
+                                    method="POST" class="flex flex-wrap gap-4 select-none">
                                     @csrf
-                                    <button type="submit" name="status" value="Select" class="bg-green-400 hover:bg-green-500 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                    <button type="submit" name="status" value="Select"
+                                        class="bg-green-400 hover:bg-green-500 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Select
                                     </button>
-                                    <button type="submit" name="status" value="Reject" class="bg-red-400 hover:bg-red-500 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                    <button type="submit" name="status" value="Reject"
+                                        class="bg-red-400 hover:bg-red-500 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Reject
                                     </button>
-                                    <button type="submit" name="status" value="Update" class="bg-blue-300 hover:bg-blue-400 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                    <button type="submit" name="status" value="Update"
+                                        class="bg-blue-300 hover:bg-blue-400 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Give Feedback
                                     </button>
-                                    <a href="{{ route('marketingcoordinator.submission-management') }}" class="bg-black text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                    <a href="{{ route('marketingcoordinator.submission-management') }}"
+                                        class="bg-black text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Back
                                     </a>
                                 </form>
