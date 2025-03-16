@@ -10,7 +10,22 @@
                 <x-logo />
             </a>
 
-            <h1 class="text-2xl font-bold text-gray-900 mt-10 mb-2">Login to your account</h1>
+            @if (session('error'))
+                <div
+                    class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-4 rounded-md shadow-sm flex items-center">
+                    <svg class="w-6 h-6 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div>
+                        <p class="font-semibold">Account Suspended</p>
+                        <p class="text-sm">{{ session('error') }}</p>
+                    </div>
+                </div>
+            @endif
+
+            <h1 class="text-2xl font-bold text-gray-900 {{ session('error') ? 'mt-0' : 'mt-10' }} mb-2">Login to your
+                account</h1>
             <p class="text-gray-600 text-sm mb-6">Access exclusive content, stay informed, and connect with the
                 university
                 community.</p>

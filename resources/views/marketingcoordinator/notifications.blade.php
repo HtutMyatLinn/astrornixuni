@@ -227,31 +227,50 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions Title</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions Type</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student Name</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted Date</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions Title</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions Type</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student
+                                                Name</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
+                                                Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
-                                        @foreach ($contributions as $contribution)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <div>
-                                                        <div class="font-medium">{{ $contribution->contribution_title }}</div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">{{ $contribution->category->contribution_category }}</td>
-                                            <td class="px-6 py-4 text-gray-600">{{ $contribution->user->first_name }} {{ $contribution->user->last_name }}</td>
-                                            <td class="px-6 py-4 text-gray-600">{{ $contribution->submitted_date }}</td>
-                                            <td class="px-6 py-4">
-                                                <a href="{{ route('marketingcoordinator.submission-management.view-detail-contribution', $contribution->contribution_id) }}" class="text-[#2F64AA]">View</a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                        @if ($contributions->isNotEmpty())
+                                            @foreach ($contributions as $contribution)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center gap-3">
+                                                            <div>
+                                                                <div class="font-medium">
+                                                                    {{ $contribution->contribution_title }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $contribution->category->contribution_category }}</td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $contribution->user->first_name }}
+                                                        {{ $contribution->user->last_name }}</td>
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $contribution->submitted_date }}</td>
+                                                    <td class="px-6 py-4">
+                                                        <a href="{{ route('marketingcoordinator.submission-management.view-detail-contribution', $contribution->contribution_id) }}"
+                                                            class="text-[#2F64AA]">View</a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="7">
+                                                    No contributions found.
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

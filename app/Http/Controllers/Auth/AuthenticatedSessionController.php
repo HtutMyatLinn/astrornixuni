@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
             Auth::logout();
 
             // Redirect back to the login page with an error message
-            return redirect()->route('login')->with('error', 'Your account is inactive. Please contact the administrator.');
+            return redirect()->route('login')->with('error', 'Your account has been suspended. Please contact the administrator for assistance.');
         }
 
         // Increase login count
