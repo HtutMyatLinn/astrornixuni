@@ -24,11 +24,21 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Authenticate the user
         $request->authenticate();
         $request->session()->regenerate();
 
         // Get the authenticated user
         $user = $request->user();
+
+        // Check if the user's status is inactive
+        if ($user->status === 0) {
+            // Log the user out
+            Auth::logout();
+
+            // Redirect back to the login page with an error message
+            return redirect()->route('login')->with('error', 'Your account is inactive. Please contact the administrator.');
+        }
 
         // Increase login count
         $user->increment('login_count');

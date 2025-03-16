@@ -62,6 +62,53 @@
                 </script>
             @endif
 
+            @php
+                $currentDate = now()->toDateString(); // Get the current date in 'Y-m-d' format
+                $activeIntake = \App\Models\Intake::where('status', 'active')->first(); // Get the active intake
+                $upcomingIntake = \App\Models\Intake::where('status', 'upcoming')
+                    ->orderBy('closure_date', 'asc')
+                    ->first(); // Get the earliest upcoming intake
+            @endphp
+
+            @if (Auth::check() &&
+                    Auth::user()->role &&
+                    Auth::user()->role->role === 'Student' &&
+                    $activeIntake &&
+                    $currentDate >= $activeIntake->closure_date)
+                <div class="flex flex-col sm:flex-row gap-4 my-4"> <!-- Parent flex container -->
+                    <!-- Contribution Period Ended Alert -->
+                    <div
+                        class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 rounded-md shadow-sm flex items-center flex-1">
+                        <svg class="w-6 h-6 mr-3 flex-shrink-0 text-orange-500" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="font-semibold">The contribution period has ended.</p>
+                            <p class="text-sm">Submissions will reopen in the next intake.</p>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Intake Alert -->
+                    @if ($upcomingIntake)
+                        <div
+                            class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md shadow-sm flex items-center flex-1">
+                            <svg class="w-6 h-6 mr-3 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-semibold">Upcoming Intake</p>
+                                <p class="text-sm">The next intake starts on
+                                    {{ \Carbon\Carbon::parse($upcomingIntake->closure_date)->format('F j, Y') }}.</p>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
             <form action="{{ route('upload_contribution.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -182,10 +229,27 @@
 
                 <!-- Submit Button -->
                 <div class="text-center">
-                    <button type="submit"
-                        class="w-full bg-[#5A7BAF] text-white py-2 rounded-lg font-semibold hover:bg-[#4A6A9F] transition">
-                        Upload your Contribution
-                    </button>
+                    @php
+                        $currentDate = now()->toDateString(); // Get current date
+                        $intake = \App\Models\Intake::where('status', 'active')->first(); // Get active intake
+                    @endphp
+
+                    @if (Auth::check() &&
+                            Auth::user()->role &&
+                            Auth::user()->role->role === 'Student' &&
+                            $intake &&
+                            $currentDate < $intake->closure_date)
+                        <button type="submit"
+                            class="w-full bg-[#5A7BAF] text-white py-2 rounded-lg font-semibold hover:bg-[#4A6A9F] transition select-none">
+                            Upload your Contribution
+                        </button>
+                    @else
+                        <button type="button"
+                            class="w-full bg-[#5A7BAF] text-white py-2 rounded-lg font-semibold select-none cursor-not-allowed opacity-50"
+                            disabled>
+                            Upload your Contribution
+                        </button>
+                    @endif
                 </div>
             </form>
         </div>
