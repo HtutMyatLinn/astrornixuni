@@ -325,10 +325,48 @@ class HomeController extends Controller
         return view('marketingcoordinator.guestmanagement', compact('guests'));
     }
 
-    public function marketingcoordinatorSubmissionManagement()
+
+    public function marketingcoordinatorSubmissionManagement(Request $request)
     {
-        return view('marketingcoordinator.submissionmanagement');
+        // Get the logged-in user
+        $coordinator = auth()->user();
+
+        // Get the faculty ID of the logged-in coordinator
+        $facultyId = $coordinator->faculty_id;
+
+        // Start building the query
+        $query = Contribution::whereHas('user', function ($query) use ($facultyId) {
+            $query->where('faculty_id', $facultyId); // Filter by faculty_id
+        });
+
+        // Apply search filter by student name or contribution title
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('contribution_title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->where('username', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        // Apply status filter
+        if ($request->has('status')) {
+            $status = $request->input('status');
+            $query->where('contribution_status', $status);
+        }
+
+        // Apply sorting by submitted date
+        $sort = $request->input('sort', 'submitted_date'); // Default sorting is by submitted date
+        $order = $request->input('order', 'desc'); // Default order is descending (newest first)
+        $query->orderBy($sort, $order);
+
+        // Paginate the results
+        $contributions = $query->paginate(10);
+
+        return view('marketingcoordinator.submissionmanagement', compact('contributions'));
     }
+
     public function marketingcoordinatorSubmissionManagementViewDetailContribution()
     {
         return view('marketingcoordinator.submissionmanagementviewcontribution');
@@ -338,14 +376,50 @@ class HomeController extends Controller
     {
         return view('marketingcoordinator.feedback');
     }
-    public function marketingcoordinatorPublishedContribution()
+
+    public function marketingcoordinatorSelectedContribution()
     {
-        return view('marketingcoordinator.publishedcontribution');
+        return view('marketingcoordinator.selectedcontribution');
     }
-    public function marketingcoordinatorNotifications()
+    // HomeController.php
+    // HomeController.php
+    public function marketingcoordinatorPublishedContribution(Request $request)
     {
-        return view('marketingcoordinator.notifications');
+        // Get the logged-in user
+        $user = auth()->user();
+
+        // Get the faculty ID of the logged-in user
+        $facultyId = $user->faculty_id;
+
+        // Start with contributions that have the status "Publish" and belong to the same faculty
+        $query = Contribution::where('contribution_status', 'Publish')
+            ->whereHas('user', function ($q) use ($facultyId) {
+                $q->where('faculty_id', $facultyId); // Filter by faculty_id
+            })
+            ->with(['user', 'category']); // Eager load relationships
+
+        // Search by submitted person name or contribution title
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('contribution_title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->where('username', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        // Sorting by submitted date
+        $sort = $request->input('sort', 'desc'); // Default sorting is newest first
+        $query->orderBy('submitted_date', $sort);
+
+        // Paginate the results
+        $contributions = $query->paginate(10);
+
+        return view('marketingcoordinator.publishedcontribution', compact('contributions', 'sort'));
     }
+
     public function student()
     {
         $contributions = Contribution::orderBy('created_at', 'desc')

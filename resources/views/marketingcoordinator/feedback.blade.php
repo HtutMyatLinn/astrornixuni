@@ -35,42 +35,51 @@
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
                 <div class="space-y-4 mb-4">
-                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Provide Feedback</h1>
-                    <div class="p-6 bg-white rounded-lg shadow-sm my-8">
-                        <h1 class="text-xl font-bold mb-2">Feedback Form</h1>
+                    <h1 class=" text-xl sm:text-4xl font-bold text-gray-900">Provide Feedback</h1>
+
+                    <div class="p-12 bg-white rounded-lg shadow-sm my-8">
+                        <h1 class="text-4xl font-bold mb-2">Contribution Details</h1>
                         <div class="border-b-4 border-blue-600 w-32 mb-8"></div>
 
-                        <form class="space-y-8">
-                            <!-- Form Fields -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-y-8">
+                        <div class="space-y-6">
+                            <!-- Details Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-y-6">
                                 <div class="font-semibold text-xl">Title</div>
-                                <div class="md:col-span-2 text-xl">Green In Tech</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->contribution_title }}</div>
 
-                                <div class="font-semibold text-xl">Contributions Category</div>
-                                <div class="md:col-span-2 text-xl">Journal</div>
+                                <div class="font-semibold text-xl">Submitted By</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->user->username }}</div>
 
-                                <div class="font-semibold text-xl">Student Name</div>
-                                <div class="md:col-span-2 text-xl">Khin Khin</div>
+                                <div class="font-semibold text-xl">Submission Date</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date }}</div>
 
-                                <div class="font-semibold text-xl">Enter Your Comment</div>
-                                <div class="md:col-span-2"></div>
+                                <div class="font-semibold text-xl">Contribution Category</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->category->contribution_category }}</div>
+
+                                <div class="font-semibold text-xl">Status</div>
+                                <div class="md:col-span-2 text-xl flex items-center">
+                                    <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
+                                    {{ $contribution->contribution_status }}
+                                </div>
                             </div>
 
-                            <!-- Comment Textarea -->
-                            <div class="w-full">
-                                <textarea
-                                    class="w-full h-80 p-4 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none"
-                                    placeholder="Enter Your Comment..."></textarea>
+                            <!-- Feedback Form -->
+                            <div class="mt-12">
+                                <h2 class="text-3xl font-bold mb-8">Provide Feedback</h2>
+                                <form action="{{ route('marketingcoordinator.submit-feedback', $contribution->contribution_id) }}" method="POST">
+                                    @csrf
+                                    <textarea name="feedback" rows="5" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Enter your feedback here..." required></textarea>
+                                    <div class="mt-6">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                            Submit Feedback
+                                        </button>
+                                        <a href="{{ url()->previous() }}" class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors ml-4">
+                                            Back
+                                        </a>
+                                    </div>
+                                </form>
                             </div>
-
-                            <!-- Submit Button -->
-                            <div class="flex justify-end">
-                                <button type="submit"
-                                    class="bg-green-400 hover:bg-green-500 text-black px-6 py-3 rounded-md text-lg font-semibold transition-colors select-none">
-                                    Submit Feedback
-                                </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -80,7 +89,7 @@
     <!-- JavaScript for Sidebar Toggle -->
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('translate-x-full');
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
         });
     </script>
 </body>

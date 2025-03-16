@@ -35,24 +35,16 @@
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
                 <div class="space-y-4 mb-4">
-                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Review Contributions</h1>
+                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Selected Contributions</h1>
 
                     <div class="p-8 bg-white shadow-lg">
-                        <h1 class="text-xl font-bold mb-6">List of Submitted Contributions</h1>
+                        <h1 class="text-xl font-bold mb-6">List of Selected Contributions</h1>
                         <!-- Search and Filters -->
                         <div class="flex justify-between mb-8">
                             <div class="relative w-[400px]">
                                 <input type="text" placeholder="Search..." name="search" class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                             </div>
                             <div class="flex gap-4">
-                                <!-- Filter Dropdown -->
-                                <select name="status" class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                    <option value="">All Statuses</option>
-                                    <option value="upload">Upload</option>
-                                    <option value="update">Update</option>
-                                    <option value="reject">Rejected</option>
-                                    <option value="publish">Published</option>
-                                </select>
                                 <!-- Sort Dropdown -->
                                 <select name="sort" class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
                                     <option value="desc">Newest First</option>
@@ -83,10 +75,17 @@
                                             <td class="px-6 py-4">{{ $contribution->user->username }}</td>
                                             <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
                                             <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm {{ $contribution->contribution_status == 'Upload' ? 'bg-[#FCD53F]' : ($contribution->contribution_status == 'Reviewed' ? 'bg-[#CAF4E0]' : ($contribution->contribution_status == 'Published' ? 'bg-[#65FF51]' : 'bg-[#81CBEF]')) }} text-black">{{ $contribution->contribution_status }}</span>
+                                                <span class="px-3 py-1 rounded-full text-sm {{ $contribution->contribution_status == 'Upload' ? 'bg-[#FCD53F]' : ($contribution->contribution_status == 'Reviewed' ? 'bg-[#CAF4E0]' : ($contribution->contribution_status == 'Published' ? 'bg-[#65FF51]' : 'bg-[#81CBEF]')) }} text-black">
+                                                    {{ $contribution->contribution_status }}
+                                                </span>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <a href="{{ route('marketingcoordinator.submission-management.view-detail-contribution', $contribution->contribution_id) }}" class="text-[#2F64AA]">View</a>
+                                                <form action="{{ route('marketingcoordinator.submission-management.publish-contribution', $contribution->contribution_id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">
+                                                        Publish
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                         @endforeach
