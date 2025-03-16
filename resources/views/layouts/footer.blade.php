@@ -58,7 +58,8 @@
             <!-- Contact Info -->
             <div class="flex justify-center items-center gap-36 mt-6 text-sm text-black">
                 <div class="flex items-center gap-3">
-                    <i class="ri-map-pin-line text-xl"></i> <span class="font-semibold">xxxxxxx</span>
+                    <i class="ri-map-pin-line text-xl"></i> <span class="font-semibold">Taung Hlay Kar st, Pyin Oo Lwin,
+                        Myanmar</span>
                 </div>
                 <div class="flex items-center gap-3">
                     <i class="ri-phone-line text-xl"></i> <span class="font-semibold">+95963554322</span>
