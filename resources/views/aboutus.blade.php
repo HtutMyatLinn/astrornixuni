@@ -19,10 +19,9 @@
                     <span class="border-t border-black w-8 md:w-16"></span>
                 </h3>
                 <p class="text-xs md:text-lg text-black mb-3 md:mb-4 leading-tight md:leading-normal">
-                    University Magazine is a premier platform dedicated to showcasing academic excellence, research, and
-                    the creative endeavors of students and faculty members. Our mission is to inform, inspire, and
-                    connect the university community by publishing high-quality contributions in various fields of
-                    study.
+                    Founded in 2001, our organization started with a team of 10 dedicated individuals driven by a passion for innovation and excellence. From our early days, we focused on delivering quality solutions that meet the needs of our clients and community.
+                    As we grew, our team expanded to 120 allowing us to take on larger projects and refine our processes. Each step of our journey has been shaped by hard work, collaboration, and a commitment to continuous improvement.
+                    Today, we are proud of our progress and the strong relationships we’ve built along the way. Our journey reflects the dedication of our team and the trust of those we serve — and we look forward to achieving even greater milestones in the future.
                 </p>
 
                 <!-- Mission Section -->
