@@ -18,21 +18,21 @@
             <div class="flex float-start space-x-3">
                 <!-- Centered Profile Picture -->
                 @if (Auth::check())
-                    @if (Auth::user()->profile_image)
-                        <img id="profilePreview"
-                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                            src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
-                    @else
-                        <p
-                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                            {{ strtoupper(Auth::user()->username[0]) }}
-                        </p>
-                    @endif
+                @if (Auth::user()->profile_image)
+                <img id="profilePreview"
+                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                    src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
                 @else
-                    <div class="w-12 h-12 select-none">
-                        <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                            class="w-full h-full rounded-full object-cover">
-                    </div>
+                <p
+                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                    {{ strtoupper(Auth::user()->username[0]) }}
+                </p>
+                @endif
+                @else
+                <div class="w-12 h-12 select-none">
+                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                        class="w-full h-full rounded-full object-cover">
+                </div>
                 @endif
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3>
@@ -101,14 +101,6 @@
                           hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3" src="{{ asset('images/report2.png') }}" alt="">
                     Report
-                </a>
-
-                <a href="{{ route('marketingmanager.notifications') }}"
-                    class="flex items-center px-4 py-4 text-sm rounded-lg
-                          {{ request()->routeIs('marketingmanager.notifications') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
-                          hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3" src="{{ asset('images/notifications.png') }}" alt="">
-                    Notifications
                 </a>
             </div>
         </div>

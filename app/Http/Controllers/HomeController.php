@@ -13,6 +13,7 @@ use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -201,7 +202,7 @@ class HomeController extends Controller
         }
 
         // Reset password users
-        $reset_password_users = PasswordResetRequest::where('status', 'Pending')->paginate(10);
+        $reset_password_users = PasswordResetRequest::where('status', 'Pending')->paginate(5);
 
         // Round the percentage to 2 decimal places
         $student_percentage_change = round($student_percentage_change, 2);
@@ -245,30 +246,135 @@ class HomeController extends Controller
         return redirect()->back()->with('success', 'User updated successfully.');
     }
 
+    /**
+     * Display the marketing manager dashboard with real data.
+     */
     public function marketingmanager()
     {
-        return view('marketingmanager.index');
+        // Total Published Contributions (contribution_status = 'Publish')
+        $totalPublishedContributions = Contribution::where('contribution_status', 'Publish')->count();
+
+        // Active Faculty Participation (faculties with at least one contribution)
+        $activeFacultyParticipation = Faculty::whereHas('users.contributions', function ($query) {
+            $query->where('contribution_status', 'Publish');
+        })->count();
+
+        // Submission Trends This Year (contributions with view_count > 100)
+        $submissionTrendsThisYear = Contribution::where('view_count', '>', 100)->count();
+
+        // Total Contributions Submitted (all contributions)
+        $totalContributionsSubmitted = Contribution::count();
+
+        // Pass data to the view
+        return view('marketingmanager.index', [
+            'totalPublishedContributions' => $totalPublishedContributions,
+            'activeFacultyParticipation' => $activeFacultyParticipation,
+            'submissionTrendsThisYear' => $submissionTrendsThisYear,
+            'totalContributionsSubmitted' => $totalContributionsSubmitted,
+        ]);
     }
     public function marketingmanagerAccountSetting()
     {
         return view('marketingmanager.accountsetting');
     }
+    /**
+     * Display all published contributions for the marketing manager's dashboard.
+     */
     public function marketingmanagerPublishedContribution()
     {
-        return view('marketingmanager.publishedcontribution');
+        // Fetch all contributions with status "Publish"
+        $contributions = Contribution::where('contribution_status', 'Publish')
+            ->with(['user', 'category']) // Eager load relationships
+            ->paginate(5); // Paginate for better performance
+
+        return view('marketingmanager.publishedcontribution', compact('contributions'));
     }
-    public function marketingmanagerPublishedContributionViewDetail()
+
+    // New method for downloading the contribution as a zip
+    public function downloadContributionZip($contribution_id)
     {
-        return view('marketingmanager.publishedcontributionviewdetail');
+        $contribution = Contribution::findOrFail($contribution_id);
+
+        // Path where the zip file will be stored
+        $zip_file = storage_path('app/public/contributions-' . $contribution->contribution_title . '.zip');
+
+        // Initialize ZipArchive
+        $zip = new \ZipArchive();
+        if ($zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+            // Fetch files from storage related to the contribution
+            $files = Storage::files('public/contribution-files/' . $contribution_id);
+
+            // Add each file to the zip
+            foreach ($files as $file) {
+                $zip->addFile(storage_path('app/' . $file), basename($file)); // Ensure correct path
+            }
+            $zip->close(); // Close the zip file after adding the files
+        } else {
+            return response()->json(['error' => 'Could not create zip file'], 500);
+        }
+
+        // Check if the zip file was created successfully and return for download
+        if (file_exists($zip_file)) {
+            return response()->download($zip_file)->deleteFileAfterSend(true); // Delete after download
+        } else {
+            return response()->json(['error' => 'Zip file not found'], 404);
+        }
+    }
+
+
+
+    /**
+     * Display details of a specific published contribution.
+     */
+    public function marketingmanagerPublishedContributionViewDetail($id)
+    {
+        // Fetch the contribution by ID
+        $contribution = Contribution::with(['user', 'category', 'comments'])
+            ->findOrFail($id);
+
+        return view('marketingmanager.publishedcontributionviewdetail', compact('contribution'));
     }
     public function marketingmanagerDownloadContribution()
     {
         return view('marketingmanager.downloadcontribution');
     }
 
-    public function marketingmanagerReport()
+    public function marketingmanagerReport(Request $request)
     {
-        return view('marketingmanager.report');
+        // Fetch all faculties for the filter dropdown
+        $faculties = Faculty::all();
+
+        // Start building the query for published contributions
+        $contributions = Contribution::with(['user', 'user.faculty'])
+            ->where('contribution_status', 'Publish');
+
+        // Filter by faculty
+        if ($request->has('faculty') && $request->faculty != 'all') {
+            $contributions->whereHas('user.faculty', function ($query) use ($request) {
+                $query->where('faculty_id', $request->faculty);
+            });
+        }
+
+        // Search by student name or title
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $contributions->where(function ($query) use ($search) {
+                $query->where('contribution_title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        $query->where('first_name', 'LIKE', "%{$search}%")
+                            ->orWhere('last_name', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        // Sort by publish date
+        $sort = $request->input('sort', 'desc'); // Default to newest first
+        $contributions->orderBy('published_date', $sort);
+
+        // Paginate the results
+        $contributions = $contributions->paginate(5);
+
+        return view('marketingmanager.report', compact('contributions', 'faculties'));
     }
 
     public function marketingmanagerNotifation()
@@ -320,7 +426,7 @@ class HomeController extends Controller
         $query->orderBy($sort, $order);
 
         // Paginate the results
-        $guests = $query->paginate(10);
+        $guests = $query->paginate(5);
 
         return view('marketingcoordinator.guestmanagement', compact('guests'));
     }
@@ -350,19 +456,14 @@ class HomeController extends Controller
             });
         }
 
-        // Apply status filter
-        if ($request->has('status')) {
+        // Apply status filter only if it's not empty
+        if ($request->has('status') && $request->input('status') !== '') {
             $status = $request->input('status');
             $query->where('contribution_status', $status);
         }
 
-        // Apply sorting by submitted date
-        $sort = $request->input('sort', 'submitted_date'); // Default sorting is by submitted date
-        $order = $request->input('order', 'desc'); // Default order is descending (newest first)
-        $query->orderBy($sort, $order);
-
         // Paginate the results
-        $contributions = $query->paginate(10);
+        $contributions = $query->paginate(5);
 
         return view('marketingcoordinator.submissionmanagement', compact('contributions'));
     }
@@ -415,7 +516,7 @@ class HomeController extends Controller
         $query->orderBy('submitted_date', $sort);
 
         // Paginate the results
-        $contributions = $query->paginate(10);
+        $contributions = $query->paginate(5);
 
         return view('marketingcoordinator.publishedcontribution', compact('contributions', 'sort'));
     }

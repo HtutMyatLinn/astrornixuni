@@ -130,11 +130,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('marketingmanager')->group(function () {
         Route::get('/marketingmanager/dashboard', [HomeController::class, 'marketingmanager'])->name('marketingmanager.dashboard')->middleware(TrackBrowser::class);
         Route::get('/marketingmanager/account-setting', [HomeController::class, 'marketingmanagerAccountSetting'])->name('marketingmanager.account-setting');
-        Route::get('/marketingmanager/published-contribution', [HomeController::class, 'marketingmanagerPublishedContribution'])->name('marketingmanager.published-contribution');
+
+        Route::get('/marketingmanager/published-contribution', [HomeController::class, 'marketingmanagerPublishedContribution'])
+            ->name('marketingmanager.published-contribution');
+
+
+        Route::get('/marketingmanager/download-contribution-zip/{id}', [HomeController::class, 'downloadContributionZip'])
+            ->name('marketingmanager.download-contribution-zip');
+
+        Route::get('/marketingmanager/publishedcontributionviewdetail/{id}', [HomeController::class, 'marketingmanagerPublishedContributionViewDetail'])
+            ->name('marketingmanager.publishedcontributionviewdetail');
+
         Route::get('/marketingmanager/download-contribution', [HomeController::class, 'marketingmanagerDownloadContribution'])->name('marketingmanager.download-contribution');
         Route::get('/marketingmanager/report', [HomeController::class, 'marketingmanagerReport'])->name('marketingmanager.report');
         Route::get('/marketingmanager/notifications', [HomeController::class, 'marketingmanagerNotifation'])->name('marketingmanager.notifications');
-        Route::get('/marketingmanager/publishedcontributionviewdetail', [HomeController::class, 'marketingmanagerPublishedContributionViewDetail'])->name('marketingmanager.publishedcontributionviewdetail');
     });
 
     // Marketing Coordinator dashboard.

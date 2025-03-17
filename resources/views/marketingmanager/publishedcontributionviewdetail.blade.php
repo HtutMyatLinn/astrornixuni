@@ -50,43 +50,28 @@
 
                     </div>
 
-                    <!-- Title -->
-                    <h1 class="text-3xl font-bold mb-4">Secret Woman Business</h1>
-
+                    <h2 class="text-3xl font-bold mb-4">{{ $contribution->contribution_title }}</h2>
                     <!-- Author -->
-                    <p class="text-lg mb-2">By John Doe</p>
+                    <p class="text-lg mb-2 text-gray-400">By : {{ $contribution->user->first_name }} {{ $contribution->user->last_name }}</p>
 
-                    <!-- Faculty -->
-                    <p class="text-lg mb-2">Faculty of Business</p>
 
-                    <!-- Published date -->
-                    <p class="text-lg mb-8">Published: Jan 15, 2025</p>
 
-                    <!-- Content section -->
+                    <!-- Inside the Content section -->
                     <div class="flex flex-col md:flex-row gap-8">
                         <!-- Image -->
                         <div class="md:w-1/4">
-                            <img src="{{ asset('images/math.png') }}" alt="Secret Woman Business"
-                                class="w-full rounded-md">
+                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}" alt="{{ $contribution->contribution_title }}" class="w-full rounded-md">
                         </div>
 
                         <!-- Text content -->
                         <div class="md:w-1/2">
-                            <h2 class="text-2xl font-bold mb-4">The Secret of Business</h2>
-
+                            <h2 class="text-2xl font-bold mb-4">Title : {{ $contribution->contribution_title }}</h2>
                             <p class="text-lg mb-4">
-                                Business books provide insights into market trends, leadership strategies, and financial
-                                management to help individuals and organizations succeed.
+                                Description : {{ $contribution->contribution_description }}
                             </p>
-
-                            <p class="text-lg mb-4">
-                                Many business books are based on real-world case studies, allowing readers to learn from
-                                successful companies and entrepreneurs.
-                            </p>
-
+                            <p class="text-lg mb-2"> Faculty : {{ $contribution->user->faculty->faculty }}</p>
                             <p class="text-lg">
-                                A well-structured business book covers essential topics like marketing, investment,
-                                negotiation, and behavior to develop a strong foundation in business management.
+                                Published: {{ $contribution->published_date }}
                             </p>
                         </div>
                     </div>
