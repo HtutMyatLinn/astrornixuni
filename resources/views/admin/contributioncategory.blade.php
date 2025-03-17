@@ -38,7 +38,7 @@
                 </h2>
 
                 <!-- Tabs -->
-                <div class="flex gap-8 border-b">
+                <div class="flex gap-8 border-b mb-6 overflow-x-auto whitespace-nowrap">
                     <a href="{{ route('roles.index') }}" class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Role Management
                     </a>

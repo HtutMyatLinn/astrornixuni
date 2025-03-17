@@ -56,7 +56,7 @@
                     @if (Auth::check())
                         <input type="hidden" name="user_id" value="{{ Auth::user()->user_id }}">
                     @else
-                        <p class="text-red-500 text-sm">You must be logged in to comment.</p>
+                        <p class="text-red-500 text-sm">You must be logged in to message.</p>
                     @endif
 
                     <!-- Priority Level -->
@@ -104,7 +104,7 @@
                         </button>
                     @else
                         <button type="button" disabled
-                            class="w-full bg-[#5A7BAF] text-white py-2 md:py-2.5 rounded-md hover:bg-[#4a6a9a] transition text-sm md:text-base cursor-not-allowed opacity-50 select-none">
+                            class="w-full bg-[#5A7BAF] text-white py-2 md:py-2.5 rounded-md text-sm md:text-base cursor-not-allowed opacity-50 select-none">
                             Submit your inquiry
                         </button>
                     @endif

@@ -37,7 +37,7 @@
                 <!-- Header -->
                 <h1 class="text-2xl font-bold mb-6">List of Users</h1>
                 <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                    Total - {{ $marketing_coordinators->count() }}
+                    Total - {{ $faculty_guests->count() }}
                 </h2>
 
                 <!-- Tabs -->
@@ -67,7 +67,7 @@
                     </a>
                 </div>
 
-                <form method="GET" action="{{ route('admin.user-management.marketing-coordinator.search') }}">
+                <form method="GET" action="{{ route('admin.user-management.faculty-guest.search') }}">
                     <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
                         <!-- Search Input -->
                         <div class="relative max-w-[400px]">
@@ -126,43 +126,43 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                @if ($marketing_coordinators->isNotEmpty())
-                                    @foreach ($marketing_coordinators as $marketing_coordinator)
+                                @if ($faculty_guests->isNotEmpty())
+                                    @foreach ($faculty_guests as $faculty_guest)
                                         <tr class="hover:bg-gray-50">
                                             <td class="px-6 py-4 text-gray-600">
-                                                {{ $marketing_coordinator->user_code }}
+                                                {{ $faculty_guest->user_code }}
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-3">
-                                                    @if ($marketing_coordinator->profile_image)
+                                                    @if ($faculty_guest->profile_image)
                                                         <img id="profilePreview"
                                                             class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                            src="{{ asset('storage/profile_images/' . $marketing_coordinator->profile_image) }}"
+                                                            src="{{ asset('storage/profile_images/' . $faculty_guest->profile_image) }}"
                                                             alt="Profile">
                                                     @else
                                                         <p
                                                             class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                            {{ strtoupper($marketing_coordinator->username[0]) }}
+                                                            {{ strtoupper($faculty_guest->username[0]) }}
                                                         </p>
                                                     @endif
                                                     <div>
                                                         <div class="font-medium">
-                                                            {{ $marketing_coordinator->first_name . ' ' . $marketing_coordinator->last_name }}
+                                                            {{ $faculty_guest->first_name . ' ' . $faculty_guest->last_name }}
                                                         </div>
                                                         <div class="text-sm text-gray-500">
-                                                            {{ $marketing_coordinator->email }}
+                                                            {{ $faculty_guest->email }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">
-                                                {{ optional($marketing_coordinator->faculty)->faculty ?? 'N/A' }}
+                                                {{ optional($faculty_guest->faculty)->faculty ?? 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">
-                                                {{ optional($marketing_coordinator->role)->role ?? 'N/A' }}
+                                                {{ optional($faculty_guest->role)->role ?? 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                @if ($marketing_coordinator->status == 1)
+                                                @if ($faculty_guest->status == 1)
                                                     <span
                                                         class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
                                                 @else
@@ -171,10 +171,10 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">
-                                                {{ $marketing_coordinator->last_login_date ? \Carbon\Carbon::parse($marketing_coordinator->last_login_date)->format('M d, Y') : 'N/A' }}
+                                                {{ $faculty_guest->last_login_date ? \Carbon\Carbon::parse($faculty_guest->last_login_date)->format('M d, Y') : 'N/A' }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                <a href="{{ route('admin.edit-user-data', ['id' => $marketing_coordinator->user_id]) }}"
+                                                <a href="{{ route('admin.edit-user-data', ['id' => $faculty_guest->user_id]) }}"
                                                     class="text-blue-600 hover:text-blue-700">
                                                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -200,9 +200,9 @@
                 </div>
 
                 <!-- Pagination -->
-                @if ($marketing_coordinators->isNotEmpty())
+                @if ($faculty_guests->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
-                        {{ $marketing_coordinators->appends(request()->query())->links('pagination::tailwind') }}
+                        {{ $faculty_guests->appends(request()->query())->links('pagination::tailwind') }}
                     </div>
                 @endif
             </div>

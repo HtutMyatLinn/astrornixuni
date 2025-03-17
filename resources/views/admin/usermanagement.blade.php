@@ -41,9 +41,8 @@
                 </h2>
 
                 <!-- Tabs -->
-                <div class="flex gap-8 border-b mb-6">
-                    <a href="{{ route('admin.user-management') }}"
-                        class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
+                <div class="flex gap-8 border-b mb-6 overflow-x-auto whitespace-nowrap">
+                    <a href="{{ route('admin.user-management') }}" class="px-1 py-4 hover:text-gray-900">
                         Admin
                     </a>
                     <a href="{{ route('admin.user-management.student') }}"
@@ -57,6 +56,10 @@
                     <a href="{{ route('admin.user-management.marketing-manager') }}"
                         class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Marketing Manager
+                    </a>
+                    <a href="{{ route('admin.user-management.faculty-guest') }}"
+                        class="px-1 py-4 text-[#4353E1] border-b-4 border-[#4353E1] hover:text-gray-900">
+                        Faculty Guest
                     </a>
                     <a href="{{ route('admin.user-management.most-active-user') }}"
                         class="px-1 py-4 text-gray-600 hover:text-gray-900">
@@ -74,7 +77,8 @@
                             <path d="m21 21-4.3-4.3" />
                         </svg>
                         <form method="GET" action="{{ route('admin.user-management.search') }}">
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..."
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Search..."
                                 class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                         </form>
                     </div>

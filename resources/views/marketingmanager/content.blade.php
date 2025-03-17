@@ -13,11 +13,11 @@
         <!-- Right side -->
         <div class="text-right">
             <p class="text-sm sm:text-base font-bold text-gray-900">
-                Last Login at :
+                Last Login at : <span
+                    class="text-sm sm:text-base font-normal text-gray-500">{{ \Carbon\Carbon::parse(Auth::user()->last_login_date)->format('j-F-Y') }}</span>
             </p>
-            <p class="text-sm sm:text-base text-gray-500">
-                25-February-2025 <br>
-                10:20 PM
+            <p class="text-sm sm:text-base font-normal text-gray-500">
+                {{ \Carbon\Carbon::parse(Auth::user()->last_login_date)->format('h:i A') }}
             </p>
         </div>
     </div>
@@ -27,7 +27,7 @@
         <!-- Total Contributions Card -->
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                 <img class="w-5 h-5" src="{{ asset('images/manager_contribution.png') }}" alt="">
             </div>
 
@@ -46,7 +46,7 @@
         <!-- Total Faculties Card -->
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                 <img class="w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
             </div>
 
@@ -65,7 +65,7 @@
         <!-- Submission Trends This Year Card -->
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                 <img class="w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}" alt="">
             </div>
 
@@ -84,7 +84,7 @@
         <!-- Total Contributions Submitted Card -->
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
-            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6">
+            <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
                 <img class="w-5 h-5" src="{{ asset('images/totalfaculty.png') }}" alt="">
             </div>
 

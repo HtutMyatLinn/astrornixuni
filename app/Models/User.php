@@ -30,6 +30,10 @@ class User extends Authenticatable
         'status'
     ];
 
+    protected $casts = [
+        'last_login_date' => 'datetime',
+    ];
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');

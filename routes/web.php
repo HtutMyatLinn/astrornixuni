@@ -109,6 +109,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/user-management/search', [AdminController::class, 'search'])->name('admin.user-management.search');
         Route::get('/admin/user-management/sort', [AdminController::class, 'sortByLastLoginDate'])->name('admin.user-management.sort');
 
+        // Faculty Geust routes
+        Route::get('/admin/user-management/faculty-guest', [AdminController::class, 'faculty_guest_index'])->name('admin.user-management.faculty-guest');
+        Route::get('/admin/user-management/faculty-guest/search', [AdminController::class, 'faculty_guest_search'])->name('admin.user-management.faculty-guest.search');
+
         // Marketing Coordinator management routes.
         Route::get('/admin/user-management/marketing-coordinator', [MarketingCoordinatorControllerr::class, 'index'])->name('admin.user-management.marketing-coordinator');
         Route::get('/admin/user-management/marketing-coordinator/search', [MarketingCoordinatorControllerr::class, 'search'])->name('admin.user-management.marketing-coordinator.search');
@@ -189,6 +193,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('student')->group(function () {
         Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard')->middleware(TrackBrowser::class);
         Route::resource('/student/upload_contribution', ContributionController::class);
+        Route::get('re_upload_contribution', function () {
+            return view('student.re_upload_contribution');
+        })->name('re_upload_contribution');
         Route::put('/profile/update', [StudentController::class, 'update'])->name('profile.update');
     });
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\InquiryRequest;
 use App\Models\Contribution;
 use App\Models\Inquiry;
+use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,8 +18,18 @@ class InquiryController extends Controller
         $search = $request->input('search'); // Get the search parameter from the request
         $filter = $request->input('filter'); // Get the filter parameter from the request
 
-        // Base query
-        $unassigned_users = User::whereNull('role_id')->get();
+        // Fetch the role ID for the "Guest" role
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if (!$guestRole) {
+            // Handle the case where the "Guest" role does not exist
+            return redirect()->back()->with('error', 'Guest role not found. Please contact the administrator.');
+        }
+
+        $guestRoleId = $guestRole->role_id; // Get the role ID
+
+        // Fetch users with the "Guest" role and no faculty_id (unassigned users)
+        $unassigned_users = User::where('role_id', $guestRoleId)->get();
 
         // Get the current month's unassigned user count
         $current_month_unassigned_users = User::whereNull('role_id')
@@ -33,13 +44,13 @@ class InquiryController extends Controller
             ->count();
 
         // Calculate the percentage change
-        $assigned_user_percentage_change = 0;
+        $unassigned_user_percentage_change = 0;
         if ($previous_month_unassigned_users > 0) {
-            $assigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
+            $unassigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
         }
 
         // Round the percentage to 2 decimal places
-        $assigned_user_percentage_change = round($assigned_user_percentage_change, 2);
+        $unassigned_user_percentage_change = round($unassigned_user_percentage_change, 2);
 
         // Inquiry
         $inquiries = Inquiry::all();
@@ -154,7 +165,7 @@ class InquiryController extends Controller
             'filter' => $filter, // Keep the filter parameter in pagination links
         ]);
 
-        return view('admin.notificationsinquiry', compact('inquiries', 'inquiry_percentage_change', 'inquiries', 'sort', 'search', 'filter', 'total_students', 'student_percentage_change', 'unassigned_users', 'assigned_user_percentage_change'));
+        return view('admin.notificationsinquiry', compact('inquiries', 'inquiry_percentage_change', 'inquiries', 'sort', 'search', 'filter', 'total_students', 'student_percentage_change', 'unassigned_users', 'unassigned_user_percentage_change'));
     }
 
     //Store inquiry from user

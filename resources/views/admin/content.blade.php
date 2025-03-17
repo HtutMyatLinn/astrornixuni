@@ -1,21 +1,32 @@
 <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
-    <div class="space-y-4 mb-4">
-        @if (Auth::user()->login_count === 1)
-            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-                Welcome, {{ Auth::user()->username }}
-            </h1>
-            <h2 class="text-sm sm:text-lg text-gray-500">
-                Here is what's happening in your university today.
-            </h2>
-        @else
-            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-                Welcome Back, {{ Auth::user()->username }}!
-            </h1>
-            <h2 class="text-sm sm:text-lg text-gray-500">
-                Here is what's new in your university today.
-            </h2>
-        @endif
+    <div class="flex items-center justify-between mb-4">
+        <div class="space-y-4 mb-4">
+            @if (Auth::user()->login_count === 1)
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+                    Welcome, {{ Auth::user()->username }}
+                </h1>
+                <h2 class="text-sm sm:text-lg text-gray-500">
+                    Here is what's happening in your university today.
+                </h2>
+            @else
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+                    Welcome Back, {{ Auth::user()->username }}!
+                </h1>
+                <h2 class="text-sm sm:text-lg text-gray-500">
+                    Here is what's new in your university today.
+                </h2>
+            @endif
+        </div>
+        <div class="text-right">
+            <p class="text-sm sm:text-base font-bold text-gray-900">
+                Last Login at : <span
+                    class="text-sm sm:text-base font-normal text-gray-500">{{ \Carbon\Carbon::parse(Auth::user()->last_login_date)->format('j-F-Y') }}</span>
+            </p>
+            <p class="text-sm sm:text-base font-normal text-gray-500">
+                {{ \Carbon\Carbon::parse(Auth::user()->last_login_date)->format('h:i A') }}
+            </p>
+        </div>
     </div>
 
     <!-- Stats Grid -->

@@ -10,7 +10,7 @@
     </section>
 
     <!-- Contribution Benefits -->
-    <section class="py-10 px-4 flex justify-center bg-gray-100">
+    <section class="py-10 px-4 flex justify-center bg-gray-100 relative">
         <div class="max-w-[900px] w-full bg-white rounded-lg p-6 border border-gray-200 shadow-md">
             <h2 class="text-xl font-semibold text-center mb-6">Why Contribute to the Magazine?</h2>
 
@@ -38,6 +38,13 @@
                         Showcase your published work as part of your academic and career achievements.
                     </p>
                 </div>
+            </div>
+
+            <!-- History Link -->
+            <div class="mt-6 flex justify-end">
+                <a href="{{ route('re_upload_contribution') }}" class="text-sm text-blue-600 hover:text-blue-800">
+                    Contribution History →
+                </a>
             </div>
         </div>
     </section>

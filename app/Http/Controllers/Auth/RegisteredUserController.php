@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Faculty;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -34,6 +35,16 @@ class RegisteredUserController extends Controller
         // Generate a unique user_code
         $user_code = $this->generateUniqueUserId();
 
+        // Fetch the role ID for the "Guest" role
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if ($guestRole) {
+            $roleId = $guestRole->role_id; // Get the role ID
+        } else {
+            // Handle the case where the "Guest" role does not exist
+            throw new \Exception('Guest role not found.');
+        }
+
         $user = User::create([
             'user_code' => $user_code,
             'username' => $request->username,
@@ -42,6 +53,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'faculty_id' => $request->faculty_id,
+            'role_id' => $roleId,
             'last_login_date' => now(),
             'last_password_changed_date' => now(),
             'password_expired_date' => now()->addMonths(2),

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EditAccountSettingRequest;
+use App\Models\Faculty;
 use App\Models\PasswordResetRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -139,5 +141,74 @@ class AdminController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Password reset successfully.');
+    }
+
+    public function faculty_guest_search(Request $request)
+    {
+        // Get input values from the request
+        $search = $request->input('search');
+        $facultyId = $request->input('faculty');
+        $sortOrder = $request->input('sort', 'desc');
+
+        // Get the "Guest" role
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if (!$guestRole) {
+            // Handle the case where the "Guest" role does not exist
+            return redirect()->back()->with('error', 'Guest role not found. Please contact the administrator.');
+        }
+
+        $guestRoleId = $guestRole->role_id; // Get the role ID
+
+        // Base query for users with the "Guest" role and non-null faculty_id
+        $guestsQuery = User::where('role_id', $guestRoleId)
+            ->whereNotNull('faculty_id');
+
+        // Apply search filter if search term is provided
+        if ($search) {
+            $guestsQuery->where(function ($query) use ($search) {
+                $query->where('username', 'LIKE', "%{$search}%")
+                    ->orWhere('user_code', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('last_name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply faculty filter if faculty ID is provided
+        if ($facultyId) {
+            $guestsQuery->where('faculty_id', $facultyId);
+        }
+
+        // Apply sorting and pagination
+        $faculty_guests = $guestsQuery->orderBy('created_at', $sortOrder)
+            ->paginate(10)
+            ->appends($request->all());
+
+        // Get all faculties for the filter dropdown
+        $faculties = Faculty::all();
+
+        // Return the view with data
+        return view('admin.facultyguest', compact('faculty_guests', 'search', 'faculties', 'facultyId', 'sortOrder'));
+    }
+
+    public function faculty_guest_index()
+    {
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if (!$guestRole) {
+            // Handle the case where the "Guest" role does not exist
+            return redirect()->back()->with('error', 'Guest role not found. Please contact the administrator.');
+        }
+
+        $guestRoleId = $guestRole->role_id; // Get the role ID
+
+        $faculty_guests = User::where('role_id', $guestRoleId) // Get the id of Guest role
+            ->whereNotNull('faculty_id')
+            ->orderBy('created_at')
+            ->paginate(10);
+        $faculties = Faculty::all();
+
+        return view('admin.facultyguest', compact('faculty_guests', 'faculties'));
     }
 }

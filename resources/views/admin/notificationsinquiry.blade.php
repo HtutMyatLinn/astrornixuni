@@ -128,13 +128,13 @@
 
                                     <!-- Percentage -->
                                     <div class="flex items-center gap-1">
-                                        @if ($assigned_user_percentage_change > 0)
+                                        @if ($unassigned_user_percentage_change > 0)
                                             <span
-                                                class="text-emerald-500 text-xl font-medium">{{ $assigned_user_percentage_change }}%
+                                                class="text-emerald-500 text-xl font-medium">{{ $unassigned_user_percentage_change }}%
                                                 ↑</span>
-                                        @elseif ($assigned_user_percentage_change < 0)
+                                        @elseif ($unassigned_user_percentage_change < 0)
                                             <span
-                                                class="text-red-500 text-xl font-medium">{{ abs($assigned_user_percentage_change) }}%
+                                                class="text-red-500 text-xl font-medium">{{ abs($unassigned_user_percentage_change) }}%
                                                 ↓</span>
                                         @else
                                             <span class="text-gray-500 text-xl font-medium">0%</span>

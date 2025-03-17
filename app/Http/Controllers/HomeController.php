@@ -129,7 +129,18 @@ class HomeController extends Controller
 
     public function administratorNotificationsPassword()
     {
-        $unassigned_users = User::whereNull('role_id')->get();
+        // Fetch the role ID for the "Guest" role
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if (!$guestRole) {
+            // Handle the case where the "Guest" role does not exist
+            return redirect()->back()->with('error', 'Guest role not found. Please contact the administrator.');
+        }
+
+        $guestRoleId = $guestRole->role_id; // Get the role ID
+
+        // Fetch users with the "Guest" role and no faculty_id (unassigned users)
+        $unassigned_users = User::where('role_id', $guestRoleId)->get();
 
         // Get the current month's unassigned user count
         $current_month_unassigned_users = User::whereNull('role_id')
@@ -144,13 +155,13 @@ class HomeController extends Controller
             ->count();
 
         // Calculate the percentage change
-        $assigned_user_percentage_change = 0;
+        $unassigned_user_percentage_change = 0;
         if ($previous_month_unassigned_users > 0) {
-            $assigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
+            $unassigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
         }
 
         // Round the percentage to 2 decimal places
-        $assigned_user_percentage_change = round($assigned_user_percentage_change, 2);
+        $unassigned_user_percentage_change = round($unassigned_user_percentage_change, 2);
 
         // Inquiry
         $inquiries = Inquiry::all();
@@ -208,7 +219,7 @@ class HomeController extends Controller
         $student_percentage_change = round($student_percentage_change, 2);
         $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
-        return view('admin.notificationspassword', compact('unassigned_users', 'assigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions', 'reset_password_users'));
+        return view('admin.notificationspassword', compact('unassigned_users', 'unassigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions', 'reset_password_users'));
     }
 
     public function administratorEditUserData($id)
@@ -285,7 +296,7 @@ class HomeController extends Controller
         // Fetch all contributions with status "Publish"
         $contributions = Contribution::where('contribution_status', 'Publish')
             ->with(['user', 'category']) // Eager load relationships
-            ->paginate(5); // Paginate for better performance
+            ->paginate(20); // Paginate for better performance
 
         return view('marketingmanager.publishedcontribution', compact('contributions'));
     }

@@ -157,6 +157,10 @@
                                         title="{{ Auth::user()->email }}">
                                         {{ Auth::user()->email }}
                                     </p>
+                                    <p class="text-xs text-gray-500 text-wrap">
+                                        Last login date -
+                                        {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y') : 'Never' }}
+                                    </p>
                                 @else
                                     <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">
                                         Register to get access to all features

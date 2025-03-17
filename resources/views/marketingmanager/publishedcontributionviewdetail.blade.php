@@ -52,23 +52,39 @@
 
                     <h2 class="text-3xl font-bold mb-4">{{ $contribution->contribution_title }}</h2>
                     <!-- Author -->
-                    <p class="text-lg mb-2 text-gray-400">By : {{ $contribution->user->first_name }} {{ $contribution->user->last_name }}</p>
-
-
+                    <p class="text-lg mb-2 text-gray-400">By : {{ $contribution->user->first_name }}
+                        {{ $contribution->user->last_name }}</p>
 
                     <!-- Inside the Content section -->
                     <div class="flex flex-col md:flex-row gap-8">
                         <!-- Image -->
-                        <div class="md:w-1/4">
-                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}" alt="{{ $contribution->contribution_title }}" class="w-full rounded-md">
+                        <div class="w-full md:max-w-96 h-auto md:max-h-96 select-none">
+                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                alt="{{ $contribution->contribution_title }}"
+                                class="w-full h-full object-cover rounded-md">
                         </div>
 
                         <!-- Text content -->
-                        <div class="md:w-1/2">
+                        <div class="flex-1">
                             <h2 class="text-2xl font-bold mb-4">Title : {{ $contribution->contribution_title }}</h2>
-                            <p class="text-lg mb-4">
-                                Description : {{ $contribution->contribution_description }}
-                            </p>
+                            <div x-data="{ expanded: false }">
+                                <p class="mt-2 text-gray-700 text-lg text-start">
+                                    <span x-show="!expanded">
+                                        {!! nl2br(e(Str::limit($contribution->contribution_description, 350))) !!}
+                                    </span>
+                                    <span x-show="expanded">
+                                        {!! nl2br(e($contribution->contribution_description)) !!}
+                                    </span>
+                                </p>
+
+                                @if (strlen($contribution->contribution_description) > 350)
+                                    <button @click="expanded = !expanded"
+                                        class="text-blue-500 hover:underline mt-2 flex justify-start">
+                                        <span x-show="!expanded">Read more</span>
+                                        <span x-show="expanded">Show less</span>
+                                    </button>
+                                @endif
+                            </div>
                             <p class="text-lg mb-2"> Faculty : {{ $contribution->user->faculty->faculty }}</p>
                             <p class="text-lg">
                                 Published: {{ $contribution->published_date }}
