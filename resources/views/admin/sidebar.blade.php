@@ -105,9 +105,9 @@
                     Data Management
                 </a>
 
-                <a href="{{ route('admin.inquiry') }}"
+                <a href="{{ route('admin.reports') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
-                      {{ request()->routeIs('admin.inquiry') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
+                      {{ request()->routeIs('admin.reports') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                       hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/inquiry.png') }}" alt="">
                     Reports

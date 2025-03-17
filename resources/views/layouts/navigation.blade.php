@@ -153,13 +153,13 @@
                             @endif
                             <div class="flex-1 min-w-0">
                                 @if (Auth::check())
-                                    <p class="text-xs sm:text-sm text-gray-500 text-wrap w-56"
+                                    <p class="text-xs sm:text-sm text-gray-600 text-wrap w-56"
                                         title="{{ Auth::user()->email }}">
                                         {{ Auth::user()->email }}
                                     </p>
                                     <p class="text-xs text-gray-500 text-wrap">
                                         Last login date -
-                                        {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y') : 'Never' }}
+                                        {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y h:i A') : 'Never' }}
                                     </p>
                                 @else
                                     <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">

@@ -42,7 +42,8 @@
 
                 <!-- Tabs -->
                 <div class="flex gap-8 border-b mb-6 overflow-x-auto whitespace-nowrap">
-                    <a href="{{ route('admin.user-management') }}" class="px-1 py-4 hover:text-gray-900">
+                    <a href="{{ route('admin.user-management') }}"
+                        class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                         Admin
                     </a>
                     <a href="{{ route('admin.user-management.student') }}"
@@ -58,7 +59,7 @@
                         Marketing Manager
                     </a>
                     <a href="{{ route('admin.user-management.faculty-guest') }}"
-                        class="px-1 py-4 text-[#4353E1] border-b-4 border-[#4353E1] hover:text-gray-900">
+                        class="px-1 py-4 text-gray-600 hover:text-gray-900">
                         Faculty Guest
                     </a>
                     <a href="{{ route('admin.user-management.most-active-user') }}"

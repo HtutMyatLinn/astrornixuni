@@ -541,7 +541,6 @@
                                             class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
 
-
                                     <!-- intake status -->
                                     <div class="mb-4 relative">
                                         <label class="block text-sm font-medium mb-2">Status :</label>
