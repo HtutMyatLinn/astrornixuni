@@ -97,6 +97,7 @@ class AcademicYearController extends Controller
         $intake = new Intake();
         $intake->intake = $request->intake;
         $intake->academic_year_id = $request->academic_year_select;
+        $intake->status = 'upcoming';
         $intake->closure_date = $request->closure_date;
 
         // Automatically set final_closure_date to 14 days after closure_date

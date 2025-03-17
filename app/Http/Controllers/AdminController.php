@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EditAccountSettingRequest;
+use App\Models\AcademicYear;
+use App\Models\Contribution;
 use App\Models\Faculty;
 use App\Models\PasswordResetRequest;
 use App\Models\Role;
@@ -210,5 +212,71 @@ class AdminController extends Controller
         $faculties = Faculty::all();
 
         return view('admin.facultyguest', compact('faculty_guests', 'faculties'));
+    }
+
+    public function report_index(Request $request)
+    {
+        $published_contributions = Contribution::where('contribution_status', 'Publish')
+            ->orderBy('published_date')
+            ->paginate(10);
+
+        // Get the selected academic year from the request
+        $academicYear = $request->input('academic_year');
+
+        // Fetch all faculties
+        $faculties = Faculty::pluck('faculty', 'faculty_id');
+
+        // Fetch contributions grouped by faculty and academic year
+        $contributions = Contribution::query()
+            ->when($academicYear, function ($query) use ($academicYear) {
+                return $query->whereHas('intake', function ($q) use ($academicYear) {
+                    $q->where('academic_year_id', $academicYear);
+                });
+            })
+            ->with(['user.faculty', 'intake.academicYear'])
+            ->get()
+            ->groupBy('user.faculty.faculty_id');
+
+        // Calculate total contributions
+        $totalContributions = $contributions->flatten()->count();
+
+        // Calculate total unique contributors
+        $totalUniqueContributors = $contributions->flatten()->unique('user_id')->count();
+
+        // Prepare data for the charts
+        $labels = $faculties->values()->toArray();
+        $countData = [];
+        $percentageData = [];
+        $contributorCountData = [];
+        $contributorPercentageData = [];
+
+        foreach ($faculties as $facultyId => $facultyName) {
+            // Count contributions
+            $count = $contributions->get($facultyId, collect())->count();
+            $countData[] = $count; // Raw count of contributions
+            $percentage = $totalContributions > 0 ? ($count / $totalContributions) * 100 : 0;
+            $percentageData[] = round($percentage, 2); // Percentage of contributions
+
+            // Count unique contributors
+            $contributorCount = $contributions->get($facultyId, collect())->unique('user_id')->count();
+            $contributorCountData[] = $contributorCount; // Count of unique contributors
+
+            // Calculate percentage of unique contributors
+            $contributorPercentage = $totalUniqueContributors > 0 ? ($contributorCount / $totalUniqueContributors) * 100 : 0;
+            $contributorPercentageData[] = round($contributorPercentage, 2); // Percentage of unique contributors
+        }
+
+        // Fetch all academic years for the filter dropdown
+        $academicYears = AcademicYear::pluck('academic_year', 'academic_year_id');
+
+        return view('admin.reports', [
+            'labels' => $labels,
+            'countData' => $countData, // Pass count data (contributions) to the view
+            'percentageData' => $percentageData, // Pass percentage data (contributions) to the view
+            'contributorCountData' => $contributorCountData, // Pass contributor count data to the view
+            'contributorPercentageData' => $contributorPercentageData, // Pass contributor percentage data to the view
+            'academicYears' => $academicYears, // Pass academicYears to the view
+            'published_contributions' => $published_contributions
+        ]);
     }
 }
