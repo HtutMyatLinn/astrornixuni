@@ -12,6 +12,7 @@ class Contribution extends Model
     protected $primaryKey = 'contribution_id';
     protected $fillable = ['intake_id', 'contribution_category_id', 'user_id', 'contribution_cover', 'contribution_title', 'contribution_description', 'contribution_file_path', 'submitted_date', 'contribution_status', 'view_count'];
     protected $casts = [
+        'submitted_date' => 'datetime',
         'published_date' => 'datetime',
     ];
 

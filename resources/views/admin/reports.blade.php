@@ -42,49 +42,44 @@
                 </h2>
 
                 <!-- Search and Filters -->
-                <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between mb-8">
-                    <div class="relative max-w-[400px]">
-                        <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8" />
-                            <path d="m21 21-4.3-4.3" />
-                        </svg>
-                        <form method="GET" action="{{ route('admin.user-management.search') }}">
+                <form method="GET" action="{{ route('admin.reports') }}">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                        <!-- Search Input -->
+                        <div class="relative max-w-[400px]">
+                            <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..."
                                 class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
-                        </form>
-                    </div>
+                        </div>
 
-                    <div class="flex gap-4">
-                        <!-- Sort Dropdown -->
-                        <div class="relative group">
-                            <button
-                                class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                Sort By
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6" />
-                                </svg>
-                            </button>
-                            <div
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <div class="p-2">
-                                    <a href="{{ route('admin.user-management.sort', ['order' => 'asc']) }}"
-                                        class="w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">
-                                        Ascending
-                                    </a>
-                                    <a href="{{ route('admin.user-management.sort', ['order' => 'desc']) }}"
-                                        class="w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">
-                                        Descending
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="flex flex-wrap gap-4">
+                            <!-- Faculty Filter -->
+                            <select name="faculty" onchange="this.form.submit()"
+                                class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                <option value="">All Faculties</option>
+                                @foreach ($all_faculties as $faculty)
+                                    <option value="{{ $faculty->faculty_id }}"
+                                        {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
+                                        {{ $faculty->faculty }}
+                                    </option>
+                                @endforeach
+                            </select>
 
+                            <!-- Sort Option -->
+                            <select name="sort" onchange="this.form.submit()"
+                                class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest
+                                </option>
+                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest
+                                </option>
+                            </select>
                         </div>
                     </div>
-                </div>
+                </form>
 
                 <!-- Table -->
                 <div class="bg-white rounded-lg overflow-hidden">
@@ -115,8 +110,28 @@
                                             <td class="px-6 py-4 text-gray-600">
                                                 {{ $published_contribution->user->faculty->faculty }}
                                             </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $published_contribution->user->first_name . ' ' . $published_contribution->user->last_name }}
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    @if ($published_contribution->profile_image)
+                                                        <img id="profilePreview"
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                            src="{{ asset('profile_images/' . $published_contribution->user->profile_image) }}"
+                                                            alt="Profile">
+                                                    @else
+                                                        <p
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                            {{ strtoupper($published_contribution->user->username[0]) }}
+                                                        </p>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-medium">
+                                                            {{ $published_contribution->user->first_name . ' ' . $published_contribution->user->last_name }}
+                                                        </div>
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $published_contribution->user->email }}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td class="px-6 py-4 text-gray-600">
                                                 {{ $published_contribution->published_date ? $published_contribution->published_date->format('M d, Y') : 'N/A' }}
@@ -129,7 +144,7 @@
                                 @else
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
-                                            No users found.
+                                            No published contributions found.
                                         </td>
                                     </tr>
                                 @endif
@@ -151,7 +166,7 @@
                 <!-- Header -->
                 <h1 class="text-2xl font-bold mb-6">List of Commented Contributions</h1>
                 <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                    Total - {{ $published_contributions->count() }}
+                    Total - {{ $commented_contributions->count() }}
                 </h2>
 
                 <!-- Search and Filters -->
@@ -208,43 +223,63 @@
                                 <tr>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">No</th>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contribution
-                                        Title
+                                        Title</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Commenter</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Comment</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Commented Date
                                     </th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Faculty</th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student Name</th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Published Date
-                                    </th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Views</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                @if ($published_contributions->isNotEmpty())
-                                    @foreach ($published_contributions as $published_contribution)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $published_contribution->contribution_title }}
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $published_contribution->user->faculty->faculty }}
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $published_contribution->user->first_name . ' ' . $published_contribution->user->last_name }}
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $published_contribution->published_date ? $published_contribution->published_date->format('M d, Y') : 'N/A' }}
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $published_contribution->view_count }}
-                                            </td>
-                                        </tr>
+                                @if ($commented_contributions->isNotEmpty())
+                                    @php $counter = 1; @endphp <!-- Initialize counter variable -->
+                                    @foreach ($commented_contributions as $contribution)
+                                        @foreach ($contribution->comments as $comment)
+                                            <tr>
+                                                <!-- Display the row number -->
+                                                <td class="px-6 py-4 text-gray-600">
+                                                    {{ $counter++ }} <!-- Increment the counter -->
+                                                </td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                    {{ $comment->contribution->contribution_title }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        @if ($comment->user->profile_image)
+                                                            <img id="profilePreview"
+                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                                src="{{ asset('profile_images/' . $comment->user->profile_image) }}"
+                                                                alt="Profile">
+                                                        @else
+                                                            <p
+                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                {{ strtoupper($comment->user->username[0] ?? 'N') }}
+                                                            </p>
+                                                        @endif
+                                                        <div>
+                                                            <div class="font-medium">
+                                                                {{ $comment->user->first_name ?? 'First Name' }}
+                                                                {{ $comment->user->last_name ?? 'Last Name' }}
+                                                            </div>
+                                                            <div class="text-sm text-gray-500">
+                                                                {{ $comment->user->email ?? 'No email available' }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                    {{ $comment->comment_text ?? 'No Comment' }}
+                                                </td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                    {{ $comment->comment_date->format('M d, Y') }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @endforeach
                                 @else
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
-                                            No users found.
+                                            No commented contributions found.
                                         </td>
                                     </tr>
                                 @endif
@@ -254,9 +289,9 @@
                 </div>
 
                 <!-- Pagination -->
-                @if ($published_contributions->isNotEmpty())
+                @if ($commented_contributions->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
-                        {{ $published_contributions->links('pagination::tailwind') }}
+                        {{ $commented_contributions->links('pagination::tailwind') }}
                     </div>
                 @endif
             </div>
@@ -280,7 +315,7 @@
                 </form>
 
                 <!-- Chart Canvas for Count -->
-                <div style="width: 80%; margin: 0 auto;">
+                <div style="width: 100%; margin: 0 auto;">
                     <canvas id="countChart"></canvas>
                 </div>
 
@@ -336,7 +371,7 @@
                 </form>
 
                 <!-- Chart Canvas for Percentage -->
-                <div style="width: 80%; margin: 0 auto; margin-top: 40px;">
+                <div style="width: 100%; margin: 0 auto; margin-top: 40px;">
                     <canvas id="percentageChart"></canvas>
                 </div>
 
@@ -396,7 +431,7 @@
                 </form>
 
                 <!-- Chart Canvas for Contributor Count -->
-                <div style="width: 80%; margin: 0 auto;">
+                <div style="width: 100%; margin: 0 auto;">
                     <canvas id="contributorCountChart"></canvas>
                 </div>
 
@@ -452,7 +487,7 @@
                 </form>
 
                 <!-- Chart Canvas for Contributor Percentage -->
-                <div style="width: 80%; margin: 0 auto; margin-top: 40px;">
+                <div style="width: 100%; margin: 0 auto; margin-top: 40px;">
                     <canvas id="contributorPercentageChart"></canvas>
                 </div>
 

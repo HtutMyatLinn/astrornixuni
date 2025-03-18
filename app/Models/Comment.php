@@ -11,6 +11,9 @@ class Comment extends Model
 
     protected $primaryKey = 'comment_id';
     protected $fillable = ['user_id', 'contribution_id', 'comment_text', 'comment_date'];
+    protected $casts = [
+        'comment_date' => 'datetime',
+    ];
 
     public function contribution()
     {

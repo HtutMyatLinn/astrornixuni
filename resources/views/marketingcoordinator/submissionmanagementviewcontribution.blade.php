@@ -51,7 +51,8 @@
                                 <div class="md:col-span-2 text-xl">{{ $contribution->user->username }}</div>
 
                                 <div class="font-semibold text-xl">Submission Date</div>
-                                <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date }}</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date->format('M d, Y') }}
+                                </div>
 
                                 <div class="font-semibold text-xl">Contribution Cover</div>
                                 <div class="md:col-span-2 text-xl select-none">

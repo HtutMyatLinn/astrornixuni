@@ -86,7 +86,7 @@
                                             <div class="flex items-center text-sm text-gray-500">
                                                 <span class="mr-2">by {{ $contribution->user->username }}</span>
                                                 <span
-                                                    class="ml-auto text-xs text-gray-400">{{ $contribution->published_date }}</span>
+                                                    class="ml-auto text-xs text-gray-400">{{ $contribution->published_date->format('d-m-Y') }}</span>
                                             </div>
                                         </div>
                                     </a>

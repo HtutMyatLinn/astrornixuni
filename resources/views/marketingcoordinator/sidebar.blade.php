@@ -15,24 +15,24 @@
     <!-- User Profile Section with Dropdown -->
     <div class="p-4 text-white bg-[#1C2434]" x-data="{ open: false }">
         <button @click="open = !open" class="flex items-center justify-between w-full space-x-3 py-2 focus:outline-none">
-            <div class="flex  items-center space-x-3">
+            <div class="flex items-center space-x-3">
                 <!-- Centered Profile Picture -->
                 @if (Auth::check())
-                @if (Auth::user()->profile_image)
-                <img id="profilePreview"
-                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                    src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
+                    @if (Auth::user()->profile_image)
+                        <img id="profilePreview"
+                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                            src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
+                    @else
+                        <p
+                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                            {{ strtoupper(Auth::user()->username[0]) }}
+                        </p>
+                    @endif
                 @else
-                <p
-                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                    {{ strtoupper(Auth::user()->username[0]) }}
-                </p>
-                @endif
-                @else
-                <div class="w-12 h-12 select-none">
-                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                        class="w-full h-full rounded-full object-cover">
-                </div>
+                    <div class="w-12 h-12 select-none">
+                        <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                            class="w-full h-full rounded-full object-cover">
+                    </div>
                 @endif
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3>

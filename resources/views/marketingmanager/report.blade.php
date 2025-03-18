@@ -46,7 +46,7 @@
                         <form action="{{ route('marketingmanager.report') }}" method="GET">
                             <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between mb-8">
                                 <!-- Search Input -->
-                                <div class="relative w-[400px]">
+                                <div class="relative max-w-[400px]">
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -60,18 +60,19 @@
                                 </div>
 
                                 <!-- Filter and Sort Dropdowns -->
-                                <div class="flex flex-wrap gap-4">
+                                <div class="flex justify-end flex-wrap gap-4">
                                     <!-- Faculty Filter -->
                                     <div class="relative group">
                                         <select name="faculty" onchange="this.form.submit()"
-                                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                            <option value="all" {{ request('faculty') == 'all' ? 'selected' : '' }}>All
+                                            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100 w-full">
+                                            <option value="all" {{ request('faculty') == 'all' ? 'selected' : '' }}>
+                                                All
                                                 Faculties</option>
                                             @foreach ($faculties as $faculty)
-                                            <option value="{{ $faculty->faculty_id }}"
-                                                {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
-                                                {{ $faculty->faculty }}
-                                            </option>
+                                                <option value="{{ $faculty->faculty_id }}"
+                                                    {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
+                                                    {{ $faculty->faculty }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -80,9 +81,11 @@
                                     <div class="relative group">
                                         <select name="sort" onchange="this.form.submit()"
                                             class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                            <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest
+                                            <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>
+                                                Newest
                                                 First</option>
-                                            <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest
+                                            <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>
+                                                Oldest
                                                 First</option>
                                         </select>
                                     </div>
@@ -111,38 +114,45 @@
                                     <!-- Inside the <tbody> section -->
                                     <tbody class="divide-y divide-gray-100">
                                         @forelse ($contributions as $index => $contribution)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 text-gray-600">{{ $loop->iteration }}</td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex items-center gap-3">
-                                                    <div class="font-medium">{{ $contribution->contribution_title }}</div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">{{ $contribution->user->faculty->faculty }}</td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $contribution->user->first_name }} {{ $contribution->user->last_name }}
-                                            </td>
-                                            <td class="px-6 py-4 text-gray-600">
-                                                {{ $contribution->published_date }}
-                                            </td>
-                                            <td class="px-6 py-4 text-[#2F64AA]">
-                                                {{ $contribution->view_count }}
-                                            </td>
-                                        </tr>
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-4 text-gray-600">{{ $loop->iteration }}</td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="font-medium">
+                                                            {{ $contribution->contribution_title }}</div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                    {{ $contribution->user->faculty->faculty }}</td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                    {{ $contribution->user->first_name }}
+                                                    {{ $contribution->user->last_name }}
+                                                </td>
+                                                <td class="px-6 py-4 text-gray-600">
+                                                    {{ $contribution->published_date }}
+                                                </td>
+                                                <td class="px-6 py-4 text-[#2F64AA]">
+                                                    {{ $contribution->view_count }}
+                                                </td>
+                                            </tr>
                                         @empty
-                                        <!-- Empty State -->
-                                        <tr>
-                                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                                <div class="flex flex-col items-center justify-center py-12">
-                                                    <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg>
-                                                    <p class="mt-4 text-lg font-medium text-gray-900">No published contributions found.</p>
-                                                    <p class="text-sm text-gray-500">Try adjusting your filters or search terms.</p>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <!-- Empty State -->
+                                            <tr>
+                                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                                    <div class="flex flex-col items-center justify-center py-12">
+                                                        <svg class="w-16 h-16 text-gray-400" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        <p class="mt-4 text-lg font-medium text-gray-900">No published
+                                                            contributions found.</p>
+                                                        <p class="text-sm text-gray-500">Try adjusting your filters or
+                                                            search terms.</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforelse
                                     </tbody>
                                 </table>

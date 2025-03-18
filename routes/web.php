@@ -75,7 +75,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('admin.notifications.inquiry');
         Route::put('/admin/notifications/inquiry/{id}', [InquiryController::class, 'update'])
             ->name('admin.notifications.inquiry.update');
-        // Route::get('/admin/inquiry', [HomeController::class, 'administratorInquiry'])->name('admin.inquiry');
 
         Route::get('/admin/edit-user-data/{id}', [HomeController::class, 'administratorEditUserData'])->name('admin.edit-user-data');
         Route::post('/admin/update-user-data/{id}', [HomeController::class, 'administratorUpdateUserData'])->name('admin.update-user-data');

@@ -101,8 +101,9 @@
                                                                 class="text-sm text-gray-500">{{ $contribution->user->email }}</span>
                                                         </div>
                                                     </td>
-                                                    <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
                                                     <td class="px-6 py-4">
+                                                        {{ $contribution->submitted_date->format('M d, Y') }}</td>
+                                                    <td class="px-6 py-4 select-none">
                                                         <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
                                                             alt="Cover Image" class="w-16 h-16 object-cover rounded-lg">
                                                     </td>

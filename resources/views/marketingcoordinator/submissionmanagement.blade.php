@@ -44,21 +44,32 @@
                         <form action="{{ route('marketingcoordinator.submission-management') }}" method="GET">
                             <div class="flex justify-between mb-8">
                                 <div class="relative w-[400px]">
-                                    <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
                                         <circle cx="11" cy="11" r="8" />
                                         <path d="m21 21-4.3-4.3" />
                                     </svg>
-                                    <input type="text" id="searchInput" placeholder="Search..." name="search" class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" value="{{ request('search') }}" />
+                                    <input type="text" id="searchInput" placeholder="Search..." name="search"
+                                        class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                                        value="{{ request('search') }}" />
                                 </div>
                                 <div class="flex gap-4">
                                     <!-- Filter Dropdown -->
-                                    <select id="statusFilter" name="status" class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
+                                    <select id="statusFilter" name="status"
+                                        class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
                                         <option value="">All Statuses</option>
-                                        <option value="Upload" {{ request('status') == 'Upload' ? 'selected' : '' }}>Upload</option>
-                                        <option value="Select" {{ request('status') == 'Select' ? 'selected' : '' }}>Select</option>
-                                        <option value="Update" {{ request('status') == 'Update' ? 'selected' : '' }}>Update</option>
-                                        <option value="Reject" {{ request('status') == 'Reject' ? 'selected' : '' }}>Rejected</option>
-                                        <option value="Publish" {{ request('status') == 'Publish' ? 'selected' : '' }}>Published</option>
+                                        <option value="Upload" {{ request('status') == 'Upload' ? 'selected' : '' }}>
+                                            Upload</option>
+                                        <option value="Select" {{ request('status') == 'Select' ? 'selected' : '' }}>
+                                            Select</option>
+                                        <option value="Update" {{ request('status') == 'Update' ? 'selected' : '' }}>
+                                            Update</option>
+                                        <option value="Reject" {{ request('status') == 'Reject' ? 'selected' : '' }}>
+                                            Rejected</option>
+                                        <option value="Publish" {{ request('status') == 'Publish' ? 'selected' : '' }}>
+                                            Published</option>
                                     </select>
                                 </div>
                             </div>
@@ -70,45 +81,60 @@
                                 <table class="w-full">
                                     <thead class="bg-[#F9F8F8]">
                                         <tr>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions Title</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contributions Type</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student Name</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted Date</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status</th>
-                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions Title</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                Contributions Type</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student
+                                                Name</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
+                                                Date</th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Status
+                                            </th>
+                                            <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
                                         @if ($contributions->isNotEmpty())
-                                        @foreach ($contributions as $contribution)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4">{{ $contribution->contribution_title }}</td>
-                                            <td class="px-6 py-4">{{ $contribution->category->contribution_category }}</td>
-                                            <td class="px-6 py-4">{{ $contribution->user->username }}</td>
-                                            <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-sm
-                                                    {{ $contribution->contribution_status == 'Upload' ? 'bg-yellow-400' :
-                                                       ($contribution->contribution_status == 'Select' ? 'bg-blue-400' :
-                                                       ($contribution->contribution_status == 'Update' ? 'bg-orange-400' :
-                                                       ($contribution->contribution_status == 'Reject' ? 'bg-red-400' :
-                                                       ($contribution->contribution_status == 'Publish' ? 'bg-green-400' : 'bg-gray-300')))) }}
+                                            @foreach ($contributions as $contribution)
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-6 py-4">{{ $contribution->contribution_title }}</td>
+                                                    <td class="px-6 py-4">
+                                                        {{ $contribution->category->contribution_category }}</td>
+                                                    <td class="px-6 py-4">{{ $contribution->user->username }}</td>
+                                                    <td class="px-6 py-4">
+                                                        {{ $contribution->submitted_date->format('M d, Y') }}</td>
+                                                    <td class="px-6 py-4">
+                                                        <span
+                                                            class="px-3 py-1 rounded-full text-sm
+                                                    {{ $contribution->contribution_status == 'Upload'
+                                                        ? 'bg-yellow-400'
+                                                        : ($contribution->contribution_status == 'Select'
+                                                            ? 'bg-blue-400'
+                                                            : ($contribution->contribution_status == 'Update'
+                                                                ? 'bg-orange-400'
+                                                                : ($contribution->contribution_status == 'Reject'
+                                                                    ? 'bg-red-400'
+                                                                    : ($contribution->contribution_status == 'Publish'
+                                                                        ? 'bg-green-400'
+                                                                        : 'bg-gray-300')))) }}
                                                     text-white">
-                                                    {{ $contribution->contribution_status }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <a href="{{ route('marketingcoordinator.submission-management.view-detail-contribution', $contribution->contribution_id) }}"
-                                                    class="text-[#2F64AA]">View</a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                                            {{ $contribution->contribution_status }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <a href="{{ route('marketingcoordinator.submission-management.view-detail-contribution', $contribution->contribution_id) }}"
+                                                            class="text-[#2F64AA]">View</a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         @else
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
-                                                No contributions found.
-                                            </td>
-                                        </tr>
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
+                                                    No contributions found.
+                                                </td>
+                                            </tr>
                                         @endif
                                     </tbody>
                                 </table>
@@ -120,7 +146,6 @@
                             {{ $contributions->links() }}
                         </div>
                     </div>
-
                 </div>
             </main>
         </div>

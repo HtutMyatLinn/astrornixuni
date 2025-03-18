@@ -23,10 +23,13 @@
         </button>
 
         <!-- Sidebar -->
-        @include('marketingmanager.sidebar')
+        <aside id="sidebar"
+            class="w-64 fixed inset-y-0 left-0 transform transition-transform duration-300 z-40 -translate-x-full lg:translate-x-0">
+            @include('marketingmanager.sidebar')
+        </aside>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-64">
             @include('marketingmanager.header')
             <!-- here to add content -->
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
@@ -87,7 +90,7 @@
                             </div>
                             <p class="text-lg mb-2"> Faculty : {{ $contribution->user->faculty->faculty }}</p>
                             <p class="text-lg">
-                                Published: {{ $contribution->published_date }}
+                                Published: {{ $contribution->published_date->format('M d, Y') }}
                             </p>
                         </div>
                     </div>

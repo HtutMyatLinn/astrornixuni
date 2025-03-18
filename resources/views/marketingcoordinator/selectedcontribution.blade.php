@@ -89,7 +89,8 @@
                                                     <td class="px-6 py-4">
                                                         {{ $contribution->category->contribution_category }}</td>
                                                     <td class="px-6 py-4">{{ $contribution->user->username }}</td>
-                                                    <td class="px-6 py-4">{{ $contribution->submitted_date }}</td>
+                                                    <td class="px-6 py-4">
+                                                        {{ $contribution->submitted_date->format('M d, Y') }}</td>
                                                     <td class="px-6 py-4">
                                                         <span
                                                             class="px-3 py-1 rounded-full text-sm {{ $contribution->contribution_status == 'Upload' ? 'bg-[#FCD53F]' : ($contribution->contribution_status == 'Reviewed' ? 'bg-[#CAF4E0]' : ($contribution->contribution_status == 'Published' ? 'bg-[#65FF51]' : 'bg-[#81CBEF]')) }} text-black">
