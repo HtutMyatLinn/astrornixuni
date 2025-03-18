@@ -54,7 +54,7 @@
                         Marketing Coordinator
                     </a>
                     <a href="{{ route('admin.user-management.marketing-manager') }}"
-                        class="px-1 py-4  hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
+                        class="px-1 py-4 hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                         Marketing Manager
                     </a>
                     <a href="{{ route('admin.user-management.faculty-guest') }}"
