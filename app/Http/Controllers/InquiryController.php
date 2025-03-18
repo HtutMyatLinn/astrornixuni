@@ -181,4 +181,25 @@ class InquiryController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Your inquiry has been submitted successfully!');
     }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the request data (if needed)
+        $request->validate([
+            // Add validation rules if necessary
+        ]);
+
+        // Find the inquiry by ID
+        $inquiry = Inquiry::findOrFail($id);
+
+        // Update the inquiry status to "Resolved"
+        $inquiry->update([
+            'inquiry_status' => 'Resolved',
+            'response_date' => now(),
+        ]);
+
+        // Redirect back with a success message
+        return redirect()->route('admin.notifications.inquiry')
+            ->with('success', 'Inquiry marked as resolved.');
+    }
 }

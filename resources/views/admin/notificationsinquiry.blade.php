@@ -277,7 +277,7 @@
                                                         </td>
                                                         <td class="px-6 py-4 text-[#2F64AA] font-light">
                                                             <a href="#"
-                                                                onclick="openModal('{{ $inquiry->user->first_name }} {{ $inquiry->user->last_name }}', '{{ $inquiry->user->email }}', '{{ $inquiry->priority_level }}', '{{ $inquiry->inquiry }}', '{{ $inquiry->created_at->format('M d, Y h:i A') }}', '{{ $inquiry->inquiry_status }}')"
+                                                                onclick="openModal('{{ $inquiry->inquiry_id }}', '{{ $inquiry->user->first_name }} {{ $inquiry->user->last_name }}', '{{ $inquiry->user->email }}', '{{ $inquiry->priority_level }}', '{{ $inquiry->inquiry }}', '{{ $inquiry->created_at->format('M d, Y h:i A') }}', '{{ $inquiry->inquiry_status }}')"
                                                                 class="hover:underline">
                                                                 <i class="ri-eye-line text-xl"></i>
                                                             </a>
@@ -312,6 +312,7 @@
                             <div id="inquiryModal"
                                 class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
                                 <div class="max-w-xl w-full bg-white p-8 rounded-md shadow-lg relative">
+                                    <!-- Close Button -->
                                     <button onclick="closeInquiryModal()" class="absolute top-2 right-2 text-black">
                                         ✖
                                     </button>
@@ -320,6 +321,9 @@
                                     <h1 class="text-2xl font-bold text-center mb-6">
                                         Inquiry <span class="border-b-2 border-blue-600">Detail</span>
                                     </h1>
+
+                                    <!-- Hidden Input for Inquiry ID -->
+                                    <input type="hidden" id="inquiry_id" name="id" value="">
 
                                     <!-- Inquiry Details -->
                                     <div class="space-y-4 max-h-[60vh]">
@@ -359,10 +363,15 @@
 
                                     <!-- Response Button -->
                                     <div class="flex justify-end mt-6">
-                                        <a id="responseButton" href="#"
-                                            class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 cursor-not-allowed">
-                                            Response
-                                        </a>
+                                        <!-- Form for Updating Inquiry -->
+                                        <form id="updateInquiryForm" method="POST">
+                                            @csrf
+                                            @method('PUT') <!-- Use PUT method for updates -->
+                                            <button type="button" id="responseButton"
+                                                class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                                                Response
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -373,8 +382,9 @@
                                 const inquiryModal = document.getElementById('inquiryModal');
 
                                 // Function to open the inquiry modal
-                                function openModal(user, email, priority_level, inquiry, date, status) {
+                                function openModal(id, user, email, priority_level, inquiry, date, status) {
                                     // Populate modal content
+                                    document.getElementById('inquiry_id').value = id;
                                     document.getElementById('modalUser').textContent = user;
                                     document.getElementById('modalEmail').textContent = email;
                                     document.getElementById('modalPriorityLevel').textContent = priority_level;
@@ -382,22 +392,37 @@
                                     document.getElementById('modalDate').textContent = date;
                                     document.getElementById('modalStatus').textContent = status;
 
-                                    // Set the mailto link
-                                    const responseLink = document.getElementById('responseButton');
-                                    responseLink.href = `mailto:${email}`;
+                                    // Set the form action dynamically
+                                    const updateForm = document.getElementById('updateInquiryForm');
+                                    updateForm.action = `/admin/notifications/inquiry/${id}`;
 
                                     // Update the button based on inquiry status
+                                    const responseButton = document.getElementById('responseButton');
+
                                     if (status === 'Resolved') {
-                                        responseLink.textContent = 'Resolved';
-                                        responseLink.classList.add('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
-                                        responseLink.disabled = true;
+                                        responseButton.textContent = 'Resolved';
+                                        responseButton.classList.add('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
+                                        responseButton.disabled = true;
                                     } else {
-                                        responseLink.textContent = 'Response';
-                                        responseLink.classList.remove('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
-                                        responseLink.disabled = false;
+                                        responseButton.textContent = 'Response';
+                                        responseButton.classList.remove('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
+                                        responseButton.disabled = false;
                                     }
 
-                                    // Show the dark overlay and modal
+                                    // Add event listener to the "Response" button
+                                    responseButton.addEventListener('click', () => {
+                                        // Encode the inquiry text to ensure it works properly in a mailto link
+                                        const encodedInquiry = encodeURIComponent(inquiry);
+
+                                        // Open the email client with pre-filled recipient, subject, and body including the user's question
+                                        window.location.href =
+                                            `mailto:${email}?subject=Response to Your Inquiry&body=Dear ${user},%0D%0A%0D%0AYou asked: "${encodedInquiry}"%0D%0A%0D%0AThank you for reaching out. We have reviewed your inquiry and here is our response:%0D%0A%0D%0A[Your response here]%0D%0A%0D%0ABest regards,%0D%0AAstrornix University Support Team`;
+
+                                        // Submit the form to update the status
+                                        updateForm.submit();
+                                    });
+
+                                    // Show the modal
                                     darkOverlay.classList.remove('opacity-0', 'invisible');
                                     darkOverlay.classList.add('opacity-100');
                                     inquiryModal.classList.remove('opacity-0', 'invisible', '-translate-y-5');

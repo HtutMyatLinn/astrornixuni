@@ -330,11 +330,12 @@
                                                     <td class="px-6 py-4">
                                                         <a href="#"
                                                             class="text-blue-600 hover:text-blue-700 reset-password-btn"
-                                                            data-user-id="{{ $reset_password_user->user_id }}">
+                                                            data-user-id="{{ $reset_password_user->user->user_id }}"
+                                                            data-user-email="{{ $reset_password_user->user->email }}"
+                                                            data-user-name="{{ $reset_password_user->user->first_name }} {{ $reset_password_user->user->last_name }}">
                                                             Reset Password
                                                         </a>
                                                     </td>
-
                                                 </tr>
                                             @endforeach
                                         @else
@@ -349,12 +350,12 @@
                             </div>
                         </div>
 
-                        {{-- <!-- Pagination -->
+                        <!-- Pagination -->
                         @if ($reset_password_users->isNotEmpty())
                             <div class="flex justify-end items-center gap-2 mt-6">
                                 {{ $reset_password_users->appends(request()->query())->links('pagination::tailwind') }}
                             </div>
-                        @endif --}}
+                        @endif
                     </div>
 
                     <!-- Password Reset Modal -->
@@ -403,32 +404,59 @@
                             const modal = document.getElementById("resetPasswordModal");
                             const closeModal = document.getElementById("closeModal");
                             const userIdInput = document.getElementById("resetUserId");
+                            const resetForm = document.getElementById("resetPasswordForm");
+                            const passwordField = document.getElementById("password");
 
                             resetButtons.forEach(button => {
                                 button.addEventListener("click", function(event) {
                                     event.preventDefault();
                                     const userId = this.getAttribute("data-user-id");
+                                    const userEmail = this.getAttribute("data-user-email"); // Get user's email
+                                    const userName = this.getAttribute("data-user-name"); // Get user's name
+
+                                    if (!userEmail) {
+                                        alert("User email is missing.");
+                                        return;
+                                    }
+
                                     userIdInput.value = userId;
+
+                                    // Show the modal
                                     darkOverlay2.classList.remove('opacity-0', 'invisible');
                                     darkOverlay2.classList.add('opacity-100');
-                                    modal.classList.remove('opacity-0', 'invisible',
-                                        '-translate-y-5');
+                                    modal.classList.remove('opacity-0', 'invisible', '-translate-y-5');
+
+                                    // Handle form submission
+                                    resetForm.addEventListener("submit", function(event) {
+                                        event.preventDefault(); // Prevent default submission
+
+                                        const newPassword = passwordField.value; // Get new password
+
+                                        // Open mail client
+                                        window.location.href =
+                                            `mailto:${userEmail}?subject=Your New Password&body=Dear ${userName},%0D%0A%0D%0A` +
+                                            `Your password has been reset by the administrator.%0D%0A%0D%0A` +
+                                            `New Password: ${newPassword}%0D%0A%0D%0A` +
+                                            `Please log in and change your password as soon as possible for security reasons.%0D%0A%0D%0A` +
+                                            `Best regards,%0D%0AAstrornix University Support Team`;
+
+                                        // Submit the form after opening the email client
+                                        setTimeout(() => {
+                                            resetForm.submit();
+                                        }, 500);
+                                    }, {
+                                        once: true
+                                    }); // Ensure event is triggered only once
                                 });
                             });
 
                             closeModal.addEventListener("click", function() {
                                 darkOverlay2.classList.add('opacity-0', 'invisible');
                                 darkOverlay2.classList.remove('opacity-100');
-
                                 modal.classList.add('opacity-0', 'invisible', '-translate-y-5');
                             });
-
-                            window.onload = function() {
-                                @if ($errors->any())
-                                    openModal();
-                                @endif
-                            };
                         });
+
 
                         // Password toggle
                         function togglePassword(fieldId, icon) {
