@@ -38,7 +38,7 @@
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
                 <div class="space-y-4 mb-4">
-                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">Guest Management</h1>
+                    <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">View Guest</h1>
                     <div class="p-8 bg-white  shadow-lg">
                         <!-- Header -->
                         <h1 class="text-xl font-bold mb-6">List of guest</h1>
@@ -60,6 +60,7 @@
 
                                 <div class="flex gap-4">
                                     <!-- Filter Dropdown -->
+                                    <!-- Filter Dropdown -->
                                     <div class="relative group">
                                         <button type="button"
                                             class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
@@ -73,9 +74,9 @@
                                         <div
                                             class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                             <div class="p-2">
-                                                <a href="{{ route('marketingcoordinator.guest-management', ['status' => 'active']) }}"
+                                                <a href="{{ route('marketingcoordinator.guest-management', ['status' => 1]) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Active</a>
-                                                <a href="{{ route('marketingcoordinator.guest-management', ['status' => 'inactive']) }}"
+                                                <a href="{{ route('marketingcoordinator.guest-management', ['status' => 0]) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Inactive</a>
                                             </div>
                                         </div>
@@ -128,88 +129,88 @@
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
                                         @if ($guests->isNotEmpty())
-                                            @foreach ($guests as $guest)
-                                                <tr class="hover:bg-gray-50">
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $guest->user_code }}
-                                                    </td>
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <div class="flex items-center gap-3">
-                                                            @if ($guest->profile_image)
-                                                                @php
-                                                                    $publicPath =
-                                                                        'profile_images/' . $guest->profile_image;
-                                                                    $storagePath =
-                                                                        'storage/profile_images/' .
-                                                                        $guest->profile_image;
-                                                                @endphp
+                                        @foreach ($guests as $guest)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $guest->user_code }}
+                                            </td>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    @if ($guest->profile_image)
+                                                    @php
+                                                    $publicPath =
+                                                    'profile_images/' . $guest->profile_image;
+                                                    $storagePath =
+                                                    'storage/profile_images/' .
+                                                    $guest->profile_image;
+                                                    @endphp
 
-                                                                @if (file_exists(public_path($publicPath)))
-                                                                    <img id="profilePreview"
-                                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                                        src="{{ asset($publicPath) }}" alt="Profile">
-                                                                @elseif (file_exists(public_path($storagePath)))
-                                                                    <img id="profilePreview"
-                                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                                        src="{{ asset($storagePath) }}"
-                                                                        alt="Profile">
-                                                                @else
-                                                                    <p
-                                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                        {{ strtoupper($guest->username[0]) }}
-                                                                    </p>
-                                                                @endif
-                                                            @else
-                                                                <p
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                    {{ strtoupper($guest->username[0]) }}
-                                                                </p>
-                                                            @endif
-                                                            <div>
-                                                                <div class="font-medium">
-                                                                    {{ $guest->first_name . ' ' . $guest->last_name }}
-                                                                </div>
-                                                                <div class="text-sm text-gray-500">
-                                                                    {{ $guest->email }}
-                                                                </div>
-                                                            </div>
+                                                    @if (file_exists(public_path($publicPath)))
+                                                    <img id="profilePreview"
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                        src="{{ asset($publicPath) }}" alt="Profile">
+                                                    @elseif (file_exists(public_path($storagePath)))
+                                                    <img id="profilePreview"
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                        src="{{ asset($storagePath) }}"
+                                                        alt="Profile">
+                                                    @else
+                                                    <p
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                        {{ strtoupper($guest->username[0]) }}
+                                                    </p>
+                                                    @endif
+                                                    @else
+                                                    <p
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                        {{ strtoupper($guest->username[0]) }}
+                                                    </p>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-medium">
+                                                            {{ $guest->first_name . ' ' . $guest->last_name }}
                                                         </div>
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">{{ $guest->faculty->faculty }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">Guest</td>
-                                                    <!-- Hardcoded as "Guest" -->
-                                                    <td class="px-6 py-4">
-                                                        @if ($guest->status == 1)
-                                                            <span
-                                                                class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
-                                                        @else
-                                                            <span
-                                                                class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $guest->last_login_date ?? 'N/A' }}
-                                                    </td>
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <div class="flex items-center gap-3">
-                                                            <!-- Edit Button -->
-                                                            <a href="{{ route('marketingcoordinator.edit-user-data', ['id' => $guest->user_id]) }}"
-                                                                class="text-[#2F64AA] hover:text-blue-700">
-                                                                <i class="ri-eye-line text-xl"></i>
-                                                            </a>
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $guest->email }}
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">{{ $guest->faculty->faculty }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">Guest</td>
+                                            <!-- Hardcoded as "Guest" -->
+                                            <td class="px-6 py-4">
+                                                @if ($guest->status == 1)
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
+                                                @else
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-[#FAAFBD] text-red-800">Inactive</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $guest->last_login_date ?? 'N/A' }}
+                                            </td>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <!-- Edit Button -->
+                                                    <a href="{{ route('marketingcoordinator.edit-user-data', ['id' => $guest->user_id]) }}"
+                                                        class="text-[#2F64AA] hover:text-blue-700">
+                                                        <i class="ri-eye-line text-xl"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
                                         @else
-                                            <tr class="hover:bg-gray-50">
-                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="7">
-                                                    No users found.
-                                                </td>
-                                            </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-24 text-gray-600 text-center" colspan="7">
+                                                No users found.
+                                            </td>
+                                        </tr>
                                         @endif
                                     </tbody>
                                 </table>

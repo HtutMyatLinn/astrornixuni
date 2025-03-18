@@ -442,13 +442,10 @@ class HomeController extends Controller
         return view('marketingcoordinator.guestmanagement', compact('guests'));
     }
 
-
     public function marketingcoordinatorSubmissionManagement(Request $request)
     {
         // Get the logged-in user
         $coordinator = auth()->user();
-
-        // Get the faculty ID of the logged-in coordinator
         $facultyId = $coordinator->faculty_id;
 
         // Start building the query
@@ -457,7 +454,7 @@ class HomeController extends Controller
         });
 
         // Apply search filter by student name or contribution title
-        if ($request->has('search')) {
+        if ($request->filled('search')) {  // Use 'filled' to check if the input exists and is not empty
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('contribution_title', 'LIKE', "%{$search}%")
@@ -468,7 +465,7 @@ class HomeController extends Controller
         }
 
         // Apply status filter only if it's not empty
-        if ($request->has('status') && $request->input('status') !== '') {
+        if ($request->filled('status')) {  // Use 'filled' for status as well
             $status = $request->input('status');
             $query->where('contribution_status', $status);
         }
@@ -478,6 +475,7 @@ class HomeController extends Controller
 
         return view('marketingcoordinator.submissionmanagement', compact('contributions'));
     }
+
 
     public function marketingcoordinatorSubmissionManagementViewDetailContribution()
     {

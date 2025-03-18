@@ -41,28 +41,28 @@
                         <h1 class="text-xl font-bold mb-6">List of Submitted Contributions</h1>
 
                         <!-- Search and Filters -->
-                        <div class="flex justify-between mb-8">
-                            <div class="relative w-[400px]">
-                                <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="11" cy="11" r="8" />
-                                    <path d="m21 21-4.3-4.3" />
-                                </svg>
-                                <input type="text" id="searchInput" placeholder="Search..." name="search" class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+                        <form action="{{ route('marketingcoordinator.submission-management') }}" method="GET">
+                            <div class="flex justify-between mb-8">
+                                <div class="relative w-[400px]">
+                                    <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.3-4.3" />
+                                    </svg>
+                                    <input type="text" id="searchInput" placeholder="Search..." name="search" class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" value="{{ request('search') }}" />
+                                </div>
+                                <div class="flex gap-4">
+                                    <!-- Filter Dropdown -->
+                                    <select id="statusFilter" name="status" class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
+                                        <option value="">All Statuses</option>
+                                        <option value="Upload" {{ request('status') == 'Upload' ? 'selected' : '' }}>Upload</option>
+                                        <option value="Select" {{ request('status') == 'Select' ? 'selected' : '' }}>Select</option>
+                                        <option value="Update" {{ request('status') == 'Update' ? 'selected' : '' }}>Update</option>
+                                        <option value="Reject" {{ request('status') == 'Reject' ? 'selected' : '' }}>Rejected</option>
+                                        <option value="Publish" {{ request('status') == 'Publish' ? 'selected' : '' }}>Published</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="flex gap-4">
-                                <!-- Filter Dropdown -->
-                                <select id="statusFilter" name="status" class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
-                                    <option value="">All Statuses</option>
-                                    <option value="Upload" {{ request('status') == 'Upload' ? 'selected' : '' }}>Upload</option>
-                                    <option value="Select" {{ request('status') == 'Select' ? 'selected' : '' }}>Select</option>
-                                    <option value="Update" {{ request('status') == 'Update' ? 'selected' : '' }}>Update</option>
-                                    <option value="Reject" {{ request('status') == 'Reject' ? 'selected' : '' }}>Rejected</option>
-                                    <option value="Publish" {{ request('status') == 'Publish' ? 'selected' : '' }}>Published</option>
-                                </select>
-                                <!-- Clear Filters Button -->
-                                <a href="{{ route('marketingcoordinator.submission-management') }}" class="px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-600">Clear Filters</a>
-                            </div>
-                        </div>
+                        </form>
 
                         <!-- Table -->
                         <div class="bg-white rounded-lg overflow-hidden">
@@ -144,7 +144,13 @@
                 // Construct the new URL with filters
                 const url = new URL(window.location.href);
                 url.searchParams.set('search', search);
-                url.searchParams.set('status', status);
+
+                // If the "All Statuses" option is selected, remove the 'status' parameter from the URL
+                if (status === "") {
+                    url.searchParams.delete('status');
+                } else {
+                    url.searchParams.set('status', status);
+                }
 
                 // Reload the page with the new URL
                 window.location.href = url.toString();
