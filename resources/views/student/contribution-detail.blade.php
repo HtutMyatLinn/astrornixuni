@@ -140,12 +140,16 @@
                             <div class="flex items-center gap-3">
                                 <h4 class="font-semibold text-gray-800">{{ $comment->user->username }}</h4>
                                 <div>
-                                    <span
-                                        class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
-                                    <span>
-                                        @if ($comment->created_at != $comment->updated_at)
-                                            <span class="text-sm text-gray-400">(Edited)</span>
+                                    <span class="text-xs text-gray-500">
+                                        @if ($comment->created_at->diffInSeconds(now()) < 60)
+                                            Just now
+                                        @else
+                                            {{ $comment->created_at->diffForHumans() }}
                                         @endif
+                                    </span>
+                                    @if ($comment->created_at != $comment->updated_at)
+                                        <span class="text-sm text-gray-400">(Edited)</span>
+                                    @endif
                                     </span>
                                 </div>
                             </div>

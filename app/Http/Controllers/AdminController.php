@@ -220,10 +220,16 @@ class AdminController extends Controller
             ->orderBy('published_date')
             ->paginate(10);
 
+        $commented_contributions = Contribution::whereHas('comments')
+            ->with(['comments.user']) // Load comments and the users who made them
+            ->orderBy('published_date', 'desc')
+            ->paginate(10);
+
         // Get the selected academic year from the request
         $academicYear = $request->input('academic_year');
 
         // Fetch all faculties
+        $all_faculties = Faculty::all();
         $faculties = Faculty::pluck('faculty', 'faculty_id');
 
         // Fetch contributions grouped by faculty and academic year
@@ -276,7 +282,9 @@ class AdminController extends Controller
             'contributorCountData' => $contributorCountData, // Pass contributor count data to the view
             'contributorPercentageData' => $contributorPercentageData, // Pass contributor percentage data to the view
             'academicYears' => $academicYears, // Pass academicYears to the view
-            'published_contributions' => $published_contributions
+            'published_contributions' => $published_contributions,
+            'commented_contributions' => $commented_contributions,
+            'all_faculties' => $all_faculties
         ]);
     }
 }

@@ -257,7 +257,7 @@
                                                         {{ $contribution->user->first_name }}
                                                         {{ $contribution->user->last_name }}</td>
                                                     <td class="px-6 py-4 text-gray-600">
-                                                        {{ $contribution->submitted_date }}</td>
+                                                        {{ $contribution->submitted_date->format('M d, Y') }}</td>
                                                     <td class="px-6 py-4">
                                                         <a href="{{ route('marketingcoordinator.submission-management.view-detail-contribution', $contribution->contribution_id) }}"
                                                             class="text-[#2F64AA]">View</a>

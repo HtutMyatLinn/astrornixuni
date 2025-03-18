@@ -35,6 +35,7 @@ class ContributionController extends Controller
                         $query->where('username', 'LIKE', "%{$searchTerm}%");
                     });
             })
+            ->orderBy('published_date', 'desc')
             ->paginate(20);
 
         $contribution_categories = ContributionCategory::all();
@@ -55,7 +56,9 @@ class ContributionController extends Controller
 
     public function contribution_index()
     {
-        $contributions = Contribution::where('contribution_status', 'Publish')->paginate(20);
+        $contributions = Contribution::where('contribution_status', 'Publish')
+            ->orderBy('published_date', 'desc')
+            ->paginate(20);
         $contribution_categories = ContributionCategory::all();
 
         return view('contributions.index', compact('contributions', 'contribution_categories'));

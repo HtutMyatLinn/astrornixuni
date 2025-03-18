@@ -91,7 +91,7 @@
                                                         {{ $contribution->user->first_name }}
                                                         {{ $contribution->user->last_name }}</td>
                                                     <td class="px-6 py-4 text-gray-600">
-                                                        {{ $contribution->submitted_date }}
+                                                        {{ $contribution->submitted_date->format('M d, Y') }}
                                                     </td>
 
                                                     <td class="px-6 py-4">

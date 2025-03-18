@@ -12,6 +12,7 @@ use App\Models\PasswordResetRequest;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -127,7 +128,7 @@ class HomeController extends Controller
         return redirect()->back()->with('success', 'Your account updated successfully.');
     }
 
-    public function administratorNotificationsPassword()
+    public function administratorNotificationsPassword(Request $request)
     {
         // Fetch the role ID for the "Guest" role
         $guestRole = Role::where('role', 'Guest')->first();
@@ -140,7 +141,40 @@ class HomeController extends Controller
         $guestRoleId = $guestRole->role_id; // Get the role ID
 
         // Fetch users with the "Guest" role and no faculty_id (unassigned users)
-        $unassigned_users = User::where('role_id', $guestRoleId)->get();
+        $unassigned_users = User::where('role_id', $guestRoleId);
+
+        // Handle search
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $unassigned_users->where(function ($query) use ($search) {
+                $query->where('username', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('user_code', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        // Handle sort
+        $sort = $request->input('sort', 'desc');
+        $unassigned_users->orderBy('created_at', $sort);
+
+        // Handle filter
+        if ($request->has('filter')) {
+            $filter = $request->input('filter');
+            if ($filter === 'Pending') {
+                $unassigned_users->where('status', 'Pending');
+            } elseif ($filter === 'Resolved') {
+                $unassigned_users->where('status', 'Resolved');
+            }
+        }
+
+        // Paginate results
+        $unassigned_users = $unassigned_users->paginate(10)->appends([
+            'sort' => $sort,
+            'search' => $request->input('search'),
+            'filter' => $request->input('filter'),
+        ]);
 
         // Get the current month's unassigned user count
         $current_month_unassigned_users = User::whereNull('role_id')
@@ -219,7 +253,16 @@ class HomeController extends Controller
         $student_percentage_change = round($student_percentage_change, 2);
         $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
-        return view('admin.notificationspassword', compact('unassigned_users', 'unassigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'total_students', 'student_percentage_change', 'contributions', 'reset_password_users'));
+        return view('admin.notificationspassword', compact(
+            'unassigned_users',
+            'unassigned_user_percentage_change',
+            'inquiries',
+            'inquiry_percentage_change',
+            'total_students',
+            'student_percentage_change',
+            'contributions',
+            'reset_password_users'
+        ));
     }
 
     public function administratorEditUserData($id)
@@ -392,10 +435,106 @@ class HomeController extends Controller
     {
         return view('marketingmanager.notifications');
     }
+
     public function marketingcoordinator()
     {
-        return view('marketingcoordinator.index');
+        // Get the logged-in user
+        $user = Auth::user();
+
+        // Fetch the count of uploaded contributions related to the logged-in user's faculty
+        $uploadedCount = Contribution::where('contribution_status', 'Upload')
+            ->whereHas('user', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id); // Filter by logged-in user's faculty_id
+            })->count();
+
+        // Fetch the count of published contributions related to the logged-in user's faculty
+        $publishedCount = Contribution::where('contribution_status', 'Publish')
+            ->whereHas('user', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id); // Filter by logged-in user's faculty_id
+            })->count();
+
+        // Prepare data for the pie chart
+        $labels = ['Uploaded', 'Published'];
+        $data = [$uploadedCount, $publishedCount];
+
+        // Total students in the logged-in user's faculty
+        $total_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })->where('faculty_id', $user->faculty_id) // Filter by faculty_id
+            ->get();
+
+        // Get the current month's student count in the logged-in user's faculty
+        $current_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->where('faculty_id', $user->faculty_id) // Filter by faculty_id
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's student count in the logged-in user's faculty
+        $previous_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->where('faculty_id', $user->faculty_id) // Filter by faculty_id
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $student_percentage_change = 0;
+        if ($previous_month_students > 0) {
+            $student_percentage_change = (($current_month_students - $previous_month_students) / $previous_month_students) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $student_percentage_change = round($student_percentage_change, 2);
+
+        // Fetch the role ID for the "Guest" role
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if (!$guestRole) {
+            // Handle the case where the "Guest" role does not exist
+            return redirect()->back()->with('error', 'Guest role not found. Please contact the administrator.');
+        }
+
+        $guestRoleId = $guestRole->role_id; // Get the role ID
+
+        // Fetch guest users related to the logged-in user's faculty
+        $faculty_guests = User::where('role_id', $guestRoleId)
+            ->where('faculty_id', $user->faculty_id)
+            ->whereNotNull('faculty_id')
+            ->orderBy('created_at')
+            ->paginate(10);
+
+        // Fetch contributions related to the logged-in user's faculty
+        $total_contributions = Contribution::whereHas('user.faculty', function ($query) use ($user) {
+            $query->where('faculty_id', $user->faculty_id);
+        })->get();
+
+        $pending_contributions = Contribution::where('contribution_status', 'Upload')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })->get();
+
+        $selected_contributions = Contribution::where('contribution_status', 'Select')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })->get();
+
+        $rejected_contributions = Contribution::where('contribution_status', 'Reject')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })->get();
+
+        $published_contributions = Contribution::where('contribution_status', 'Publish')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })->get();
+
+        return view('marketingcoordinator.index', compact('labels', 'data', 'total_students', 'student_percentage_change', 'faculty_guests', 'total_contributions', 'pending_contributions', 'selected_contributions', 'rejected_contributions', 'published_contributions'));
     }
+
     public function marketingcoordinatorAccountSetting()
     {
         return view('marketingcoordinator.accountsetting');
