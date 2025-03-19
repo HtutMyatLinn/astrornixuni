@@ -243,12 +243,12 @@ class ContributionController extends Controller
         $searchTerm = $request->input('search');
         $sortOrder = $request->input('sort', 'desc'); // Default to descending
 
-        // Start building the query for contributions without comments, filtered by faculty
+        // Start building the query for contributions without feedback, filtered by faculty
         $query = Contribution::with(['user', 'category'])
-            ->whereHas('user', function ($query) use ($facultyId) {
-                $query->where('faculty_id', $facultyId); // Filter by faculty_id
+            ->whereHas('user', function ($q) use ($facultyId) {
+                $q->where('faculty_id', $facultyId); // Filter by faculty_id
             })
-            ->whereDoesntHave('comments'); // Only contributions without comments
+            ->whereDoesntHave('feedbacks'); // Ensure contribution has no feedback
 
         // Apply search filter by student name or contribution title
         if ($searchTerm) {
