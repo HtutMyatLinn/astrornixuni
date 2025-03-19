@@ -9,8 +9,12 @@ class Feedback extends Model
 {
     use HasFactory;
 
+    protected $table = 'feedbacks';
     protected $primaryKey = 'feedback_id';
     protected $fillable = ['contribution_id', 'user_id', 'feedback', 'feedback_given_date'];
+    protected $casts = [
+        'feedback_given_date' => 'datetime',
+    ];
 
     public function contribution()
     {

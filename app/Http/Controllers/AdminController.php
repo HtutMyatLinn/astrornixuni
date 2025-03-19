@@ -6,6 +6,7 @@ use App\Http\Requests\EditAccountSettingRequest;
 use App\Models\AcademicYear;
 use App\Models\Contribution;
 use App\Models\Faculty;
+use App\Models\Feedback;
 use App\Models\PasswordResetRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -220,10 +221,9 @@ class AdminController extends Controller
             ->orderBy('published_date')
             ->paginate(10);
 
-        $commented_contributions = Contribution::whereHas('comments')
-            ->with(['comments.user']) // Load comments and the users who made them
-            ->orderBy('published_date', 'desc')
-            ->paginate(10);
+        $feedbacked_contributions = Feedback::with(['user', 'contribution']) // Load user and contribution
+            ->orderBy('feedback_given_date', 'desc') // Order by feedback date
+            ->paginate(10); // Paginate the results
 
         // Get the selected academic year from the request
         $academicYear = $request->input('academic_year');
@@ -283,7 +283,7 @@ class AdminController extends Controller
             'contributorPercentageData' => $contributorPercentageData, // Pass contributor percentage data to the view
             'academicYears' => $academicYears, // Pass academicYears to the view
             'published_contributions' => $published_contributions,
-            'commented_contributions' => $commented_contributions,
+            'feedbacked_contributions' => $feedbacked_contributions,
             'all_faculties' => $all_faculties
         ]);
     }

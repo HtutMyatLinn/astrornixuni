@@ -51,10 +51,12 @@
                                 <div class="md:col-span-2 text-xl">{{ $contribution->user->username }}</div>
 
                                 <div class="font-semibold text-xl">Submission Date</div>
-                                <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date }}</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date->format('M d, Y') }}
+                                </div>
 
                                 <div class="font-semibold text-xl">Contribution Category</div>
-                                <div class="md:col-span-2 text-xl">{{ $contribution->category->contribution_category }}</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->category->contribution_category }}
+                                </div>
 
                                 <div class="font-semibold text-xl">Status</div>
                                 <div class="md:col-span-2 text-xl flex items-center">
@@ -66,14 +68,20 @@
                             <!-- Feedback Form -->
                             <div class="mt-12">
                                 <h2 class="text-3xl font-bold mb-8">Provide Feedback</h2>
-                                <form action="{{ route('marketingcoordinator.submit-feedback', $contribution->contribution_id) }}" method="POST">
+                                <form
+                                    action="{{ route('marketingcoordinator.submit-feedback', $contribution->contribution_id) }}"
+                                    method="POST">
                                     @csrf
-                                    <textarea name="feedback" rows="5" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Enter your feedback here..." required></textarea>
+                                    <textarea name="feedback" rows="5"
+                                        class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Enter your feedback here..." required></textarea>
                                     <div class="mt-6">
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                        <button type="submit"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                             Submit Feedback
                                         </button>
-                                        <a href="{{ url()->previous() }}" class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors ml-4">
+                                        <a href="{{ url()->previous() }}"
+                                            class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors ml-4">
                                             Back
                                         </a>
                                     </div>
