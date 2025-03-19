@@ -136,6 +136,7 @@ class ContributionController extends Controller
 
         // Get 5 random contributions excluding the current one
         $contributions = Contribution::where('contribution_id', '!=', $contribution->contribution_id)
+            ->where('contribution_status', 'Publish') // Only get published contributions
             ->inRandomOrder()
             ->limit(5)
             ->get();
@@ -143,6 +144,7 @@ class ContributionController extends Controller
 
         // Get trending contributions excluding the current one
         $trendingContributions = Contribution::where('contribution_id', '!=', $contribution->contribution_id)
+            ->where('contribution_status', 'Publish') // Only get published contributions
             ->orderBy('view_count', 'desc')
             ->limit(5) // Adjust the limit as needed
             ->get();

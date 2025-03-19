@@ -832,9 +832,11 @@ class HomeController extends Controller
     public function student()
     {
         $contributions = Contribution::orderBy('created_at', 'desc')
+            ->where('contribution_status', 'Publish') // Only get published contributions
             ->limit(5)
             ->get();
         $trendingContributions = Contribution::orderBy('view_count', 'desc')
+            ->where('contribution_status', 'Publish') // Only get published contributions
             ->limit(4) // Adjust the limit as needed
             ->get();
 
