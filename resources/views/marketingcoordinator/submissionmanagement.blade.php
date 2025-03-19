@@ -61,11 +61,11 @@
                                         class="px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
                                         <option value="">All Statuses</option>
                                         <option value="Upload" {{ request('status') == 'Upload' ? 'selected' : '' }}>
-                                            Upload</option>
+                                            Uploaded</option>
                                         <option value="Select" {{ request('status') == 'Select' ? 'selected' : '' }}>
-                                            Select</option>
+                                            Selected</option>
                                         <option value="Update" {{ request('status') == 'Update' ? 'selected' : '' }}>
-                                            Update</option>
+                                            Updated</option>
                                         <option value="Reject" {{ request('status') == 'Reject' ? 'selected' : '' }}>
                                             Rejected</option>
                                         <option value="Publish" {{ request('status') == 'Publish' ? 'selected' : '' }}>
