@@ -104,8 +104,20 @@
                                                     <td class="px-6 py-4">
                                                         {{ $contribution->submitted_date->format('M d, Y') }}</td>
                                                     <td class="px-6 py-4 select-none">
-                                                        <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                                            alt="Cover Image" class="w-16 h-16 object-cover rounded-lg">
+                                                        @if ($contribution->contribution_cover)
+                                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                                alt="Cover Image"
+                                                                class="w-16 h-16 object-cover rounded-lg">
+                                                        @else
+                                                            <!-- Display the default logo image if contribution_cover is null -->
+                                                            <div class="flex h-full w-full">
+                                                                <div class="w-16 select-none">
+                                                                    <img src="{{ asset('images/logo.png') }}"
+                                                                        alt="Logo"
+                                                                        class="w-full h-full object-cover">
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     </td>
                                                     <td class="px-6 py-4">
                                                         <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"

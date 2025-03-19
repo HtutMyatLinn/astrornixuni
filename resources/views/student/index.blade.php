@@ -87,9 +87,20 @@
                     @if ($trendingContributions->count() > 0)
                         <a href="{{ route('student.contribution-detail', $trendingContributions[0]->contribution_id) }}"
                             class="relative col-span-1">
-                            <img src="{{ asset('storage/contribution-images/' . $trendingContributions[0]->contribution_cover) }}"
-                                class="w-full h-full object-cover select-none"
-                                alt="{{ $trendingContributions[0]->contribution_title }}">
+                            @if ($trendingContributions[0]->contribution_cover)
+                                <img src="{{ asset('storage/contribution-images/' . $trendingContributions[0]->contribution_cover) }}"
+                                    class="w-full h-full object-cover select-none"
+                                    alt="{{ $trendingContributions[0]->contribution_title }}">
+                            @else
+                                <!-- Display the default logo image if contribution_cover is null -->
+                                <div class="flex h-full justify-center items-center">
+                                    <div class="relative w-64 overflow-hidden select-none">
+                                        <!-- Adjust width here (e.g., w-24) -->
+                                        <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            @endif
                             <div
                                 class="absolute bottom-0 left-0 text-white p-4 bg-gradient-to-t from-gray-500 via-transparent to-transparent w-full">
                                 <span
@@ -107,9 +118,21 @@
                         @if ($trendingContributions->count() > 1)
                             <a href="{{ route('student.contribution-detail', $trendingContributions[1]->contribution_id) }}"
                                 class="relative col-span-2 md:col-span-2">
-                                <img src="{{ asset('storage/contribution-images/' . $trendingContributions[1]->contribution_cover) }}"
-                                    class="w-full h-full object-cover select-none"
-                                    alt="{{ $trendingContributions[1]->contribution_title }}">
+
+                                @if ($trendingContributions[1]->contribution_cover)
+                                    <img src="{{ asset('storage/contribution-images/' . $trendingContributions[1]->contribution_cover) }}"
+                                        class="w-full h-full object-cover select-none"
+                                        alt="{{ $trendingContributions[1]->contribution_title }}">
+                                @else
+                                    <!-- Display the default logo image if contribution_cover is null -->
+                                    <div class="flex h-full justify-center items-center">
+                                        <div class="relative w-64 overflow-hidden select-none">
+                                            <!-- Adjust width here (e.g., w-24) -->
+                                            <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                @endif
                                 <div
                                     class="absolute bottom-0 left-0 text-white p-4 bg-gradient-to-t from-gray-500 via-transparent to-transparent w-full">
                                     <span class="bg-[#5A7BAF] text-white px-2 py-1 text-sm">
@@ -126,9 +149,20 @@
                         @foreach ($trendingContributions->skip(2)->take(2) as $contribution)
                             <a href="{{ route('student.contribution-detail', $contribution) }}"
                                 class="relative col-span-1">
-                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                    class="w-full h-full object-cover select-none"
-                                    alt="{{ $contribution->contribution_title }}">
+                                @if ($contribution->contribution_cover)
+                                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                        class="w-full h-full object-cover select-none"
+                                        alt="{{ $contribution->contribution_title }}">
+                                @else
+                                    <!-- Display the default logo image if contribution_cover is null -->
+                                    <div class="flex h-full justify-center items-center">
+                                        <div class="relative w-20 overflow-hidden select-none">
+                                            <!-- Adjust width here (e.g., w-24) -->
+                                            <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                @endif
                                 <div
                                     class="absolute bottom-0 left-0 text-white p-4 bg-gradient-to-t from-gray-500 via-transparent to-transparent w-full">
                                     <span
@@ -155,11 +189,24 @@
                     @foreach ($contributions as $contribution)
                         <a href="{{ route('student.contribution-detail', $contribution) }}"
                             class="overflow-hidden flex flex-col items-center">
-                            <div class="relative h-64 w-full overflow-hidden select-none">
-                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                    alt="{{ $contribution->contribution_title }}"
-                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
-                            </div>
+                            @if ($contribution->contribution_cover)
+                                <div class="relative h-64 w-full overflow-hidden select-none">
+                                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                        alt="{{ $contribution->contribution_title }}"
+                                        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                </div>
+                            @else
+                                <!-- Display the default logo image if contribution_cover is null -->
+                                <div class="relative h-64 w-full overflow-hidden select-none">
+                                    <div class="flex h-full items-center justify-center">
+                                        <div class="w-24 overflow-hidden rounded-lg select-none">
+                                            <!-- Adjust width here (e.g., w-24) -->
+                                            <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                             <p class="text-sm text-gray-600 mt-3">{{ $contribution->contribution_title }}</p>
                         </a>
                     @endforeach

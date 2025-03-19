@@ -26,10 +26,19 @@
                 </span>
             </p>
             <!-- Fixed Image Container -->
-            <div class="mt-4 h-[480px] overflow-hidden rounded-lg select-none">
-                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                    alt="{{ $contribution->contribution_title }}" class="h-full w-full object-cover">
-            </div>
+            @if ($contribution->contribution_cover)
+                <div class="mt-4 h-[480px] overflow-hidden rounded-lg select-none">
+                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                        alt="{{ $contribution->contribution_title }}" class="h-full w-full object-cover">
+                </div>
+            @else
+                <!-- Display the default logo image if contribution_cover is null -->
+                <div class="flex h-full py-20 w-full items-center justify-center">
+                    <div class="mt-4 h-[150px] overflow-hidden rounded-lg select-none">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            @endif
 
             <h2 class="text-xl font-bold mt-6 text-gray-900 text-start">{{ $contribution->contribution_title }}</h2>
             <div x-data="{ expanded: false }">
@@ -243,11 +252,24 @@
                 @foreach ($contributions as $contribution)
                     <a href="{{ route('student.contribution-detail', $contribution) }}"
                         class="overflow-hidden flex flex-col items-center">
-                        <div class="relative h-64 w-full overflow-hidden select-none">
-                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                alt="{{ $contribution->contribution_title }}"
-                                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div>
+                        @if ($contribution->contribution_cover)
+                            <div class="relative h-64 w-full overflow-hidden select-none">
+                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                    alt="{{ $contribution->contribution_title }}"
+                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            </div>
+                        @else
+                            <!-- Display the default logo image if contribution_cover is null -->
+                            <div class="relative h-64 w-full overflow-hidden select-none">
+                                <div class="flex h-full items-center justify-center">
+                                    <div class="w-24 overflow-hidden rounded-lg select-none">
+                                        <!-- Adjust width here (e.g., w-24) -->
+                                        <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                         <p class="text-sm text-gray-600 mt-3">{{ $contribution->contribution_title }}</p>
                     </a>
                 @endforeach
