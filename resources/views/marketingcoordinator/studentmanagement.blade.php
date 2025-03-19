@@ -41,25 +41,25 @@
                     <h1 class=" text-xl sm:text-2xl font-bold text-gray-900">User Management</h1>
                     <div class="p-8 bg-white  shadow-lg">
                         <!-- Header -->
-                        <h1 class="text-xl font-bold mb-6">List of Guests</h1>
+                        <h1 class="text-xl font-bold mb-6">List of Students</h1>
                         <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                            Total - {{ $guests->count() }}
+                            Total - {{ $students->count() }}
                         </h2>
 
                         <!-- Tabs -->
                         <div class="flex gap-8 border-b mb-6">
                             <a href="{{ route('marketingcoordinator.guest-management') }}"
-                                class="px-1 py-4  hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
+                                class="px-1 py-4 text-gray-600 hover:text-gray-900">
                                 Guest
                             </a>
                             <a href="{{ route('marketingcoordinator.student-management') }}"
-                                class="px-1 py-4 text-gray-600 hover:text-gray-900">
+                                class="px-1 py-4  hover:text-gray-900 text-[#4353E1] border-b-4 border-[#4353E1]">
                                 Student
                             </a>
                         </div>
 
                         <!-- Search and Filters -->
-                        <form action="{{ route('marketingcoordinator.guest-management') }}" method="GET">
+                        <form action="{{ route('marketingcoordinator.student-management') }}" method="GET">
                             <div class="flex justify-between mb-8">
                                 <div class="relative w-[400px]">
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
@@ -89,9 +89,9 @@
                                         <div
                                             class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                             <div class="p-2">
-                                                <a href="{{ route('marketingcoordinator.guest-management', ['status' => 1]) }}"
+                                                <a href="{{ route('marketingcoordinator.student-management', ['status' => 1]) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Active</a>
-                                                <a href="{{ route('marketingcoordinator.guest-management', ['status' => 0]) }}"
+                                                <a href="{{ route('marketingcoordinator.student-management', ['status' => 0]) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Inactive</a>
                                             </div>
                                         </div>
@@ -111,9 +111,9 @@
                                         <div
                                             class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                             <div class="p-2">
-                                                <a href="{{ route('marketingcoordinator.guest-management', ['sort' => 'last_login_date', 'order' => 'desc']) }}"
+                                                <a href="{{ route('marketingcoordinator.student-management', ['sort' => 'last_login_date', 'order' => 'desc']) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Newest</a>
-                                                <a href="{{ route('marketingcoordinator.guest-management', ['sort' => 'last_login_date', 'order' => 'asc']) }}"
+                                                <a href="{{ route('marketingcoordinator.student-management', ['sort' => 'last_login_date', 'order' => 'asc']) }}"
                                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg text-left">Oldest</a>
                                             </div>
                                         </div>
@@ -143,22 +143,22 @@
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
-                                        @if ($guests->isNotEmpty())
-                                            @foreach ($guests as $guest)
+                                        @if ($students->isNotEmpty())
+                                            @foreach ($students as $student)
                                                 <tr class="hover:bg-gray-50">
                                                     <td class="px-6 py-4 text-gray-600">
-                                                        {{ $guest->user_code }}
+                                                        {{ $student->user_code }}
                                                     </td>
                                                     </td>
                                                     <td class="px-6 py-4">
                                                         <div class="flex items-center gap-3">
-                                                            @if ($guest->profile_image)
+                                                            @if ($student->profile_image)
                                                                 @php
                                                                     $publicPath =
-                                                                        'profile_images/' . $guest->profile_image;
+                                                                        'profile_images/' . $student->profile_image;
                                                                     $storagePath =
                                                                         'storage/profile_images/' .
-                                                                        $guest->profile_image;
+                                                                        $student->profile_image;
                                                                 @endphp
 
                                                                 @if (file_exists(public_path($publicPath)))
@@ -174,31 +174,32 @@
                                                                 @else
                                                                     <p
                                                                         class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                        {{ strtoupper($guest->username[0]) }}
+                                                                        {{ strtoupper($student->username[0]) }}
                                                                     </p>
                                                                 @endif
                                                             @else
                                                                 <p
                                                                     class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                    {{ strtoupper($guest->username[0]) }}
+                                                                    {{ strtoupper($student->username[0]) }}
                                                                 </p>
                                                             @endif
                                                             <div>
                                                                 <div class="font-medium">
-                                                                    {{ $guest->first_name . ' ' . $guest->last_name }}
+                                                                    {{ $student->first_name . ' ' . $student->last_name }}
                                                                 </div>
                                                                 <div class="text-sm text-gray-500">
-                                                                    {{ $guest->email }}
+                                                                    {{ $student->email }}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="px-6 py-4 text-gray-600">{{ $guest->faculty->faculty }}
+                                                    <td class="px-6 py-4 text-gray-600">
+                                                        {{ $student->faculty->faculty }}
                                                     </td>
                                                     <td class="px-6 py-4 text-gray-600">Guest</td>
                                                     <!-- Hardcoded as "Guest" -->
                                                     <td class="px-6 py-4">
-                                                        @if ($guest->status == 1)
+                                                        @if ($student->status == 1)
                                                             <span
                                                                 class="px-3 py-1 rounded-full text-sm bg-[#CAF4E0] text-green-800">Active</span>
                                                         @else
@@ -207,13 +208,13 @@
                                                         @endif
                                                     </td>
                                                     <td class="px-6 py-4 text-gray-600">
-                                                        {{ $guest->last_login_date ?? 'N/A' }}
+                                                        {{ $student->last_login_date ?? 'N/A' }}
                                                     </td>
                                                     </td>
                                                     <td class="px-6 py-4">
                                                         <div class="flex items-center gap-3">
                                                             <!-- Edit Button -->
-                                                            <a href="{{ route('marketingcoordinator.edit-user-data', ['id' => $guest->user_id]) }}"
+                                                            <a href="{{ route('marketingcoordinator.edit-user-data', ['id' => $student->user_id]) }}"
                                                                 class="text-[#2F64AA] hover:text-blue-700">
                                                                 <i class="ri-eye-line text-xl"></i>
                                                             </a>
@@ -235,7 +236,7 @@
 
                         <!-- Pagination -->
                         <div class="flex justify-end items-center gap-2 mt-6">
-                            {{ $guests->links() }}
+                            {{ $students->links() }}
                         </div>
                     </div>
                 </div>

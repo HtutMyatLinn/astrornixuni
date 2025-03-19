@@ -162,6 +162,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/marketingcoordinator/guest-management', [HomeController::class, 'marketingcoordinatorGuestManagement'])->name('marketingcoordinator.guest-management');
 
+        Route::get('/marketingcoordinator/student-management', [HomeController::class, 'marketingcoordinatorStudentManagement'])->name('marketingcoordinator.student-management');
+
         Route::get('/marketingcoordinator/edit-user-data/{id}', [HomeController::class, 'marketingcoordinatorEditUserData'])->name('marketingcoordinator.edit-user-data');
 
         Route::get('/marketingcoordinator/submission-management', [HomeController::class, 'marketingcoordinatorSubmissionManagement'])->name('marketingcoordinator.submission-management');
