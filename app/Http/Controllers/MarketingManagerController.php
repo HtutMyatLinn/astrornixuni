@@ -47,4 +47,6 @@ class MarketingManagerController extends Controller
 
         return view('admin.usermanagementmarketingmanager', compact('marketing_managers', 'sortOrder'));
     }
+
+    
 }

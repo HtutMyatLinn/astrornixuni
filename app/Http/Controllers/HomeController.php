@@ -15,6 +15,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
+
+
 
 class HomeController extends Controller
 {
@@ -347,35 +350,37 @@ class HomeController extends Controller
     // New method for downloading the contribution as a zip
     public function downloadContributionZip($contribution_id)
     {
+        // Fetch the contribution
         $contribution = Contribution::findOrFail($contribution_id);
 
-        // Path where the zip file will be stored
-        $zip_file = storage_path('app/public/contributions-' . $contribution->contribution_title . '.zip');
+        // Construct the full file path
+        $filePath = storage_path('app/public/contribution-documents/' . $contribution->contribution_file_path);
 
-        // Initialize ZipArchive
-        $zip = new \ZipArchive();
-        if ($zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
-            // Fetch files from storage related to the contribution
-            $files = Storage::files('public/contribution-files/' . $contribution_id);
-
-            // Add each file to the zip
-            foreach ($files as $file) {
-                $zip->addFile(storage_path('app/' . $file), basename($file)); // Ensure correct path
-            }
-            $zip->close(); // Close the zip file after adding the files
-        } else {
-            return response()->json(['error' => 'Could not create zip file'], 500);
+        // Check if the file exists using the File facade
+        if (!File::exists($filePath)) {
+            return redirect()->back()->with('error', 'File not found.');
         }
 
-        // Check if the zip file was created successfully and return for download
-        if (file_exists($zip_file)) {
-            return response()->download($zip_file)->deleteFileAfterSend(true); // Delete after download
+        // Create a new ZIP archive
+        $zip = new ZipArchive();
+        $zipFileName = 'contribution_' . $contribution_id . '.zip';
+        $zipFilePath = storage_path('app/public/' . $zipFileName);
+
+        // Open the ZIP file for writing
+        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+            // Add the document file to the ZIP
+            $zip->addFile($filePath, basename($filePath)); // Use basename to avoid path issues
+
+            // Close the ZIP file
+            $zip->close();
+
+            // Return the ZIP file as a downloadable response
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
         } else {
-            return response()->json(['error' => 'Zip file not found'], 404);
+            // Handle the error if the ZIP file cannot be created
+            return redirect()->back()->with('error', 'Unable to create ZIP file.');
         }
     }
-
-
 
     /**
      * Display details of a specific published contribution.
