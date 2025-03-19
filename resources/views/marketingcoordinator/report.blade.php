@@ -67,9 +67,9 @@
                                         <tr>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">No.</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                Contributions Title</th>
+                                                Contribution Title</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                Contributions Category</th>
+                                                Contribution Category</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student
                                                 Name</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
@@ -87,9 +87,29 @@
                                                         {{ $contribution->contribution_title }}</td>
                                                     <td class="px-6 py-4 text-gray-600">
                                                         {{ $contribution->category->contribution_category }}</td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $contribution->user->first_name }}
-                                                        {{ $contribution->user->last_name }}</td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center gap-3">
+                                                            @if ($contribution->user->profile_image)
+                                                                <img id="profilePreview"
+                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                                    src="{{ asset('profile_images/' . $contribution->user->profile_image) }}"
+                                                                    alt="Profile">
+                                                            @else
+                                                                <p
+                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                                    {{ strtoupper($contribution->user->username[0]) }}
+                                                                </p>
+                                                            @endif
+                                                            <div>
+                                                                <div class="font-medium">
+                                                                    {{ $contribution->user->first_name . ' ' . $contribution->user->last_name }}
+                                                                </div>
+                                                                <div class="text-sm text-gray-500">
+                                                                    {{ $contribution->user->email }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td class="px-6 py-4 text-gray-600">
                                                         {{ $contribution->submitted_date->format('M d, Y') }}
                                                     </td>

@@ -746,6 +746,48 @@ class HomeController extends Controller
         return view('marketingcoordinator.guestmanagement', compact('guests'));
     }
 
+    public function marketingcoordinatorStudentManagement(Request $request)
+    {
+        // Get the logged-in user
+        $coordinator = auth()->user();
+
+        // Get the faculty ID of the logged-in coordinator
+        $facultyId = $coordinator->faculty_id;
+
+        // Start building the query
+        $query = User::where('faculty_id', $facultyId) // Filter by faculty_id
+            ->whereHas('role', function ($query) {
+                $query->where('role', 'Student'); // Filter by role (Student instead of Guest)
+            });
+
+        // Apply search filter
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('user_code', 'LIKE', "%{$search}%")
+                    ->orWhere('username', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('last_name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply status filter
+        if ($request->has('status')) {
+            $status = $request->input('status');
+            $query->where('status', $status);
+        }
+
+        // Apply sorting
+        $sort = $request->input('sort', 'last_login_date');
+        $order = $request->input('order', 'desc');
+        $query->orderBy($sort, $order);
+
+        // Paginate the results
+        $students = $query->paginate(5);
+
+        return view('marketingcoordinator.studentmanagement', compact('students'));
+    }
+
     public function marketingcoordinatorSubmissionManagement(Request $request)
     {
         // Get the logged-in user

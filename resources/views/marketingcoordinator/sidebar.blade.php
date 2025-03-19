@@ -84,7 +84,7 @@
                           {{ request()->routeIs('marketingcoordinator.guest-management') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3" src="{{ asset('images/Usermanagement.png') }}" alt="">
-                    View Guest
+                    View Users
                 </a>
 
                 <a href="{{ route('marketingcoordinator.submission-management') }}"
@@ -95,13 +95,13 @@
                     Submission Management
                 </a>
 
-                <!-- <a href="{{ route('marketingcoordinator.provide-feedback') }}"
+                {{-- <!-- <a href="{{ route('marketingcoordinator.provide-feedback') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('marketingcoordinator.provide-feedback') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
                     <img class="w-4 h-4 mr-3" src="{{ asset('images/report&analysis.png') }}" alt="">
                     Provide Feedback
-                </a> -->
+                </a> --> --}}
 
                 <a href="{{ route('marketingcoordinator.selected-contributions') }}"
                     class="flex items-center px-4 py-4 text-sm rounded-lg
