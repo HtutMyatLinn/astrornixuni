@@ -43,20 +43,31 @@
                             <!-- Avatar Circle -->
                             <div
                                 class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                <img class=" w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
+                                <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
+                                    alt="">
                             </div>
 
                             <!-- Stats Container with Flexbox -->
                             <div class="flex items-end justify-between">
                                 <!-- Numbers -->
                                 <div class="space-y-1">
-                                    <h2 class="text-3xl font-bold">300</h2>
-                                    <p class="text-xl text-gray-400">Total Students</p>
+                                    <h2 class="text-3xl font-bold">{{ $pending_review->count() }}</h2>
+                                    <p class="text-xl text-gray-400">Pending Review Remiders</p>
                                 </div>
 
                                 <!-- Percentage -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                                    @if ($pending_review_percentage_change > 0)
+                                        <span
+                                            class="text-emerald-500 text-xl font-medium">{{ $pending_review_percentage_change }}%
+                                            ↑</span>
+                                    @elseif ($pending_review_percentage_change < 0)
+                                        <span
+                                            class="text-red-500 text-xl font-medium">{{ abs($pending_review_percentage_change) }}%
+                                            ↓</span>
+                                    @else
+                                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -72,13 +83,23 @@
                             <div class="flex items-end justify-between">
                                 <!-- Numbers -->
                                 <div class="space-y-1">
-                                    <h2 class="text-3xl font-bold">967</h2>
-                                    <p class="text-xl text-gray-400">Total Submissions</p>
+                                    <h2 class="text-3xl font-bold">{{ $total_feedback_sent }}</h2>
+                                    <p class="text-xl text-gray-400">Total Feedback Sent</p>
                                 </div>
 
                                 <!-- Percentage -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                                    @if ($feedback_percentage_change > 0)
+                                        <span
+                                            class="text-emerald-500 text-xl font-medium">{{ $feedback_percentage_change }}%
+                                            ↑</span>
+                                    @elseif ($feedback_percentage_change < 0)
+                                        <span
+                                            class="text-red-500 text-xl font-medium">{{ abs($feedback_percentage_change) }}%
+                                            ↓</span>
+                                    @else
+                                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -95,18 +116,28 @@
                             <div class="flex items-end justify-between">
                                 <!-- Numbers -->
                                 <div class="space-y-1">
-                                    <h2 class="text-3xl font-bold">52</h2>
-                                    <p class="text-xl text-gray-400">Total Pending Contributions</p>
+                                    <h2 class="text-3xl font-bold">{{ $resubmitted_contributions->count() }}</h2>
+                                    <p class="text-xl text-gray-400">Resubmitted Contribution</p>
                                 </div>
 
                                 <!-- Percentage -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                                    @if ($update_contributions_percentage_change > 0)
+                                        <span
+                                            class="text-emerald-500 text-xl font-medium">{{ $update_contributions_percentage_change }}%
+                                            ↑</span>
+                                    @elseif ($update_contributions_percentage_change < 0)
+                                        <span
+                                            class="text-red-500 text-xl font-medium">{{ abs($update_contributions_percentage_change) }}%
+                                            ↓</span>
+                                    @else
+                                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        <!-- Total Students Card -->
-                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
+                        <!-- Total submissions Card -->
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full col-span-3">
                             <!-- Avatar Circle -->
                             <div
                                 class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
@@ -117,67 +148,28 @@
                             <div class="flex items-end justify-between">
                                 <!-- Numbers -->
                                 <div class="space-y-1">
-                                    <h2 class="text-3xl font-bold">300</h2>
-                                    <p class="text-xl text-gray-400">Total Students</p>
+                                    <h2 class="text-3xl font-bold">{{ $faculty_guests }}</h2>
+                                    <p class="text-xl text-gray-400">New Guest Registration</p>
                                 </div>
 
                                 <!-- Percentage -->
                                 <div class="flex items-center gap-1">
-                                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                                    @if ($faculty_guests_percentage_change > 0)
+                                        <span
+                                            class="text-emerald-500 text-xl font-medium">{{ $faculty_guests_percentage_change }}%
+                                            ↑</span>
+                                    @elseif ($faculty_guests_percentage_change < 0)
+                                        <span
+                                            class="text-red-500 text-xl font-medium">{{ abs($faculty_guests_percentage_change) }}%
+                                            ↓</span>
+                                    @else
+                                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        <!-- Total submissions Card -->
-                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
-                            <!-- Avatar Circle -->
-                            <div
-                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
-                            </div>
-
-                            <!-- Stats Container with Flexbox -->
-                            <div class="flex items-end justify-between">
-                                <!-- Numbers -->
-                                <div class="space-y-1">
-                                    <h2 class="text-3xl font-bold">967</h2>
-                                    <p class="text-xl text-gray-400">Total Submissions</p>
-                                </div>
-
-                                <!-- Percentage -->
-                                <div class="flex items-center gap-1">
-                                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Total Pending Contributions Card -->
-                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
-                            <!-- Avatar Circle -->
-                            <div
-                                class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
-                                    alt="">
-                            </div>
-
-                            <!-- Stats Container with Flexbox -->
-                            <div class="flex items-end justify-between">
-                                <!-- Numbers -->
-                                <div class="space-y-1">
-                                    <h2 class="text-3xl font-bold">52</h2>
-                                    <p class="text-xl text-gray-400">Total Pending Contributions</p>
-                                </div>
-
-                                <!-- Percentage -->
-                                <div class="flex items-center gap-1">
-                                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                     <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Resubmitted Contributions for Review</h1>
-
-                    <!-- Header -->
-
 
                     <!-- Table Section -->
                     <div class="p-8 bg-white shadow-lg mb-8">
@@ -203,8 +195,8 @@
                                         class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-[#F1F5F9] hover:bg-gray-100">
                                         Sort By
                                         <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
                                             <path d="m6 9 6 6 6-6" />
                                         </svg>
                                     </button>

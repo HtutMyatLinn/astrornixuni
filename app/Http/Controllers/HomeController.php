@@ -507,32 +507,192 @@ class HomeController extends Controller
             ->orderBy('created_at')
             ->paginate(10);
 
+        // Faculty guests added this month
+        $current_month_faculty_guests = User::where('role_id', $guestRoleId)
+            ->where('faculty_id', $user->faculty_id)
+            ->whereNotNull('faculty_id')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Faculty guests added last month
+        $previous_month_faculty_guests = User::where('role_id', $guestRoleId)
+            ->where('faculty_id', $user->faculty_id)
+            ->whereNotNull('faculty_id')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $faculty_guests_percentage_change = 0;
+        if ($previous_month_faculty_guests > 0) {
+            $faculty_guests_percentage_change = (($current_month_faculty_guests - $previous_month_faculty_guests) / $previous_month_faculty_guests) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $faculty_guests_percentage_change = round($faculty_guests_percentage_change, 2);
+
         // Fetch contributions related to the logged-in user's faculty
         $total_contributions = Contribution::whereHas('user.faculty', function ($query) use ($user) {
             $query->where('faculty_id', $user->faculty_id);
         })->get();
 
+        // Contributions for the current month
+        $current_month_contributions = Contribution::whereHas('user.faculty', function ($query) use ($user) {
+            $query->where('faculty_id', $user->faculty_id);
+        })->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Contributions for the previous month
+        $previous_month_contributions = Contribution::whereHas('user.faculty', function ($query) use ($user) {
+            $query->where('faculty_id', $user->faculty_id);
+        })->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $contributions_percentage_change = 0;
+        if ($previous_month_contributions > 0) {
+            $contributions_percentage_change = (($current_month_contributions - $previous_month_contributions) / $previous_month_contributions) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $contributions_percentage_change = round($contributions_percentage_change, 2);
+
+        // Pending contributions
         $pending_contributions = Contribution::where('contribution_status', 'Upload')
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })->get();
 
+        // Pending contributions for the current month
+        $current_month_pending_contributions = Contribution::where('contribution_status', 'Upload')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Pending contributions for the previous month
+        $previous_month_pending_contributions = Contribution::where('contribution_status', 'Upload')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change for pending contributions
+        $pending_contributions_percentage_change = 0;
+        if ($previous_month_pending_contributions > 0) {
+            $pending_contributions_percentage_change = (($current_month_pending_contributions - $previous_month_pending_contributions) / $previous_month_pending_contributions) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $pending_contributions_percentage_change = round($pending_contributions_percentage_change, 2);
+
+        // Selected contributions
         $selected_contributions = Contribution::where('contribution_status', 'Select')
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })->get();
 
+        // Selected contributions for the current month
+        $current_month_selected_contributions = Contribution::where('contribution_status', 'Select')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Selected contributions for the previous month
+        $previous_month_selected_contributions = Contribution::where('contribution_status', 'Select')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change for selected contributions
+        $selected_contributions_percentage_change = 0;
+        if ($previous_month_selected_contributions > 0) {
+            $selected_contributions_percentage_change = (($current_month_selected_contributions - $previous_month_selected_contributions) / $previous_month_selected_contributions) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $selected_contributions_percentage_change = round($selected_contributions_percentage_change, 2);
+
+        // Rejected contributions
         $rejected_contributions = Contribution::where('contribution_status', 'Reject')
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })->get();
 
+        // Rejected contributions for the current month
+        $current_month_rejected_contributions = Contribution::where('contribution_status', 'Reject')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Rejected contributions for the previous month
+        $previous_month_rejected_contributions = Contribution::where('contribution_status', 'Reject')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change for rejected contributions
+        $rejected_contributions_percentage_change = 0;
+        if ($previous_month_rejected_contributions > 0) {
+            $rejected_contributions_percentage_change = (($current_month_rejected_contributions - $previous_month_rejected_contributions) / $previous_month_rejected_contributions) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $rejected_contributions_percentage_change = round($rejected_contributions_percentage_change, 2);
+
+        // Published contributions
         $published_contributions = Contribution::where('contribution_status', 'Publish')
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })->get();
 
-        return view('marketingcoordinator.index', compact('labels', 'data', 'total_students', 'student_percentage_change', 'faculty_guests', 'total_contributions', 'pending_contributions', 'selected_contributions', 'rejected_contributions', 'published_contributions'));
+        // Published contributions for the current month
+        $current_month_published_contributions = Contribution::where('contribution_status', 'Publish')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Published contributions for the previous month
+        $previous_month_published_contributions = Contribution::where('contribution_status', 'Publish')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change for published contributions
+        $published_contributions_percentage_change = 0;
+        if ($previous_month_published_contributions > 0) {
+            $published_contributions_percentage_change = (($current_month_published_contributions - $previous_month_published_contributions) / $previous_month_published_contributions) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $published_contributions_percentage_change = round($published_contributions_percentage_change, 2);
+
+        return view('marketingcoordinator.index', compact('labels', 'data', 'total_students', 'student_percentage_change', 'faculty_guests', 'faculty_guests_percentage_change', 'total_contributions', 'contributions_percentage_change', 'pending_contributions', 'pending_contributions_percentage_change', 'selected_contributions', 'selected_contributions_percentage_change', 'rejected_contributions', 'rejected_contributions_percentage_change', 'published_contributions', 'published_contributions_percentage_change'));
     }
 
     public function marketingcoordinatorAccountSetting()
