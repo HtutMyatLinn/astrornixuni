@@ -164,9 +164,9 @@
             {{-- Commented Contributions --}}
             <div class="p-8 bg-white m-5 shadow-lg">
                 <!-- Header -->
-                <h1 class="text-2xl font-bold mb-6">List of Commented Contributions</h1>
+                <h1 class="text-2xl font-bold mb-6">List of Feedbacked Contributions</h1>
                 <h2 class=" text-lg font-semibold text-gray-400 mb-4">
-                    Total - {{ $commented_contributions->count() }}
+                    Total - {{ $feedbacked_contributions->count() }}
                 </h2>
 
                 <!-- Search and Filters -->
@@ -224,62 +224,59 @@
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">No</th>
                                     <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Contribution
                                         Title</th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Commenter</th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Comment</th>
-                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Commented Date
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Feedbacker</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Feedback</th>
+                                    <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Feedbacked Date
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                @if ($commented_contributions->isNotEmpty())
-                                    @php $counter = 1; @endphp <!-- Initialize counter variable -->
-                                    @foreach ($commented_contributions as $contribution)
-                                        @foreach ($contribution->comments as $comment)
-                                            <tr>
-                                                <!-- Display the row number -->
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ $counter++ }} <!-- Increment the counter -->
-                                                </td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ $comment->contribution->contribution_title }}
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center gap-3">
-                                                        @if ($comment->user->profile_image)
-                                                            <img id="profilePreview"
-                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                                src="{{ asset('profile_images/' . $comment->user->profile_image) }}"
-                                                                alt="Profile">
-                                                        @else
-                                                            <p
-                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                {{ strtoupper($comment->user->username[0] ?? 'N') }}
-                                                            </p>
-                                                        @endif
-                                                        <div>
-                                                            <div class="font-medium">
-                                                                {{ $comment->user->first_name ?? 'First Name' }}
-                                                                {{ $comment->user->last_name ?? 'Last Name' }}
-                                                            </div>
-                                                            <div class="text-sm text-gray-500">
-                                                                {{ $comment->user->email ?? 'No email available' }}
-                                                            </div>
+                                @if ($feedbacked_contributions->isNotEmpty())
+                                    @foreach ($feedbacked_contributions as $feedback)
+                                        <tr>
+                                            <!-- Display the row number -->
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $loop->iteration }} <!-- Increment the counter -->
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $feedback->contribution->contribution_title ?? 'No Title' }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    @if ($feedback->user->profile_image)
+                                                        <img id="profilePreview"
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                            src="{{ asset('profile_images/' . $feedback->user->profile_image) }}"
+                                                            alt="Profile">
+                                                    @else
+                                                        <p
+                                                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                            {{ strtoupper($feedback->user->username[0] ?? 'N') }}
+                                                        </p>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-medium">
+                                                            {{ $feedback->user->first_name ?? 'First Name' }}
+                                                            {{ $feedback->user->last_name ?? 'Last Name' }}
+                                                        </div>
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $feedback->user->email ?? 'No email available' }}
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ $comment->comment_text ?? 'No Comment' }}
-                                                </td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ $comment->comment_date->format('M d, Y') }}
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $feedback->feedback ?? 'No Feedback' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $feedback->feedback_given_date->format('M d, Y') }}
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 @else
                                     <tr class="hover:bg-gray-50">
                                         <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
-                                            No commented contributions found.
+                                            No feedback found.
                                         </td>
                                     </tr>
                                 @endif
@@ -289,9 +286,9 @@
                 </div>
 
                 <!-- Pagination -->
-                @if ($commented_contributions->isNotEmpty())
+                @if ($feedbacked_contributions->isNotEmpty())
                     <div class="flex justify-end items-center gap-2 mt-6">
-                        {{ $commented_contributions->links('pagination::tailwind') }}
+                        {{ $feedbacked_contributions->links('pagination::tailwind') }}
                     </div>
                 @endif
             </div>
