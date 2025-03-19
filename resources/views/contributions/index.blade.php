@@ -72,9 +72,20 @@
                                     <a href="{{ route('student.contribution-detail', $contribution) }}"
                                         class="block overflow-hidden rounded-lg bg-white shadow-sm group">
                                         <div class="relative h-56 w-full overflow-hidden">
-                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                                alt="{{ $contribution->contribution_title }}"
-                                                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                            @if ($contribution->contribution_cover)
+                                                <!-- Display the contribution cover image if it exists -->
+                                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                    alt="{{ $contribution->contribution_title }}"
+                                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                            @else
+                                                <!-- Display the default logo image if contribution_cover is null -->
+                                                <div class="flex h-full w-full items-center justify-center">
+                                                    <div class="w-24 select-none">
+                                                        <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                            class="w-full h-full object-cover">
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="p-4">
                                             <h3 class="mb-2 text-lg font-semibold text-gray-800">

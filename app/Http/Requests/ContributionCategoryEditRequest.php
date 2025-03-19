@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ContributionCategoryEditRequest extends FormRequest
 {
@@ -22,7 +23,12 @@ class ContributionCategoryEditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'edit_contribution_category' => 'required|string|max:255',
+            'edit_contribution_category' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('contribution_categories', 'contribution_category')->ignore($this->contribution_category_id, 'contribution_category_id')
+            ],
         ];
     }
 
@@ -31,6 +37,7 @@ class ContributionCategoryEditRequest extends FormRequest
         return [
             'edit_contribution_category.required' => 'Contribution category is required.',
             'edit_contribution_category.string' => 'Contribution category must be a string.',
+            'edit_contribution_category.unique' => 'The contribution category has already been taken.',
             'edit_contribution_category.max' => 'Contribution category must not exceed 255 characters.',
         ];
     }

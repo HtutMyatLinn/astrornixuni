@@ -61,11 +61,23 @@
                     <!-- Inside the Content section -->
                     <div class="flex flex-col md:flex-row gap-8">
                         <!-- Image -->
-                        <div class="w-full md:max-w-96 h-auto md:max-h-96 select-none">
-                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                alt="{{ $contribution->contribution_title }}"
-                                class="w-full h-full object-cover rounded-md">
-                        </div>
+                        @if ($contribution->contribution_cover)
+                            <!-- Display the contribution cover image if it exists -->
+                            <div class="w-full md:max-w-96 h-auto md:max-h-96 select-none">
+                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                    alt="{{ $contribution->contribution_title }}"
+                                    class="w-full h-full object-cover rounded-md">
+                            </div>
+                        @else
+                            <!-- Display the default logo image if contribution_cover is null -->
+                            <div class="w-full md:max-w-96 h-56 md:max-h-96 flex items-center justify-center">
+                                <!-- Match the same dimensions as the cover image container -->
+                                <div class="w-24 select-none">
+                                    <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        @endif
 
                         <!-- Text content -->
                         <div class="flex-1">

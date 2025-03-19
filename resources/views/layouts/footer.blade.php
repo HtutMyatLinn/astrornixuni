@@ -35,14 +35,14 @@
                 <ul class="space-y-2 border-l px-7 flex flex-col">
                     {{-- Determine User Role --}}
                     @php
-                        $userRole = auth()->user()->role->role ?? 'guest';
+                        $userRole = auth()->user()->role->role ?? 'Guest';
                         $termsPdfPath =
-                            $userRole === 'student'
+                            $userRole === 'Student'
                                 ? 'pdfs/Term&Conditionforstudent.pdf'
                                 : 'pdfs/Term&Conditionforguest.pdf';
 
                         $privacyPdfPath =
-                            $userRole === 'student'
+                            $userRole === 'Student'
                                 ? 'pdfs/PrivacyPolicyforStudents.pdf'
                                 : 'pdfs/PrivacyPolicyforGuests.pdf';
                     @endphp

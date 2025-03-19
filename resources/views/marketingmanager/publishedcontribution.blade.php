@@ -45,35 +45,47 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         @if ($contributions->isNotEmpty())
-                        @foreach ($contributions as $contribution)
-                        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                            <div class="py-2 border-b flex justify-start">
-                                <!-- Tooltip and Button -->
-                                <button class="text-gray-600 download-zip"
-                                    data-contribution-id="{{ $contribution->contribution_id }}"
-                                    data-tippy-content="Download File">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="h-56">
-                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                    alt="{{ $contribution->contribution_title }}"
-                                    class="w-full h-full object-cover select-none">
-                            </div>
-                            <div class="mt-4 text-center">
-                                <a href="{{ route('marketingmanager.publishedcontributionviewdetail', $contribution->contribution_id) }}"
-                                    class="text-blue-600 font-medium hover:underline">View</a>
-                            </div>
-                        </div>
-                        @endforeach
+                            @foreach ($contributions as $contribution)
+                                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                                    <div class="py-2 border-b flex justify-start">
+                                        <!-- Tooltip and Button -->
+                                        <button class="text-gray-600 download-zip"
+                                            data-contribution-id="{{ $contribution->contribution_id }}"
+                                            data-tippy-content="Download File">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    @if ($contribution->contribution_cover)
+                                        <!-- Display the contribution cover image if it exists -->
+                                        <div class="h-56">
+                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                alt="{{ $contribution->contribution_title }}"
+                                                class="w-full h-full object-cover select-none">
+                                        </div>
+                                    @else
+                                        <!-- Display the default logo image if contribution_cover is null -->
+                                        <div class="flex h-56 w-full items-center justify-center">
+                                            <!-- Center the logo -->
+                                            <div class="w-24 select-none">
+                                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                    class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="mt-4 text-center">
+                                        <a href="{{ route('marketingmanager.publishedcontributionviewdetail', $contribution->contribution_id) }}"
+                                            class="text-blue-600 font-medium hover:underline">View</a>
+                                    </div>
+                                </div>
+                            @endforeach
                         @else
-                        <p class="px-6 py-24 text-gray-600 text-center col-span-4">
-                            No contributions found.
-                        </p>
+                            <p class="px-6 py-24 text-gray-600 text-center col-span-4">
+                                No contributions found.
+                            </p>
                         @endif
                     </div>
 

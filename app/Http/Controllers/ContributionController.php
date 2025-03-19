@@ -93,6 +93,9 @@ class ContributionController extends Controller
      */
     public function store(ContributionRequest $request)
     {
+        // Initialize variables with default values
+        $coverImageName = null; // Default value for cover image
+
         // Handle the cover image upload
         if ($request->contribution_cover) {
             $file = $request->contribution_cover;
