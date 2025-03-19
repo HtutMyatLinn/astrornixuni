@@ -73,15 +73,15 @@
                                 <div class="font-semibold text-xl">Status</div>
                                 <div class="md:col-span-2 text-xl flex items-center">
                                     @if ($contribution->contribution_status == 'Upload')
-                                        <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Reject')
-                                        <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Update')
-                                        <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Select')
-                                        <span class="w-4 h-4 bg-green-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-green-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Publish')
-                                        <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
                                     @endif
                                     {{ $contribution->contribution_status }}
                                 </div>
@@ -102,7 +102,7 @@
                                         class="bg-red-400 hover:bg-red-500 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Reject
                                     </button>
-                                    <button type="submit" name="status" value="Update"
+                                    <button type="submit" name="status" value="Upload"
                                         class="bg-blue-300 hover:bg-blue-400 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Give Feedback
                                     </button>

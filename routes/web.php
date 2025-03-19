@@ -169,13 +169,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/marketingcoordinator/submission-management/view-detail-contribution/{id}', [ContributionController::class, 'viewDetail'])->name('marketingcoordinator.submission-management.view-detail-contribution');
 
         Route::post('/marketingcoordinator/submission-management/update-status/{id}', [ContributionController::class, 'updateStatus'])->name('marketingcoordinator.submission-management.update-status');
+
         Route::post('/marketingcoordinator/submission-management/publish-contribution/{id}', [ContributionController::class, 'publishContribution'])->name('marketingcoordinator.submission-management.publish-contribution');
 
         Route::get('/marketingcoordinator/submission-management/feedback/{id}', [ContributionController::class, 'showFeedbackForm'])->name('marketingcoordinator.submission-management.feedback');
 
         Route::post('/marketingcoordinator/submit-feedback/{id}', [ContributionController::class, 'submitFeedback'])->name('marketingcoordinator.submit-feedback');
-
-        // Route::get('/marketingcoordinator/submission-management/view-detail-contribution', [HomeController::class, 'marketingcoordinatorSubmissionManagementViewDetailContribution'])->name('marketingcoordinator.submission-management.view-detail-contribution');
 
         Route::get('/marketingcoordinator/provide-feedback', [HomeController::class, 'marketingcoordinatorProvideFeedBack'])->name('marketingcoordinator.provide-feedback');
 
