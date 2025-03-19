@@ -170,7 +170,7 @@ class ContributionController extends Controller
         $contribution->save();
 
         // Redirect based on the status
-        if ($request->status == 'Update') {
+        if ($request->status == 'Upload') {
             return redirect()->route('marketingcoordinator.submission-management.feedback', $id);
         }
 
