@@ -116,7 +116,15 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($faculty_guests_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $faculty_guests_percentage_change }}%
+                            ↑</span>
+                    @elseif ($faculty_guests_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($faculty_guests_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -137,7 +145,15 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($contributions_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $contributions_percentage_change }}%
+                            ↑</span>
+                    @elseif ($contributions_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($contributions_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -185,7 +201,17 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($pending_contributions_percentage_change > 0)
+                        <span
+                            class="text-emerald-500 text-xl font-medium">{{ $pending_contributions_percentage_change }}%
+                            ↑</span>
+                    @elseif ($pending_contributions_percentage_change < 0)
+                        <span
+                            class="text-red-500 text-xl font-medium">{{ abs($pending_contributions_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -206,7 +232,17 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($selected_contributions_percentage_change > 0)
+                        <span
+                            class="text-emerald-500 text-xl font-medium">{{ $selected_contributions_percentage_change }}%
+                            ↑</span>
+                    @elseif ($selected_contributions_percentage_change < 0)
+                        <span
+                            class="text-red-500 text-xl font-medium">{{ abs($selected_contributions_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -227,7 +263,17 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($rejected_contributions_percentage_change > 0)
+                        <span
+                            class="text-emerald-500 text-xl font-medium">{{ $rejected_contributions_percentage_change }}%
+                            ↑</span>
+                    @elseif ($rejected_contributions_percentage_change < 0)
+                        <span
+                            class="text-red-500 text-xl font-medium">{{ abs($rejected_contributions_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>
@@ -249,7 +295,17 @@
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
-                    <span class="text-emerald-500 text-xl font-medium">2.3% ↑</span>
+                    @if ($published_contributions_percentage_change > 0)
+                        <span
+                            class="text-emerald-500 text-xl font-medium">{{ $published_contributions_percentage_change }}%
+                            ↑</span>
+                    @elseif ($published_contributions_percentage_change < 0)
+                        <span
+                            class="text-red-500 text-xl font-medium">{{ abs($published_contributions_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>

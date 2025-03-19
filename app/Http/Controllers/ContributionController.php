@@ -8,7 +8,11 @@ use App\Models\Contribution;
 use App\Models\ContributionCategory;
 use App\Models\Feedback;
 use App\Models\Intake;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ContributionController extends Controller
 {
@@ -223,12 +227,151 @@ class ContributionController extends Controller
 
     public function marketingcoordinatorNotifications()
     {
-        // Fetch contributions with status "Update" (resubmitted after feedback)
+        $user = Auth::user();
+
+        // Get the faculty ID of the logged-in coordinator
+        $facultyId = $user->faculty_id;
+        // Fetch the role ID for the "Guest" role
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if (!$guestRole) {
+            // Handle the case where the "Guest" role does not exist
+            return redirect()->back()->with('error', 'Guest role not found. Please contact the administrator.');
+        }
+
+        $guestRoleId = $guestRole->role_id; // Get the role ID
+
+        // Total faculty guests in the logged-in user's faculty
+        $faculty_guests = User::where('role_id', $guestRoleId)
+            ->where('faculty_id', $user->faculty_id)
+            ->whereNotNull('faculty_id')
+            ->count();
+
+        // Faculty guests added this month
+        $current_month_faculty_guests = User::where('role_id', $guestRoleId)
+            ->where('faculty_id', $user->faculty_id)
+            ->whereNotNull('faculty_id')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Faculty guests added last month
+        $previous_month_faculty_guests = User::where('role_id', $guestRoleId)
+            ->where('faculty_id', $user->faculty_id)
+            ->whereNotNull('faculty_id')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $faculty_guests_percentage_change = 0;
+        if ($previous_month_faculty_guests > 0) {
+            $faculty_guests_percentage_change = (($current_month_faculty_guests - $previous_month_faculty_guests) / $previous_month_faculty_guests) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $faculty_guests_percentage_change = round($faculty_guests_percentage_change, 2);
+
+        // Fetch contributions with status 'Update' and same faculty as the logged-in user
         $contributions = Contribution::where('contribution_status', 'Update')
-            ->with(['user', 'category']) // Eager load relationships
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->with(['user', 'category'])
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('marketingcoordinator.notifications', compact('contributions'));
+        $resubmitted_contributions = Contribution::where('contribution_status', 'Update')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->with(['user', 'category']);
+
+        // Contributions with status 'Update' added this month
+        $current_month_update_contributions = Contribution::where('contribution_status', 'Update')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Contributions with status 'Update' added last month
+        $previous_month_update_contributions = Contribution::where('contribution_status', 'Update')
+            ->whereHas('user.faculty', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $update_contributions_percentage_change = 0;
+        if ($previous_month_update_contributions > 0) {
+            $update_contributions_percentage_change = (($current_month_update_contributions - $previous_month_update_contributions) / $previous_month_update_contributions) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $update_contributions_percentage_change = round($update_contributions_percentage_change, 2);
+
+        $pending_review = Contribution::with(['user', 'category'])
+            ->whereHas('user', function ($q) use ($facultyId) {
+                $q->where('faculty_id', $facultyId); // Filter by faculty_id
+            })
+            ->whereDoesntHave('feedbacks');
+
+        // Get current month's pending review contributions
+        $current_month_pending_review = Contribution::whereHas('user', function ($q) use ($facultyId) {
+            $q->where('faculty_id', $facultyId);
+        })
+            ->whereDoesntHave('feedbacks')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get previous month's pending review contributions
+        $previous_month_pending_review = Contribution::whereHas('user', function ($q) use ($facultyId) {
+            $q->where('faculty_id', $facultyId);
+        })
+            ->whereDoesntHave('feedbacks')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change in pending reviews
+        $pending_review_percentage_change = 0;
+        if ($previous_month_pending_review > 0) {
+            $pending_review_percentage_change = (($current_month_pending_review - $previous_month_pending_review) / $previous_month_pending_review) * 100;
+        }
+
+        // Round to 2 decimal places
+        $pending_review_percentage_change = round($pending_review_percentage_change, 2);
+
+        // Total feedback sent by the logged-in user
+        $total_feedback_sent = Feedback::where('user_id', $user->user_id)->count();
+
+        // Feedback sent this month by the logged-in user
+        $current_month_feedback = Feedback::where('user_id', $user->user_id)
+            ->whereYear('feedback_given_date', Carbon::now()->year)
+            ->whereMonth('feedback_given_date', Carbon::now()->month)
+            ->count();
+
+        // Feedback sent last month by the logged-in user
+        $previous_month_feedback = Feedback::where('user_id', $user->user_id)
+            ->whereYear('feedback_given_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('feedback_given_date', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $feedback_percentage_change = 0;
+        if ($previous_month_feedback > 0) {
+            $feedback_percentage_change = (($current_month_feedback - $previous_month_feedback) / $previous_month_feedback) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $feedback_percentage_change = round($feedback_percentage_change, 2);
+
+        return view('marketingcoordinator.notifications', compact('contributions', 'update_contributions_percentage_change', 'resubmitted_contributions', 'faculty_guests', 'faculty_guests_percentage_change', 'pending_review', 'pending_review_percentage_change', 'total_feedback_sent', 'feedback_percentage_change'));
     }
 
     public function reports(Request $request)
