@@ -17,7 +17,7 @@
         </div>
 
         <!-- Right Side (Departments and Contact) -->
-        <div class="w-full md:w-1/2">
+        <div class="w-full md:w-1/2 mt-10 sm:mt-0">
             <h3 class="text-2xl text-black font-semibold text-center">UNIVERSITY OF ASTRORNIX</h3>
 
             <!-- Department Lists -->
@@ -56,13 +56,26 @@
             </div>
 
             <!-- Contact Info -->
-            <div class="flex justify-center items-center gap-36 mt-6 text-sm text-black">
+            <div class="flex flex-col sm:flex-row justify-center items-start gap-3 sm:gap-36 mt-6 text-sm text-black">
                 <div class="flex items-center gap-3">
                     <i class="ri-map-pin-line text-xl"></i> <span class="font-semibold">Taung Hlay Kar st, Pyin Oo Lwin,
                         Myanmar</span>
                 </div>
-                <div class="flex items-center gap-3">
-                    <i class="ri-phone-line text-xl"></i> <span class="font-semibold">+95963554322</span>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-3">
+                        <i class="ri-phone-line text-xl"></i> <span class="font-semibold">+95963554322</span>
+                    </div>
+                    <!-- Google Translate -->
+                    <div id="google_translate_element" class="pt-5"></div>
+                    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElement"></script>
+
+                    <script type="text/javascript">
+                        function googleTranslateElement() {
+                            new google.translate.TranslateElement({
+                                pageLanguage: 'en'
+                            }, 'google_translate_element');
+                        }
+                    </script>
                 </div>
             </div>
         </div>
