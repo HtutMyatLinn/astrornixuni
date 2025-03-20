@@ -15,6 +15,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
@@ -364,29 +365,35 @@ class HomeController extends Controller
         return view('marketingmanager.publishedcontribution', compact('contributions'));
     }
 
-    // New method for downloading the contribution as a zip
-    public function downloadContributionZip($contribution_id)
+    public function downloadMultipleContributions(Request $request)
     {
-        // Fetch the contribution
-        $contribution = Contribution::findOrFail($contribution_id);
+        // Get the selected contribution IDs from the request
+        $contributionIds = explode(',', $request->query('ids'));
 
-        // Construct the full file path
-        $filePath = storage_path('app/public/contribution-documents/' . $contribution->contribution_file_path);
+        // Fetch the contributions
+        $contributions = Contribution::whereIn('contribution_id', $contributionIds)->get();
 
-        // Check if the file exists using the File facade
-        if (!File::exists($filePath)) {
-            return redirect()->back()->with('error', 'File not found.');
+        if ($contributions->isEmpty()) {
+            return redirect()->back()->with('error', 'No contributions selected.');
         }
 
         // Create a new ZIP archive
         $zip = new ZipArchive();
-        $zipFileName = 'contribution_' . $contribution_id . '.zip';
+        $zipFileName = 'contributions_' . time() . '.zip'; // Unique ZIP file name
         $zipFilePath = storage_path('app/public/' . $zipFileName);
 
         // Open the ZIP file for writing
         if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-            // Add the document file to the ZIP
-            $zip->addFile($filePath, basename($filePath)); // Use basename to avoid path issues
+            foreach ($contributions as $contribution) {
+                // Construct the full file path
+                $filePath = storage_path('app/public/contribution-documents/' . $contribution->contribution_file_path);
+
+                // Check if the file exists
+                if (File::exists($filePath)) {
+                    // Add the file to the ZIP
+                    $zip->addFile($filePath, basename($filePath)); // Use basename to avoid path issues
+                }
+            }
 
             // Close the ZIP file
             $zip->close();
@@ -414,204 +421,6 @@ class HomeController extends Controller
     {
         return view('marketingmanager.downloadcontribution');
     }
-
-    // public function marketingmanagerReport(Request $request)
-    // {
-    //     // Fetch all faculties for the filter dropdown
-    //     $faculties = Faculty::all();
-
-    //     // Fetch all academic years for the filter dropdown
-    //     $academicYears = AcademicYear::pluck('academic_year', 'academic_year_id');
-
-    //     // Start building the query for published contributions
-    //     $contributionsQuery = Contribution::with(['user', 'user.faculty', 'intake.academicYear'])
-    //         ->where('contribution_status', 'Publish');
-
-    //     // Filter by faculty
-    //     if ($request->has('faculty') && $request->faculty != 'all') {
-    //         $contributionsQuery->whereHas('user.faculty', function ($query) use ($request) {
-    //             $query->where('faculty_id', $request->faculty);
-    //         });
-    //     }
-
-    //     // Filter by academic year
-    //     if ($request->has('academic_year') && $request->academic_year != 'all') {
-    //         $contributionsQuery->whereHas('intake', function ($query) use ($request) {
-    //             $query->where('academic_year_id', $request->academic_year);
-    //         });
-    //     }
-
-    //     // Search by student name or title
-    //     if ($request->has('search')) {
-    //         $search = $request->input('search');
-    //         $contributionsQuery->where(function ($query) use ($search) {
-    //             $query->where('contribution_title', 'LIKE', "%{$search}%")
-    //                 ->orWhereHas('user', function ($query) use ($search) {
-    //                     $query->where('first_name', 'LIKE', "%{$search}%")
-    //                         ->orWhere('last_name', 'LIKE', "%{$search}%");
-    //                 });
-    //         });
-    //     }
-
-    //     // Sort by publish date
-    //     $sort = $request->input('sort', 'desc'); // Default to newest first
-    //     $contributionsQuery->orderBy('published_date', $sort);
-
-    //     // Paginate the results
-    //     $contributions = $contributionsQuery->paginate(5);
-
-    //     // Group contributions by faculty
-    //     $groupedContributions = $contributionsQuery->get()
-    //         ->groupBy('user.faculty.faculty_id');
-
-    //     // Calculate total contributions
-    //     $totalContributions = $groupedContributions->flatten()->count();
-
-    //     // Calculate total unique contributors
-    //     $totalUniqueContributors = $groupedContributions->flatten()->unique('user_id')->count();
-
-    //     // Prepare data for the charts
-    //     $labels = $faculties->pluck('faculty', 'faculty_id')->values()->toArray();
-    //     $countData = [];
-    //     $percentageData = [];
-    //     $contributorCountData = [];
-    //     $contributorPercentageData = [];
-
-    //     foreach ($faculties as $faculty) {
-    //         $facultyId = $faculty->faculty_id;
-
-    //         // Count contributions
-    //         $count = $groupedContributions->get($facultyId, collect())->count();
-    //         $countData[] = $count; // Raw count of contributions
-    //         $percentage = $totalContributions > 0 ? ($count / $totalContributions) * 100 : 0;
-    //         $percentageData[] = round($percentage, 2); // Percentage of contributions
-
-    //         // Count unique contributors
-    //         $contributorCount = $groupedContributions->get($facultyId, collect())->unique('user_id')->count();
-    //         $contributorCountData[] = $contributorCount; // Count of unique contributors
-
-    //         // Calculate percentage of unique contributors
-    //         $contributorPercentage = $totalUniqueContributors > 0 ? ($contributorCount / $totalUniqueContributors) * 100 : 0;
-    //         $contributorPercentageData[] = round($contributorPercentage, 2); // Percentage of unique contributors
-    //     }
-
-    //     return view('marketingmanager.report', [
-    //         'contributions' => $contributions,
-    //         'faculties' => $faculties,
-    //         'academicYears' => $academicYears, // Pass academicYears to the view
-    //         'labels' => $labels,
-    //         'countData' => $countData, // Pass count data (contributions) to the view
-    //         'percentageData' => $percentageData, // Pass percentage data (contributions) to the view
-    //         'contributorCountData' => $contributorCountData, // Pass contributor count data to the view
-    //         'contributorPercentageData' => $contributorPercentageData, // Pass contributor percentage data to the view
-    //     ]);
-    // }
-
-    // public function marketingmanagerReport(Request $request)
-    // {
-    //     // Fetch all faculties for the filter dropdown
-    //     $faculties = Faculty::all();
-
-    //     // Fetch all academic years for the filter dropdown
-    //     $academicYears = AcademicYear::pluck('academic_year', 'academic_year_id');
-
-    //     // Start building the query for published contributions
-    //     $contributionsQuery = Contribution::with(['user', 'user.faculty', 'intake.academicYear'])
-    //         ->where('contribution_status', 'Publish');
-
-    //     // Filter by faculty
-    //     if ($request->has('faculty') && $request->faculty != 'all') {
-    //         $contributionsQuery->whereHas('user.faculty', function ($query) use ($request) {
-    //             $query->where('faculty_id', $request->faculty);
-    //         });
-    //     }
-
-    //     // Filter by academic year
-    //     if ($request->has('academic_year') && $request->academic_year != 'all') {
-    //         $contributionsQuery->whereHas('intake', function ($query) use ($request) {
-    //             $query->where('academic_year_id', $request->academic_year);
-    //         });
-    //     }
-
-    //     // Search by student name or title
-    //     if ($request->has('search')) {
-    //         $search = $request->input('search');
-    //         $contributionsQuery->where(function ($query) use ($search) {
-    //             $query->where('contribution_title', 'LIKE', "%{$search}%")
-    //                 ->orWhereHas('user', function ($query) use ($search) {
-    //                     $query->where('first_name', 'LIKE', "%{$search}%")
-    //                         ->orWhere('last_name', 'LIKE', "%{$search}%");
-    //                 });
-    //         });
-    //     }
-
-    //     // Sort by publish date
-    //     $sort = $request->input('sort', 'desc'); // Default to newest first
-    //     $contributionsQuery->orderBy('published_date', $sort);
-
-    //     // Paginate the results
-    //     $contributions = $contributionsQuery->paginate(5);
-
-    //     // Group contributions by faculty and academic year
-    //     $groupedContributions = $contributionsQuery->get()
-    //         ->groupBy(['user.faculty.faculty_id', 'intake.academicYear.academic_year_id']);
-
-    //     // Calculate total contributions
-    //     $totalContributions = $groupedContributions->flatten()->count();
-
-    //     // Calculate total unique contributors
-    //     $totalUniqueContributors = $groupedContributions->flatten()->unique('user_id')->count();
-
-    //     // Prepare data for the charts
-    //     $labels = $faculties->pluck('faculty', 'faculty_id')->values()->toArray();
-    //     $countData = [];
-    //     $percentageData = [];
-    //     $contributorCountData = [];
-    //     $contributorPercentageData = [];
-
-    //     // Prepare data for the "Number of Contributors Within Each Faculty for Each Academic Year" chart
-    //     $facultyAcademicYearData = [];
-
-    //     foreach ($faculties as $faculty) {
-    //         $facultyId = $faculty->faculty_id;
-
-    //         // Count contributions
-    //         $count = $groupedContributions->get($facultyId, collect())->flatten()->count();
-    //         $countData[] = $count; // Raw count of contributions
-    //         $percentage = $totalContributions > 0 ? ($count / $totalContributions) * 100 : 0;
-    //         $percentageData[] = round($percentage, 2); // Percentage of contributions
-
-    //         // Count unique contributors
-    //         $contributorCount = $groupedContributions->get($facultyId, collect())->flatten()->unique('user_id')->count();
-    //         $contributorCountData[] = $contributorCount; // Count of unique contributors
-
-    //         // Calculate percentage of unique contributors
-    //         $contributorPercentage = $totalUniqueContributors > 0 ? ($contributorCount / $totalUniqueContributors) * 100 : 0;
-    //         $contributorPercentageData[] = round($contributorPercentage, 2); // Percentage of unique contributors
-
-    //         // Prepare data for the "Number of Contributors Within Each Faculty for Each Academic Year" chart
-    //         foreach ($academicYears as $academicYearId => $academicYear) {
-    //             $contributorsInYear = $groupedContributions->get($facultyId, collect())
-    //                 ->get($academicYearId, collect())
-    //                 ->unique('user_id')
-    //                 ->count();
-
-    //             $facultyAcademicYearData[$faculty->faculty][$academicYear] = $contributorsInYear;
-    //         }
-    //     }
-
-    //     return view('marketingmanager.report', [
-    //         'contributions' => $contributions,
-    //         'faculties' => $faculties,
-    //         'academicYears' => $academicYears, // Pass academicYears to the view
-    //         'labels' => $labels,
-    //         'countData' => $countData, // Pass count data (contributions) to the view
-    //         'percentageData' => $percentageData, // Pass percentage data (contributions) to the view
-    //         'contributorCountData' => $contributorCountData, // Pass contributor count data to the view
-    //         'contributorPercentageData' => $contributorPercentageData, // Pass contributor percentage data to the view
-    //         'facultyAcademicYearData' => $facultyAcademicYearData, // Pass faculty-academic year data to the view
-    //     ]);
-    // }
 
     public function marketingmanagerReport(Request $request)
     {

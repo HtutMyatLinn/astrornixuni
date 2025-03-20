@@ -40,24 +40,40 @@
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Published Contributions</h1>
 
                 <div class="max-w-full mx-auto shadow-lg p-6 bg-white mt-4 rounded-md">
-                    <h1 class="text-2xl font-bold mb-4">List of Published Contributions</h1>
-                    <h2 class="text-lg font-semibold mb-4 text-gray-400">Total - {{ $contributions->total() }}</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h1 class="text-2xl font-bold mb-4">List of Published Contributions</h1>
+                            <h2 class="text-lg font-semibold text-gray-400">Total - {{ $contributions->total() }}
+                            </h2>
+                        </div>
+                        <button id="downloadSelected"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center">
+                            Download Selected
+                        </button>
+                    </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         @if ($contributions->isNotEmpty())
                             @foreach ($contributions as $contribution)
                                 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                                    <div class="py-2 border-b flex justify-start">
-                                        <!-- Tooltip and Button -->
-                                        <button class="text-gray-600 download-zip"
+                                    <div class="py-2 flex justify-between items-center">
+                                        <!-- Custom SVG Checkbox -->
+                                        <div class="cursor-pointer contribution-checkbox"
                                             data-contribution-id="{{ $contribution->contribution_id }}"
-                                            data-tippy-content="Download File">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            data-tippy-content="Select this contribution for download">
+                                            <!-- Unchecked State -->
+                                            <svg class="h-5 w-5 text-gray-400 unchecked-icon" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
-                                        </button>
+                                            <!-- Checked State (Hidden by Default) -->
+                                            <svg class="h-5 w-5 text-blue-500 checked-icon hidden" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
                                     </div>
                                     @if ($contribution->contribution_cover)
                                         <!-- Display the contribution cover image if it exists -->
@@ -88,6 +104,66 @@
                             </p>
                         @endif
                     </div>
+
+                    <!-- Include Tippy.js CSS -->
+                    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+
+                    <!-- Include Tippy.js JavaScript -->
+                    <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+
+                    <!-- JavaScript to Handle Checkbox Toggle and Download Selected -->
+                    <script>
+                        // Initialize Tippy.js for tooltips
+                        tippy('.contribution-checkbox', {
+                            placement: 'top', // Tooltip position
+                            arrow: true, // Show arrow
+                        });
+
+                        // Toggle Checkbox State
+                        document.querySelectorAll('.contribution-checkbox').forEach(checkbox => {
+                            checkbox.addEventListener('click', function() {
+                                const contributionId = this.getAttribute('data-contribution-id');
+                                const uncheckedIcon = this.querySelector('.unchecked-icon');
+                                const checkedIcon = this.querySelector('.checked-icon');
+
+                                // Toggle visibility of checked/unchecked icons
+                                uncheckedIcon.classList.toggle('hidden');
+                                checkedIcon.classList.toggle('hidden');
+
+                                // Toggle the selected state
+                                this.classList.toggle('selected');
+                            });
+                        });
+
+                        // Handle Download Selected
+                        document.getElementById('downloadSelected').addEventListener('click', function() {
+                            // Get all selected contribution IDs
+                            const selectedContributions = Array.from(document.querySelectorAll('.contribution-checkbox.selected'))
+                                .map(checkbox => checkbox.getAttribute('data-contribution-id'));
+
+                            if (selectedContributions.length === 0) {
+                                alert('Please select at least one contribution to download.');
+                                return;
+                            }
+
+                            // Unselect all checkboxes after initiating the download
+                            document.querySelectorAll('.contribution-checkbox.selected').forEach(checkbox => {
+                                const uncheckedIcon = checkbox.querySelector('.unchecked-icon');
+                                const checkedIcon = checkbox.querySelector('.checked-icon');
+
+                                // Show the unchecked icon and hide the checked icon
+                                uncheckedIcon.classList.remove('hidden');
+                                checkedIcon.classList.add('hidden');
+
+                                // Remove the selected class
+                                checkbox.classList.remove('selected');
+                            });
+
+                            // Redirect to the download route with selected contribution IDs
+                            window.location.href = "{{ route('marketingmanager.downloadMultipleContributions') }}?ids=" +
+                                selectedContributions.join(',');
+                        });
+                    </script>
 
                     <!-- Pagination -->
                     <div class="mt-10 flex flex-col md:flex-row justify-between items-center">
