@@ -142,10 +142,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/marketingmanager/published-contribution', [HomeController::class, 'marketingmanagerPublishedContribution'])
             ->name('marketingmanager.published-contribution');
 
-
-        Route::get('/marketingmanager/download-contribution-zip/{id}', [HomeController::class, 'downloadContributionZip'])
-            ->name('marketingmanager.download-contribution-zip');
-
+        Route::get('/download-multiple-contributions', [HomeController::class, 'downloadMultipleContributions'])
+            ->name('marketingmanager.downloadMultipleContributions');
         Route::get('/marketingmanager/publishedcontributionviewdetail/{id}', [HomeController::class, 'marketingmanagerPublishedContributionViewDetail'])
             ->name('marketingmanager.publishedcontributionviewdetail');
 
