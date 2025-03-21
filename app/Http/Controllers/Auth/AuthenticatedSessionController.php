@@ -40,6 +40,10 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('login')->with('error', 'Your account has been suspended. Please contact the administrator for assistance.');
         }
 
+        // Set the default timezone to your local timezone
+        date_default_timezone_set('Asia/Yangon');
+
+        // Now, the `now()` function will return the correct date and time
         $user->last_login_date = now();
 
         // Increase login count
