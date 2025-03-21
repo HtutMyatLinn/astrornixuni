@@ -368,7 +368,7 @@
                                             @csrf
                                             @method('PUT') <!-- Use PUT method for updates -->
                                             <button type="button" id="responseButton"
-                                                class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
+                                                class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 select-none">
                                                 Response
                                             </button>
                                         </form>

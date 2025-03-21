@@ -100,18 +100,89 @@ class HomeController extends Controller
         $student_percentage_change = round($student_percentage_change, 2);
 
         $faculties = Faculty::all();
+
+        // Contribution calculations
         $total_contributions = Contribution::all();
+
+        $current_month_contributions = Contribution::whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $previous_month_contributions = Contribution::whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        $contribution_percentage_change = 0;
+        if ($previous_month_contributions > 0) {
+            $contribution_percentage_change = (($current_month_contributions - $previous_month_contributions) / $previous_month_contributions) * 100;
+        }
+        $contribution_percentage_change = round($contribution_percentage_change, 2);
+
         $pending_contributions = Contribution::where('contribution_status', 'Upload')->get();
+
+        // Selected Contributions
         $selected_contributions = Contribution::where('contribution_status', 'Select')->get();
+
+        $current_month_selected = Contribution::where('contribution_status', 'Select')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $previous_month_selected = Contribution::where('contribution_status', 'Select')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        $selected_percentage_change = 0;
+        if ($previous_month_selected > 0) {
+            $selected_percentage_change = (($current_month_selected - $previous_month_selected) / $previous_month_selected) * 100;
+        }
+        $selected_percentage_change = round($selected_percentage_change, 2);
+
+        // Rejected Contributions
         $rejected_contributions = Contribution::where('contribution_status', 'Reject')->get();
+
+        $current_month_rejected = Contribution::where('contribution_status', 'Reject')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $previous_month_rejected = Contribution::where('contribution_status', 'Reject')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        $rejected_percentage_change = 0;
+        if ($previous_month_rejected > 0) {
+            $rejected_percentage_change = (($current_month_rejected - $previous_month_rejected) / $previous_month_rejected) * 100;
+        }
+        $rejected_percentage_change = round($rejected_percentage_change, 2);
+
+        // Published Contributions
         $published_contributions = Contribution::where('contribution_status', 'Publish')->get();
+
+        $current_month_published = Contribution::where('contribution_status', 'Publish')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $previous_month_published = Contribution::where('contribution_status', 'Publish')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        $published_percentage_change = 0;
+        if ($previous_month_published > 0) {
+            $published_percentage_change = (($current_month_published - $previous_month_published) / $previous_month_published) * 100;
+        }
+        $published_percentage_change = round($published_percentage_change, 2);
 
         // Get browser data
         $browserStats = BrowserStat::all();
         $labels = $browserStats->pluck('browser_name');
         $data = $browserStats->pluck('visit_count');
 
-        return view('admin.index', compact('total_users', 'total_students', 'student_percentage_change', 'percentage_change', 'labels', 'data', 'inquiries', 'inquiry_percentage_change', 'faculties', 'total_contributions', 'pending_contributions', 'selected_contributions', 'rejected_contributions', 'published_contributions'));
+        return view('admin.index', compact('total_users', 'total_students', 'student_percentage_change', 'percentage_change', 'labels', 'data', 'inquiries', 'inquiry_percentage_change', 'faculties', 'total_contributions', 'contribution_percentage_change', 'pending_contributions', 'selected_contributions', 'selected_percentage_change', 'rejected_contributions', 'rejected_percentage_change', 'published_contributions', 'published_percentage_change'));
     }
 
     public function adminAccountSetting()
@@ -148,7 +219,7 @@ class HomeController extends Controller
         // Fetch users with the "Guest" role and no faculty_id (unassigned users)
         $unassigned_users = User::where('role_id', $guestRoleId);
 
-        // Handle search
+        // Handle search for unassigned users
         if ($request->has('search')) {
             $search = $request->input('search');
             $unassigned_users->where(function ($query) use ($search) {
@@ -160,11 +231,11 @@ class HomeController extends Controller
             });
         }
 
-        // Handle sort
+        // Handle sort for unassigned users
         $sort = $request->input('sort', 'desc');
         $unassigned_users->orderBy('created_at', $sort);
 
-        // Handle filter
+        // Handle filter for unassigned users
         if ($request->has('filter')) {
             $filter = $request->input('filter');
             if ($filter === 'Pending') {
@@ -174,7 +245,7 @@ class HomeController extends Controller
             }
         }
 
-        // Paginate results
+        // Paginate unassigned users
         $unassigned_users = $unassigned_users->paginate(10)->appends([
             'sort' => $sort,
             'search' => $request->input('search'),
@@ -252,7 +323,40 @@ class HomeController extends Controller
         }
 
         // Reset password users
-        $reset_password_users = PasswordResetRequest::where('status', 'Pending')->paginate(5);
+        $reset_password_users = PasswordResetRequest::where('status', 'Pending');
+
+        // Handle search for reset password users
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $reset_password_users->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('username', 'like', "%{$search}%")
+                        ->orWhere('first_name', 'like', "%{$search}%")
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        // Handle filter for reset password users
+        if ($request->has('filter')) {
+            $filter = $request->input('filter');
+            if ($filter === 'Pending') {
+                $reset_password_users->where('status', 'Pending');
+            } elseif ($filter === 'Resolved') {
+                $reset_password_users->where('status', 'Resolved');
+            }
+        }
+
+        // Handle sort for reset password users
+        $reset_password_users->orderBy('created_at', $sort);
+
+        // Paginate reset password users
+        $reset_password_users = $reset_password_users->paginate(5)->appends([
+            'sort' => $sort,
+            'search' => $request->input('search'),
+            'filter' => $request->input('filter'),
+        ]);
 
         // Round the percentage to 2 decimal places
         $student_percentage_change = round($student_percentage_change, 2);
@@ -377,6 +481,15 @@ class HomeController extends Controller
             return redirect()->back()->with('error', 'No contributions selected.');
         }
 
+        // Check if the final_closure_date has passed
+        foreach ($contributions as $contribution) {
+            $intake = $contribution->intake; // Assuming you have a relationship between Contribution and Intake
+
+            if (now() < $intake->final_closure_date) {
+                return redirect()->back()->with('error', 'You can only download contributions after the final closure date.');
+            }
+        }
+
         // Create a new ZIP archive
         $zip = new ZipArchive();
         $zipFileName = 'contributions_' . time() . '.zip'; // Unique ZIP file name
@@ -404,6 +517,22 @@ class HomeController extends Controller
             // Handle the error if the ZIP file cannot be created
             return redirect()->back()->with('error', 'Unable to create ZIP file.');
         }
+    }
+
+    public function checkIntakeStatus(Request $request)
+    {
+        $contributionIds = $request->input('contributionIds');
+        $contributions = Contribution::whereIn('contribution_id', $contributionIds)->get();
+
+        foreach ($contributions as $contribution) {
+            $intake = $contribution->intake;
+
+            if (now() < $intake->final_closure_date) {
+                return response()->json(['error' => 'You can only download contributions after the final closure date.']);
+            }
+        }
+
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -829,6 +958,48 @@ class HomeController extends Controller
         $guests = $query->paginate(5);
 
         return view('marketingcoordinator.guestmanagement', compact('guests'));
+    }
+
+    public function marketingcoordinatorStudentManagement(Request $request)
+    {
+        // Get the logged-in user
+        $coordinator = auth()->user();
+
+        // Get the faculty ID of the logged-in coordinator
+        $facultyId = $coordinator->faculty_id;
+
+        // Start building the query
+        $query = User::where('faculty_id', $facultyId) // Filter by faculty_id
+            ->whereHas('role', function ($query) {
+                $query->where('role', 'Student'); // Filter by role (Student instead of Guest)
+            });
+
+        // Apply search filter
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('user_code', 'LIKE', "%{$search}%")
+                    ->orWhere('username', 'LIKE', "%{$search}%")
+                    ->orWhere('first_name', 'LIKE', "%{$search}%")
+                    ->orWhere('last_name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Apply status filter
+        if ($request->has('status')) {
+            $status = $request->input('status');
+            $query->where('status', $status);
+        }
+
+        // Apply sorting
+        $sort = $request->input('sort', 'last_login_date');
+        $order = $request->input('order', 'desc');
+        $query->orderBy($sort, $order);
+
+        // Paginate the results
+        $students = $query->paginate(5);
+
+        return view('marketingcoordinator.studentmanagement', compact('students'));
     }
 
     public function marketingcoordinatorSubmissionManagement(Request $request)

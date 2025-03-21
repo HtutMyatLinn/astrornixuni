@@ -217,20 +217,15 @@ class AdminController extends Controller
 
     public function report_index(Request $request)
     {
-        $published_contributions = Contribution::where('contribution_status', 'Publish')
-            ->orderBy('published_date')
-            ->paginate(10);
-
-        $feedbacked_contributions = Feedback::with(['user', 'contribution']) // Load user and contribution
-            ->orderBy('feedback_given_date', 'desc') // Order by feedback date
-            ->paginate(10); // Paginate the results
-
-        // Get the selected academic year from the request
-        $academicYear = $request->input('academic_year');
-
         // Fetch all faculties
         $all_faculties = Faculty::all();
         $faculties = Faculty::pluck('faculty', 'faculty_id');
+
+        // Fetch all academic years for the filter dropdown
+        $academicYears = AcademicYear::pluck('academic_year', 'academic_year_id');
+
+        // Get the selected academic year from the request
+        $academicYear = $request->input('academic_year');
 
         // Fetch contributions grouped by faculty and academic year
         $contributions = Contribution::query()
@@ -272,8 +267,57 @@ class AdminController extends Controller
             $contributorPercentageData[] = round($contributorPercentage, 2); // Percentage of unique contributors
         }
 
-        // Fetch all academic years for the filter dropdown
-        $academicYears = AcademicYear::pluck('academic_year', 'academic_year_id');
+        // Handle search and sort for published contributions
+        $published_contributions = Contribution::where('contribution_status', 'Publish')
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->input('search');
+                return $query->where(function ($q) use ($search) {
+                    $q->where('contribution_title', 'like', "%{$search}%")
+                        ->orWhere('contribution_description', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($q) use ($search) {
+                            $q->where('username', 'like', "%{$search}%")
+                                ->orWhere('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->orderBy('published_date', $request->input('sort', 'desc'))
+            ->paginate(10)
+            ->appends([
+                'search' => $request->input('search'),
+                'sort' => $request->input('sort'),
+            ]);
+
+        // Handle search, faculty filter, and sort for feedbacked contributions
+        $feedbacked_contributions = Feedback::with(['user', 'contribution'])
+            ->when($request->filled('feedback_search'), function ($query) use ($request) {
+                $search = $request->input('feedback_search');
+                return $query->where(function ($q) use ($search) {
+                    $q->where('feedback', 'like', "%{$search}%")
+                        ->orWhereHas('user', function ($q) use ($search) {
+                            $q->where('username', 'like', "%{$search}%")
+                                ->orWhere('first_name', 'like', "%{$search}%")
+                                ->orWhere('last_name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('contribution', function ($q) use ($search) {
+                            $q->where('contribution_title', 'like', "%{$search}%")
+                                ->orWhere('contribution_description', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->when($request->filled('feedback_faculty'), function ($query) use ($request) {
+                $facultyId = $request->input('feedback_faculty');
+                return $query->whereHas('user.faculty', function ($q) use ($facultyId) {
+                    $q->where('faculty_id', $facultyId);
+                });
+            })
+            ->orderBy('feedback_given_date', $request->input('feedback_sort', 'desc'))
+            ->paginate(10)
+            ->appends([
+                'feedback_search' => $request->input('feedback_search'),
+                'feedback_faculty' => $request->input('feedback_faculty'),
+                'feedback_sort' => $request->input('feedback_sort'),
+            ]);
 
         return view('admin.reports', [
             'labels' => $labels,
@@ -284,7 +328,7 @@ class AdminController extends Controller
             'academicYears' => $academicYears, // Pass academicYears to the view
             'published_contributions' => $published_contributions,
             'feedbacked_contributions' => $feedbacked_contributions,
-            'all_faculties' => $all_faculties
+            'all_faculties' => $all_faculties,
         ]);
     }
 }

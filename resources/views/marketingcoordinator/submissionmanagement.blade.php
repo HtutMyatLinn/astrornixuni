@@ -143,7 +143,17 @@
                                                                         ? 'bg-green-400'
                                                                         : 'bg-gray-300')))) }}
                                                     text-white">
-                                                            {{ $contribution->contribution_status }}
+                                                            {{ $contribution->contribution_status == 'Upload'
+                                                                ? 'Uploaded'
+                                                                : ($contribution->contribution_status == 'Select'
+                                                                    ? 'Selected'
+                                                                    : ($contribution->contribution_status == 'Update'
+                                                                        ? 'Updated'
+                                                                        : ($contribution->contribution_status == 'Reject'
+                                                                            ? 'Rejected'
+                                                                            : ($contribution->contribution_status == 'Publish'
+                                                                                ? 'Published'
+                                                                                : $contribution->contribution_status)))) }}
                                                         </span>
                                                     </td>
                                                     <td class="px-6 py-4">

@@ -144,6 +144,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/download-multiple-contributions', [HomeController::class, 'downloadMultipleContributions'])
             ->name('marketingmanager.downloadMultipleContributions');
+        Route::post('/marketingmanager/check-intake-status', [HomeController::class, 'checkIntakeStatus'])->name('marketingmanager.checkIntakeStatus');
         Route::get('/marketingmanager/publishedcontributionviewdetail/{id}', [HomeController::class, 'marketingmanagerPublishedContributionViewDetail'])
             ->name('marketingmanager.publishedcontributionviewdetail');
 

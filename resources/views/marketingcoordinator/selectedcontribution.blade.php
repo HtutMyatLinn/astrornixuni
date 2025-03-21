@@ -117,7 +117,7 @@
                                                     <td class="px-6 py-4 text-gray-600">
                                                         <span
                                                             class="px-3 py-1 rounded-full text-sm {{ $contribution->contribution_status == 'Upload' ? 'bg-[#FCD53F]' : ($contribution->contribution_status == 'Reviewed' ? 'bg-[#CAF4E0]' : ($contribution->contribution_status == 'Published' ? 'bg-[#65FF51]' : 'bg-[#81CBEF]')) }} text-black">
-                                                            {{ $contribution->contribution_status }}
+                                                            {{ $contribution->contribution_status == 'Select' ? 'Selected' : $contribution->contribution_status }}
                                                         </span>
                                                     </td>
                                                     <td class="px-6 py-4">
@@ -127,7 +127,8 @@
                                                             onsubmit="sendEmailAndSubmit(event, '{{ $contribution->user->email }}', '{{ $contribution->user->first_name }} {{ $contribution->user->last_name }}', '{{ $contribution->contribution_title }}')">
                                                             @csrf
                                                             <button type="submit"
-                                                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md select-none">
+                                                                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md select-none {{ now() < $contribution->intake->final_closure_date ? 'opacity-50 cursor-not-allowed' : '' }}"
+                                                                {{ now() < $contribution->intake->final_closure_date ? 'disabled' : '' }}>
                                                                 Publish
                                                             </button>
                                                         </form>
