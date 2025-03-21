@@ -452,10 +452,10 @@ class HomeController extends Controller
             'totalFaculty' => $totalFaculty,
         ]);
     }
-    public function marketingmanagerAccountSetting()
-    {
-        return view('marketingmanager.accountsetting');
-    }
+    // public function marketingmanagerAccountSetting()
+    // {
+    //     return view('marketingmanager.accountsetting');
+    // }
     /**
      * Display all published contributions for the marketing manager's dashboard.
      */
@@ -914,10 +914,7 @@ class HomeController extends Controller
         return view('marketingcoordinator.index', compact('labels', 'data', 'total_students', 'student_percentage_change', 'faculty_guests', 'faculty_guests_percentage_change', 'total_contributions', 'contributions_percentage_change', 'pending_contributions', 'pending_contributions_percentage_change', 'selected_contributions', 'selected_contributions_percentage_change', 'rejected_contributions', 'rejected_contributions_percentage_change', 'published_contributions', 'published_contributions_percentage_change'));
     }
 
-    public function marketingcoordinatorAccountSetting()
-    {
-        return view('marketingcoordinator.accountsetting');
-    }
+
     public function marketingcoordinatorGuestManagement(Request $request)
     {
         // Get the logged-in user

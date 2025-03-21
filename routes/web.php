@@ -137,7 +137,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Marketing Manager dashboard.
     Route::middleware('marketingmanager')->group(function () {
         Route::get('/marketingmanager/dashboard', [HomeController::class, 'marketingmanager'])->name('marketingmanager.dashboard')->middleware(TrackBrowser::class);
-        Route::get('/marketingmanager/account-setting', [HomeController::class, 'marketingmanagerAccountSetting'])->name('marketingmanager.account-setting');
+        Route::get('/marketingmanager/account-setting', [MarketingManagerController::class, 'marketingmanagerAccountSetting'])->name('marketingmanager.account-setting');
+        Route::post('/marketingmanager/update-account-setting/{id}', [MarketingManagerController::class, 'updateAccountSetting'])->name('marketingmanager.update-account-setting');
+        Route::post('/marketingmanager/change-password', [MarketingManagerController::class, 'changePassword'])->name('marketingmanager.change-password');
 
         Route::get('/marketingmanager/published-contribution', [HomeController::class, 'marketingmanagerPublishedContribution'])
             ->name('marketingmanager.published-contribution');
@@ -157,7 +159,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('marketingcoordinator')->group(function () {
         Route::get('/marketingcoordinator/dashboard', [HomeController::class, 'marketingcoordinator'])->name('marketingcoordinator.dashboard')->middleware(TrackBrowser::class);
 
-        Route::get('/marketingcoordinator/account-setting', [HomeController::class, 'marketingcoordinatorAccountSetting'])->name('marketingcoordinator.account-setting');
+        Route::get('/marketingcoordinator/account-setting', [MarketingCoordinatorControllerr::class, 'marketingcoordinatorAccountSetting'])->name('marketingcoordinator.account-setting');
+        Route::post('/marketingcoordinator/update-account-setting/{id}', [MarketingCoordinatorControllerr::class, 'updateAccountSetting'])->name('marketingcoordinator.update-account-setting');
+        Route::post('/marketingcoordinator/change-password', [MarketingCoordinatorControllerr::class, 'changePassword'])->name('marketingcoordinator.change-password');
 
         Route::get('/marketingcoordinator/guest-management', [HomeController::class, 'marketingcoordinatorGuestManagement'])->name('marketingcoordinator.guest-management');
 
