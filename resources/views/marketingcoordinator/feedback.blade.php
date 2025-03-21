@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Load Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
     @vite('resources/css/app.css')
 </head>
 
@@ -32,29 +35,29 @@
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
                 <!-- Success Message -->
-                @if(session('success'))
-                <div id="successMessage"
-                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                    role="alert">
-                    <strong class="font-bold">Success!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                        <svg class="fill-current h-6 w-6 text-green-500" role="button"
-                            onclick="document.getElementById('successMessage').remove()"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <title>Close</title>
-                            <path
-                                d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z" />
-                        </svg>
-                    </span>
-                </div>
+                @if (session('success'))
+                    <div id="successMessage"
+                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                        role="alert">
+                        <strong class="font-bold">Success!</strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <svg class="fill-current h-6 w-6 text-green-500" role="button"
+                                onclick="document.getElementById('successMessage').remove()"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path
+                                    d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z" />
+                            </svg>
+                        </span>
+                    </div>
 
-                <!-- Auto-hide script -->
-                <script>
-                    setTimeout(function() {
-                        document.getElementById('successMessage').remove();
-                    }, 3000); // 3 seconds
-                </script>
+                    <!-- Auto-hide script -->
+                    <script>
+                        setTimeout(function() {
+                            document.getElementById('successMessage').remove();
+                        }, 3000); // 3 seconds
+                    </script>
                 @endif
 
                 <div class="space-y-4 mb-4">
@@ -71,7 +74,8 @@
                                 <div class="md:col-span-2 text-xl">{{ $contribution->contribution_title }}</div>
 
                                 <div class="font-semibold text-xl">Submitted By</div>
-                                <div class="md:col-span-2 text-xl">{{ $contribution->user->username }}</div>
+                                <div class="md:col-span-2 text-xl">{{ $contribution->user->first_name }}
+                                    {{ $contribution->user->last_name }}</div>
 
                                 <div class="font-semibold text-xl">Submission Date</div>
                                 <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date->format('M d, Y') }}
@@ -84,14 +88,24 @@
                                 <div class="font-semibold text-xl">Status</div>
                                 <div class="md:col-span-2 text-xl flex items-center">
                                     <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
-                                    {{ $contribution->contribution_status }}
+                                    {{ $contribution->contribution_status == 'Upload'
+                                        ? 'Uploaded'
+                                        : ($contribution->contribution_status == 'Select'
+                                            ? 'Selected'
+                                            : ($contribution->contribution_status == 'Update'
+                                                ? 'Updated'
+                                                : ($contribution->contribution_status == 'Reject'
+                                                    ? 'Rejected'
+                                                    : ($contribution->contribution_status == 'Publish'
+                                                        ? 'Published'
+                                                        : $contribution->contribution_status)))) }}
                                 </div>
                             </div>
 
                             <!-- Feedback Form -->
                             <div class="mt-12">
                                 <h2 class="text-3xl font-bold mb-8">Provide Feedback</h2>
-                                <form
+                                <form id="feedbackForm"
                                     action="{{ route('marketingcoordinator.submit-feedback', $contribution->contribution_id) }}"
                                     method="POST">
                                     @csrf
@@ -99,7 +113,7 @@
                                         class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                                         placeholder="Enter your feedback here..." required></textarea>
                                     <div class="mt-6">
-                                        <button type="submit"
+                                        <button type="button" id="submitFeedbackButton"
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                             Submit Feedback
                                         </button>
@@ -111,6 +125,35 @@
                                 </form>
                             </div>
                         </div>
+
+                        <script>
+                            // Add event listener to the "Submit Feedback" button
+                            document.getElementById('submitFeedbackButton').addEventListener('click', function() {
+                                // Get the feedback text
+                                const feedbackText = document.querySelector('textarea[name="feedback"]').value.trim();
+
+                                // Check if the feedback input is empty
+                                if (!feedbackText) {
+                                    alert('Please enter your feedback before submitting.'); // Show an alert if feedback is empty
+                                    return; // Stop further execution
+                                }
+
+                                // Get the user's email and name
+                                const userEmail = "{{ $contribution->user->email }}";
+                                const userName = "{{ $contribution->user->first_name }} {{ $contribution->user->last_name }}";
+                                const contributionTitle = "{{ $contribution->contribution_title }}";
+
+                                // Encode the feedback text for the mailto link
+                                const encodedFeedback = encodeURIComponent(feedbackText);
+
+                                // Open the email client with pre-filled recipient, subject, and body
+                                window.location.href =
+                                    `mailto:${userEmail}?subject=Feedback on Your Contribution: ${contributionTitle}&body=Dear ${userName},%0D%0A%0D%0AThank you for your contribution titled "${contributionTitle}". Here is our feedback:%0D%0A%0D%0A${encodedFeedback}%0D%0A%0D%0ABest regards,%0D%0AAstrornix University Team`;
+
+                                // Submit the form after opening the email client
+                                document.getElementById('feedbackForm').submit();
+                            });
+                        </script>
                     </div>
                 </div>
             </main>
