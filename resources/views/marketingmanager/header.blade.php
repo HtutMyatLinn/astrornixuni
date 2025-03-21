@@ -2,7 +2,7 @@
     <div class="px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between">
             <!-- Left side -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 select-none">
                 <img src="{{ asset('images/logo.png') }}" class="h-16 w-16" alt="Logo" />
             </div>
 

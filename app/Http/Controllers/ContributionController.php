@@ -194,10 +194,32 @@ class ContributionController extends Controller
 
         return view('marketingcoordinator.feedback', compact('contribution'));
     }
+    // public function publishContribution($id)
+    // {
+    //     // Find the contribution
+    //     $contribution = Contribution::findOrFail($id);
+
+    //     // Update the status to "Publish"
+    //     $contribution->contribution_status = 'Publish';
+    //     $contribution->published_date = now();
+    //     $contribution->save();
+
+    //     // Redirect back with a success message
+    //     return redirect()->back()->with('success', 'Contribution published successfully.');
+    // }
+
     public function publishContribution($id)
     {
         // Find the contribution
         $contribution = Contribution::findOrFail($id);
+
+        // Get the associated intake
+        $intake = $contribution->intake; // Assuming you have a relationship between Contribution and Intake
+
+        // Check if the intake exists and if the final_closure_date has passed
+        if (!$intake || now() < $intake->final_closure_date) {
+            return redirect()->back()->with('error', 'You can only publish contributions after the final closure date of the intake.');
+        }
 
         // Update the status to "Publish"
         $contribution->contribution_status = 'Publish';

@@ -117,7 +117,7 @@
                             @if (Auth::check())
                                 <div class="truncate max-w-[100px]">{{ Auth::user()->username }}</div>
                             @else
-                                <div>Guest</div>
+                                <div>New User?</div>
                             @endif
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"

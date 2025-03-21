@@ -149,7 +149,7 @@
                                                     <td class="px-6 py-4">
                                                         <span
                                                             class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
-                                                            {{ $contribution->contribution_status }}
+                                                            {{ $contribution->contribution_status == 'Publish' ? 'Published' : $contribution->contribution_status }}
                                                         </span>
                                                     </td>
                                                 </tr>

@@ -47,7 +47,7 @@
                             </h2>
                         </div>
                         <button id="downloadSelected"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center">
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center select-none">
                             Download Selected
                         </button>
                     </div>
@@ -136,6 +136,7 @@
                         });
 
                         // Handle Download Selected
+                        // Handle Download Selected
                         document.getElementById('downloadSelected').addEventListener('click', function() {
                             // Get all selected contribution IDs
                             const selectedContributions = Array.from(document.querySelectorAll('.contribution-checkbox.selected'))
@@ -146,22 +147,45 @@
                                 return;
                             }
 
-                            // Unselect all checkboxes after initiating the download
-                            document.querySelectorAll('.contribution-checkbox.selected').forEach(checkbox => {
-                                const uncheckedIcon = checkbox.querySelector('.unchecked-icon');
-                                const checkedIcon = checkbox.querySelector('.checked-icon');
+                            // Fetch the intake details for the selected contributions
+                            fetch("{{ route('marketingmanager.checkIntakeStatus') }}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        contributionIds: selectedContributions
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.error) {
+                                        alert(data
+                                        .error); // Show error message if intake is not active or final_closure_date has not passed
+                                    } else {
+                                        // Unselect all checkboxes after initiating the download
+                                        document.querySelectorAll('.contribution-checkbox.selected').forEach(checkbox => {
+                                            const uncheckedIcon = checkbox.querySelector('.unchecked-icon');
+                                            const checkedIcon = checkbox.querySelector('.checked-icon');
 
-                                // Show the unchecked icon and hide the checked icon
-                                uncheckedIcon.classList.remove('hidden');
-                                checkedIcon.classList.add('hidden');
+                                            // Show the unchecked icon and hide the checked icon
+                                            uncheckedIcon.classList.remove('hidden');
+                                            checkedIcon.classList.add('hidden');
 
-                                // Remove the selected class
-                                checkbox.classList.remove('selected');
-                            });
+                                            // Remove the selected class
+                                            checkbox.classList.remove('selected');
+                                        });
 
-                            // Redirect to the download route with selected contribution IDs
-                            window.location.href = "{{ route('marketingmanager.downloadMultipleContributions') }}?ids=" +
-                                selectedContributions.join(',');
+                                        // Redirect to the download route with selected contribution IDs
+                                        window.location.href =
+                                            "{{ route('marketingmanager.downloadMultipleContributions') }}?ids=" +
+                                            selectedContributions.join(',');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
                         });
                     </script>
 

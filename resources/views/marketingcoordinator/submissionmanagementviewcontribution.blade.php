@@ -96,7 +96,17 @@
                                     @elseif($contribution->contribution_status == 'Publish')
                                         <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
                                     @endif
-                                    {{ $contribution->contribution_status }}
+                                    {{ $contribution->contribution_status == 'Upload'
+                                        ? 'Uploaded'
+                                        : ($contribution->contribution_status == 'Select'
+                                            ? 'Selected'
+                                            : ($contribution->contribution_status == 'Update'
+                                                ? 'Updated'
+                                                : ($contribution->contribution_status == 'Reject'
+                                                    ? 'Rejected'
+                                                    : ($contribution->contribution_status == 'Publish'
+                                                        ? 'Published'
+                                                        : $contribution->contribution_status)))) }}
                                 </div>
                             </div>
 
