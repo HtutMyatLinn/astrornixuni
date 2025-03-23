@@ -46,27 +46,32 @@
         <hr class="border-t border-black my-3 md:my-8 w-[85%] mx-auto border-opacity-20">
 
         <!-- Features Section -->
-        <div
-            class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 text-center mt-20 mb-6 md:mb-12 font-poppins w-full max-w-screen-lg mx-auto px-3">
-            <div class="px-2">
-                <img src="{{ asset('images/fluent.png') }}" alt="Academic Excellence"
-                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
-                <h3 class="text-sm md:text-xl font-semibold text-black">Academic Excellence</h3>
-                <p class="text-gray-600 text-xs md:text-base">Showcasing top research and academic works</p>
-            </div>
-            <div class="px-2">
-                <img src="{{ asset('images/newspaper.png') }}" alt="Latest News"
-                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
-                <h3 class="text-sm md:text-xl font-semibold text-black">Latest News</h3>
-                <p class="text-gray-600 text-xs md:text-base">Bringing you the latest updates from the university</p>
-            </div>
-            <div class="px-2">
-                <img src="{{ asset('images/graduation.png') }}" alt="Student Engagement"
-                    class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
-                <h3 class="text-sm md:text-xl font-semibold text-black">Student Engagement</h3>
-                <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
+        <!-- Our Services Section -->
+        <div class="text-center font-poppins py-4 md:py-12 w-full max-w-screen-lg mx-auto">
+            <h2 class="text-sm md:text-3xl font-semibold text-black mb-3 md:mb-12">Our Services</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 text-center font-poppins px-3">
+                <div class="px-2">
+                    <img src="{{ asset('images/fluent.png') }}" alt="Academic Excellence"
+                        class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
+                    <h3 class="text-sm md:text-xl font-semibold text-black">Academic Excellence</h3>
+                    <p class="text-gray-600 text-xs md:text-base">Showcasing top research and academic works</p>
+                </div>
+                <div class="px-2">
+                    <img src="{{ asset('images/newspaper.png') }}" alt="Latest News"
+                        class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
+                    <h3 class="text-sm md:text-xl font-semibold text-black">Latest News</h3>
+                    <p class="text-gray-600 text-xs md:text-base">Bringing you the latest updates from the university</p>
+                </div>
+                <div class="px-2">
+                    <img src="{{ asset('images/graduation.png') }}" alt="Student Engagement"
+                        class="mx-auto mb-2 md:mb-4 w-7 md:w-12 select-none">
+                    <h3 class="text-sm md:text-xl font-semibold text-black">Student Engagement</h3>
+                    <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
+                </div>
             </div>
         </div>
+
 
         <!-- Our Staff Section -->
         <div class="text-center font-poppins py-4 md:py-12 w-full max-w-screen-lg mx-auto">
@@ -75,20 +80,20 @@
                 <div class="text-center">
                     <img src="{{ asset('images/i1.png') }}" alt="Jason Wan"
                         class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44 select-none">
-                    <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
-                    <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
+                    <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Thomas (Founder)</h3><br>
+                    <p class="text-gray-600 text-xs md:text-base">Oversees all editorial decisions, ensuring the magazine maintains its high standards and editorial voice.</p>
                 </div>
                 <div class="text-center">
                     <img src="{{ asset('images/i2.png') }}" alt="Jason Wan"
                         class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44 select-none">
-                    <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
-                    <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
+                    <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">David (Manager)</h3><br>
+                    <p class="text-gray-600 text-xs md:text-base">Leads the content team, plans publication schedules, and ensures timely delivery of articles and features.</p>
                 </div>
                 <div class="text-center">
                     <img src="{{ asset('images/i3.png') }}" alt="Jason Wan"
                         class="mx-auto rounded-full w-32 h-32 sm:w-44 sm:h-44 select-none">
-                    <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Jason Wan</h3>
-                    <p class="text-gray-600 text-xs md:text-base">Empowering student voices and contributions</p>
+                    <h3 class="text-sm md:text-xl font-semibold text-black mt-2 md:mt-4">Richeal (Staff)</h3><br>
+                    <p class="text-gray-600 text-xs md:text-base">Designs the visual identity of the magazine, from layouts to photography, ensuring a modern and engaging look.</p>
                 </div>
             </div>
         </div>
