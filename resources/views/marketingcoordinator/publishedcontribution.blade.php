@@ -38,7 +38,7 @@
                     <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Published Contributions</h1>
 
                     <div class="p-8 bg-white rounded-lg shadow-lg">
-                        <h1 class="text-xl font-bold mb-6">List of Selected Contributions</h1>
+                        <h1 class="text-xl font-bold mb-6">List of Published Contributions</h1>
                         <!-- Search Bar -->
                         <div class="flex items-center justify-between mb-8">
                             <form action="{{ route('marketingcoordinator.published-contribution') }}" method="GET">
@@ -95,71 +95,74 @@
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
                                         @if ($contributions->isNotEmpty())
-                                            @foreach ($contributions as $contribution)
-                                                <tr class="hover:bg-gray-50">
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $contribution->contribution_title }}</td>
-                                                    <td class="px-6 py-4">
-                                                        <div class="flex items-center gap-3">
-                                                            @if ($contribution->user->profile_image)
-                                                                <img id="profilePreview"
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                                    src="{{ asset('profile_images/' . $contribution->user->profile_image) }}"
-                                                                    alt="Profile">
-                                                            @else
-                                                                <p
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                    {{ strtoupper($contribution->user->username[0]) }}
-                                                                </p>
-                                                            @endif
-                                                            <div>
-                                                                <div class="font-medium">
-                                                                    {{ $contribution->user->first_name . ' ' . $contribution->user->last_name }}
-                                                                </div>
-                                                                <div class="text-sm text-gray-500">
-                                                                    {{ $contribution->user->email }}
-                                                                </div>
-                                                            </div>
+                                        @foreach ($contributions as $contribution)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $contribution->contribution_title }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    @if ($contribution->user->profile_image)
+                                                    <img id="profilePreview"
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                        src="{{ asset('profile_images/' . $contribution->user->profile_image) }}"
+                                                        alt="Profile">
+                                                    @else
+                                                    <p
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                        {{ strtoupper($contribution->user->username[0]) }}
+                                                    </p>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-medium">
+                                                            {{ $contribution->user->first_name . ' ' . $contribution->user->last_name }}
                                                         </div>
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $contribution->submitted_date->format('M d, Y') }}</td>
-                                                    <td class="px-6 py-4 select-none">
-                                                        @if ($contribution->contribution_cover)
-                                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                                                alt="Cover Image"
-                                                                class="w-16 h-16 object-cover rounded-lg">
-                                                        @else
-                                                            <!-- Display the default logo image if contribution_cover is null -->
-                                                            <div class="flex h-full w-full">
-                                                                <div class="w-16 select-none">
-                                                                    <img src="{{ asset('images/logo.png') }}"
-                                                                        alt="Logo"
-                                                                        class="w-full h-full object-cover">
-                                                                </div>
-                                                            </div>
-                                                        @endif
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
-                                                            class="text-blue-600 hover:underline">Download</a>
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $contribution->category->contribution_category }}</td>
-                                                    <td class="px-6 py-4">
-                                                        <span
-                                                            class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
-                                                            {{ $contribution->contribution_status == 'Publish' ? 'Published' : $contribution->contribution_status }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $contribution->user->email }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $contribution->submitted_date->format('M d, Y') }}
+                                            </td>
+                                            <td class="px-6 py-4 select-none">
+                                                @if ($contribution->contribution_cover)
+                                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                    alt="Cover Image"
+                                                    class="w-16 h-16 object-cover rounded-lg">
+                                                @else
+                                                <!-- Display the default logo image if contribution_cover is null -->
+                                                <div class="flex h-full w-full">
+                                                    <div class="w-16 select-none">
+                                                        <img src="{{ asset('images/logo.png') }}"
+                                                            alt="Logo"
+                                                            class="w-full h-full object-cover">
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
+                                                    class="text-blue-600 hover:underline">Download</a>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $contribution->category->contribution_category }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <span
+                                                    class="px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                                                    {{ $contribution->contribution_status == 'Publish' ? 'Published' : $contribution->contribution_status }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        @endforeach
                                         @else
-                                            <tr class="hover:bg-gray-50">
-                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="7">
-                                                    No contributions found.
-                                                </td>
-                                            </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-24 text-gray-600 text-center" colspan="7">
+                                                No contributions found.
+                                            </td>
+                                        </tr>
                                         @endif
                                     </tbody>
                                 </table>

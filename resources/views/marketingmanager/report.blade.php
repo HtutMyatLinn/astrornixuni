@@ -69,10 +69,10 @@
                                                 All
                                                 Faculties</option>
                                             @foreach ($faculties as $faculty)
-                                                <option value="{{ $faculty->faculty_id }}"
-                                                    {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
-                                                    {{ $faculty->faculty }}
-                                                </option>
+                                            <option value="{{ $faculty->faculty_id }}"
+                                                {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
+                                                {{ $faculty->faculty }}
+                                            </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -114,83 +114,85 @@
                                     <!-- Inside the <tbody> section -->
                                     <tbody class="divide-y divide-gray-100">
                                         @forelse ($contributions as $index => $contribution)
-                                            <tr class="hover:bg-gray-50">
-                                                <td class="px-6 py-4 text-gray-600">{{ $loop->iteration }}</td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center gap-3">
-                                                        <div class="font-medium">
-                                                            {{ $contribution->contribution_title }}</div>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 text-gray-600">{{ $loop->iteration }}</td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="font-medium">
+                                                        {{ $contribution->contribution_title }}
                                                     </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ $contribution->user->faculty->faculty }}</td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    <div class="flex items-center gap-3">
-                                                        @if ($contribution->user->profile_image)
-                                                            @php
-                                                                $publicPath =
-                                                                    'profile_images/' .
-                                                                    $contribution->user->profile_image;
-                                                                $storagePath =
-                                                                    'storage/profile_images/' .
-                                                                    $contribution->user->profile_image;
-                                                            @endphp
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $contribution->user->faculty->faculty }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                <div class="flex items-center gap-3">
+                                                    @if ($contribution->user->profile_image)
+                                                    @php
+                                                    $publicPath =
+                                                    'profile_images/' .
+                                                    $contribution->user->profile_image;
+                                                    $storagePath =
+                                                    'storage/profile_images/' .
+                                                    $contribution->user->profile_image;
+                                                    @endphp
 
-                                                            @if (file_exists(public_path($publicPath)))
-                                                                <img id="profilePreview"
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                                    src="{{ asset($publicPath) }}" alt="Profile">
-                                                            @elseif (file_exists(public_path($storagePath)))
-                                                                <img id="profilePreview"
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                                    src="{{ asset($storagePath) }}" alt="Profile">
-                                                            @else
-                                                                <p
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                    {{ strtoupper($contribution->user->username[0]) }}
-                                                                </p>
-                                                            @endif
-                                                        @else
-                                                            <p
-                                                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                {{ strtoupper($contribution->user->username[0]) }}
-                                                            </p>
-                                                        @endif
-                                                        <div>
-                                                            <div class="font-medium">
-                                                                {{ $contribution->user->first_name . ' ' . $contribution->user->last_name }}
-                                                            </div>
-                                                            <div class="text-sm text-gray-500">
-                                                                {{ $contribution->user->email }}
-                                                            </div>
+                                                    @if (file_exists(public_path($publicPath)))
+                                                    <img id="profilePreview"
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                        src="{{ asset($publicPath) }}" alt="Profile">
+                                                    @elseif (file_exists(public_path($storagePath)))
+                                                    <img id="profilePreview"
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                        src="{{ asset($storagePath) }}" alt="Profile">
+                                                    @else
+                                                    <p
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                        {{ strtoupper($contribution->user->username[0]) }}
+                                                    </p>
+                                                    @endif
+                                                    @else
+                                                    <p
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                        {{ strtoupper($contribution->user->username[0]) }}
+                                                    </p>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-medium">
+                                                            {{ $contribution->user->first_name . ' ' . $contribution->user->last_name }}
+                                                        </div>
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $contribution->user->email }}
                                                         </div>
                                                     </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-gray-600">
-                                                    {{ $contribution->published_date->format('M d, Y') }}
-                                                </td>
-                                                <td class="px-6 py-4 text-[#2F64AA]">
-                                                    {{ $contribution->view_count }}
-                                                </td>
-                                            </tr>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $contribution->published_date }}
+                                            </td>
+                                            <td class="px-6 py-4 text-[#2F64AA]">
+                                                {{ $contribution->view_count }}
+                                            </td>
+                                        </tr>
                                         @empty
-                                            <!-- Empty State -->
-                                            <tr>
-                                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                                    <div class="flex flex-col items-center justify-center py-12">
-                                                        <svg class="w-16 h-16 text-gray-400" fill="none"
-                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                        <p class="mt-4 text-lg font-medium text-gray-900">No published
-                                                            contributions found.</p>
-                                                        <p class="text-sm text-gray-500">Try adjusting your filters or
-                                                            search terms.</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <!-- Empty State -->
+                                        <tr>
+                                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                                <div class="flex flex-col items-center justify-center py-12">
+                                                    <svg class="w-16 h-16 text-gray-400" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <p class="mt-4 text-lg font-medium text-gray-900">No published
+                                                        contributions found.</p>
+                                                    <p class="text-sm text-gray-500">Try adjusting your filters or
+                                                        search terms.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         @endforelse
                                     </tbody>
                                 </table>
@@ -215,10 +217,10 @@
                             name="academic_year" id="academic_year" onchange="this.form.submit()">
                             <option value="" selected>Select Academic Years</option>
                             @foreach ($academicYears as $id => $year)
-                                <option value="{{ $id }}"
-                                    {{ request('academic_year') == $id ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
+                            <option value="{{ $id }}"
+                                {{ request('academic_year') == $id ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
                             @endforeach
                         </select>
                     </form>
@@ -272,10 +274,10 @@
                             name="academic_year" id="academic_year" onchange="this.form.submit()">
                             <option value="" selected>Select Academic Years</option>
                             @foreach ($academicYears as $id => $year)
-                                <option value="{{ $id }}"
-                                    {{ request('academic_year') == $id ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
+                            <option value="{{ $id }}"
+                                {{ request('academic_year') == $id ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
                             @endforeach
                         </select>
                     </form>
@@ -332,10 +334,10 @@
                             name="academic_year" id="academic_year" onchange="this.form.submit()">
                             <option value="" selected>Select Academic Years</option>
                             @foreach ($academicYears as $id => $year)
-                                <option value="{{ $id }}"
-                                    {{ request('academic_year') == $id ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
+                            <option value="{{ $id }}"
+                                {{ request('academic_year') == $id ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
                             @endforeach
                         </select>
                     </form>
@@ -391,10 +393,10 @@
                             name="academic_year" id="academic_year" onchange="this.form.submit()">
                             <option value="" selected>Select Academic Years</option>
                             @foreach ($academicYears as $id => $year)
-                                <option value="{{ $id }}"
-                                    {{ request('academic_year') == $id ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
+                            <option value="{{ $id }}"
+                                {{ request('academic_year') == $id ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
                             @endforeach
                         </select>
                     </form>

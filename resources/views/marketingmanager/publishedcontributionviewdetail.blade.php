@@ -56,27 +56,28 @@
                     <h2 class="text-3xl font-bold mb-4">{{ $contribution->contribution_title }}</h2>
                     <!-- Author -->
                     <p class="text-lg mb-2 text-gray-400">By : {{ $contribution->user->first_name }}
-                        {{ $contribution->user->last_name }}</p>
+                        {{ $contribution->user->last_name }}
+                    </p>
 
                     <!-- Inside the Content section -->
                     <div class="flex flex-col md:flex-row gap-8">
                         <!-- Image -->
                         @if ($contribution->contribution_cover)
-                            <!-- Display the contribution cover image if it exists -->
-                            <div class="w-full md:max-w-96 h-auto md:max-h-96 select-none">
-                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                    alt="{{ $contribution->contribution_title }}"
-                                    class="w-full h-full object-cover rounded-md">
-                            </div>
+                        <!-- Display the contribution cover image if it exists -->
+                        <div class="w-full md:max-w-96 h-auto md:max-h-96 select-none">
+                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                alt="{{ $contribution->contribution_title }}"
+                                class="w-full h-full object-cover rounded-md">
+                        </div>
                         @else
-                            <!-- Display the default logo image if contribution_cover is null -->
-                            <div class="w-full md:max-w-96 h-56 md:max-h-96 flex items-center justify-center">
-                                <!-- Match the same dimensions as the cover image container -->
-                                <div class="w-24 select-none">
-                                    <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                        class="w-full h-full object-cover">
-                                </div>
+                        <!-- Display the default logo image if contribution_cover is null -->
+                        <div class="w-full md:max-w-96 h-56 md:max-h-96 flex items-center justify-center">
+                            <!-- Match the same dimensions as the cover image container -->
+                            <div class="w-24 select-none">
+                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                    class="w-full h-full object-cover">
                             </div>
+                        </div>
                         @endif
 
                         <!-- Text content -->
@@ -93,16 +94,16 @@
                                 </p>
 
                                 @if (strlen($contribution->contribution_description) > 350)
-                                    <button @click="expanded = !expanded"
-                                        class="text-blue-500 hover:underline mt-2 flex justify-start">
-                                        <span x-show="!expanded">Read more</span>
-                                        <span x-show="expanded">Show less</span>
-                                    </button>
+                                <button @click="expanded = !expanded"
+                                    class="text-blue-500 hover:underline mt-2 flex justify-start">
+                                    <span x-show="!expanded">Read more</span>
+                                    <span x-show="expanded">Show less</span>
+                                </button>
                                 @endif
                             </div>
                             <p class="text-lg mb-2"> Faculty : {{ $contribution->user->faculty->faculty }}</p>
                             <p class="text-lg">
-                                Published: {{ $contribution->published_date->format('M d, Y') }}
+                                Published: {{ $contribution->published_date}}
                             </p>
                         </div>
                     </div>
