@@ -151,7 +151,7 @@
                             </div>
 
                             <!-- Modal for displaying all images with Swiper.js -->
-                            <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 p-4"
+                            <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 p-4 !mt-0"
                                 onclick="closeImageModal()">
                                 <div class="w-full h-full flex items-center justify-center"
                                     onclick="event.stopPropagation()">
