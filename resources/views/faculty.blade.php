@@ -14,12 +14,14 @@
             <div class="w-full md:w-1/2">
                 <h2 class="text-lg md:text-2xl font-semibold text-black mb-3">About the Faculty</h2>
                 <p class="text-sm md:text-base text-gray-700 leading-relaxed">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, hic! Ex dolores quibusdam expedita quasi asperiores consequuntur dolorem, pariatur deserunt aliquam, accusantium alias laboriosam error ratione aut dignissimos consectetur soluta!
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, hic! Ex dolores quibusdam
+                    expedita quasi asperiores consequuntur dolorem, pariatur deserunt aliquam, accusantium alias
+                    laboriosam error ratione aut dignissimos consectetur soluta!
                 </p>
             </div>
 
             <!-- Image -->
-            <div class="w-full md:w-1/2">
+            <div class="w-full md:w-1/2 select-none">
                 <img src="{{ asset('images/f1.png') }}" alt="Faculty Research"
                     class="w-full sm:w-3/4 h-auto object-cover mx-auto">
             </div>
@@ -33,8 +35,8 @@
                 <h2 class="text-lg md:text-xl font-semibold text-left">Filter by Faculty</h2>
                 <select id="faculty_filter" class="mt-2 px-4 py-2 border border-gray-300 rounded-md w-full">
                     <option value="all">All Faculty</option>
-                    @foreach($faculties as $faculty)
-                    <option value="{{ $faculty->faculty_id }}">{{ $faculty->faculty }}</option>
+                    @foreach ($faculties as $faculty)
+                        <option value="{{ $faculty->faculty_id }}">{{ $faculty->faculty }}</option>
                     @endforeach
                 </select>
             </div>
@@ -42,19 +44,34 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="contributions-list">
             @foreach ($contributions as $contribution)
-            <div class="flex flex-col items-center">
-                <div class="w-full">
-                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                        alt="{{ $contribution->contribution_title }}" class="w-full h-auto object-cover">
-                </div>
-                <div class="text-start w-full mt-3">
-                    <a href="#" class="text-md md:text-lg font-semibold text-black hover:underline">
-                        {{ $contribution->contribution_title }} →
-                    </a>
-                    <p class="text-sm md:text-md text-gray-700 mt-1">{{ $contribution->contribution_description }}</p>
-                    <p class="text-sm text-gray-500 mt-1">by <strong>{{ $contribution->user->first_name }} {{ $contribution->user->last_name }}</strong></p>
-                </div>
-            </div>
+                <a href="{{ route('student.contribution-detail', $contribution) }}"
+                    class="flex flex-col items-center group">
+                    @if ($contribution->contribution_cover)
+                        <!-- Display the contribution cover image if it exists -->
+                        <div class="w-full select-none">
+                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                alt="{{ $contribution->contribution_title }}" class="w-full h-auto object-cover">
+                        </div>
+                    @else
+                        <!-- Display the default logo image if contribution_cover is null -->
+                        <div class="flex h-60 sm:h-full w-full items-center justify-center bg-white">
+                            <div class="w-24 select-none">
+                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                    class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    @endif
+                    <div class="text-start w-full mt-3">
+                        <p class="text-md md:text-lg font-semibold text-black group-hover:underline">
+                            {{ $contribution->contribution_title }} →
+                        </p>
+                        <p class="text-sm md:text-md text-gray-700 mt-1 line-clamp-2">
+                            {{ $contribution->contribution_description }}
+                        </p>
+                        <p class="text-sm text-gray-500 mt-1">by <strong>{{ $contribution->user->first_name }}
+                                {{ $contribution->user->last_name }}</strong></p>
+                    </div>
+                </a>
             @endforeach
         </div>
     </div>
@@ -100,14 +117,16 @@
                     textDiv.classList.add('text-start', 'w-full', 'mt-3');
                     let titleLink = document.createElement('a');
                     titleLink.href = '#';
-                    titleLink.classList.add('text-md', 'md:text-lg', 'font-semibold', 'text-black', 'hover:underline');
+                    titleLink.classList.add('text-md', 'md:text-lg', 'font-semibold', 'text-black',
+                        'hover:underline');
                     titleLink.textContent = `${contribution.contribution_title} →`;
                     let description = document.createElement('p');
                     description.classList.add('text-sm', 'md:text-md', 'text-gray-700', 'mt-1');
                     description.textContent = contribution.contribution_description;
                     let author = document.createElement('p');
                     author.classList.add('text-sm', 'text-gray-500', 'mt-1');
-                    author.innerHTML = `by <strong>${contribution.user.first_name} ${contribution.user.last_name}</strong>`;
+                    author.innerHTML =
+                        `by <strong>${contribution.user.first_name} ${contribution.user.last_name}</strong>`;
 
                     textDiv.appendChild(titleLink);
                     textDiv.appendChild(description);
