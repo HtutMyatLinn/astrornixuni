@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FacultyEditRequest;
 use App\Http\Requests\FacultyRequest;
+use App\Models\Contribution;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 
@@ -104,5 +105,30 @@ class FacultyController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function faculty()
+    {
+        $faculties = Faculty::all();
+        $contributions = Contribution::with('faculty')->get();
+
+        return view('faculty', compact('faculties', 'contributions'));
+    }
+
+    public function filterByFaculty(Request $request)
+    {
+        $faculty_id = $request->input('faculty_id', 'all');
+
+        if ($faculty_id == 'all') {
+            $contributions = Contribution::with('faculty')->get();
+        } else {
+            $contributions = Contribution::where('faculty_id', $faculty_id)
+                ->with('faculty')
+                ->get();
+        }
+
+        return response()->json([
+            'contributions' => $contributions
+        ]);
     }
 }

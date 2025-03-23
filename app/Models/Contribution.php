@@ -46,4 +46,12 @@ class Contribution extends Model
     {
         return $this->hasMany(ContributionImage::class, 'contribution_id');
     }
+
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class, 'faculty_id');
+    }
 }
+
+
+
