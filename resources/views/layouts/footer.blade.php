@@ -29,7 +29,7 @@
                     </a>
                     <a href="{{ route('contactus') }}">Contact Us</a>
                     <a href="{{ route('aboutus') }}">About</a>
-                    <a href="">Departments</a>
+                    <a href="{{ route('faculty') }}">Faculties</a>
                     <a href="{{ route('contributions') }}">Contributions</a>
                 </ul>
                 <ul class="space-y-2 border-l px-7 flex flex-col">

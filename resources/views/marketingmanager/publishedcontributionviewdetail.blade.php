@@ -38,7 +38,6 @@
 
                 <!-- Full-width background section -->
                 <section class="w-full bg-white shadow-lg rounded-md p-6 md:p-10">
-
                     <!-- Header with close button -->
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold">Contribution Details</h2>
@@ -50,7 +49,6 @@
                                     d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </a>
-
                     </div>
 
                     <h2 class="text-3xl font-bold mb-4">{{ $contribution->contribution_title }}</h2>
@@ -61,26 +59,54 @@
 
                     <!-- Inside the Content section -->
                     <div class="flex flex-col md:flex-row gap-8">
-                        <!-- Image -->
-                        @if ($contribution->contribution_cover)
-                        <!-- Display the contribution cover image if it exists -->
-                        <div class="w-full md:max-w-96 h-auto md:max-h-96 select-none">
-                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                alt="{{ $contribution->contribution_title }}"
-                                class="w-full h-full object-cover rounded-md">
-                        </div>
-                        @else
-                        <!-- Display the default logo image if contribution_cover is null -->
-                        <div class="w-full md:max-w-96 h-56 md:max-h-96 flex items-center justify-center">
-                            <!-- Match the same dimensions as the cover image container -->
-                            <div class="w-24 select-none">
-                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                    class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        @endif
+                        <!-- Left Column: Cover Image and Additional Images -->
+                        <div class="w-full md:w-1/2">
+                            <!-- Cover Image -->
+                            @if ($contribution->contribution_cover)
+                                <!-- Display the contribution cover image if it exists -->
+                                <div class="w-full h-auto md:max-h-96 select-none">
+                                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                        alt="{{ $contribution->contribution_title }}"
+                                        class="w-full h-full object-cover rounded-md">
+                                </div>
+                            @else
+                                <!-- Display the default logo image if contribution_cover is null -->
+                                <div class="w-full h-56 md:max-h-96 flex items-center justify-center">
+                                    <!-- Match the same dimensions as the cover image container -->
+                                    <div class="w-24 select-none">
+                                        <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                            @endif
 
-                        <!-- Text content -->
+                            <!-- Additional Images -->
+                            @if ($contribution->images->isNotEmpty())
+                                <div class="mt-6">
+                                    <h3 class="text-lg font-semibold mb-4">Additional Images</h3>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        @foreach ($contribution->images->take(3) as $index => $image)
+                                            <div class="h-48 overflow-hidden rounded-lg select-none relative cursor-pointer"
+                                                onclick="openImageModal({{ $index }})">
+                                                <img src="{{ asset('storage/contribution-images/' . $image->contribution_image_path) }}"
+                                                    alt="Additional Image" class="w-full h-full object-cover">
+                                                <!-- Show "+X" overlay for the third image if there are more than 3 images -->
+                                                @if ($index === 2 && $contribution->images->count() > 3)
+                                                    <div
+                                                        class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                                        <span class="text-white text-2xl font-bold">
+                                                            +{{ $contribution->images->count() - 3 }}
+                                                        </span>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Right Column: Text Content -->
                         <div class="flex-1">
                             <h2 class="text-2xl font-bold mb-4">Title : {{ $contribution->contribution_title }}</h2>
                             <div x-data="{ expanded: false }">
@@ -94,19 +120,91 @@
                                 </p>
 
                                 @if (strlen($contribution->contribution_description) > 350)
-                                <button @click="expanded = !expanded"
-                                    class="text-blue-500 hover:underline mt-2 flex justify-start">
-                                    <span x-show="!expanded">Read more</span>
-                                    <span x-show="expanded">Show less</span>
-                                </button>
+                                    <button @click="expanded = !expanded"
+                                        class="text-blue-500 hover:underline mt-2 flex justify-start">
+                                        <span x-show="!expanded">Read more</span>
+                                        <span x-show="expanded">Show less</span>
+                                    </button>
                                 @endif
                             </div>
                             <p class="text-lg mb-2"> Faculty : {{ $contribution->user->faculty->faculty }}</p>
                             <p class="text-lg">
-                                Published: {{ $contribution->published_date}}
+                                Published: {{ $contribution->published_date->format('M d, Y') }}
                             </p>
                         </div>
                     </div>
+
+                    <!-- Modal for displaying all images with Swiper.js -->
+                    <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 p-4"
+                        onclick="closeImageModal()">
+                        <div class="w-full h-full flex items-center justify-center" onclick="event.stopPropagation()">
+                            <!-- Close button -->
+                            <button onclick="closeImageModal()"
+                                class="absolute top-4 right-4 text-white text-2xl bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 z-50">
+                                &times;
+                            </button>
+
+                            <!-- Swiper container -->
+                            <div class="swiper-container w-full h-full">
+                                <div class="swiper-wrapper">
+                                    @foreach ($contribution->images as $image)
+                                        <div class="swiper-slide flex items-center justify-center select-none">
+                                            <img src="{{ asset('storage/contribution-images/' . $image->contribution_image_path) }}"
+                                                alt="Additional Image" class="max-w-full max-h-full object-contain">
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Add navigation buttons -->
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        let swiperInstance = null;
+
+                        // Function to open the image modal
+                        function openImageModal(index = 0) {
+                            const modal = document.getElementById('imageModal');
+                            if (modal) {
+                                modal.classList.remove('hidden');
+                                if (!swiperInstance) {
+                                    swiperInstance = new Swiper('.swiper-container', {
+                                        loop: true,
+                                        initialSlide: index, // Start from the clicked image
+                                        navigation: {
+                                            nextEl: '.swiper-button-next',
+                                            prevEl: '.swiper-button-prev',
+                                        },
+                                    });
+                                } else {
+                                    swiperInstance.slideTo(index); // Update the slide if Swiper is already initialized
+                                }
+                            }
+                        }
+
+                        // Function to close the image modal
+                        function closeImageModal() {
+                            const modal = document.getElementById('imageModal');
+                            if (modal) {
+                                modal.classList.add('hidden');
+                            }
+                        }
+
+                        // Close modal when clicking outside the content
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const modal = document.getElementById('imageModal');
+                            if (modal) {
+                                modal.addEventListener('click', function(event) {
+                                    if (event.target === modal) {
+                                        closeImageModal();
+                                    }
+                                });
+                            }
+                        });
+                    </script>
                 </section>
             </main>
         </div>

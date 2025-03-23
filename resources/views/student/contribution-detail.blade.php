@@ -1,7 +1,6 @@
 <x-app-layout>
     <br>
-    <div
-        class="max-w-6xl w-full flex flex-col md:flex-row gap-6 mx-auto md:items-start items-center text-center md:text-left">
+    <div class="max-w-6xl w-full flex flex-col md:flex-row gap-6 mx-auto md:items-start items-center">
         <!-- Left Content Section -->
         <div class="w-full md:w-2/3 bg-white p-6 border-x-2 border-x-slate-100">
             <h1 class="text-2xl font-semibold text-start text-gray-900">{{ $contribution->contribution_title }}</h1>
@@ -45,7 +44,7 @@
             @if ($contribution->images->isNotEmpty())
                 <div class="mt-6">
                     <h3 class="text-lg font-semibold mb-4">Additional Images</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                    <div class="grid grid-cols-3 gap-2">
                         @foreach ($contribution->images->take(3) as $index => $image)
                             <div class="h-48 overflow-hidden rounded-lg select-none relative cursor-pointer"
                                 onclick="openImageModal({{ $index }})">
@@ -165,7 +164,7 @@
             <!-- Comment form -->
             <form action="{{ route('comment.store') }}" method="POST">
                 @csrf
-                <h3 class="text-lg font-semibold mt-6 text-gray-900">Comments</h3>
+                <h3 class="text-lg font-semibold mt-6 text-gray-900 text-start">Comments</h3>
 
                 {{-- Message --}}
                 @if (session('success'))
@@ -212,7 +211,7 @@
         </div>
 
         <!-- Right Sidebar (Trending Articles) -->
-        <div class="sticky top-20 w-full md:w-1/3 flex flex-col items-center md:items-start">
+        <div class="sticky top-20 w-full md:w-1/3 flex flex-col items-center text-center md:text-left md:items-start">
             <h3 class="text-lg font-semibold text-gray-900 mb-2">Trending Articles</h3>
             <div class="bg-white w-full px-3">
                 @foreach ($trendingContributions as $trending)
@@ -339,7 +338,7 @@
                 </div>
             @endforeach
         @else
-            <p class="text-gray-600 py-10">No comments found.</p>
+            <p class="text-gray-600 py-10 text-center">No comments found.</p>
         @endif
     </div>
 
