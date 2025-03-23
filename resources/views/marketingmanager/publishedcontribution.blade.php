@@ -47,98 +47,120 @@
                             </h2>
                         </div>
                         <button id="downloadSelected"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center select-none">
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center select-none" disabled>
                             Download Selected
                         </button>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         @if ($contributions->isNotEmpty())
-                            @foreach ($contributions as $contribution)
-                                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                                    <div class="py-2 flex justify-between items-center">
-                                        <!-- Custom SVG Checkbox -->
-                                        <div class="cursor-pointer contribution-checkbox"
-                                            data-contribution-id="{{ $contribution->contribution_id }}"
-                                            data-tippy-content="Select this contribution for download">
-                                            <!-- Unchecked State -->
-                                            <svg class="h-5 w-5 text-gray-400 unchecked-icon" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                            <!-- Checked State (Hidden by Default) -->
-                                            <svg class="h-5 w-5 text-blue-500 checked-icon hidden" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    @if ($contribution->contribution_cover)
-                                        <!-- Display the contribution cover image if it exists -->
-                                        <div class="h-56">
-                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                                alt="{{ $contribution->contribution_title }}"
-                                                class="w-full h-full object-cover select-none">
-                                        </div>
-                                    @else
-                                        <!-- Display the default logo image if contribution_cover is null -->
-                                        <div class="flex h-56 w-full items-center justify-center">
-                                            <!-- Center the logo -->
-                                            <div class="w-24 select-none">
-                                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                                    class="w-full h-full object-cover">
-                                            </div>
-                                        </div>
-                                    @endif
-                                    <div class="mt-4 text-center">
-                                        <a href="{{ route('marketingmanager.publishedcontributionviewdetail', $contribution->contribution_id) }}"
-                                            class="text-blue-600 font-medium hover:underline">View</a>
-                                    </div>
+                        @foreach ($contributions as $contribution)
+                        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                            <div class="py-2 flex justify-between items-center">
+                                <div class="cursor-pointer contribution-checkbox"
+                                    data-contribution-id="{{ $contribution->contribution_id }}"
+                                    data-tippy-content="Select this contribution for download"
+                                    @if (!$contribution->contribution_file_path)
+                                    style="cursor: not-allowed;"
+                                    title="No file available"
+                                    data-disabled="true"
+                                    @endif>
+                                    <svg class="h-5 w-5 text-gray-400 unchecked-icon" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    <svg class="h-5 w-5 text-blue-500 checked-icon hidden" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
                                 </div>
-                            @endforeach
+                            </div>
+
+                            @if ($contribution->contribution_cover)
+                            <div class="h-56">
+                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                    alt="{{ $contribution->contribution_title }}"
+                                    class="w-full h-full object-cover select-none">
+                            </div>
+                            @else
+                            <div class="flex h-56 w-full items-center justify-center">
+                                <div class="w-24 select-none">
+                                    <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            @endif
+
+                            <div class="mt-4 text-center">
+                                <a href="{{ route('marketingmanager.publishedcontributionviewdetail', $contribution->contribution_id) }}"
+                                    class="text-blue-600 font-medium hover:underline">View</a>
+                            </div>
+
+                            <!-- Hidden File Path Element -->
+                            @if ($contribution->contribution_file_path)
+                            <div class="contribution-file-path hidden">{{ $contribution->contribution_file_path }}</div>
+                            @else
+                            <div class="contribution-file-path hidden"></div>
+                            @endif
+                        </div>
+                        @endforeach
                         @else
-                            <p class="px-6 py-24 text-gray-600 text-center col-span-4">
-                                No contributions found.
-                            </p>
+                        <p class="px-6 py-24 text-gray-600 text-center col-span-4">
+                            No contributions found.
+                        </p>
                         @endif
                     </div>
 
-                    <!-- Include Tippy.js CSS -->
-                    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
-
-                    <!-- Include Tippy.js JavaScript -->
                     <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
 
-                    <!-- JavaScript to Handle Checkbox Toggle and Download Selected -->
                     <script>
                         // Initialize Tippy.js for tooltips
                         tippy('.contribution-checkbox', {
-                            placement: 'top', // Tooltip position
-                            arrow: true, // Show arrow
+                            placement: 'top',
+                            arrow: true,
                         });
 
                         // Toggle Checkbox State
                         document.querySelectorAll('.contribution-checkbox').forEach(checkbox => {
                             checkbox.addEventListener('click', function() {
-                                const contributionId = this.getAttribute('data-contribution-id');
+                                if (this.hasAttribute('data-disabled')) {
+                                    return; // Prevent selection if checkbox is disabled
+                                }
                                 const uncheckedIcon = this.querySelector('.unchecked-icon');
                                 const checkedIcon = this.querySelector('.checked-icon');
 
-                                // Toggle visibility of checked/unchecked icons
                                 uncheckedIcon.classList.toggle('hidden');
                                 checkedIcon.classList.toggle('hidden');
 
-                                // Toggle the selected state
                                 this.classList.toggle('selected');
+
+                                // Enable/Disable Download Selected button
+                                toggleDownloadButton();
                             });
                         });
 
-                        // Handle Download Selected
-                        // Handle Download Selected
+                        // Enable/Disable Download Selected button
+                        function toggleDownloadButton() {
+                            const selectedContributions = Array.from(document.querySelectorAll('.contribution-checkbox.selected'))
+                                .map(checkbox => checkbox.getAttribute('data-contribution-id'));
+
+                            const downloadButton = document.getElementById('downloadSelected');
+                            const hasFile = selectedContributions.some(contributionId => {
+                                const filePath = document.querySelector(`[data-contribution-id="${contributionId}"]`)
+                                    .closest('.bg-white')
+                                    .querySelector('.contribution-file-path')
+                                    .textContent;
+
+                                return filePath && filePath.trim() !== '';
+                            });
+
+                            // Enable button if at least one contribution has a file
+                            downloadButton.disabled = !hasFile;
+                        }
+
                         document.getElementById('downloadSelected').addEventListener('click', function() {
-                            // Get all selected contribution IDs
                             const selectedContributions = Array.from(document.querySelectorAll('.contribution-checkbox.selected'))
                                 .map(checkbox => checkbox.getAttribute('data-contribution-id'));
 
@@ -147,7 +169,6 @@
                                 return;
                             }
 
-                            // Fetch the intake details for the selected contributions
                             fetch("{{ route('marketingmanager.checkIntakeStatus') }}", {
                                     method: 'POST',
                                     headers: {
@@ -161,23 +182,18 @@
                                 .then(response => response.json())
                                 .then(data => {
                                     if (data.error) {
-                                        alert(data
-                                        .error); // Show error message if intake is not active or final_closure_date has not passed
+                                        alert(data.error);
                                     } else {
-                                        // Unselect all checkboxes after initiating the download
                                         document.querySelectorAll('.contribution-checkbox.selected').forEach(checkbox => {
                                             const uncheckedIcon = checkbox.querySelector('.unchecked-icon');
                                             const checkedIcon = checkbox.querySelector('.checked-icon');
 
-                                            // Show the unchecked icon and hide the checked icon
                                             uncheckedIcon.classList.remove('hidden');
                                             checkedIcon.classList.add('hidden');
 
-                                            // Remove the selected class
                                             checkbox.classList.remove('selected');
                                         });
 
-                                        // Redirect to the download route with selected contribution IDs
                                         window.location.href =
                                             "{{ route('marketingmanager.downloadMultipleContributions') }}?ids=" +
                                             selectedContributions.join(',');
@@ -208,21 +224,6 @@
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('translate-x-full');
-        });
-
-        // Initialize Tippy.js
-        tippy('.download-zip', {
-            placement: 'top', // Position of the tooltip
-            animation: 'fade', // Animation type
-            arrow: true, // Show arrow
-        });
-
-        // Add event listener for download buttons
-        document.querySelectorAll('.download-zip').forEach(button => {
-            button.addEventListener('click', function() {
-                const contributionId = this.getAttribute('data-contribution-id');
-                window.location.href = `/marketingmanager/download-contribution-zip/${contributionId}`;
-            });
         });
     </script>
 </body>

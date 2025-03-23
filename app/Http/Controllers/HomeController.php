@@ -570,6 +570,13 @@ class HomeController extends Controller
             });
         }
 
+        // Filter by faculty
+        if ($request->has('faculty') && $request->faculty != 'all') {
+            $contributionsQuery->whereHas('user.faculty', function ($query) use ($request) {
+                $query->where('faculty_id', $request->faculty);
+            });
+        }
+
         // Search by student name or title
         if ($request->has('search')) {
             $search = $request->input('search');
@@ -649,6 +656,7 @@ class HomeController extends Controller
             'facultyAcademicYearData' => $facultyAcademicYearData, // Pass faculty-academic year data to the view
         ]);
     }
+
 
     public function marketingmanagerNotifation()
     {

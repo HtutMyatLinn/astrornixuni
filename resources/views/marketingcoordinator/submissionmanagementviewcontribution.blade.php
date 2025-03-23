@@ -49,7 +49,8 @@
 
                                 <div class="font-semibold text-xl">Submitted By</div>
                                 <div class="md:col-span-2 text-xl">{{ $contribution->user->first_name }}
-                                    {{ $contribution->user->last_name }}</div>
+                                    {{ $contribution->user->last_name }}
+                                </div>
 
                                 <div class="font-semibold text-xl">Submission Date</div>
                                 <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date->format('M d, Y') }}
@@ -58,26 +59,31 @@
                                 <div class="font-semibold text-xl">Contribution Cover</div>
                                 <div class="md:col-span-2 text-xl select-none">
                                     @if ($contribution->contribution_cover)
-                                        <div class="md:col-span-2 text-xl select-none">
-                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                                alt="Cover Image" class="w-32 h-32 object-cover">
-                                        </div>
+                                    <div class="md:col-span-2 text-xl select-none">
+                                        <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                            alt="Cover Image" class="w-32 h-32 object-cover">
+                                    </div>
                                     @else
-                                        <!-- Display the default logo image if contribution_cover is null -->
-                                        <div class="flex h-full w-full">
-                                            <div class="w-24 select-none">
-                                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                                    class="w-full h-full object-cover">
-                                            </div>
+                                    <!-- Display the default logo image if contribution_cover is null -->
+                                    <div class="flex h-full w-full">
+                                        <div class="w-24 select-none">
+                                            <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                class="w-full h-full object-cover">
                                         </div>
+                                    </div>
                                     @endif
                                 </div>
 
                                 <div class="font-semibold text-xl">Contribution File</div>
                                 <div class="md:col-span-2 text-xl">
+                                    @if ($contribution->contribution_file_path && file_exists(public_path('storage/contribution-documents/' . $contribution->contribution_file_path)))
                                     <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
                                         class="text-blue-600 hover:underline">Download File</a>
+                                    @else
+                                    <span class="text-gray-500">No file available</span>
+                                    @endif
                                 </div>
+
 
                                 <div class="font-semibold text-xl">Contribution Category</div>
                                 <div class="md:col-span-2 text-xl">{{ $contribution->category->contribution_category }}
@@ -86,15 +92,15 @@
                                 <div class="font-semibold text-xl">Status</div>
                                 <div class="md:col-span-2 text-xl flex items-center">
                                     @if ($contribution->contribution_status == 'Upload')
-                                        <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Reject')
-                                        <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Update')
-                                        <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Select')
-                                        <span class="w-4 h-4 bg-green-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-green-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Publish')
-                                        <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
+                                    <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
                                     @endif
                                     {{ $contribution->contribution_status == 'Upload'
                                         ? 'Uploaded'

@@ -48,16 +48,33 @@ class ContributionController extends Controller
         return view('contributions.index', compact('contributions', 'contribution_categories'));
     }
 
-    // ContributionController.php
+
     public function selectedContributions(Request $request)
     {
         // Fetch contributions with status "Select"
-        $contributions = Contribution::where('contribution_status', 'Select')
+        $contributionsQuery = Contribution::where('contribution_status', 'Select')
             ->with(['user', 'category']) // Eager load relationships
-            ->paginate(10);
+            ->orderBy('submitted_date', $request->input('sort', 'desc')); // Default sorting by 'desc' if no sort is provided
+
+        // If a search is provided, apply filters for Contribution Title and Student Name
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $contributionsQuery->where(function ($query) use ($search) {
+                $query->where('contribution_title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        $query->where('first_name', 'LIKE', "%{$search}%")
+                            ->orWhere('last_name', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        // Paginate the results
+        $contributions = $contributionsQuery->paginate(10);
 
         return view('marketingcoordinator.selectedcontribution', compact('contributions'));
     }
+
+
 
     public function contribution_index()
     {
@@ -171,7 +188,7 @@ class ContributionController extends Controller
         return view('student.contribution-detail', compact('contributions', 'contribution', 'comments', 'trendingContributions'));
     }
 
-    // ContributionController.php
+
     public function viewDetail($id)
     {
         // Fetch the contribution by ID
