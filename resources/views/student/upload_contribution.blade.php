@@ -205,6 +205,18 @@
                     @enderror
                 </div>
 
+                <!-- Additional Images Upload -->
+                <div class="mb-4 relative">
+                    <label class="block text-gray-700 font-medium mb-2">Additional Images (Up to 3) - JPG/PNG</label>
+                    <input type="file" name="contribution_images[]" multiple
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                    @error('contribution_images')
+                        <p class="absolute left-2 -bottom-3 bg-white text-red-500 text-sm mt-1">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
                 <!-- Document Upload -->
                 <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Upload Word Document (.docx)</label>

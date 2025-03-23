@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('contribution_cover', 255)->nullable();
             $table->string('contribution_title', 70);
             $table->text('contribution_description');
-            $table->text('contribution_file_path');
+            $table->text('contribution_file_path')->nullable();;
             $table->date('submitted_date')->nullable();
             $table->date('published_date')->nullable();
             $table->string('contribution_status', 20)->default('Upload'); // Status (Upload, Reject, Update, Select, Publish)

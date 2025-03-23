@@ -6,6 +6,7 @@ use App\Http\Requests\ContributionRequest;
 use App\Models\Comment;
 use App\Models\Contribution;
 use App\Models\ContributionCategory;
+use App\Models\ContributionImage;
 use App\Models\Feedback;
 use App\Models\Intake;
 use App\Models\Role;
@@ -95,17 +96,18 @@ class ContributionController extends Controller
     {
         // Initialize variables with default values
         $coverImageName = null; // Default value for cover image
+        $documentName = null;
 
         // Handle the cover image upload
-        if ($request->contribution_cover) {
-            $file = $request->contribution_cover;
+        if ($request->hasFile('contribution_cover')) {
+            $file = $request->file('contribution_cover');
             $coverImageName = 'contribution_cover_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->storeAs('public/contribution-images', $coverImageName);
         }
 
         // Handle the document upload
-        if ($request->contribution_file_path) {
-            $file = $request->contribution_file_path;
+        if ($request->hasFile('contribution_file_path')) {
+            $file = $request->file('contribution_file_path');
             $documentName = 'contribution_file_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->storeAs('public/contribution-documents', $documentName);
         }
@@ -122,7 +124,21 @@ class ContributionController extends Controller
         $contribution->submitted_date = now();
         $contribution->save();
 
-        // // Redirect back with a success message
+        // Handle additional images upload
+        if ($request->hasFile('contribution_images')) {
+            foreach ($request->file('contribution_images') as $image) {
+                $imageName = 'contribution_image_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/contribution-images', $imageName);
+
+                // Save each image to the contribution_images table
+                ContributionImage::create([
+                    'contribution_id' => $contribution->contribution_id,
+                    'contribution_image_path' => $imageName,
+                ]);
+            }
+        }
+
+        // Redirect back with a success message
         return redirect()->back()->with('success', 'Your contribution has been submitted successfully!');
     }
 

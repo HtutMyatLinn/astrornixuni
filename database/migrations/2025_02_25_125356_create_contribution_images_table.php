@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contribution_images', function (Blueprint $table) {
             $table->id('contribution_image_id')->primary();
-            $table->string('contribution_image_path', 255);
+            $table->string('contribution_image_path', 255)->nullable();;
             $table->unsignedBigInteger('contribution_id'); // Foreign key to contributions
             $table->timestamps();
 

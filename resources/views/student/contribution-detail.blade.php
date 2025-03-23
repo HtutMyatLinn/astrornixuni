@@ -25,6 +25,7 @@
                                     : 'text-gray-500')) }}"></i>
                 </span>
             </p>
+
             <!-- Fixed Image Container -->
             @if ($contribution->contribution_cover)
                 <div class="mt-4 h-[480px] overflow-hidden rounded-lg select-none">
@@ -39,6 +40,103 @@
                     </div>
                 </div>
             @endif
+
+            <!-- Display additional images if they exist -->
+            @if ($contribution->images->isNotEmpty())
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-4">Additional Images</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                        @foreach ($contribution->images->take(3) as $index => $image)
+                            <div class="h-48 overflow-hidden rounded-lg select-none relative cursor-pointer"
+                                onclick="openImageModal({{ $index }})">
+                                <img src="{{ asset('storage/contribution-images/' . $image->contribution_image_path) }}"
+                                    alt="Additional Image" class="w-full h-full object-cover">
+                                <!-- Show "+X" overlay for the third image if there are more than 3 images -->
+                                @if ($index === 2 && $contribution->images->count() > 3)
+                                    <div
+                                        class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                        <span class="text-white text-2xl font-bold">
+                                            +{{ $contribution->images->count() - 3 }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            <!-- Modal for displaying all images with Swiper.js -->
+            <div id="imageModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-90 p-4"
+                onclick="closeImageModal()">
+                <div class="w-full h-full flex items-center justify-center" onclick="event.stopPropagation()">
+                    <!-- Close button -->
+                    <button onclick="closeImageModal()"
+                        class="absolute top-4 right-4 text-white text-2xl bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 z-50">
+                        &times;
+                    </button>
+
+                    <!-- Swiper container -->
+                    <div class="swiper-container w-full h-full">
+                        <div class="swiper-wrapper">
+                            @foreach ($contribution->images as $image)
+                                <div class="swiper-slide flex items-center justify-center select-none">
+                                    <img src="{{ asset('storage/contribution-images/' . $image->contribution_image_path) }}"
+                                        alt="Additional Image" class="max-w-full max-h-full object-contain">
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Add navigation buttons -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                let swiperInstance = null;
+
+                // Function to open the image modal
+                function openImageModal(index = 0) {
+                    const modal = document.getElementById('imageModal');
+                    if (modal) {
+                        modal.classList.remove('hidden');
+                        if (!swiperInstance) {
+                            swiperInstance = new Swiper('.swiper-container', {
+                                loop: true,
+                                initialSlide: index, // Start from the clicked image
+                                navigation: {
+                                    nextEl: '.swiper-button-next',
+                                    prevEl: '.swiper-button-prev',
+                                },
+                            });
+                        } else {
+                            swiperInstance.slideTo(index); // Update the slide if Swiper is already initialized
+                        }
+                    }
+                }
+
+                // Function to close the image modal
+                function closeImageModal() {
+                    const modal = document.getElementById('imageModal');
+                    if (modal) {
+                        modal.classList.add('hidden');
+                    }
+                }
+
+                // Close modal when clicking outside the content
+                document.addEventListener('DOMContentLoaded', function() {
+                    const modal = document.getElementById('imageModal');
+                    if (modal) {
+                        modal.addEventListener('click', function(event) {
+                            if (event.target === modal) {
+                                closeImageModal();
+                            }
+                        });
+                    }
+                });
+            </script>
 
             <h2 class="text-xl font-bold mt-6 text-gray-900 text-start">{{ $contribution->contribution_title }}</h2>
             <div x-data="{ expanded: false }">
@@ -59,8 +157,10 @@
                 @endif
             </div>
 
-            <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
-                class="text-blue-500 mt-4 inline-block font-medium">Download</a>
+            @if ($contribution->contribution_file_path !== null)
+                <a href="{{ asset('storage/contribution-documents/' . $contribution->contribution_file_path) }}"
+                    class="text-blue-500 mt-4 inline-block font-medium">Download</a>
+            @endif
 
             <!-- Comment form -->
             <form action="{{ route('comment.store') }}" method="POST">
@@ -139,10 +239,12 @@
                         <img src="{{ asset('profile_images/' . $comment->user->profile_image) }}" alt="User Profile"
                             class="w-12 h-12 rounded-full select-none">
                     @else
-                        <p
-                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                            {{ $comment->user ? strtoupper($comment->user->username[0]) : '?' }}
-                        </p>
+                        <div class="flex items-center">
+                            <p
+                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                {{ $comment->user ? strtoupper($comment->user->username[0]) : '?' }}
+                            </p>
+                        </div>
                     @endif
                     <div class="w-full">
                         <div>
