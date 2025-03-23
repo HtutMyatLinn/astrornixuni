@@ -26,7 +26,6 @@ class ContributionRequest extends FormRequest
             'intake_id' => 'required|exists:intakes,intake_id',
             'contribution_category_id' => 'required|exists:contribution_categories,contribution_category_id',
             'contribution_description' => 'required|string',
-            'contribution_file_path' => 'required', // Max 5MB
             'terms_and_conditions' => 'required|accepted'
         ];
     }
@@ -46,10 +45,6 @@ class ContributionRequest extends FormRequest
 
             'contribution_description.required' => 'The contribution description is required.',
             'contribution_description.string' => 'The contribution description must be a string.',
-
-            'contribution_file_path.required' => 'The contribution file path is required.',
-            'contribution_file_path.file' => 'The contribution file must be a valid file.',
-            'contribution_file_path.max' => 'The contribution file must not exceed 5MB.',
 
             'terms_and_conditions.required' => 'You must agree to the terms and conditions.',
             'terms_and_conditions.accepted' => 'You must agree to the terms and conditions.',
