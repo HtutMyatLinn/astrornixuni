@@ -20,9 +20,10 @@
                     <x-nav-link :href="route('contributions')" :active="request()->routeIs('contributions')">
                         {{ __('Contributions') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('faculty')" :active="request()->routeIs('faculty')" id="faculty-link">
+                    <x-nav-link :href="route('faculty')" :active="request()->routeIs('faculty')">
                         {{ __('Faculty') }}
                     </x-nav-link>
+
                     <x-nav-link :href="route('aboutus')" :active="request()->routeIs('aboutus')">
                         {{ __('About') }}
                     </x-nav-link>
@@ -31,83 +32,16 @@
                     </x-nav-link>
                 </div>
 
-                <!-- Mega Menu Dropdown -->
-                <div id="mega-menu"
-                    class="absolute left-0 top-full w-full bg-white shadow-lg p-6 flex-col space-y-4 border border-gray-200 opacity-0 invisible transition-all duration-300 transform -translate-y-2">
-                    <div class="grid grid-cols-3 gap-6">
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Departments</h3>
-                            <ul class="mt-2 space-y-2">
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Science</a></li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Engineering</a>
-                                </li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Arts</a></li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Business</a></li>
-                            </ul>
-                        </div>
 
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Resources</h3>
-                            <ul class="mt-2 space-y-2">
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Research</a></li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Events</a></li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Publications</a>
-                                </li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Scholarships</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Departments</h3>
-                            <ul class="mt-2 space-y-2">
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Science</a></li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Engineering</a>
-                                </li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Arts</a></li>
-                                <li><a href="" class="block text-gray-600 hover:text-blue-600">Business</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    // Get the Faculty link and Mega Menu elements
-                    const facultyLink = document.getElementById('faculty-link');
-                    const megaMenu = document.getElementById('mega-menu');
-
-                    // Show Mega Menu on hover
-                    facultyLink.addEventListener('mouseenter', () => {
-                        megaMenu.classList.remove('opacity-0', 'invisible', '-translate-y-2');
-                        megaMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
-                    });
-
-                    // Hide Mega Menu when mouse leaves
-                    facultyLink.addEventListener('mouseleave', () => {
-                        megaMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
-                        megaMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
-                    });
-
-                    // Optional: Keep Mega Menu open if mouse is over it
-                    megaMenu.addEventListener('mouseenter', () => {
-                        megaMenu.classList.remove('opacity-0', 'invisible', '-translate-y-2');
-                        megaMenu.classList.add('opacity-100', 'visible', 'translate-y-0');
-                    });
-
-                    megaMenu.addEventListener('mouseleave', () => {
-                        megaMenu.classList.remove('opacity-100', 'visible', 'translate-y-0');
-                        megaMenu.classList.add('opacity-0', 'invisible', '-translate-y-2');
-                    });
-                </script>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @if (Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student')
-                    <a href="{{ route('upload_contribution.index') }}"
-                        class="leading-4 font-medium text-blue-800 hover:text-blue-900 border-l-2 py-2 pl-4 transition-colors duration-200">
-                        Contribute your article
-                    </a>
+                <a href="{{ route('upload_contribution.index') }}"
+                    class="leading-4 font-medium text-blue-800 hover:text-blue-900 border-l-2 py-2 pl-4 transition-colors duration-200">
+                    Contribute your article
+                </a>
                 @endif
 
                 <x-dropdown align="right">
@@ -115,9 +49,9 @@
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             @if (Auth::check())
-                                <div class="truncate max-w-[100px]">{{ Auth::user()->username }}</div>
+                            <div class="truncate max-w-[100px]">{{ Auth::user()->username }}</div>
                             @else
-                                <div>New User?</div>
+                            <div>New User?</div>
                             @endif
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -134,60 +68,60 @@
                         {{-- Profile --}}
                         <div class="flex items-center gap-3 p-2">
                             @if (Auth::check())
-                                @if (Auth::user()->profile_image)
-                                    <img id="profilePreview"
-                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                        src="{{ asset('profile_images/' . Auth::user()->profile_image) }}"
-                                        alt="Profile">
-                                @else
-                                    <p
-                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                        {{ strtoupper(Auth::user()->username[0]) }}
-                                    </p>
-                                @endif
+                            @if (Auth::user()->profile_image)
+                            <img id="profilePreview"
+                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                src="{{ asset('profile_images/' . Auth::user()->profile_image) }}"
+                                alt="Profile">
                             @else
-                                <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
-                                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                                        class="w-full h-full rounded-full object-cover">
-                                </div>
+                            <p
+                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                {{ strtoupper(Auth::user()->username[0]) }}
+                            </p>
+                            @endif
+                            @else
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
+                                <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                                    class="w-full h-full rounded-full object-cover">
+                            </div>
                             @endif
                             <div class="flex-1 min-w-0">
                                 @if (Auth::check())
-                                    <p class="text-xs sm:text-sm text-gray-600 text-wrap w-56"
-                                        title="{{ Auth::user()->email }}">
-                                        {{ Auth::user()->email }}
-                                    </p>
-                                    <p class="text-xs text-gray-500 text-wrap">
-                                        Last login date -
-                                        {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y h:i A') : 'Never' }}
-                                    </p>
+                                <p class="text-xs sm:text-sm text-gray-600 text-wrap w-56"
+                                    title="{{ Auth::user()->email }}">
+                                    {{ Auth::user()->email }}
+                                </p>
+                                <p class="text-xs text-gray-500 text-wrap">
+                                    Last login date -
+                                    {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y h:i A') : 'Never' }}
+                                </p>
                                 @else
-                                    <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">
-                                        Register to get access to all features
-                                    </p>
+                                <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">
+                                    Register to get access to all features
+                                </p>
                                 @endif
                             </div>
                         </div>
                         @if (Auth::check())
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Profile') }}
+                        </x-dropdown-link>
 
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
                         @else
-                            <x-dropdown-link :href="route('register')">
-                                {{ __('Register') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link :href="route('login')">
-                                {{ __('Log In') }}
-                            </x-dropdown-link>
+                        <x-dropdown-link :href="route('register')">
+                            {{ __('Register') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('login')">
+                            {{ __('Log In') }}
+                        </x-dropdown-link>
                         @endif
                     </x-slot>
                 </x-dropdown>
@@ -276,8 +210,8 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 @if (Auth::check())
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 @endif
             </div>
 

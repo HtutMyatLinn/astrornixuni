@@ -33,9 +33,18 @@ Route::patch('/comments/{id}', [CommentController::class, 'update'])->name('comm
 Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 // Faculty route
-Route::get('/faculty', function () {
-    return view('faculty');
-})->name('faculty');
+// Route::get('/faculty', function () {
+//     return view('faculty');
+// })->name('faculty');
+
+Route::get('/faculty', [FacultyController::class, 'faculty'])->name('faculty');
+Route::get('/faculty/filter', [FacultyController::class, 'filterByFaculty'])->name('faculty.filter');
+
+
+
+
+
+
 
 // About us route
 Route::get('/aboutus', function () {
