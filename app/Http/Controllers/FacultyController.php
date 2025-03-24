@@ -130,7 +130,7 @@ class FacultyController extends Controller
             });
         }
 
-        $contributions = $query->paginate(10)->appends([
+        $contributions = $query->paginate(20)->appends([
             'faculty_filter' => $facultyId,
             'search' => $searchQuery
         ]);

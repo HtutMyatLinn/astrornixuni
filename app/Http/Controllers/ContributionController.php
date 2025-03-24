@@ -74,16 +74,46 @@ class ContributionController extends Controller
         return view('marketingcoordinator.selectedcontribution', compact('contributions'));
     }
 
-
-
-    public function contribution_index()
+    public function contribution_index(Request $request)
     {
-        $contributions = Contribution::where('contribution_status', 'Publish')
+        $selectedCategory = $request->input('contribution_category', 'all');
+        $searchQuery = $request->input('search', '');
+        $otherCategory = $request->input('other_category', '');
+
+        // Start the query with a join to include user details
+        $query = Contribution::where('contribution_status', 'Publish')
             ->orderBy('published_date', 'desc')
-            ->paginate(20);
+            ->leftJoin('users', 'contributions.user_id', '=', 'users.user_id')
+            ->select('contributions.*', 'users.first_name', 'users.last_name');
+
+        if ($selectedCategory !== 'all' && $selectedCategory !== 'other') {
+            $query->where('contribution_category_id', $selectedCategory);
+        }
+
+        if ($selectedCategory === 'other' && !empty($otherCategory)) {
+            $query->whereNotIn('contribution_category_id', ContributionCategory::pluck('contribution_category_id'))
+                ->where('contribution_title', 'LIKE', "%{$otherCategory}%");
+        }
+
+        // Search contributions and user names
+        if (!empty($searchQuery)) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('contribution_title', 'LIKE', "%{$searchQuery}%")
+                    ->orWhere('contribution_description', 'LIKE', "%{$searchQuery}%")
+                    ->orWhere('users.first_name', 'LIKE', "%{$searchQuery}%")
+                    ->orWhere('users.last_name', 'LIKE', "%{$searchQuery}%");
+            });
+        }
+
+        $contributions = $query->paginate(20)->appends([
+            'contribution_category' => $selectedCategory,
+            'search' => $searchQuery,
+            'other_category' => $otherCategory
+        ]);
+
         $contribution_categories = ContributionCategory::all();
 
-        return view('contributions.index', compact('contributions', 'contribution_categories'));
+        return view('contributions.index', compact('contributions', 'contribution_categories', 'selectedCategory', 'searchQuery', 'otherCategory'));
     }
 
     public function guest_index()

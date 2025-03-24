@@ -47,69 +47,69 @@
                             </h2>
                         </div>
                         <button id="downloadSelected"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center select-none" disabled>
+                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center select-none"
+                            disabled>
                             Download Selected
                         </button>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         @if ($contributions->isNotEmpty())
-                        @foreach ($contributions as $contribution)
-                        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                            <div class="py-2 flex justify-between items-center">
-                                <div class="cursor-pointer contribution-checkbox"
-                                    data-contribution-id="{{ $contribution->contribution_id }}"
-                                    data-tippy-content="Select this contribution for download"
-                                    @if (!$contribution->contribution_file_path)
-                                    style="cursor: not-allowed;"
+                            @foreach ($contributions as $contribution)
+                                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                                    <div class="py-2 flex justify-between items-center">
+                                        <div class="cursor-pointer contribution-checkbox"
+                                            data-contribution-id="{{ $contribution->contribution_id }}"
+                                            data-tippy-content="Select this contribution for download"
+                                            @if (!$contribution->contribution_file_path) style="cursor: not-allowed;"
                                     title="No file available"
-                                    data-disabled="true"
-                                    @endif>
-                                    <svg class="h-5 w-5 text-gray-400 unchecked-icon" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                    <svg class="h-5 w-5 text-blue-500 checked-icon hidden" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7" />
-                                    </svg>
+                                    data-disabled="true" @endif>
+                                            <svg class="h-5 w-5 text-gray-400 unchecked-icon" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                            <svg class="h-5 w-5 text-blue-500 checked-icon hidden" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    @if ($contribution->contribution_cover)
+                                        <div class="h-56">
+                                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                alt="{{ $contribution->contribution_title }}"
+                                                class="w-full h-full object-cover select-none">
+                                        </div>
+                                    @else
+                                        <div class="flex h-56 w-full items-center justify-center">
+                                            <div class="w-24 select-none">
+                                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                    class="w-full h-full object-cover">
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <div class="mt-4 text-center">
+                                        <a href="{{ route('marketingmanager.publishedcontributionviewdetail', $contribution->contribution_id) }}"
+                                            class="text-blue-600 font-medium hover:underline">View</a>
+                                    </div>
+
+                                    <!-- Hidden File Path Element -->
+                                    @if ($contribution->contribution_file_path)
+                                        <div class="contribution-file-path hidden">
+                                            {{ $contribution->contribution_file_path }}</div>
+                                    @else
+                                        <div class="contribution-file-path hidden"></div>
+                                    @endif
                                 </div>
-                            </div>
-
-                            @if ($contribution->contribution_cover)
-                            <div class="h-56">
-                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                    alt="{{ $contribution->contribution_title }}"
-                                    class="w-full h-full object-cover select-none">
-                            </div>
-                            @else
-                            <div class="flex h-56 w-full items-center justify-center">
-                                <div class="w-24 select-none">
-                                    <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                        class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            @endif
-
-                            <div class="mt-4 text-center">
-                                <a href="{{ route('marketingmanager.publishedcontributionviewdetail', $contribution->contribution_id) }}"
-                                    class="text-blue-600 font-medium hover:underline">View</a>
-                            </div>
-
-                            <!-- Hidden File Path Element -->
-                            @if ($contribution->contribution_file_path)
-                            <div class="contribution-file-path hidden">{{ $contribution->contribution_file_path }}</div>
-                            @else
-                            <div class="contribution-file-path hidden"></div>
-                            @endif
-                        </div>
-                        @endforeach
+                            @endforeach
                         @else
-                        <p class="px-6 py-24 text-gray-600 text-center col-span-4">
-                            No contributions found.
-                        </p>
+                            <p class="px-6 py-24 text-gray-600 text-center col-span-4">
+                                No contributions found.
+                            </p>
                         @endif
                     </div>
 
