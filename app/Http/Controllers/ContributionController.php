@@ -522,8 +522,15 @@ class ContributionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Contribution $contribution)
     {
-        //
+        // Ensure the user can only delete their own contributions
+        if ($contribution->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $contribution->delete();
+
+        return redirect()->route('student.re_upload_contribution')->with('success', 'Contribution deleted successfully');
     }
 }

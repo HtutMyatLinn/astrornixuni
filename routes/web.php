@@ -193,10 +193,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Student dashboard.
     Route::middleware('student')->group(function () {
         Route::get('/student/dashboard', [HomeController::class, 'student'])->name('student.dashboard')->middleware(TrackBrowser::class);
+
         Route::resource('/student/upload_contribution', ContributionController::class);
-        Route::get('re_upload_contribution', function () {
-            return view('student.re_upload_contribution');
-        })->name('re_upload_contribution');
+        Route::get('/student/re_upload_contribution', [HomeController::class, 'reupload'])->name('student.re_upload_contribution');
+        Route::delete('/student/contributions/{contribution}', [ContributionController::class, 'destroy'])->name('student.contributions.destroy');
+
         Route::put('/profile/update', [StudentController::class, 'update'])->name('profile.update');
     });
 });

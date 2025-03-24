@@ -1106,4 +1106,17 @@ class HomeController extends Controller
 
         return view('student.index', compact('contributions', 'trendingContributions'));
     }
+
+    public function reupload()
+    {
+        // Get the authenticated user's ID
+        $userId = auth()->id();
+
+        // Fetch contributions for the logged-in user
+        $contributions = Contribution::where('user_id', $userId)
+            ->orderBy('submitted_date', 'desc')
+            ->get();
+
+        return view('student.re_upload_contribution', compact('contributions'));
+    }
 }
