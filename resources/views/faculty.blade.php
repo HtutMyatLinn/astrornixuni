@@ -29,120 +29,91 @@
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 md:px-12 text-center py-0 md:py-12">
-
         <!-- Faculty Filter Dropdown Section -->
-        <div class="flex justify-start mb-6">
-            <form id="faculty-form" class="w-full sm:w-1/4">
+        <div class="flex mb-6 gap-4 flex-wrap">
+            <!-- Search Form -->
+            <form id="search-form" class="w-full sm:w-1/4" method="GET" action="{{ route('faculty') }}">
+                <h2 class="text-lg md:text-xl font-semibold text-left">Search</h2>
+                <input type="text" name="search" placeholder="Search contributions..."
+                    class="mt-2 px-4 py-2 border border-gray-300 rounded-md w-full" value="{{ request('search') }}">
+            </form>
+
+            <!-- Filter by Faculty -->
+            <form id="faculty-form" class="w-full sm:w-1/4" method="GET" action="{{ route('faculty') }}">
                 <h2 class="text-lg md:text-xl font-semibold text-left">Filter by Faculty</h2>
-                <select id="faculty_filter" class="mt-2 px-4 py-2 border border-gray-300 rounded-md w-full">
-                    <option value="all">All Faculty</option>
+                <select id="faculty_filter" name="faculty_filter"
+                    class="mt-2 px-4 py-2 border border-gray-300 rounded-md w-full" onchange="this.form.submit()">
+                    <option value="all" {{ request('faculty_filter', 'all') == 'all' ? 'selected' : '' }}>All Faculty
+                    </option>
                     @foreach ($faculties as $faculty)
-                    <option value="{{ $faculty->faculty_id }}">{{ $faculty->faculty }}</option>
+                        <option value="{{ $faculty->faculty_id }}"
+                            {{ request('faculty_filter') == $faculty->faculty_id ? 'selected' : '' }}>
+                            {{ $faculty->faculty }}
+                        </option>
                     @endforeach
                 </select>
             </form>
         </div>
 
-
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="contributions-list">
-            @foreach ($contributions as $contribution)
-            <a href="{{ route('student.contribution-detail', $contribution) }}"
-                class="flex flex-col items-center group">
-                @if ($contribution->contribution_cover)
-                <!-- Display the contribution cover image if it exists -->
-                <div class="w-full select-none">
-                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                        alt="{{ $contribution->contribution_title }}" class="w-full h-auto object-cover">
+            @if ($contributions->count() > 0)
+                @foreach ($contributions as $contribution)
+                    <a href="{{ route('student.contribution-detail', $contribution) }}"
+                        class="flex flex-col items-center group">
+                        @if ($contribution->contribution_cover)
+                            <!-- Display the contribution cover image if it exists -->
+                            <div class="w-full select-none">
+                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                    alt="{{ $contribution->contribution_title }}" class="w-full h-auto object-cover">
+                            </div>
+                        @else
+                            <!-- Display the default logo image if contribution_cover is null -->
+                            <div class="flex h-60 sm:h-[306px] w-full items-center justify-center bg-white">
+                                <div class="w-24 select-none">
+                                    <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                        class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        @endif
+                        <div class="text-start w-full mt-3">
+                            <p class="text-md md:text-lg font-semibold text-black group-hover:underline">
+                                {{ $contribution->contribution_title }} →
+                            </p>
+                            <p class="text-sm md:text-md text-gray-700 mt-1 line-clamp-2">
+                                {{ $contribution->contribution_description }}
+                            </p>
+                            <p class="text-sm text-gray-500 mt-1">by
+                                <strong>{{ $contribution->user->first_name }}</strong>
+                            </p>
+                        </div>
+                    </a>
+                @endforeach
+            @else
+                <div class="col-span-3 flex items-center justify-center py-32">
+                    <p class="text-lg text-gray-500">No contributions found.</p>
                 </div>
-                @else
-                <!-- Display the default logo image if contribution_cover is null -->
-                <div class="flex h-60 sm:h-full w-full items-center justify-center bg-white">
-                    <div class="w-24 select-none">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                            class="w-full h-full object-cover">
-                    </div>
-                </div>
-                @endif
-                <div class="text-start w-full mt-3">
-                    <p class="text-md md:text-lg font-semibold text-black group-hover:underline">
-                        {{ $contribution->contribution_title }} →
-                    </p>
-                    <p class="text-sm md:text-md text-gray-700 mt-1 line-clamp-2">
-                        {{ $contribution->contribution_description }}
-                    </p>
-                    <p class="text-sm text-gray-500 mt-1">by <strong>{{ $contribution->user->first_name }}
-                        </strong></p>
-                </div>
-            </a>
-            @endforeach
+            @endif
+        </div>
+
+        <!-- Pagination Links -->
+        <div class="mt-4">
+            {{ $contributions->appends(request()->query())->links() }}
         </div>
     </div>
 </x-app-layout>
 
 <script>
-    // Event listener for Faculty filter change
     document.getElementById('faculty_filter').addEventListener('change', function() {
-        var facultyId = this.value;
+        const facultyId = this.value;
+        const form = document.getElementById('faculty-form');
 
-        // Make AJAX request to filter contributions by selected faculty
-        fetch(`/faculty/filter/${facultyId}`, { // Notice how the faculty_id is added to the URL path
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                let contributionsList = document.getElementById('contributions-list');
-                contributionsList.innerHTML = ''; // Clear current contributions
-
-                // Dynamically populate contributions list
-                if (data.contributions.length === 0) {
-                    contributionsList.innerHTML = '<p>No contributions found for the selected faculty.</p>';
-                }
-
-                data.contributions.forEach(contribution => {
-                    let div = document.createElement('div');
-                    div.classList.add('flex', 'flex-col', 'items-center');
-
-                    let imgDiv = document.createElement('div');
-                    imgDiv.classList.add('w-full');
-                    let img = document.createElement('img');
-
-                    if (contribution.contribution_cover) {
-                        img.src = `/storage/contribution-images/${contribution.contribution_cover}`;
-                    } else {
-                        img.src = `/images/default_image.png`; // Default image if no cover
-                    }
-
-                    img.alt = contribution.contribution_title;
-                    img.classList.add('w-full', 'h-auto', 'object-cover');
-                    imgDiv.appendChild(img);
-
-                    let textDiv = document.createElement('div');
-                    textDiv.classList.add('text-start', 'w-full', 'mt-3');
-                    let titleLink = document.createElement('a');
-                    titleLink.href = `/student/contribution-detail/${contribution.contribution_id}`;
-                    titleLink.classList.add('text-md', 'md:text-lg', 'font-semibold', 'text-black', 'group-hover:underline');
-                    titleLink.textContent = `${contribution.contribution_title} →`;
-                    let description = document.createElement('p');
-                    description.classList.add('text-sm', 'md:text-md', 'text-gray-700', 'mt-1');
-                    description.textContent = contribution.contribution_description;
-                    let author = document.createElement('p');
-                    author.classList.add('text-sm', 'text-gray-500', 'mt-1');
-                    author.innerHTML =
-                        `by <strong>${contribution.user.first_name} </strong>`;
-
-                    textDiv.appendChild(titleLink);
-                    textDiv.appendChild(description);
-                    textDiv.appendChild(author);
-
-                    div.appendChild(imgDiv);
-                    div.appendChild(textDiv);
-
-                    contributionsList.appendChild(div);
-                });
-            })
-            .catch(error => console.error('Error fetching filtered contributions:', error));
+        fetch(`${form.action}?faculty_filter=${facultyId}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                document.getElementById('contributions-list').innerHTML =
+                    doc.getElementById('contributions-list').innerHTML;
+            });
     });
 </script>
