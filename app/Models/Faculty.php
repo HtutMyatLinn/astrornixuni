@@ -16,4 +16,9 @@ class Faculty extends Model
     {
         return $this->hasMany(User::class, 'faculty_id');
     }
+
+    public function contributions()
+    {
+        return $this->hasManyThrough(Contribution::class, User::class, 'faculty_id', 'user_id', 'faculty_id', 'user_id');
+    }
 }

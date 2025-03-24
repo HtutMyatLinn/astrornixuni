@@ -38,7 +38,8 @@ Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('co
 // })->name('faculty');
 
 Route::get('/faculty', [FacultyController::class, 'faculty'])->name('faculty');
-Route::get('/faculty/filter', [FacultyController::class, 'filterByFaculty'])->name('faculty.filter');
+Route::get('/faculty/filter/{faculty_id}', [FacultyController::class, 'filterByFaculty'])->name('faculty.filter');
+
 
 
 

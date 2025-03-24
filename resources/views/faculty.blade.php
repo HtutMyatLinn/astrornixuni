@@ -29,49 +29,51 @@
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 md:px-12 text-center py-0 md:py-12">
+
         <!-- Faculty Filter Dropdown Section -->
         <div class="flex justify-start mb-6">
-            <div class="w-full sm:w-1/4">
+            <form id="faculty-form" class="w-full sm:w-1/4">
                 <h2 class="text-lg md:text-xl font-semibold text-left">Filter by Faculty</h2>
                 <select id="faculty_filter" class="mt-2 px-4 py-2 border border-gray-300 rounded-md w-full">
                     <option value="all">All Faculty</option>
                     @foreach ($faculties as $faculty)
-                        <option value="{{ $faculty->faculty_id }}">{{ $faculty->faculty }}</option>
+                    <option value="{{ $faculty->faculty_id }}">{{ $faculty->faculty }}</option>
                     @endforeach
                 </select>
-            </div>
+            </form>
         </div>
+
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="contributions-list">
             @foreach ($contributions as $contribution)
-                <a href="{{ route('student.contribution-detail', $contribution) }}"
-                    class="flex flex-col items-center group">
-                    @if ($contribution->contribution_cover)
-                        <!-- Display the contribution cover image if it exists -->
-                        <div class="w-full select-none">
-                            <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                alt="{{ $contribution->contribution_title }}" class="w-full h-auto object-cover">
-                        </div>
-                    @else
-                        <!-- Display the default logo image if contribution_cover is null -->
-                        <div class="flex h-60 sm:h-full w-full items-center justify-center bg-white">
-                            <div class="w-24 select-none">
-                                <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                    class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                    @endif
-                    <div class="text-start w-full mt-3">
-                        <p class="text-md md:text-lg font-semibold text-black group-hover:underline">
-                            {{ $contribution->contribution_title }} →
-                        </p>
-                        <p class="text-sm md:text-md text-gray-700 mt-1 line-clamp-2">
-                            {{ $contribution->contribution_description }}
-                        </p>
-                        <p class="text-sm text-gray-500 mt-1">by <strong>{{ $contribution->user->first_name }}
-                                {{ $contribution->user->last_name }}</strong></p>
+            <a href="{{ route('student.contribution-detail', $contribution) }}"
+                class="flex flex-col items-center group">
+                @if ($contribution->contribution_cover)
+                <!-- Display the contribution cover image if it exists -->
+                <div class="w-full select-none">
+                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                        alt="{{ $contribution->contribution_title }}" class="w-full h-auto object-cover">
+                </div>
+                @else
+                <!-- Display the default logo image if contribution_cover is null -->
+                <div class="flex h-60 sm:h-full w-full items-center justify-center bg-white">
+                    <div class="w-24 select-none">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                            class="w-full h-full object-cover">
                     </div>
-                </a>
+                </div>
+                @endif
+                <div class="text-start w-full mt-3">
+                    <p class="text-md md:text-lg font-semibold text-black group-hover:underline">
+                        {{ $contribution->contribution_title }} →
+                    </p>
+                    <p class="text-sm md:text-md text-gray-700 mt-1 line-clamp-2">
+                        {{ $contribution->contribution_description }}
+                    </p>
+                    <p class="text-sm text-gray-500 mt-1">by <strong>{{ $contribution->user->first_name }}
+                        </strong></p>
+                </div>
+            </a>
             @endforeach
         </div>
     </div>
@@ -83,7 +85,7 @@
         var facultyId = this.value;
 
         // Make AJAX request to filter contributions by selected faculty
-        fetch(`/faculty/filter?faculty_id=${facultyId}`, {
+        fetch(`/faculty/filter/${facultyId}`, { // Notice how the faculty_id is added to the URL path
                 headers: {
                     'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
@@ -95,6 +97,10 @@
                 contributionsList.innerHTML = ''; // Clear current contributions
 
                 // Dynamically populate contributions list
+                if (data.contributions.length === 0) {
+                    contributionsList.innerHTML = '<p>No contributions found for the selected faculty.</p>';
+                }
+
                 data.contributions.forEach(contribution => {
                     let div = document.createElement('div');
                     div.classList.add('flex', 'flex-col', 'items-center');
@@ -116,9 +122,8 @@
                     let textDiv = document.createElement('div');
                     textDiv.classList.add('text-start', 'w-full', 'mt-3');
                     let titleLink = document.createElement('a');
-                    titleLink.href = '#';
-                    titleLink.classList.add('text-md', 'md:text-lg', 'font-semibold', 'text-black',
-                        'hover:underline');
+                    titleLink.href = `/student/contribution-detail/${contribution.contribution_id}`;
+                    titleLink.classList.add('text-md', 'md:text-lg', 'font-semibold', 'text-black', 'group-hover:underline');
                     titleLink.textContent = `${contribution.contribution_title} →`;
                     let description = document.createElement('p');
                     description.classList.add('text-sm', 'md:text-md', 'text-gray-700', 'mt-1');
@@ -126,7 +131,7 @@
                     let author = document.createElement('p');
                     author.classList.add('text-sm', 'text-gray-500', 'mt-1');
                     author.innerHTML =
-                        `by <strong>${contribution.user.first_name} ${contribution.user.last_name}</strong>`;
+                        `by <strong>${contribution.user.first_name} </strong>`;
 
                     textDiv.appendChild(titleLink);
                     textDiv.appendChild(description);
