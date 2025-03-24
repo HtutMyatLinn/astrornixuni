@@ -89,74 +89,74 @@
 
             <!-- Account Setting -->
             <div class="container mx-auto p-4">
-                <form action="{{ route('marketingcoordinator.update-account-setting', Auth::user()->user_id) }}" method="POST"
-                    enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <form action="{{ route('marketingcoordinator.update-account-setting', Auth::user()->user_id) }}"
+                    method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6 md:p-8">
                     @csrf
 
                     <h2 class="text-2xl font-medium mb-6">My Account</h2>
 
                     <div class="flex flex-col md:flex-row items-start gap-5 mb-8">
                         @if (Auth::check())
-                        <!-- Profile Image Container - Made Clickable -->
-                        <div class="profile-image-container w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden">
-                            @if (Auth::user()->profile_image)
-                            <img id="profileImagePreview"
-                                src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"
-                                alt="Profile Image" class="w-full h-full object-cover">
-                            @else
-                            <!-- Fallback to initials if profile_image is null -->
-                            <div id="profileInitials"
-                                class="w-full h-full rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
-                                {{ strtoupper(Auth::user()->username[0]) }}
+                            <!-- Profile Image Container - Made Clickable -->
+                            <div class="profile-image-container w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden">
+                                @if (Auth::user()->profile_image)
+                                    <img id="profileImagePreview"
+                                        src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"
+                                        alt="Profile Image" class="w-full h-full object-cover">
+                                @else
+                                    <!-- Fallback to initials if profile_image is null -->
+                                    <div id="profileInitials"
+                                        class="w-full h-full rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
+                                        {{ strtoupper(Auth::user()->username[0]) }}
+                                    </div>
+                                @endif
+                                <!-- Overlay with camera icon -->
+                                <div class="profile-image-overlay">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
                             </div>
-                            @endif
-                            <!-- Overlay with camera icon -->
-                            <div class="profile-image-overlay">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <!-- Hidden file input for profile image -->
-                        <input type="file" id="profile_image" name="profile_image" class="hidden">
-                        @error('profile_image')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                            <!-- Hidden file input for profile image -->
+                            <input type="file" id="profile_image" name="profile_image" class="hidden">
+                            @error('profile_image')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         @else
-                        <!-- Guest user -->
-                        <div class="w-24 h-24 select-none">
-                            <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                                class="w-full h-full rounded-full object-cover">
-                        </div>
+                            <!-- Guest user -->
+                            <div class="w-24 h-24 select-none">
+                                <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                                    class="w-full h-full rounded-full object-cover">
+                            </div>
                         @endif
                         <div>
                             <h3 class="text-xl font-medium">{{ Auth::user()->username }}</h3>
                             <p class="text-gray-600">{{ Auth::user()->role->role }}</p>
                         </div>
                         @if (Auth::user()->status == 1)
-                        <span class="px-10 py-1 rounded-lg bg-[#CAF4E0] text-green-800 select-none">Active</span>
+                            <span class="px-10 py-1 rounded-lg bg-[#CAF4E0] text-green-800 select-none">Active</span>
                         @else
-                        <span class="px-10 py-1 rounded-lg bg-[#FAAFBD] text-red-800 select-none">Inactive</span>
+                            <span class="px-10 py-1 rounded-lg bg-[#FAAFBD] text-red-800 select-none">Inactive</span>
                         @endif
                     </div>
 
                     {{-- Message --}}
                     @if (session('success'))
-                    <div id="success-message"
-                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
-                        role="alert">
-                        <span class="block sm:inline">{{ session('success') }}</span>
-                    </div>
+                        <div id="success-message"
+                            class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                            role="alert">
+                            <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
 
-                    <script>
-                        setTimeout(() => {
-                            document.getElementById('success-message').style.display = 'none';
-                        }, 3000);
-                    </script>
+                        <script>
+                            setTimeout(() => {
+                                document.getElementById('success-message').style.display = 'none';
+                            }, 3000);
+                        </script>
                     @endif
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -168,7 +168,7 @@
                                 value="{{ Auth::user()->first_name }}">
                             <div class="absolute left-2 -bottom-2 bg-white">
                                 @error('first_name')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                                 value="{{ Auth::user()->last_name }}">
                             <div class="absolute left-2 -bottom-2 bg-white">
                                 @error('last_name')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -194,7 +194,7 @@
                                 value="{{ Auth::user()->username }}">
                             <div class="absolute left-2 -bottom-2 bg-white">
                                 @error('username')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -211,13 +211,13 @@
                         <div>
                             <label for="faculty" class="block mb-2 font-medium">Faculty</label>
                             @if (optional(Auth::user()->faculty)->faculty)
-                            <input type="text" id="faculty"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="{{ Auth::user()->faculty->faculty }}" disabled>
+                                <input type="text" id="faculty"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                    value="{{ Auth::user()->faculty->faculty }}" disabled>
                             @else
-                            <input type="text" id="faculty"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="No faculty assigned" disabled>
+                                <input type="text" id="faculty"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                    value="No faculty assigned" disabled>
                             @endif
                         </div>
 
@@ -257,8 +257,8 @@
                         </span> Your Password
                     </h2>
 
-                    <form action="{{ route('marketingcoordinator.change-password') }}" method="POST" class="space-y-6"
-                        id="passwordForm">
+                    <form action="{{ route('marketingcoordinator.change-password') }}" method="POST"
+                        class="space-y-6" id="passwordForm">
                         @csrf
                         <div>
                             <label for="oldPassword" class="block mb-2 font-medium">Old Password</label>
@@ -266,11 +266,11 @@
                                 placeholder="Enter Current Password"
                                 class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('old_password') border-red-500 @enderror">
                             @error('old_password')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="password-container relative">
+                        <div class="password-container">
                             <label for="newPassword" class="block mb-2 font-medium">New Password</label>
                             <div class="relative">
                                 <input type="password" id="newPassword" name="new_password"
@@ -296,7 +296,7 @@
                                 </span>
                             </div>
                             @error('new_password')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                             <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">Passwords do not match.</p>
                         </div>

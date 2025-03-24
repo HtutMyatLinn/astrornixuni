@@ -28,15 +28,29 @@
         </div>
     </div>
 
+    <!-- Recent Faculty Contributions Section -->
+    <div class="container mx-auto px-4 sm:px-6 md:px-12 py-16 text-center bg-white">
+        <h2 class="text-xl md:text-3xl font-semibold mb-2">Recent Faculty Contributions</h2>
+
+        <!-- Additional Text -->
+        <p class="text-sm md:text-base text-gray-600 mb-6">
+            Explore research, publications, and projects from our faculty members shaping innovation and knowledge.
+        </p>
+
+        <!-- Search Bar -->
+        <form id="search-form" class="max-w-lg mx-auto mb-10 relative" method="GET" action="{{ route('faculty') }}">
+            <input type="text" name="search" placeholder="Search contributions..."
+                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-gray-300 text-sm md:text-base pl-10 transition duration-300 ease-in-out"
+                value="{{ request('search') }}">
+            <img src="{{ asset('images/group.png') }}" alt="Search Icon"
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-all duration-300 ease-in-out">
+        </form>
+    </div>
+
     <div class="container mx-auto px-4 sm:px-6 md:px-12 text-center py-0 md:py-12">
         <!-- Faculty Filter Dropdown Section -->
         <div class="flex mb-6 gap-4 flex-wrap">
             <!-- Search Form -->
-            <form id="search-form" class="w-full sm:w-1/4" method="GET" action="{{ route('faculty') }}">
-                <h2 class="text-lg md:text-xl font-semibold text-left">Search</h2>
-                <input type="text" name="search" placeholder="Search contributions..."
-                    class="mt-2 px-4 py-2 border border-gray-300 rounded-md w-full" value="{{ request('search') }}">
-            </form>
 
             <!-- Filter by Faculty -->
             <form id="faculty-form" class="w-full sm:w-1/4" method="GET" action="{{ route('faculty') }}">
@@ -68,7 +82,7 @@
                             </div>
                         @else
                             <!-- Display the default logo image if contribution_cover is null -->
-                            <div class="flex h-60 sm:h-[306px] w-full items-center justify-center bg-white">
+                            <div class="flex h-60 sm:h-full w-full items-center justify-center bg-white">
                                 <div class="w-24 select-none">
                                     <img src="{{ asset('images/logo.png') }}" alt="Logo"
                                         class="w-full h-full object-cover">

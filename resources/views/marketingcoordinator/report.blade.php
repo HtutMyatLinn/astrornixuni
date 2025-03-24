@@ -71,7 +71,7 @@
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
                                                 Contribution Category</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Student
-                                                Name</th>
+                                            </th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Submitted
                                                 Date</th>
                                             <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Action
