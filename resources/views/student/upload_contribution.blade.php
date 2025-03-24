@@ -42,7 +42,8 @@
 
             <!-- History Link -->
             <div class="mt-6 flex justify-end">
-                <a href="{{ route('re_upload_contribution') }}" class="text-sm text-blue-600 hover:text-blue-800">
+                <a href="{{ route('student.re_upload_contribution') }}"
+                    class="text-sm text-blue-600 hover:text-blue-800">
                     Contribution History →
                 </a>
             </div>
@@ -125,7 +126,8 @@
                 <!-- Title -->
                 <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Title</label>
-                    <input type="text" name="contribution_title" placeholder="Enter your contribution title"
+                    <input type="text" name="contribution_title" value="{{ old('contribution_title') }}"
+                        placeholder="Enter your contribution title"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     @error('contribution_title')
                         <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
@@ -185,7 +187,7 @@
                 <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Description</label>
                     <textarea name="contribution_description" placeholder="Provide a brief summary of your contributions..."
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('contribution_description') }}</textarea>
                     @error('contribution_description')
                         <p class="absolute left-2 -bottom-1 bg-white text-red-500 text-sm mt-1">
                             {{ $message }}
