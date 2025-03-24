@@ -115,17 +115,19 @@ class FacultyController extends Controller
         return view('faculty', compact('faculties', 'contributions'));
     }
 
-    public function filterByFaculty(Request $request)
+    public function filterByFaculty(Request $request, $faculty_id)
     {
-        $faculty_id = $request->input('faculty_id', 'all');
+        \Log::info('Faculty ID received: ' . $faculty_id); // Check the received faculty_id
 
         if ($faculty_id == 'all') {
-            $contributions = Contribution::with('faculty')->get();
+            $contributions = Contribution::with('faculty', 'user')->get();
         } else {
             $contributions = Contribution::where('faculty_id', $faculty_id)
-                ->with('faculty')
+                ->with('faculty', 'user')
                 ->get();
         }
+
+        \Log::info('Filtered Contributions: ', $contributions->toArray()); // Log the filtered contributions
 
         return response()->json([
             'contributions' => $contributions
