@@ -107,30 +107,34 @@ class FacultyController extends Controller
         //
     }
 
-    public function faculty()
+    public function faculty(Request $request)
     {
         $faculties = Faculty::all();
-        $contributions = Contribution::with('faculty')->get();
+        $facultyId = $request->input('faculty_filter', 'all');
+        $searchQuery = $request->input('search', '');
 
-        return view('faculty', compact('faculties', 'contributions'));
-    }
+        $query = Contribution::where('contribution_status', 'Publish'); // Only fetch published contributions
 
-    public function filterByFaculty(Request $request, $faculty_id)
-    {
-        \Log::info('Faculty ID received: ' . $faculty_id); // Check the received faculty_id
-
-        if ($faculty_id == 'all') {
-            $contributions = Contribution::with('faculty', 'user')->get();
-        } else {
-            $contributions = Contribution::where('faculty_id', $faculty_id)
-                ->with('faculty', 'user')
-                ->get();
+        // Apply Faculty Filter
+        if ($facultyId !== 'all') {
+            $query->whereHas('user', function ($q) use ($facultyId) {
+                $q->where('faculty_id', $facultyId);
+            });
         }
 
-        \Log::info('Filtered Contributions: ', $contributions->toArray()); // Log the filtered contributions
+        // Apply Search Query
+        if (!empty($searchQuery)) {
+            $query->where(function ($q) use ($searchQuery) {
+                $q->where('contribution_title', 'LIKE', "%{$searchQuery}%")
+                    ->orWhere('contribution_description', 'LIKE', "%{$searchQuery}%");
+            });
+        }
 
-        return response()->json([
-            'contributions' => $contributions
+        $contributions = $query->paginate(10)->appends([
+            'faculty_filter' => $facultyId,
+            'search' => $searchQuery
         ]);
+
+        return view('faculty', compact('faculties', 'contributions', 'facultyId', 'searchQuery'));
     }
 }

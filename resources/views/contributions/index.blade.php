@@ -33,13 +33,13 @@
                                 <h3 class="mb-3 text-sm font-medium">Categories</h3>
                                 <div class="space-y-2">
                                     @foreach ($contribution_categories as $contribution_category)
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300"
-                                            name="contribution_category" value="{{ $contribution_category->id }}"
-                                            onclick="handleCheckbox(this)">
-                                        <span
-                                            class="ml-2 text-sm">{{ $contribution_category->contribution_category }}</span>
-                                    </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="h-4 w-4 rounded border-gray-300"
+                                                name="contribution_category" value="{{ $contribution_category->id }}"
+                                                onclick="handleCheckbox(this)">
+                                            <span
+                                                class="ml-2 text-sm">{{ $contribution_category->contribution_category }}</span>
+                                        </label>
                                     @endforeach
                                     <script>
                                         function handleCheckbox(checkbox) {
@@ -68,52 +68,52 @@
                         <!-- Grid of Cards -->
                         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             @if ($contributions->count() > 0)
-                            @foreach ($contributions as $contribution)
-                            <a href="{{ route('student.contribution-detail', $contribution) }}"
-                                class="block overflow-hidden rounded-lg bg-white shadow-sm group">
-                                <div class="relative h-56 w-full overflow-hidden">
-                                    @if ($contribution->contribution_cover)
-                                    <!-- Display the contribution cover image if it exists -->
-                                    <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                        alt="{{ $contribution->contribution_title }}"
-                                        class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
-                                    @else
-                                    <!-- Display the default logo image if contribution_cover is null -->
-                                    <div class="flex h-full w-full items-center justify-center">
-                                        <div class="w-24 select-none">
-                                            <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                                class="w-full h-full object-cover">
+                                @foreach ($contributions as $contribution)
+                                    <a href="{{ route('student.contribution-detail', $contribution) }}"
+                                        class="block overflow-hidden rounded-lg bg-white shadow-sm group">
+                                        <div class="relative h-56 w-full overflow-hidden">
+                                            @if ($contribution->contribution_cover)
+                                                <!-- Display the contribution cover image if it exists -->
+                                                <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
+                                                    alt="{{ $contribution->contribution_title }}"
+                                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                            @else
+                                                <!-- Display the default logo image if contribution_cover is null -->
+                                                <div class="flex h-full w-full items-center justify-center">
+                                                    <div class="w-24 select-none">
+                                                        <img src="{{ asset('images/logo.png') }}" alt="Logo"
+                                                            class="w-full h-full object-cover">
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
-                                    </div>
-                                    @endif
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="mb-2 text-lg font-semibold text-gray-800">
-                                        {{ $contribution->contribution_title }}
-                                    </h3>
-                                    <p class="mb-3 text-sm text-gray-600 line-clamp-2">
-                                        {{ $contribution->contribution_description }}
-                                    </p>
-                                    <div class="flex items-center text-sm text-gray-500">
-                                        <span class="mr-2">by {{ $contribution->user->username }}</span>
-                                        <span
-                                            class="ml-auto text-xs text-gray-400">{{ $contribution->published_date }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                            @endforeach
+                                        <div class="p-4">
+                                            <h3 class="mb-2 text-lg font-semibold text-gray-800">
+                                                {{ $contribution->contribution_title }}
+                                            </h3>
+                                            <p class="mb-3 text-sm text-gray-600 line-clamp-2">
+                                                {{ $contribution->contribution_description }}
+                                            </p>
+                                            <div class="flex items-center text-sm text-gray-500">
+                                                <span class="mr-2">by {{ $contribution->user->username }}</span>
+                                                <span
+                                                    class="ml-auto text-xs text-gray-400">{{ $contribution->published_date->format('d/m/Y') }}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
                             @else
-                            <div class="col-span-3 flex items-center justify-center py-32">
-                                <p class="text-lg text-gray-500">No contributions found.</p>
-                            </div>
+                                <div class="col-span-3 flex items-center justify-center py-32">
+                                    <p class="text-lg text-gray-500">No contributions found.</p>
+                                </div>
                             @endif
                         </div>
 
                         <!-- Pagination -->
                         @if ($contributions->isNotEmpty())
-                        <div class="flex justify-end items-center gap-2 mt-6">
-                            {{ $contributions->appends(request()->query())->links('pagination::tailwind') }}
-                        </div>
+                            <div class="flex justify-end items-center gap-2 mt-6">
+                                {{ $contributions->appends(request()->query())->links('pagination::tailwind') }}
+                            </div>
                         @endif
                     </div>
                 </div>
