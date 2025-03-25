@@ -240,7 +240,7 @@
                         @method('PUT')
 
                         <!-- Hidden ID Input -->
-                        <input type="hidden" id="editFacultyId" name="faculty_id">
+                        <input type="hidden" id="editFacultyId" name="faculty_id" value="{{ old('faculty_id') }}">
 
                         <!-- Faculty Input -->
                         <div class="mb-4 relative">
@@ -262,7 +262,7 @@
                                 placeholder="Enter contact number..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('edit_contact_number')
-                                <p class=" absolute left-2 -bottom-2 bg-whitetext-red-500 text-sm mt-1">
+                                <p class=" absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
                                     {{ $message }}</p>
                             @enderror
                         </div>
@@ -288,17 +288,37 @@
                         '-translate-y-5');
                 }
 
-                // Close contribution category modal
+                // Close contribution category modal and reset validation messages
                 function closeModal() {
                     darkOverlay2.classList.add('opacity-0', 'invisible');
                     darkOverlay2.classList.remove('opacity-100');
                     document.getElementById('facultyModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+                    // Reset validation messages
+                    document.querySelectorAll("#facultyModal p.text-red-500").forEach(el => el.remove());
+                    document.querySelectorAll("#facultyModal input").forEach(el => el.classList.remove("border-red-500"));
+                }
+
+                // Close edit contribution category modal and reset validation messages
+                function closeEditModal() {
+                    darkOverlay2.classList.add('opacity-0', 'invisible');
+                    darkOverlay2.classList.remove('opacity-100');
+                    document.getElementById('editFacultyModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+                    // Reset validation messages
+                    document.querySelectorAll("#editFacultyModal p.text-red-500").forEach(el => el.remove());
+                    document.querySelectorAll("#editFacultyModal input").forEach(el => el.classList.remove("border-red-500"));
                 }
 
                 // Keep modal open if validation errors exist
                 window.onload = function() {
-                    @if ($errors->any())
+                    @if ($errors->has('faculty'))
                         openModal();
+                    @endif
+
+                    @if ($errors->has('edit_faculty') || $errors->has('edit_contact_number'))
+                        openEditModal("{{ old('faculty_id') }}", "{{ old('edit_faculty') }}",
+                            "{{ old('edit_contact_number') }}");
                     @endif
                 };
 
@@ -322,10 +342,17 @@
 
                 // Close edit contribution category modal
                 function closeEditModal() {
+                    // Hide modal
                     darkOverlay2.classList.add('opacity-0', 'invisible');
                     darkOverlay2.classList.remove('opacity-100');
-                    document.getElementById('editFacultyModal').classList.add('opacity-0', 'invisible',
-                        '-translate-y-5');
+                    document.getElementById('editFacultyModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+                    // Reset error messages
+                    document.querySelectorAll("#editFacultyModal p.text-red-500").forEach(el => el.remove());
+
+                    // Optionally reset input values (if needed)
+                    document.getElementById('editFaculty').value = "";
+                    document.getElementById('editContactNumber').value = "";
                 }
             </script>
         </div>

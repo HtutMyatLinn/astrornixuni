@@ -239,12 +239,12 @@
                         @method('PUT')
 
                         <!-- Hidden ID Input -->
-                        <input type="hidden" id="editRoleId" name="role_id">
+                        <input type="hidden" id="editRoleId" name="role_id" value="{{ old('role_id') }}">
 
                         <!-- Role Name Input -->
                         <div class="mb-4 relative">
                             <label class="block text-sm font-medium mb-2">Role Name :</label>
-                            <input type="text" id="editRoleName" name="edit_role"
+                            <input type="text" id="editRoleName" name="edit_role" value="{{ old('edit_role') }}"
                                 placeholder="Enter role name..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                             @error('edit_role')
@@ -256,7 +256,8 @@
                         <!-- Functionalities Input -->
                         <div class="mb-6 relative">
                             <label class="block text-sm font-medium mb-2">Functionalities :</label>
-                            <textarea id="editFunctionalities" name="edit_functionalities" placeholder="Enter functionalities..."
+                            <textarea id="editFunctionalities" name="edit_functionalities" value="{{ old('edit_functionalities') }}"
+                                placeholder="Enter functionalities..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                             @error('edit_functionalities')
                                 <p class="absolute left-2 -bottom-2 bg-whitetext-red-500 text-sm mt-1">
@@ -284,17 +285,30 @@
                     document.getElementById('roleModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
                 }
 
-                // Close role modal
+                // Close role modal and reset validation messages
                 function closeModal() {
                     darkOverlay2.classList.add('opacity-0', 'invisible');
                     darkOverlay2.classList.remove('opacity-100');
                     document.getElementById('roleModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+                    // Reset validation messages
+                    document.querySelectorAll("#roleModal p.text-red-500").forEach(el => el.remove());
+                    document.querySelectorAll("#roleModal input, #roleModal textarea").forEach(el => el.classList.remove(
+                        "border-red-500"));
+
+                    // Clear input fields
+                    document.querySelector('input[name="role"]').value = "";
+                    document.querySelector('textarea[name="functionalities"]').value = "";
                 }
 
                 // Keep modal open if validation errors exist
                 window.onload = function() {
-                    @if ($errors->any())
-                        openModal();
+                    @if ($errors->has('role'))
+                        openModal(); // Ensure this function correctly opens the modal
+                    @endif
+
+                    @if ($errors->has('edit_role'))
+                        openEditModal("{{ old('role_id') }}", "{{ old('edit_role') }}", "{{ old('edit_functionalities') }}");
                     @endif
                 };
 
@@ -314,11 +328,21 @@
                     document.getElementById('editRoleModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
                 }
 
-                // Close edit role modal
+                // Close edit role modal and reset validation messages
                 function closeEditModal() {
                     darkOverlay2.classList.add('opacity-0', 'invisible');
                     darkOverlay2.classList.remove('opacity-100');
                     document.getElementById('editRoleModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+                    // Reset validation messages
+                    document.querySelectorAll("#editRoleModal p.text-red-500").forEach(el => el.remove());
+                    document.querySelectorAll("#editRoleModal input, #editRoleModal textarea").forEach(el => el.classList.remove(
+                        "border-red-500"));
+
+                    // Clear input fields
+                    document.getElementById("editRoleId").value = "";
+                    document.getElementById("editRoleName").value = "";
+                    document.getElementById("editFunctionalities").value = "";
                 }
             </script>
         </div>

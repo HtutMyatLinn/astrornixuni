@@ -219,7 +219,8 @@
                                 @method('PUT')
 
                                 <!-- Hidden ID Input -->
-                                <input type="hidden" id="editAcademicYearId" name="academic_year_id">
+                                <input type="hidden" id="editAcademicYearId" name="academic_year_id"
+                                    value="{{ old('academic_year_id') }}">
 
                                 <!-- Academic Year Input -->
                                 <div class="mb-4 relative">
@@ -418,8 +419,6 @@
                                             </option>
                                         </select>
                                     </form>
-
-
                                 </div>
                             </div>
 
@@ -516,6 +515,7 @@
                             @endif
                         </div>
 
+                        {{-- Intake Edit Modal --}}
                         <div id="editIntakeModal"
                             class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
                             <div class="max-w-md w-full bg-white p-8 rounded-md shadow-lg relative">
@@ -531,14 +531,19 @@
                                     @method('PUT')
 
                                     <!-- Hidden ID Input -->
-                                    <input type="hidden" id="editIntakeId" name="intake_id">
+                                    <input type="hidden" id="editIntakeId" name="intake_id"
+                                        value="{{ old('intake_id') }}">
 
                                     <!-- Intake Input -->
                                     <div class="mb-4 relative">
                                         <label class="block text-sm font-medium mb-2">Intake :</label>
                                         <input type="text" id="editIntake" name="edit_intake"
-                                            placeholder="Enter intake..."
+                                            value="{{ old('edit_intake') }}" placeholder="Enter intake..."
                                             class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        @error('edit_intake')
+                                            <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
+                                                {{ $message }}</p>
+                                        @enderror
                                     </div>
 
                                     <!-- intake status -->
@@ -592,17 +597,33 @@
             document.getElementById('academicYearModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
         }
 
-        // Close academic year modal
+        // Close add academic year modal and reset validation messages
         function closeModal() {
             darkOverlay2.classList.add('opacity-0', 'invisible');
             darkOverlay2.classList.remove('opacity-100');
             document.getElementById('academicYearModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+            // Reset validation messages
+            document.querySelectorAll("#academicYearModal p.text-red-500").forEach(el => el.remove());
+            document.querySelectorAll("#academicYearModal input").forEach(el => el.classList.remove("border-red-500"));
+
+            // Clear input field
+            document.querySelector('input[name="academic_year"]').value = "";
         }
 
         // Keep modal open if validation errors exist
         window.onload = function() {
-            @if ($errors->any())
-                openModal();
+            @if ($errors->has('academic_year'))
+                openModal(); // Ensure this function correctly opens the modal
+            @endif
+
+            @if ($errors->has('edit_academic_year'))
+                openEditModal("{{ old('academic_year_id') }}", "{{ old('edit_academic_year') }}");
+            @endif
+
+            @if ($errors->has('edit_intake'))
+                openEditIntakeModal("{{ old('intake_id') }}",
+                    "{{ old('edit_intake') }}"); // Ensure this function correctly opens the modal
             @endif
         };
 
@@ -621,11 +642,18 @@
             document.getElementById('editAcademicYearModal').classList.remove('opacity-0', 'invisible', '-translate-y-5');
         }
 
-        // Close edit academic year modal
+        // Close edit academic year modal and reset validation messages
         function closeEditModal() {
             darkOverlay2.classList.add('opacity-0', 'invisible');
             darkOverlay2.classList.remove('opacity-100');
             document.getElementById('editAcademicYearModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+            // Reset validation messages
+            document.querySelectorAll("#editAcademicYearModal p.text-red-500").forEach(el => el.remove());
+            document.querySelectorAll("#editAcademicYearModal input").forEach(el => el.classList.remove("border-red-500"));
+
+            // Clear input fields
+            document.querySelector('input[name="edit_academic_year"]').value = "";
         }
 
         // intake
@@ -641,10 +669,21 @@
             document.getElementById('darkOverlay2').classList.add('opacity-100');
         }
 
+        // Close edit intake modal and reset validation messages
         function closeEditIntakeModal() {
             document.getElementById('editIntakeModal').classList.add('opacity-0', 'invisible', '-translate-y-5');
             document.getElementById('darkOverlay2').classList.add('opacity-0', 'invisible');
             document.getElementById('darkOverlay2').classList.remove('opacity-100');
+
+            // Reset validation messages
+            document.querySelectorAll("#editIntakeModal p.text-red-500").forEach(el => el.remove());
+            document.querySelectorAll("#editIntakeModal input, #editIntakeModal select").forEach(el => el.classList.remove(
+                "border-red-500"));
+
+            // Clear input fields
+            document.querySelector('input[name="edit_intake"]').value = "";
+            document.querySelector('select[name="status"]').selectedIndex =
+                0; // Reset the status select to the first option
         }
 
         // Update the onclick attribute in the table row
@@ -670,8 +709,6 @@
             }
         }
 
-        // ... other JavaScript functions ...
-
         // Auto-scroll function
         function scrollToElement(elementId) {
             const element = document.getElementById(elementId);
@@ -685,8 +722,17 @@
 
         // Call this function when the page loads
         window.onload = function() {
-            @if ($errors->any())
-                openModal();
+            @if ($errors->has('academic_year'))
+                openModal(); // Ensure this function correctly opens the modal
+            @endif
+
+            @if ($errors->has('edit_academic_year'))
+                openEditModal("{{ old('academic_year_id') }}", "{{ old('edit_academic_year') }}");
+            @endif
+
+            @if ($errors->has('edit_intake'))
+                openEditIntakeModal("{{ old('intake_id') }}",
+                    "{{ old('edit_intake') }}"); // Ensure this function correctly opens the modal
             @endif
 
             // Check if there's a hash in the URL and scroll to that element
