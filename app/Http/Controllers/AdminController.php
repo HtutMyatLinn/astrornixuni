@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EditAccountSettingRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Models\AcademicYear;
 use App\Models\Contribution;
 use App\Models\Faculty;
@@ -126,19 +127,20 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Password changed successfully.');
     }
 
-    public function resetPassword(Request $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,user_id',
-            'password' => 'required|min:6',
-        ]);
+        if ($request->ajax()) {
+            // This will automatically return validation errors if any
+            $validated = $request->validated();
+            return response()->json(['success' => true]);
+        }
 
         $user = User::where('user_id', $request->user_id)->first();
         $user->password = Hash::make($request->password);
 
         // Update the PasswordResetRequest status
         PasswordResetRequest::where('user_id', $request->user_id)
-            ->where('status', 'Pending') // Ensure only pending requests are updated
+            ->where('status', 'Pending')
             ->update(['status' => 'Completed']);
 
         $user->save();
