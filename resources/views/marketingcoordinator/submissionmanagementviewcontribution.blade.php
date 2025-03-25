@@ -232,19 +232,19 @@
                                     method="POST" class="flex flex-wrap gap-4 select-none">
                                     @csrf
                                     <button type="submit" name="status" value="Select"
-                                        class="bg-green-400 hover:bg-green-500 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                        class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Select
                                     </button>
                                     <button type="submit" name="status" value="Reject"
-                                        class="bg-red-400 hover:bg-red-500 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                        class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Reject
                                     </button>
                                     <button type="submit" name="status" value="Upload"
-                                        class="bg-blue-300 hover:bg-blue-400 text-black px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                        class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Give Feedback
                                     </button>
                                     <a href="{{ route('marketingcoordinator.submission-management') }}"
-                                        class="bg-black text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                        class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Back
                                     </a>
                                 </form>
