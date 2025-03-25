@@ -34,16 +34,16 @@
             <!-- here to add content -->
             <main class="flex-1 overflow-y-auto bg-[#F1F5F9] p-4 sm:p-5">
 
-                <div class="max-w-7xl mx-auto space-y-4 mb-4">
+                <div class="space-y-4 mb-4">
                     <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Published Contributions</h1>
 
                     <div class="p-8 bg-white rounded-lg shadow-lg">
                         <h1 class="text-xl font-bold mb-6">List of Published Contributions</h1>
                         <!-- Search Bar -->
-                        <div class="flex items-center justify-between mb-8">
+                        <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
                             <form action="{{ route('marketingcoordinator.published-contribution') }}" method="GET">
-                                <div class="relative w-[360px]">
-                                    <input type="text" name="search" placeholder="Search by title or submitter..."
+                                <div class="relative max-w-[400px]">
+                                    <input type="text" name="search" placeholder="Search..."
                                         value="{{ request('search') }}"
                                         class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
@@ -57,7 +57,7 @@
                             </form>
 
                             <!-- Sorting Dropdown -->
-                            <div class="flex justify-end">
+                            <div class="flex justify-start">
                                 <form action="{{ route('marketingcoordinator.published-contribution') }}"
                                     method="GET">
                                     <select name="sort" onchange="this.form.submit()"

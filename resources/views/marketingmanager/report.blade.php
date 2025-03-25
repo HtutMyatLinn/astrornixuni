@@ -44,7 +44,7 @@
 
                         <!-- Search and Filters -->
                         <form action="{{ route('marketingmanager.report') }}" method="GET">
-                            <div class="flex flex-col sm:flex-row gap-4 sm:gap-0 justify-between mb-8">
+                            <div class="flex flex-col sm:flex-row gap-4 justify-between mb-8">
                                 <!-- Search Input -->
                                 <div class="relative max-w-[400px]">
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
@@ -54,13 +54,13 @@
                                         <circle cx="11" cy="11" r="8" />
                                         <path d="m21 21-4.3-4.3" />
                                     </svg>
-                                    <input type="text" name="search" placeholder="Search by title or student name"
+                                    <input type="text" name="search" placeholder="Search..."
                                         value="{{ request('search') }}"
                                         class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                                 </div>
 
                                 <!-- Filter and Sort Dropdowns -->
-                                <div class="flex justify-end flex-wrap gap-4">
+                                <div class="flex justify-start flex-wrap gap-4">
                                     <!-- Faculty Filter -->
                                     <div class="relative group">
                                         <select name="faculty" onchange="this.form.submit()"

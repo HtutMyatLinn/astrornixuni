@@ -137,7 +137,7 @@
                             </div>
                         </div>
                         <!-- Total submissions Card -->
-                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full col-span-3">
+                        <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full col-span-1 md:col-span-3">
                             <!-- Avatar Circle -->
                             <div
                                 class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
@@ -175,8 +175,8 @@
                     <div class="p-8 bg-white shadow-lg mb-8">
                         <h1 class="text-xl font-bold mb-6">Resubmitted Contributions</h1>
                         <!-- Search and Filters -->
-                        <div class="flex justify-between mb-8">
-                            <div class="relative w-[400px]">
+                        <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                            <div class="relative max-w-[400px]">
                                 <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"

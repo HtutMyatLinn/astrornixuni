@@ -42,8 +42,8 @@
 
                         <!-- Search and Filters -->
                         <form action="{{ route('marketingcoordinator.submission-management') }}" method="GET">
-                            <div class="flex justify-between mb-8">
-                                <div class="relative w-[400px]">
+                            <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                                <div class="relative max-w-[400px]">
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"

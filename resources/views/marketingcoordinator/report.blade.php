@@ -32,8 +32,8 @@
                     <div class="p-8 bg-white shadow-lg mb-8">
                         <h1 class="text-xl font-bold mb-6">List of Contributions Without a Comment</h1>
                         <form method="GET" action="{{ route('marketingcoordinator.report') }}" id="filterForm">
-                            <div class="flex justify-between mb-8">
-                                <div class="relative w-[400px]">
+                            <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
+                                <div class="relative max-w-[400px]">
                                     <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400"
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -41,8 +41,7 @@
                                         <circle cx="11" cy="11" r="8" />
                                         <path d="m21 21-4.3-4.3" />
                                     </svg>
-                                    <input type="text" name="search"
-                                        placeholder="Search by Title or Student Name..."
+                                    <input type="text" name="search" placeholder="Search..."
                                         class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500"
                                         value="{{ request('search') }}" />
 

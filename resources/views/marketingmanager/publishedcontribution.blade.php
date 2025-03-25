@@ -40,14 +40,14 @@
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Published Contributions</h1>
 
                 <div class="max-w-full mx-auto shadow-lg p-6 bg-white mt-4 rounded-md">
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
                         <div>
-                            <h1 class="text-2xl font-bold mb-4">List of Published Contributions</h1>
+                            <h1 class="text-xl sm:text-2xl font-bold mb-4">List of Published Contributions</h1>
                             <h2 class="text-lg font-semibold text-gray-400">Total - {{ $contributions->total() }}
                             </h2>
                         </div>
                         <button id="downloadSelected"
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 h-fit self-center select-none"
+                            class="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-lg h-fit self-end sm:self-center select-none"
                             disabled>
                             Download Selected
                         </button>
