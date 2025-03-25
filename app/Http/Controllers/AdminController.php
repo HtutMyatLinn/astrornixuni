@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EditAccountSettingRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Mail\PasswordResetEmail;
 use App\Models\AcademicYear;
 use App\Models\Contribution;
 use App\Models\Faculty;
@@ -14,6 +15,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -130,22 +132,30 @@ class AdminController extends Controller
     public function resetPassword(ResetPasswordRequest $request)
     {
         if ($request->ajax()) {
-            // This will automatically return validation errors if any
             $validated = $request->validated();
             return response()->json(['success' => true]);
         }
 
-        $user = User::where('user_id', $request->user_id)->first();
-        $user->password = Hash::make($request->password);
+        $user = User::where('user_id', $request->user_id)->firstOrFail();
+        $newPassword = $request->password;
 
-        // Update the PasswordResetRequest status
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
         PasswordResetRequest::where('user_id', $request->user_id)
             ->where('status', 'Pending')
             ->update(['status' => 'Completed']);
 
-        $user->save();
+        try {
+            Mail::to($user->email)->send(new PasswordResetEmail($user, $newPassword));
+        } catch (\Exception $e) {
+            // \Log::error('Password reset email failed: ' . $e->getMessage());
+            // return redirect()->back()
+            //     ->with('warning', 'Password was reset but the notification email failed to send.');
+        }
 
-        return redirect()->back()->with('success', 'Password reset successfully.');
+        return redirect()->back()
+            ->with('success', 'Password reset successfully and user notified.');
     }
 
     public function faculty_guest_search(Request $request)

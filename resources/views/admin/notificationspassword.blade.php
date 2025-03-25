@@ -199,27 +199,14 @@
                                             class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                                     </div>
 
-                                    <div class="flex flex-wrap gap-4">
-                                        <!-- Filter Option -->
-                                        <select name="filter" onchange="this.form.submit()"
-                                            class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                            <option value="">All Statuses</option>
-                                            <option value="Pending"
-                                                {{ request('filter') == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                            <option value="Resolved"
-                                                {{ request('filter') == 'Resolved' ? 'selected' : '' }}>Resolved
-                                            </option>
-                                        </select>
-
-                                        <!-- Sort Option -->
-                                        <select name="sort" onchange="this.form.submit()"
-                                            class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                            <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>
-                                                Newest</option>
-                                            <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>
-                                                Oldest</option>
-                                        </select>
-                                    </div>
+                                    <!-- Sort Option -->
+                                    <select name="sort" onchange="this.form.submit()"
+                                        class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
+                                        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>
+                                            Newest</option>
+                                        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>
+                                            Oldest</option>
+                                    </select>
                                 </div>
                             </form>
 
@@ -383,58 +370,6 @@
                                     darkOverlay2.classList.add('opacity-100');
                                     modal.classList.remove('opacity-0', 'invisible', '-translate-y-5');
                                 });
-                            });
-
-                            // Handle form submission
-                            resetForm.addEventListener("submit", function(event) {
-                                event.preventDefault();
-
-                                // Clear previous errors
-                                const errorElements = document.querySelectorAll('.text-red-500');
-                                errorElements.forEach(el => el.remove());
-
-                                // Submit form via AJAX to check for validation errors
-                                fetch(this.action, {
-                                        method: 'POST',
-                                        body: new FormData(this),
-                                        headers: {
-                                            'X-Requested-With': 'XMLHttpRequest',
-                                            'Accept': 'application/json'
-                                        }
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.errors) {
-                                            // Display validation errors
-                                            if (data.errors.password) {
-                                                const passwordField = document.getElementById('password');
-                                                const errorElement = document.createElement('p');
-                                                errorElement.className = 'text-red-500 text-sm mt-1';
-                                                errorElement.textContent = data.errors.password[0];
-                                                passwordField.parentNode.parentNode.appendChild(errorElement);
-                                            }
-                                        } else {
-                                            // If no errors, open mail client and submit form
-                                            const newPassword = passwordField.value;
-                                            const userEmail = resetButtons[0].getAttribute("data-user-email");
-                                            const userName = resetButtons[0].getAttribute("data-user-name");
-
-                                            window.location.href =
-                                                `mailto:${userEmail}?subject=Your New Password&body=Dear ${userName},%0D%0A%0D%0A` +
-                                                `Your password has been reset by the administrator.%0D%0A%0D%0A` +
-                                                `New Password: ${newPassword}%0D%0A%0D%0A` +
-                                                `Please log in and change your password as soon as possible for security reasons.%0D%0A%0D%0A` +
-                                                `Best regards,%0D%0AAstrornix University Support Team`;
-
-                                            // Submit the form after opening the email client
-                                            setTimeout(() => {
-                                                resetForm.submit();
-                                            }, 500);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                    });
                             });
 
                             closeModal.addEventListener("click", function() {

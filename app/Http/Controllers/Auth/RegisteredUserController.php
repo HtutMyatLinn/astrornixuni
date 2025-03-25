@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\WelcomeEmail;
 use App\Models\Faculty;
 use App\Models\Role;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -29,19 +31,16 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
     public function store(RegisterRequest $request): RedirectResponse
     {
-
         // Generate a unique user_code
         $user_code = $this->generateUniqueUserId();
 
         // Fetch the role ID for the "Guest" role
         $guestRole = Role::where('role', 'Guest')->first();
 
-        if ($guestRole) {
-            $roleId = $guestRole->role_id; // Get the role ID
-        } else {
-            // Handle the case where the "Guest" role does not exist
+        if (!$guestRole) {
             throw new \Exception('Guest role not found.');
         }
 
@@ -53,7 +52,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'faculty_id' => $request->faculty_id,
-            'role_id' => $roleId,
+            'role_id' => $guestRole->role_id,
             'last_login_date' => now(),
             'last_password_changed_date' => now(),
             'password_expired_date' => now()->addMonths(2),
@@ -61,8 +60,15 @@ class RegisteredUserController extends Controller
             'status' => true,
         ]);
 
-        event(new Registered($user));
+        // Send welcome email
+        try {
+            Mail::to($user->email)->send(new WelcomeEmail($user));
+        } catch (\Exception $e) {
+            // Log the error but don't break the registration flow
+            // \Log::error('Registration email failed: ' . $e->getMessage());
+        }
 
+        event(new Registered($user));
         Auth::login($user);
 
         return redirect(route('/', absolute: false));
