@@ -318,13 +318,12 @@
 
                     <!-- Password Reset Modal -->
                     <div id="resetPasswordModal"
-                        class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300"">
+                        class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
                         <div class="bg-white p-6 rounded-lg shadow-lg w-96">
                             <h2 class="text-xl font-semibold mb-4">Reset Password</h2>
                             <form id="resetPasswordForm" method="POST"
                                 action="{{ route('admin.reset-password') }}">
                                 @csrf
-
                                 <input type="hidden" id="resetUserId" name="user_id">
 
                                 <div class="w-full relative">
@@ -369,8 +368,8 @@
                                 button.addEventListener("click", function(event) {
                                     event.preventDefault();
                                     const userId = this.getAttribute("data-user-id");
-                                    const userEmail = this.getAttribute("data-user-email"); // Get user's email
-                                    const userName = this.getAttribute("data-user-name"); // Get user's name
+                                    const userEmail = this.getAttribute("data-user-email");
+                                    const userName = this.getAttribute("data-user-name");
 
                                     if (!userEmail) {
                                         alert("User email is missing.");
@@ -383,29 +382,59 @@
                                     darkOverlay2.classList.remove('opacity-0', 'invisible');
                                     darkOverlay2.classList.add('opacity-100');
                                     modal.classList.remove('opacity-0', 'invisible', '-translate-y-5');
-
-                                    // Handle form submission
-                                    resetForm.addEventListener("submit", function(event) {
-                                        event.preventDefault(); // Prevent default submission
-
-                                        const newPassword = passwordField.value; // Get new password
-
-                                        // Open mail client
-                                        window.location.href =
-                                            `mailto:${userEmail}?subject=Your New Password&body=Dear ${userName},%0D%0A%0D%0A` +
-                                            `Your password has been reset by the administrator.%0D%0A%0D%0A` +
-                                            `New Password: ${newPassword}%0D%0A%0D%0A` +
-                                            `Please log in and change your password as soon as possible for security reasons.%0D%0A%0D%0A` +
-                                            `Best regards,%0D%0AAstrornix University Support Team`;
-
-                                        // Submit the form after opening the email client
-                                        setTimeout(() => {
-                                            resetForm.submit();
-                                        }, 500);
-                                    }, {
-                                        once: true
-                                    }); // Ensure event is triggered only once
                                 });
+                            });
+
+                            // Handle form submission
+                            resetForm.addEventListener("submit", function(event) {
+                                event.preventDefault();
+
+                                // Clear previous errors
+                                const errorElements = document.querySelectorAll('.text-red-500');
+                                errorElements.forEach(el => el.remove());
+
+                                // Submit form via AJAX to check for validation errors
+                                fetch(this.action, {
+                                        method: 'POST',
+                                        body: new FormData(this),
+                                        headers: {
+                                            'X-Requested-With': 'XMLHttpRequest',
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.errors) {
+                                            // Display validation errors
+                                            if (data.errors.password) {
+                                                const passwordField = document.getElementById('password');
+                                                const errorElement = document.createElement('p');
+                                                errorElement.className = 'text-red-500 text-sm mt-1';
+                                                errorElement.textContent = data.errors.password[0];
+                                                passwordField.parentNode.parentNode.appendChild(errorElement);
+                                            }
+                                        } else {
+                                            // If no errors, open mail client and submit form
+                                            const newPassword = passwordField.value;
+                                            const userEmail = resetButtons[0].getAttribute("data-user-email");
+                                            const userName = resetButtons[0].getAttribute("data-user-name");
+
+                                            window.location.href =
+                                                `mailto:${userEmail}?subject=Your New Password&body=Dear ${userName},%0D%0A%0D%0A` +
+                                                `Your password has been reset by the administrator.%0D%0A%0D%0A` +
+                                                `New Password: ${newPassword}%0D%0A%0D%0A` +
+                                                `Please log in and change your password as soon as possible for security reasons.%0D%0A%0D%0A` +
+                                                `Best regards,%0D%0AAstrornix University Support Team`;
+
+                                            // Submit the form after opening the email client
+                                            setTimeout(() => {
+                                                resetForm.submit();
+                                            }, 500);
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
                             });
 
                             closeModal.addEventListener("click", function() {
@@ -415,16 +444,15 @@
                             });
                         });
 
-
                         // Password toggle
                         function togglePassword(fieldId, icon) {
                             const field = document.getElementById(fieldId);
                             if (field.type === "password") {
                                 field.type = "text";
-                                icon.innerHTML = '<i class="ri-eye-line"></i>'; // Change to eye open
+                                icon.innerHTML = '<i class="ri-eye-line"></i>';
                             } else {
                                 field.type = "password";
-                                icon.innerHTML = '<i class="ri-eye-off-line"></i>'; // Change to eye closed
+                                icon.innerHTML = '<i class="ri-eye-off-line"></i>';
                             }
                         }
                     </script>
