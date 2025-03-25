@@ -55,7 +55,7 @@
                 {{-- Add Contribution Type Button --}}
                 <div class="flex justify-end my-4">
                     <button onclick="openModal()"
-                        class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 select-none">
+                        class="px-5 py-2 bg-black text-white rounded-lg hover:bg-gray-700 select-none">
                         Add Faculty
                     </button>
                 </div>
