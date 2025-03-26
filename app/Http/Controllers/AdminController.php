@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -149,9 +150,9 @@ class AdminController extends Controller
         try {
             Mail::to($user->email)->send(new PasswordResetEmail($user, $newPassword));
         } catch (\Exception $e) {
-            // \Log::error('Password reset email failed: ' . $e->getMessage());
-            // return redirect()->back()
-            //     ->with('warning', 'Password was reset but the notification email failed to send.');
+            Log::error('Password reset email failed: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('warning', 'Password was reset but the notification email failed to send.');
         }
 
         return redirect()->back()

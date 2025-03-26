@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\NewUserNotification;
 use App\Mail\WelcomeEmail;
 use App\Models\Faculty;
 use App\Models\Role;
@@ -13,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -44,6 +46,7 @@ class RegisteredUserController extends Controller
             throw new \Exception('Guest role not found.');
         }
 
+        // Create the new user
         $user = User::create([
             'user_code' => $user_code,
             'username' => $request->username,
@@ -60,12 +63,30 @@ class RegisteredUserController extends Controller
             'status' => true,
         ]);
 
-        // Send welcome email
+        // Send welcome email to the new user
         try {
             Mail::to($user->email)->send(new WelcomeEmail($user));
         } catch (\Exception $e) {
             // Log the error but don't break the registration flow
-            // \Log::error('Registration email failed: ' . $e->getMessage());
+            Log::error('Registration email failed: ' . $e->getMessage());
+        }
+
+        // Find Marketing Coordinators for the same faculty
+        $marketingCoordinatorRole = Role::where('role', 'Marketing Coordinator')->first();
+
+        if ($marketingCoordinatorRole) {
+            $marketingCoordinators = User::where('faculty_id', $request->faculty_id)
+                ->where('role_id', $marketingCoordinatorRole->role_id)
+                ->get();
+
+            // Send an email notification to each Marketing Coordinator
+            foreach ($marketingCoordinators as $mc) {
+                try {
+                    Mail::to($mc->email)->send(new NewUserNotification($user));
+                } catch (\Exception $e) {
+                    Log::error('Failed to send notification email to MC: ' . $e->getMessage());
+                }
+            }
         }
 
         event(new Registered($user));
