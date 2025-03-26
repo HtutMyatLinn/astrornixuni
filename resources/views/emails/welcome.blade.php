@@ -69,7 +69,7 @@
     @endcomponent
 
     <p style="font-size: 14px; line-height: 1.6; color: #718096; margin-top: 30px;">
-        If you didn't create this account, please <a href="{{ url('/contact') }}" style="color: #3b82f6;">contact our
+        If you didn't create this account, please <a href="{{ url('/contactus') }}" style="color: #3b82f6;">contact our
             Astrornix University support team</a> immediately.
     </p>
 </body>

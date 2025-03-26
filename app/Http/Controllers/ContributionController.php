@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContributionRequest;
+use App\Mail\ContributionPublishedNotification;
+use App\Mail\ContributionRejected;
 use App\Models\Comment;
 use App\Models\Contribution;
 use App\Models\ContributionCategory;
@@ -14,6 +16,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ContributionController extends Controller
 {
@@ -229,6 +233,29 @@ class ContributionController extends Controller
         return view('marketingcoordinator.submissionmanagementviewcontribution', compact('contribution'));
     }
 
+    // public function updateStatus(Request $request, $id)
+    // {
+    //     // Validate the request
+    //     $request->validate([
+    //         'status' => 'required|in:Upload,Reject,Update,Select,Publish',
+    //     ]);
+
+    //     // Find the contribution
+    //     $contribution = Contribution::findOrFail($id);
+
+    //     // Update the status
+    //     $contribution->contribution_status = $request->status;
+    //     $contribution->save();
+
+    //     // Redirect based on the status
+    //     if ($request->status == 'Upload') {
+    //         return redirect()->route('marketingcoordinator.submission-management.feedback', $id);
+    //     }
+
+    //     // Redirect back with a success message
+    //     return redirect()->back()->with('success', 'Contribution status updated successfully.');
+    // }
+
     public function updateStatus(Request $request, $id)
     {
         // Validate the request
@@ -239,9 +266,18 @@ class ContributionController extends Controller
         // Find the contribution
         $contribution = Contribution::findOrFail($id);
 
+        // Store the old status before updating
+        $oldStatus = $contribution->contribution_status;
+
         // Update the status
         $contribution->contribution_status = $request->status;
         $contribution->save();
+
+        // If the status is "Reject", send an email to the user
+        if ($request->status == 'Reject') {
+            // Send rejection email to the user
+            Mail::to($contribution->user->email)->send(new ContributionRejected($contribution));
+        }
 
         // Redirect based on the status
         if ($request->status == 'Upload') {
@@ -259,19 +295,6 @@ class ContributionController extends Controller
 
         return view('marketingcoordinator.feedback', compact('contribution'));
     }
-    // public function publishContribution($id)
-    // {
-    //     // Find the contribution
-    //     $contribution = Contribution::findOrFail($id);
-
-    //     // Update the status to "Publish"
-    //     $contribution->contribution_status = 'Publish';
-    //     $contribution->published_date = now();
-    //     $contribution->save();
-
-    //     // Redirect back with a success message
-    //     return redirect()->back()->with('success', 'Contribution published successfully.');
-    // }
 
     public function publishContribution($id)
     {
@@ -290,6 +313,13 @@ class ContributionController extends Controller
         $contribution->contribution_status = 'Publish';
         $contribution->published_date = now();
         $contribution->save();
+
+        // Send an email notification to the user who uploaded the contribution
+        try {
+            Mail::to($contribution->user->email)->send(new ContributionPublishedNotification($contribution));
+        } catch (\Exception $e) {
+            Log::error('Failed to send email: ' . $e->getMessage());
+        }
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Contribution published successfully.');

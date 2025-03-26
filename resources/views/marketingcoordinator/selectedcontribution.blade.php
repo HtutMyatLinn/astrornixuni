@@ -134,8 +134,7 @@
                                                     <td class="px-6 py-4">
                                                         <form
                                                             action="{{ route('marketingcoordinator.submission-management.publish-contribution', $contribution->contribution_id) }}"
-                                                            method="POST"
-                                                            onsubmit="sendEmailAndSubmit(event, '{{ $contribution->user->email }}', '{{ $contribution->user->first_name }} {{ $contribution->user->last_name }}', '{{ $contribution->contribution_title }}')">
+                                                            method="POST">
                                                             @csrf
                                                             <button type="submit"
                                                                 class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md select-none {{ now() < $contribution->intake->final_closure_date ? 'opacity-50 cursor-not-allowed' : '' }}"
@@ -167,27 +166,6 @@
             </main>
         </div>
     </div>
-
-    <script>
-        function sendEmailAndSubmit(event, userEmail, userName, contributionTitle) {
-            // Prevent the default form submission
-            event.preventDefault();
-
-            // Create the email subject and body
-            const subject = `Your Contribution: ${contributionTitle} has been Published`;
-            const body =
-                `Dear ${userName},\n\nYour contribution titled "${contributionTitle}" has been published.\n\nPlease visit the platform for more details.\n\nBest regards,\nAstrornix University Team`;
-
-            // Trigger the mailto link to send the email
-            window.location.href =
-                `mailto:${userEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-            // Submit the form after the mailto is triggered
-            setTimeout(() => {
-                event.target.submit();
-            }, 500);
-        }
-    </script>
 
     <!-- JavaScript for Sidebar Toggle -->
     <script>

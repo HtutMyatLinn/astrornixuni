@@ -1036,11 +1036,10 @@ class HomeController extends Controller
         }
 
         // Paginate the results
-        $contributions = $query->paginate(5);
+        $contributions = $query->paginate(10);
 
         return view('marketingcoordinator.submissionmanagement', compact('contributions'));
     }
-
 
     public function marketingcoordinatorSubmissionManagementViewDetailContribution()
     {
