@@ -36,28 +36,28 @@
 
                 <!-- Success Message -->
                 @if (session('success'))
-                <div id="successMessage"
-                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                    role="alert">
-                    <strong class="font-bold">Success!</strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
-                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                        <svg class="fill-current h-6 w-6 text-green-500" role="button"
-                            onclick="document.getElementById('successMessage').remove()"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <title>Close</title>
-                            <path
-                                d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z" />
-                        </svg>
-                    </span>
-                </div>
+                    <div id="successMessage"
+                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                        role="alert">
+                        <strong class="font-bold">Success!</strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <svg class="fill-current h-6 w-6 text-green-500" role="button"
+                                onclick="document.getElementById('successMessage').remove()"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path
+                                    d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z" />
+                            </svg>
+                        </span>
+                    </div>
 
-                <!-- Auto-hide script -->
-                <script>
-                    setTimeout(function() {
-                        document.getElementById('successMessage').remove();
-                    }, 3000); // 3 seconds
-                </script>
+                    <!-- Auto-hide script -->
+                    <script>
+                        setTimeout(function() {
+                            document.getElementById('successMessage').remove();
+                        }, 3000); // 3 seconds
+                    </script>
                 @endif
 
                 <div class="space-y-4 mb-4">
@@ -106,17 +106,32 @@
                             <!-- Feedback Form -->
                             <div class="mt-12">
                                 <h2 class="text-3xl font-bold mb-8">Provide Feedback</h2>
+
+                                {{-- Message --}}
+                                @if (now()->isAfter($contribution->submitted_date->addDays(14)))
+                                    <div class="mt-2 text-red-600 font-medium">
+                                        The 14-day feedback period for this contribution has expired.
+                                    </div>
+                                @endif
+
                                 <form id="feedbackForm"
                                     action="{{ route('marketingcoordinator.submit-feedback', $contribution->contribution_id) }}"
                                     method="POST">
                                     @csrf
-                                    <textarea name="feedback" rows="5"
-                                        class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Enter your feedback here..." required></textarea>
+                                    <div class="relative">
+                                        <textarea name="feedback" rows="5"
+                                            class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                            placeholder="Enter your feedback here..."></textarea>
+                                        @error('feedback')
+                                            <p class="absolute left-2 -bottom-1 bg-white text-red-500 text-sm mt-1">
+                                                {{ $message }}</p>
+                                        @enderror
+                                    </div>
                                     <div class="mt-6">
-                                        <button type="button" id="submitFeedbackButton"
-                                            class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors {{ ($contribution->intake->final_closure_date && now()->isBefore($contribution->intake->final_closure_date)) ? '' : 'opacity-50 cursor-not-allowed' }}"
-                                            {{ ($contribution->intake->final_closure_date && now()->isBefore($contribution->intake->final_closure_date)) ? '' : 'disabled' }}>
+                                        <button type="submit" id="submitFeedbackButton"
+                                            class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors
+                                            {{ now()->isBefore($contribution->submitted_date->addDays(14)) ? '' : 'opacity-50 cursor-not-allowed' }}"
+                                            {{ now()->isBefore($contribution->submitted_date->addDays(14)) ? '' : 'disabled' }}>
                                             Submit Feedback
                                         </button>
                                         <a href="{{ route('marketingcoordinator.submission-management') }}"
@@ -127,35 +142,6 @@
                                 </form>
                             </div>
                         </div>
-
-                        <script>
-                            // Add event listener to the "Submit Feedback" button
-                            document.getElementById('submitFeedbackButton').addEventListener('click', function() {
-                                // Get the feedback text
-                                const feedbackText = document.querySelector('textarea[name="feedback"]').value.trim();
-
-                                // Check if the feedback input is empty
-                                if (!feedbackText) {
-                                    alert('Please enter your feedback before submitting.'); // Show an alert if feedback is empty
-                                    return; // Stop further execution
-                                }
-
-                                // Get the user's email and name
-                                const userEmail = "{{ $contribution->user->email }}";
-                                const userName = "{{ $contribution->user->first_name }} {{ $contribution->user->last_name }}";
-                                const contributionTitle = "{{ $contribution->contribution_title }}";
-
-                                // Encode the feedback text for the mailto link
-                                const encodedFeedback = encodeURIComponent(feedbackText);
-
-                                // Open the email client with pre-filled recipient, subject, and body
-                                window.location.href =
-                                    `mailto:${userEmail}?subject=Feedback on Your Contribution: ${contributionTitle}&body=Dear ${userName},%0D%0A%0D%0AThank you for your contribution titled "${contributionTitle}". Here is our feedback:%0D%0A%0D%0A${encodedFeedback}%0D%0A%0D%0ABest regards,%0D%0AAstrornix University Team`;
-
-                                // Submit the form after opening the email client
-                                document.getElementById('feedbackForm').submit();
-                            });
-                        </script>
                     </div>
                 </div>
             </main>
@@ -165,7 +151,7 @@
     <!-- JavaScript for Sidebar Toggle -->
     <script>
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
         });
     </script>
 </body>

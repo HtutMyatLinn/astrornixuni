@@ -2,11 +2,11 @@
 <html>
 
 <head>
-    <title>Contribution Published</title>
+    <title>Feedback on Your Contribution</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
@@ -17,58 +17,50 @@
             padding: 40px 0;
         }
 
-        .container {
-            width: 600px;
+        .email-container {
+            max-width: 600px;
             background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin: 0 auto;
+            margin: 40px auto;
         }
 
-        .header {
+        .email-header {
             text-align: center;
-            padding-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eeeeee;
+        }
+
+        .email-header img {
+            max-width: 150px;
         }
 
         h1 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-top: 20px;
+            text-align: center;
         }
 
         p {
-            color: #555;
+            color: #333333;
             font-size: 16px;
-            line-height: 1.6;
+            line-height: 1.8;
+            margin-bottom: 15px;
         }
 
-        .content {
+        .feedback-section {
             background-color: #f9f9f9;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 5px;
+            padding: 15px;
             border-left: 5px solid #007bff;
+            margin: 20px 0;
+            border-radius: 5px;
         }
 
-        .button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
+        .feedback-section p {
+            margin: 0;
+            font-style: italic;
+            color: #555555;
         }
 
         .cta-button {
@@ -96,35 +88,36 @@
         .footer {
             text-align: center;
             font-size: 14px;
-            color: #888;
+            color: #888888;
             margin-top: 30px;
             border-top: 1px solid #eeeeee;
+            padding-top: 20px;
         }
 
         .footer a {
-            color: #007bff;
+            color: #004085;
             text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
     <div class="email-wrapper">
-        <div class="container">
-            <div class="header">
-                <h1>Hello, {{ $contribution->user->first_name }} {{ $contribution->user->last_name }}</h1>
-                <p>Your contribution titled <strong>{{ $contribution->contribution_title }}</strong> has been
-                    successfully published.</p>
+        <div class="email-container">
+            <h1>Feedback on Your Contribution</h1>
+
+            <p>Dear <strong>{{ $contribution->user->first_name }} {{ $contribution->user->last_name }}</strong>,</p>
+
+            <p>Your contribution titled <strong>{{ $contribution->contribution_title }}</strong> has received feedback.
+                Please review the details below:</p>
+
+            <!-- Feedback Section -->
+            <div class="feedback-section">
+                <p>“{{ $feedback }}”</p>
             </div>
 
-            <div class="content">
-                <p>Thank you for your submission! We appreciate your effort in contributing to the Astrornix community.
-                    Your contribution is now live and accessible to everyone.</p>
-            </div>
+            <p>We encourage you to review the feedback and apply necessary improvements. If you have any questions, feel
+                free to reach out.</p>
 
             <!-- Call to Action Button -->
             <div class="cta-button">
@@ -133,6 +126,7 @@
                     Contribution</a>
             </div>
 
+            <!-- Footer Section -->
             <div class="footer">
                 <p>Best regards,</p>
                 <p><strong>Astrornix University Team</strong></p>
