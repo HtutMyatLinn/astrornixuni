@@ -16,6 +16,11 @@ class Contribution extends Model
         'published_date' => 'datetime',
     ];
 
+    public function isBetween($startDate, $endDate)
+    {
+        return now()->between($startDate, $endDate);
+    }
+
 
     public function user()
     {
