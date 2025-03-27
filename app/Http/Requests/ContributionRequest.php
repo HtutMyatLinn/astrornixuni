@@ -26,6 +26,9 @@ class ContributionRequest extends FormRequest
             'intake_id' => 'required|exists:intakes,intake_id',
             'contribution_category_id' => 'required|exists:contribution_categories,contribution_category_id',
             'contribution_description' => 'required|string',
+            'contribution_cover' => 'image',
+            'contribution_images' => 'image',
+            'contribution_file_path' => 'mimes:doc,docx',
             'terms_and_conditions' => 'required|accepted'
         ];
     }
@@ -45,6 +48,12 @@ class ContributionRequest extends FormRequest
 
             'contribution_description.required' => 'The contribution description is required.',
             'contribution_description.string' => 'The contribution description must be a string.',
+
+            'contribution_cover.image' => 'The cover must be an image file.',
+
+            'contribution_images.image' => 'Only image files are allowed.',
+
+            'contribution_file_path.mimes' => 'Only Word files (.doc, .docx) are allowed.',
 
             'terms_and_conditions.required' => 'You must agree to the terms and conditions.',
             'terms_and_conditions.accepted' => 'You must agree to the terms and conditions.',
