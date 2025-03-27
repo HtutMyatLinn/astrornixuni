@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContributionRequest;
+use App\Mail\ContributionFeedbackMail;
 use App\Mail\ContributionPublishedNotification;
 use App\Mail\ContributionRejected;
 use App\Models\Comment;
@@ -328,16 +329,7 @@ class ContributionController extends Controller
     public function submitFeedback(Request $request, $id)
     {
         // Find the contribution
-        $contribution = Contribution::with('intake')->findOrFail($id);
-
-        // Check if the current date is before the final closure date from the intake
-        if ($contribution->intake && $contribution->intake->final_closure_date) {
-            if (now()->isAfter($contribution->intake->final_closure_date)) {
-                return redirect()->back()->withErrors(['error' => 'Feedback submission is only allowed before the final closure date.']);
-            }
-        } else {
-            return redirect()->back()->withErrors(['error' => 'Final closure date is not set for this intake.']);
-        }
+        $contribution = Contribution::findOrFail($id);
 
         // Validate the request
         $request->validate([
@@ -345,16 +337,20 @@ class ContributionController extends Controller
         ]);
 
         // Create a new feedback record
-        Feedback::create([
+        $feedback = Feedback::create([
             'contribution_id' => $contribution->contribution_id,
             'user_id' => auth()->id(),
             'feedback' => $request->feedback,
             'feedback_given_date' => now(),
         ]);
 
+        // Send email to the contributor
+        Mail::to($contribution->user->email)->send(new ContributionFeedbackMail($contribution, $request->feedback));
+
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Feedback submitted successfully.');
+        return redirect()->back()->with('success', 'Feedback submitted successfully, and an email has been sent to the contributor.');
     }
+
     public function marketingcoordinatorNotifications()
     {
         $user = Auth::user();

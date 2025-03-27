@@ -260,7 +260,7 @@
                                 placeholder="Enter functionalities..."
                                 class="w-full px-4 py-2.5 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                             @error('edit_functionalities')
-                                <p class="absolute left-2 -bottom-2 bg-whitetext-red-500 text-sm mt-1">
+                                <p class="absolute left-2 -bottom-2 bg-white text-red-500 text-sm mt-1">
                                     {{ $message }}</p>
                             @enderror
                         </div>
