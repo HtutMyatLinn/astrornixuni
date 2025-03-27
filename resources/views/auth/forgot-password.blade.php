@@ -29,7 +29,7 @@
             <a href="{{ route('login') }}"><i class="ri-arrow-left-long-line"></i>Back</a>
         </div>
         <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a new password that will allow you to access your account back.') }}
         </div>
 
         @if (session('success'))

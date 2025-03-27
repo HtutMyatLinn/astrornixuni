@@ -138,8 +138,12 @@
 
                 <div class="mb-4 relative">
                     <label class="block text-gray-700 font-medium mb-2">Intake</label>
+                    @foreach ($intakes as $intake)
+                        <input type="text" value="{{ $intake->intake }}" disabled
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @endforeach
                     <select name="intake_id"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="w-full hidden border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                         @if ($intakes->isEmpty())
                             <option disabled>No active intakes found</option>
                         @else
