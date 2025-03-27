@@ -327,18 +327,27 @@ class ContributionController extends Controller
 
     public function submitFeedback(Request $request, $id)
     {
+        // Find the contribution
+        $contribution = Contribution::with('intake')->findOrFail($id);
+
+        // Check if the current date is before the final closure date from the intake
+        if ($contribution->intake && $contribution->intake->final_closure_date) {
+            if (now()->isAfter($contribution->intake->final_closure_date)) {
+                return redirect()->back()->withErrors(['error' => 'Feedback submission is only allowed before the final closure date.']);
+            }
+        } else {
+            return redirect()->back()->withErrors(['error' => 'Final closure date is not set for this intake.']);
+        }
+
         // Validate the request
         $request->validate([
             'feedback' => 'required|string|max:1000',
         ]);
 
-        // Find the contribution
-        $contribution = Contribution::findOrFail($id);
-
         // Create a new feedback record
         Feedback::create([
             'contribution_id' => $contribution->contribution_id,
-            'user_id' => auth()->id(), // Assuming the authenticated user is giving the feedback
+            'user_id' => auth()->id(),
             'feedback' => $request->feedback,
             'feedback_given_date' => now(),
         ]);
@@ -346,7 +355,6 @@ class ContributionController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Feedback submitted successfully.');
     }
-
     public function marketingcoordinatorNotifications()
     {
         $user = Auth::user();

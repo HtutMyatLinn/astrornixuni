@@ -36,28 +36,28 @@
 
                 <!-- Success Message -->
                 @if (session('success'))
-                    <div id="successMessage"
-                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                        role="alert">
-                        <strong class="font-bold">Success!</strong>
-                        <span class="block sm:inline">{{ session('success') }}</span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                            <svg class="fill-current h-6 w-6 text-green-500" role="button"
-                                onclick="document.getElementById('successMessage').remove()"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <title>Close</title>
-                                <path
-                                    d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z" />
-                            </svg>
-                        </span>
-                    </div>
+                <div id="successMessage"
+                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                    role="alert">
+                    <strong class="font-bold">Success!</strong>
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg class="fill-current h-6 w-6 text-green-500" role="button"
+                            onclick="document.getElementById('successMessage').remove()"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <title>Close</title>
+                            <path
+                                d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z" />
+                        </svg>
+                    </span>
+                </div>
 
-                    <!-- Auto-hide script -->
-                    <script>
-                        setTimeout(function() {
-                            document.getElementById('successMessage').remove();
-                        }, 3000); // 3 seconds
-                    </script>
+                <!-- Auto-hide script -->
+                <script>
+                    setTimeout(function() {
+                        document.getElementById('successMessage').remove();
+                    }, 3000); // 3 seconds
+                </script>
                 @endif
 
                 <div class="space-y-4 mb-4">
@@ -75,7 +75,8 @@
 
                                 <div class="font-semibold text-xl">Submitted By</div>
                                 <div class="md:col-span-2 text-xl">{{ $contribution->user->first_name }}
-                                    {{ $contribution->user->last_name }}</div>
+                                    {{ $contribution->user->last_name }}
+                                </div>
 
                                 <div class="font-semibold text-xl">Submission Date</div>
                                 <div class="md:col-span-2 text-xl">{{ $contribution->submitted_date->format('M d, Y') }}
@@ -114,11 +115,12 @@
                                         placeholder="Enter your feedback here..." required></textarea>
                                     <div class="mt-6">
                                         <button type="button" id="submitFeedbackButton"
-                                            class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
+                                            class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors {{ ($contribution->intake->final_closure_date && now()->isBefore($contribution->intake->final_closure_date)) ? '' : 'opacity-50 cursor-not-allowed' }}"
+                                            {{ ($contribution->intake->final_closure_date && now()->isBefore($contribution->intake->final_closure_date)) ? '' : 'disabled' }}>
                                             Submit Feedback
                                         </button>
                                         <a href="{{ route('marketingcoordinator.submission-management') }}"
-                                            class="bg-gray-500 hover:bg-gray-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors ml-4">
+                                            class="bg-black hover:bg-gray-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors ml-4">
                                             Back
                                         </a>
                                     </div>
