@@ -67,7 +67,7 @@ class UnassignedUserController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $student_percentage_change = round($student_percentage_change, 2);
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
 
         // Inquiry
         $inquiries = Inquiry::all();
@@ -89,7 +89,7 @@ class UnassignedUserController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
+        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
 
         // Fetch the role ID for the "Guest" role
         $guestRole = Role::where('role', 'Guest')->first();
@@ -123,7 +123,7 @@ class UnassignedUserController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $unassigned_user_percentage_change = round($unassigned_user_percentage_change, 2);
+        $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         return view('admin.notificationsunregister', compact('users', 'search', 'total_students', 'student_percentage_change', 'inquiries', 'inquiry_percentage_change', 'unassigned_users', 'unassigned_user_percentage_change'));
     }
@@ -165,7 +165,7 @@ class UnassignedUserController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $unassigned_user_percentage_change = round($unassigned_user_percentage_change, 2);
+        $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
         $inquiries = Inquiry::all();
@@ -187,7 +187,7 @@ class UnassignedUserController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
+        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
 
         $users = User::where('role_id', $guestRoleId) // Get the id of Guest role
             ->orderBy('created_at', $sort)
@@ -222,7 +222,7 @@ class UnassignedUserController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $student_percentage_change = round($student_percentage_change, 2);
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
 
         return view('admin.notificationsunregister', compact('unassigned_users', 'unassigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'users', 'total_students', 'student_percentage_change', 'sort'));
     }

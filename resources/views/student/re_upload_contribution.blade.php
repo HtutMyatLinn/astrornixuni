@@ -69,29 +69,47 @@
                             </td>
                             <td class="border p-3 select-none">
                                 @if ($contribution->contribution_status !== 'Publish')
-                                    <button class="text-white px-4 py-1 rounded hover:opacity-80 underline"
-                                        style="background-color: #1FE689;"
-                                        onclick="showReUploadSection({{ $contribution->contribution_id }})">
-                                        Edit
-                                    </button>
-                                    <form
-                                        action="{{ route('student.contributions.destroy', $contribution->contribution_id) }}"
-                                        method="POST" class="inline ml-2">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="text-white px-4 py-1 rounded hover:opacity-80 underline"
-                                            style="background-color: #E61F1F;">
-                                            Delete
+                                    @if (now() < \Carbon\Carbon::parse($contribution->intake->final_closure_date))
+                                        <button class="text-white px-4 py-1 rounded hover:opacity-80 underline"
+                                            style="background-color: #1FE689;"
+                                            onclick="showReUploadSection({{ $contribution->contribution_id }})">
+                                            Edit
                                         </button>
-                                    </form>
+                                        <form
+                                            action="{{ route('student.contributions.destroy', $contribution->contribution_id) }}"
+                                            method="POST" class="inline ml-2"
+                                            id="deleteForm{{ $contribution->contribution_id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                class="text-white px-4 py-1 rounded hover:opacity-80 underline"
+                                                style="background-color: #E61F1F;"
+                                                onclick="confirmDelete({{ $contribution->contribution_id }})">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    @else
+                                        <button
+                                            class="text-white px-4 py-1 rounded cursor-not-allowed hover:opacity-80 underline bg-[#B5B8BF]">
+                                            Submission Closed
+                                        </button>
+                                    @endif
                                 @else
                                     <button
-                                        class="text-white px-4 py-1 rounded cursor-not-allowed hover:opacity-80 underline"
-                                        style="background-color: #B5B8BF;" disabled>
+                                        class="text-white
+                                            px-4 py-1 rounded cursor-not-allowed hover:opacity-80 underline bg-[#B5B8BF]"
+                                        disabled>
                                         Locked
                                     </button>
                                 @endif
+
+                                <script>
+                                    function confirmDelete(contributionId) {
+                                        if (confirm('Are you sure you want to delete this contribution?')) {
+                                            document.getElementById('deleteForm' + contributionId).submit();
+                                        }
+                                    }
+                                </script>
                             </td>
                         </tr>
                     @endforeach

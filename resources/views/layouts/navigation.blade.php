@@ -38,10 +38,10 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @if (Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student')
-                <a href="{{ route('upload_contribution.index') }}"
-                    class="leading-4 font-medium text-blue-800 hover:text-blue-900 border-l-2 py-2 pl-4 transition-colors duration-200">
-                    Contribute your article
-                </a>
+                    <a href="{{ route('upload_contribution.index') }}"
+                        class="leading-4 font-medium text-blue-800 hover:text-blue-900 border-l-2 py-2 pl-4 transition-colors duration-200">
+                        Contribute your article
+                    </a>
                 @endif
 
                 <x-dropdown align="right">
@@ -49,9 +49,12 @@
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             @if (Auth::check())
-                            <div class="truncate max-w-[100px]">{{ Auth::user()->username }}</div>
+                                <div class="truncate max-w-[100px]">{{ Auth::user()->username }}</div>
                             @else
-                            <div>New User?</div>
+                                <div
+                                    class="border-2 border-slate-600 rounded-full p-1 w-7 h-7 flex items-center justify-center">
+                                    <i class="ri-user-fill text-slate-600 text-xl"></i>
+                                </div>
                             @endif
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -68,60 +71,68 @@
                         {{-- Profile --}}
                         <div class="flex items-center gap-3 p-2">
                             @if (Auth::check())
-                            @if (Auth::user()->profile_image)
-                            <img id="profilePreview"
-                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                src="{{ asset('profile_images/' . Auth::user()->profile_image) }}"
-                                alt="Profile">
-                            @else
-                            <p
-                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                {{ strtoupper(Auth::user()->username[0]) }}
-                            </p>
-                            @endif
-                            @else
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
-                                <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                                    class="w-full h-full rounded-full object-cover">
-                            </div>
-                            @endif
-                            <div class="flex-1 min-w-0">
-                                @if (Auth::check())
-                                <p class="text-xs sm:text-sm text-gray-600 text-wrap w-56"
-                                    title="{{ Auth::user()->email }}">
-                                    {{ Auth::user()->email }}
-                                </p>
-                                <p class="text-xs text-gray-500 text-wrap">
-                                    Last login date -
-                                    {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y h:i A') : 'Never' }}
-                                </p>
+                                @if (Auth::user()->profile_image)
+                                    <img id="profilePreview"
+                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                        src="{{ asset('profile_images/' . Auth::user()->profile_image) }}"
+                                        alt="Profile">
                                 @else
-                                <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">
-                                    Register to get access to all features
-                                </p>
+                                    <p
+                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                        {{ strtoupper(Auth::user()->username[0]) }}
+                                    </p>
+                                @endif
+                            @else
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
+                                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                                        class="w-full h-full rounded-full object-cover">
+                                </div>
+                            @endif
+                            <div class="flex-1 min-w-0 text-wrap">
+                                @if (Auth::check())
+                                    <p class="text-wrap">Welcome, {{ Auth::user()->username }}</p>
+                                @else
+                                    <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">
+                                        Register to get access to all features
+                                    </p>
                                 @endif
                             </div>
                         </div>
                         @if (Auth::check())
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
+                            <div class="px-4">
+                                <p class="text-xs sm:text-sm text-gray-600 text-nowrap"
+                                    title="{{ Auth::user()->email }}">
+                                    {{ Auth::user()->email }}
+                                </p>
+                                <p class="text-xs text-gray-500 text-nowrap">
+                                    Last login date -
+                                    {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y h:i A') : 'Never' }}
+                                </p>
+                            </div>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault(); this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                            <x-dropdown-link :href="route('profile.edit')" class="flex gap-2 items-center">
+                                <i class="ri-user-3-line text-xl"></i>
+                                {{ __('Profile') }}
                             </x-dropdown-link>
-                        </form>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <x-dropdown-link :href="route('logout')" class="flex gap-2 items-center"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                    <i class="ri-logout-box-r-line text-xl"></i>
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
                         @else
-                        <x-dropdown-link :href="route('register')">
-                            {{ __('Register') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('login')">
-                            {{ __('Log In') }}
-                        </x-dropdown-link>
+                            <x-dropdown-link :href="route('register')" class="flex gap-2 items-center">
+                                <i class="ri-user-add-line text-xl"></i>
+                                {{ __('Register') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('login')" class="flex gap-2 items-center">
+                                <i class="ri-user-3-line text-xl"></i>
+                                {{ __('Log In') }}
+                            </x-dropdown-link>
                         @endif
                     </x-slot>
                 </x-dropdown>
@@ -210,8 +221,8 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 @if (Auth::check())
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 @endif
             </div>
 

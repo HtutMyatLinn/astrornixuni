@@ -46,7 +46,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $percentage_change = round($percentage_change, 2);
+        $percentage_change = min(round($percentage_change, 2), 100);
 
         // Inquiry
         $inquiries = Inquiry::all();
@@ -68,7 +68,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
+        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
 
         $total_students = User::whereHas('role', function ($query) {
             $query->where('role', 'Student');
@@ -97,7 +97,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $student_percentage_change = round($student_percentage_change, 2);
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
 
         $faculties = Faculty::all();
 
@@ -116,7 +116,7 @@ class HomeController extends Controller
         if ($previous_month_contributions > 0) {
             $contribution_percentage_change = (($current_month_contributions - $previous_month_contributions) / $previous_month_contributions) * 100;
         }
-        $contribution_percentage_change = round($contribution_percentage_change, 2);
+        $contribution_percentage_change = min(round($contribution_percentage_change, 2), 100);
 
         $pending_contributions = Contribution::where('contribution_status', 'Upload')->get();
 
@@ -137,7 +137,7 @@ class HomeController extends Controller
         if ($previous_month_selected > 0) {
             $selected_percentage_change = (($current_month_selected - $previous_month_selected) / $previous_month_selected) * 100;
         }
-        $selected_percentage_change = round($selected_percentage_change, 2);
+        $selected_percentage_change = min(round($selected_percentage_change, 2), 100);
 
         // Rejected Contributions
         $rejected_contributions = Contribution::where('contribution_status', 'Reject')->get();
@@ -156,7 +156,7 @@ class HomeController extends Controller
         if ($previous_month_rejected > 0) {
             $rejected_percentage_change = (($current_month_rejected - $previous_month_rejected) / $previous_month_rejected) * 100;
         }
-        $rejected_percentage_change = round($rejected_percentage_change, 2);
+        $rejected_percentage_change = min(round($rejected_percentage_change, 2), 100);
 
         // Published Contributions
         $published_contributions = Contribution::where('contribution_status', 'Publish')->get();
@@ -175,7 +175,7 @@ class HomeController extends Controller
         if ($previous_month_published > 0) {
             $published_percentage_change = (($current_month_published - $previous_month_published) / $previous_month_published) * 100;
         }
-        $published_percentage_change = round($published_percentage_change, 2);
+        $published_percentage_change = min(round($published_percentage_change, 2), 100);
 
         // Get browser data
         $browserStats = BrowserStat::all();
@@ -271,7 +271,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $unassigned_user_percentage_change = round($unassigned_user_percentage_change, 2);
+        $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
         $inquiries = Inquiry::all();
@@ -293,7 +293,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
+        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
 
         // Total student
         $total_students = User::whereHas('role', function ($query) {
@@ -359,7 +359,7 @@ class HomeController extends Controller
         ]);
 
         // Round the percentage to 2 decimal places
-        $student_percentage_change = round($student_percentage_change, 2);
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
         $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
         return view('admin.notificationspassword', compact(
@@ -452,10 +452,6 @@ class HomeController extends Controller
             'totalFaculty' => $totalFaculty,
         ]);
     }
-    // public function marketingmanagerAccountSetting()
-    // {
-    //     return view('marketingmanager.accountsetting');
-    // }
     /**
      * Display all published contributions for the marketing manager's dashboard.
      */
@@ -715,7 +711,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $student_percentage_change = round($student_percentage_change, 2);
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
 
         // Fetch the role ID for the "Guest" role
         $guestRole = Role::where('role', 'Guest')->first();
@@ -757,7 +753,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $faculty_guests_percentage_change = round($faculty_guests_percentage_change, 2);
+        $faculty_guests_percentage_change = min(round($faculty_guests_percentage_change, 2), 100);
 
         // Fetch contributions related to the logged-in user's faculty
         $total_contributions = Contribution::whereHas('user.faculty', function ($query) use ($user) {
@@ -785,7 +781,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $contributions_percentage_change = round($contributions_percentage_change, 2);
+        $contributions_percentage_change = min(round($contributions_percentage_change, 2), 100);
 
         // Pending contributions
         $pending_contributions = Contribution::where('contribution_status', 'Upload')
@@ -818,7 +814,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $pending_contributions_percentage_change = round($pending_contributions_percentage_change, 2);
+        $pending_contributions_percentage_change = min(round($pending_contributions_percentage_change, 2), 100);
 
         // Selected contributions
         $selected_contributions = Contribution::where('contribution_status', 'Select')
@@ -851,7 +847,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $selected_contributions_percentage_change = round($selected_contributions_percentage_change, 2);
+        $selected_contributions_percentage_change = min(round($selected_contributions_percentage_change, 2), 100);
 
         // Rejected contributions
         $rejected_contributions = Contribution::where('contribution_status', 'Reject')
@@ -884,7 +880,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $rejected_contributions_percentage_change = round($rejected_contributions_percentage_change, 2);
+        $rejected_contributions_percentage_change = min(round($rejected_contributions_percentage_change, 2), 100);
 
         // Published contributions
         $published_contributions = Contribution::where('contribution_status', 'Publish')
@@ -917,7 +913,7 @@ class HomeController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $published_contributions_percentage_change = round($published_contributions_percentage_change, 2);
+        $published_contributions_percentage_change = min(round($published_contributions_percentage_change, 2), 100);
 
         return view('marketingcoordinator.index', compact('labels', 'data', 'total_students', 'student_percentage_change', 'faculty_guests', 'faculty_guests_percentage_change', 'total_contributions', 'contributions_percentage_change', 'pending_contributions', 'pending_contributions_percentage_change', 'selected_contributions', 'selected_contributions_percentage_change', 'rejected_contributions', 'rejected_contributions_percentage_change', 'published_contributions', 'published_contributions_percentage_change'));
     }

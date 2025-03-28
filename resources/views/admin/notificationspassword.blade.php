@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Load Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css"
@@ -313,35 +314,32 @@
                                 @csrf
                                 <input type="hidden" id="resetUserId" name="user_id">
 
-                                <div class="w-full relative">
-                                    <label for="password" class="block text-gray-700 font-semibold">
-                                        New Password
-                                    </label>
-                                    <div class="relative">
-                                        <input id="password" type="password"
-                                            class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none pr-10"
-                                            name="password" placeholder="Enter a secure password">
-                                        <button type="button" class="absolute right-3 top-3 text-gray-500"
-                                            onclick="togglePassword('password', this)">
-                                            <i class="ri-eye-off-line"></i>
-                                        </button>
-                                    </div>
-                                    <div class="absolute left-2 -bottom-2 bg-white">
-                                        @error('password')
-                                            <p class="text-red-500 text-sm">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                                <div class="mb-4">
+                                    <p class="text-gray-600">A secure password will be automatically generated and
+                                        emailed to the user.</p>
                                 </div>
 
                                 <div class="flex justify-end mt-4">
                                     <button type="button" id="closeModal"
                                         class="mr-2 px-4 py-2 bg-gray-400 text-white rounded-lg">Cancel</button>
-                                    <button type="submit"
-                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg">Reset</button>
+                                    <button type="submit" id="resetButton"
+                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center justify-center">
+                                        <span id="resetButtonText">Reset</span>
+                                        <svg id="resetSpinner"
+                                            class="animate-spin -mr-1 ml-2 h-4 w-4 text-white hidden"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                        </svg>
+                                    </button>
                                 </div>
                             </form>
                         </div>
                     </div>
+
                     <script>
                         document.addEventListener("DOMContentLoaded", function() {
                             const resetButtons = document.querySelectorAll(".reset-password-btn");
@@ -349,37 +347,88 @@
                             const closeModal = document.getElementById("closeModal");
                             const userIdInput = document.getElementById("resetUserId");
                             const resetForm = document.getElementById("resetPasswordForm");
-                            const passwordField = document.getElementById("password");
+                            const resetButton = document.getElementById("resetButton");
+                            const resetButtonText = document.getElementById("resetButtonText");
+                            const resetSpinner = document.getElementById("resetSpinner");
+
+                            // Get the dark overlay element (make sure this exists in your HTML)
+                            const darkOverlay2 = document.getElementById("darkOverlay2"); // Add this if missing
 
                             resetButtons.forEach(button => {
                                 button.addEventListener("click", function(event) {
                                     event.preventDefault();
                                     const userId = this.getAttribute("data-user-id");
-                                    const userEmail = this.getAttribute("data-user-email");
-                                    const userName = this.getAttribute("data-user-name");
-
-                                    if (!userEmail) {
-                                        alert("User email is missing.");
-                                        return;
-                                    }
-
                                     userIdInput.value = userId;
 
                                     // Show the modal
-                                    darkOverlay2.classList.remove('opacity-0', 'invisible');
-                                    darkOverlay2.classList.add('opacity-100');
+                                    if (darkOverlay2) {
+                                        darkOverlay2.classList.remove('opacity-0', 'invisible');
+                                        darkOverlay2.classList.add('opacity-100');
+                                    }
                                     modal.classList.remove('opacity-0', 'invisible', '-translate-y-5');
                                 });
                             });
 
                             closeModal.addEventListener("click", function() {
-                                darkOverlay2.classList.add('opacity-0', 'invisible');
-                                darkOverlay2.classList.remove('opacity-100');
+                                if (darkOverlay2) {
+                                    darkOverlay2.classList.add('opacity-0', 'invisible');
+                                    darkOverlay2.classList.remove('opacity-100');
+                                }
                                 modal.classList.add('opacity-0', 'invisible', '-translate-y-5');
+                            });
+
+                            resetForm.addEventListener("submit", function(e) {
+                                e.preventDefault();
+
+                                // Show loading state
+                                resetButton.disabled = true;
+                                resetButtonText.textContent = "Resetting...";
+                                resetSpinner.classList.remove('hidden');
+
+                                fetch(this.action, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                            'X-Requested-With': 'XMLHttpRequest',
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                        },
+                                        body: new FormData(this)
+                                    })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        if (data.success) {
+                                            // Close modal on success
+                                            if (darkOverlay2) {
+                                                darkOverlay2.classList.add('opacity-0', 'invisible');
+                                                darkOverlay2.classList.remove('opacity-100');
+                                            }
+                                            modal.classList.add('opacity-0', 'invisible', '-translate-y-5');
+
+                                            // Reload the page or update UI as needed
+                                            window.location.reload();
+                                        } else {
+                                            alert(data.message || 'An error occurred');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert('An error occurred while resetting the password.');
+                                    })
+                                    .finally(() => {
+                                        // Reset button state
+                                        resetButton.disabled = false;
+                                        resetButtonText.textContent = "Reset";
+                                        resetSpinner.classList.add('hidden');
+                                    });
                             });
                         });
 
-                        // Password toggle
+                        // Password toggle function (if you keep it for other forms)
                         function togglePassword(fieldId, icon) {
                             const field = document.getElementById(fieldId);
                             if (field.type === "password") {

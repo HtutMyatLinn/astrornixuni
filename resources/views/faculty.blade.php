@@ -12,11 +12,12 @@
         <div class="flex flex-col md:flex-row items-center gap-6 md:gap-12">
             <!-- Text Content -->
             <div class="w-full md:w-1/2">
-                <h2 class="text-lg md:text-2xl font-semibold text-black mb-3">About the Faculty</h2>
+                <h2 class="text-lg md:text-2xl font-semibold text-black mb-3">About the University Faculties </h2>
                 <p class="text-sm md:text-base text-gray-700 leading-relaxed">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Excepturi, hic! Ex dolores quibusdam
-                    expedita quasi asperiores consequuntur dolorem, pariatur deserunt aliquam, accusantium alias
-                    laboriosam error ratione aut dignissimos consectetur soluta!
+                    Our university is home to a diverse range of faculties, dedicated to academic excellence, research
+                    innovation, and industry collaboration. Faculty members contribute to groundbreaking discoveries and
+                    advancements across multiple disciplines, including Science, Engineering, Business, Medicine, and
+                    Arts.
                 </p>
             </div>
 
@@ -37,26 +38,22 @@
             Explore research, publications, and projects from our faculty members shaping innovation and knowledge.
         </p>
 
-        <!-- Search Bar -->
-        <form id="search-form" class="max-w-lg mx-auto mb-10 relative" method="GET" action="{{ route('faculty') }}">
-            <input type="text" name="search" placeholder="Search contributions..."
-                class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-gray-300 text-sm md:text-base pl-10 transition duration-300 ease-in-out"
-                value="{{ request('search') }}">
-            <img src="{{ asset('images/group.png') }}" alt="Search Icon"
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-all duration-300 ease-in-out">
-        </form>
-    </div>
-
-    <div class="container mx-auto px-4 sm:px-6 md:px-12 text-center py-0 md:py-12">
         <!-- Faculty Filter Dropdown Section -->
-        <div class="flex mb-6 gap-4 flex-wrap">
-            <!-- Search Form -->
+        <div class="flex max-w-3xl mx-auto mb-6 gap-8 flex-wrap">
+            <!-- Search Bar -->
+            <form id="search-form" class="relative flex-1" method="GET" action="{{ route('faculty') }}">
+                <input type="text" name="search" placeholder="Search contributions..."
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm md:text-base pl-10 transition duration-300 ease-in-out"
+                    value="{{ request('search') }}">
+                <img src="{{ asset('images/group.png') }}" alt="Search Icon"
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-all duration-300 ease-in-out">
+            </form>
 
             <!-- Filter by Faculty -->
-            <form id="faculty-form" class="w-full sm:w-1/4" method="GET" action="{{ route('faculty') }}">
-                <h2 class="text-lg md:text-xl font-semibold text-left">Filter by Faculty</h2>
+            <form id="faculty-form" class="w-full flex-1" method="GET" action="{{ route('faculty') }}">
                 <select id="faculty_filter" name="faculty_filter"
-                    class="mt-2 px-4 py-2 border border-gray-300 rounded-md w-full" onchange="this.form.submit()">
+                    class="px-4 py-2 border border-gray-300 rounded-md w-full transition duration-300 ease-in-out"
+                    onchange="this.form.submit()">
                     <option value="all" {{ request('faculty_filter', 'all') == 'all' ? 'selected' : '' }}>All Faculty
                     </option>
                     @foreach ($faculties as $faculty)
@@ -68,7 +65,9 @@
                 </select>
             </form>
         </div>
+    </div>
 
+    <div class="container mx-auto px-4 sm:px-6 md:px-12 text-center py-0 md:py-12">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="contributions-list">
             @if ($contributions->count() > 0)
                 @foreach ($contributions as $contribution)

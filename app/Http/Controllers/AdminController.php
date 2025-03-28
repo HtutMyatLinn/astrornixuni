@@ -130,19 +130,16 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Password changed successfully.');
     }
 
-    public function resetPassword(ResetPasswordRequest $request)
+    public function resetPassword(Request $request)
     {
-        if ($request->ajax()) {
-            $validated = $request->validated();
-            return response()->json(['success' => true]);
-        }
+        // Generate a secure password with upper, lower, numbers, and special chars (8-16 chars)
+        $newPassword = $this->generateStrongPassword();
 
         $user = User::where('user_id', $request->user_id)->firstOrFail();
-        $newPassword = $request->password;
-
         $user->password = Hash::make($newPassword);
         $user->save();
 
+        // Update password reset requests if needed
         PasswordResetRequest::where('user_id', $request->user_id)
             ->where('status', 'Pending')
             ->update(['status' => 'Completed']);
@@ -151,12 +148,52 @@ class AdminController extends Controller
             Mail::to($user->email)->send(new PasswordResetEmail($user, $newPassword));
         } catch (\Exception $e) {
             Log::error('Password reset email failed: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('warning', 'Password was reset but the notification email failed to send.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Password was reset but the notification email failed to send.'
+            ], 500);
         }
 
-        return redirect()->back()
-            ->with('success', 'Password reset successfully and user notified.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Password reset successfully and user notified.'
+        ]);
+    }
+
+    /**
+     * Generate a strong password with mixed case, numbers, and special characters
+     * Length between 8-16 characters
+     */
+    protected function generateStrongPassword(): string
+    {
+        $sets = [];
+        $sets[] = 'abcdefghjkmnpqrstuvwxyz';  // lowercase (without i/l/o for clarity)
+        $sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';  // uppercase (without I/L/O)
+        $sets[] = '23456789';                 // numbers (without 0/1)
+        $sets[] = '!@#$%^&*()_+-=[]{}|;:,.<>?'; // special characters
+
+        $all = '';
+        $password = '';
+
+        // Get at least one character from each set
+        foreach ($sets as $set) {
+            $password .= $set[array_rand(str_split($set))];
+            $all .= $set;
+        }
+
+        // Generate random length between 8-16 (but at least 4 from above)
+        $length = random_int(8, 16);
+
+        // Fill remaining characters with random from all sets
+        $remaining = $length - count($sets);
+        for ($i = 0; $i < $remaining; $i++) {
+            $password .= $all[array_rand(str_split($all))];
+        }
+
+        // Shuffle the password to avoid predictable patterns
+        $password = str_shuffle($password);
+
+        return $password;
     }
 
     public function faculty_guest_search(Request $request)

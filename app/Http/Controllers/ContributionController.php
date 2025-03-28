@@ -234,29 +234,6 @@ class ContributionController extends Controller
         return view('marketingcoordinator.submissionmanagementviewcontribution', compact('contribution'));
     }
 
-    // public function updateStatus(Request $request, $id)
-    // {
-    //     // Validate the request
-    //     $request->validate([
-    //         'status' => 'required|in:Upload,Reject,Update,Select,Publish',
-    //     ]);
-
-    //     // Find the contribution
-    //     $contribution = Contribution::findOrFail($id);
-
-    //     // Update the status
-    //     $contribution->contribution_status = $request->status;
-    //     $contribution->save();
-
-    //     // Redirect based on the status
-    //     if ($request->status == 'Upload') {
-    //         return redirect()->route('marketingcoordinator.submission-management.feedback', $id);
-    //     }
-
-    //     // Redirect back with a success message
-    //     return redirect()->back()->with('success', 'Contribution status updated successfully.');
-    // }
-
     public function updateStatus(Request $request, $id)
     {
         // Validate the request
@@ -396,7 +373,7 @@ class ContributionController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $faculty_guests_percentage_change = round($faculty_guests_percentage_change, 2);
+        $faculty_guests_percentage_change = min(round($faculty_guests_percentage_change, 2), 100);
 
         // Fetch contributions with status 'Update' and same faculty as the logged-in user
         $contributions = Contribution::where('contribution_status', 'Update')
@@ -438,7 +415,7 @@ class ContributionController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $update_contributions_percentage_change = round($update_contributions_percentage_change, 2);
+        $update_contributions_percentage_change = min(round($update_contributions_percentage_change, 2), 100);
 
         $pending_review = Contribution::with(['user', 'category'])
             ->whereHas('user', function ($q) use ($facultyId) {
@@ -471,7 +448,7 @@ class ContributionController extends Controller
         }
 
         // Round to 2 decimal places
-        $pending_review_percentage_change = round($pending_review_percentage_change, 2);
+        $pending_review_percentage_change = min(round($pending_review_percentage_change, 2), 100);
 
         // Total feedback sent by the logged-in user
         $total_feedback_sent = Feedback::where('user_id', $user->user_id)->count();
@@ -495,7 +472,7 @@ class ContributionController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $feedback_percentage_change = round($feedback_percentage_change, 2);
+        $feedback_percentage_change = min(round($feedback_percentage_change, 2), 100);
 
         return view('marketingcoordinator.notifications', compact('contributions', 'update_contributions_percentage_change', 'resubmitted_contributions', 'faculty_guests', 'faculty_guests_percentage_change', 'pending_review', 'pending_review_percentage_change', 'total_feedback_sent', 'feedback_percentage_change'));
     }
