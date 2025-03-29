@@ -44,7 +44,7 @@ class AuthenticatedSessionController extends Controller
         date_default_timezone_set('Asia/Yangon');
 
         // Now, the `now()` function will return the correct date and time
-        $user->last_login_date = now();
+        // $user->last_login_date = now();
 
         // Increase login count
         $user->increment('login_count');
@@ -79,10 +79,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // Get the authenticated user BEFORE logging out
+        $user = $request->user();
+
+        // Set the default timezone to your local timezone
+        date_default_timezone_set('Asia/Yangon');
+
+        // Update the last login date
+        if ($user) {
+            $user->last_login_date = now();
+            $user->save(); // Don't forget to save the changes
+        }
+
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

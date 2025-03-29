@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Load Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css"
@@ -308,7 +309,7 @@
                                 class="fixed inset-0 z-40 bg-black bg-opacity-50 opacity-0 invisible transition-opacity duration-300">
                             </div>
 
-                            <!-- Inquiry Modal -->
+                            {{-- Modal --}}
                             <div id="inquiryModal"
                                 class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
                                 <div class="max-w-xl w-full bg-white p-8 rounded-md shadow-lg relative">
@@ -326,7 +327,7 @@
                                     <input type="hidden" id="inquiry_id" name="id" value="">
 
                                     <!-- Inquiry Details -->
-                                    <div class="space-y-4 max-h-[60vh]">
+                                    <div class="space-y-4 max-h-[60vh] overflow-y-auto">
                                         <div class="flex justify-between items-center">
                                             <!-- Sender Name -->
                                             <p class="text-sm text-gray-500">
@@ -356,8 +357,14 @@
                                         <!-- Message Content -->
                                         <div class="text-sm text-gray-500">
                                             <span class="text-gray-800 font-semibold text-base">Message Content:</span>
-                                            <textarea id="modalInquiry" cols="30" rows="10"
-                                                class="mt-1 max-h-40 w-full overflow-y-auto bg-gray-50 p-2 rounded-lg" disabled></textarea>
+                                            <textarea id="modalInquiry" cols="30" rows="5" class="mt-1 w-full bg-gray-50 p-2 rounded-lg" disabled></textarea>
+                                        </div>
+
+                                        <!-- Response Input -->
+                                        <div class="text-sm text-gray-500">
+                                            <span class="text-gray-800 font-semibold text-base">Your Response:</span>
+                                            <textarea id="responseText" name="response" cols="30" rows="5"
+                                                class="mt-1 w-full bg-gray-50 p-2 rounded-lg border border-gray-300" required></textarea>
                                         </div>
                                     </div>
 
@@ -366,10 +373,15 @@
                                         <!-- Form for Updating Inquiry -->
                                         <form id="updateInquiryForm" method="POST">
                                             @csrf
-                                            @method('PUT') <!-- Use PUT method for updates -->
+                                            @method('PUT')
+                                            <input type="hidden" id="responseContent" name="response_content">
+                                            <button type="button" id="closeButton" onclick="closeInquiryModal()"
+                                                class="mr-2 px-6 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500">
+                                                Close
+                                            </button>
                                             <button type="button" id="responseButton"
-                                                class="px-8 py-2.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 select-none">
-                                                Response
+                                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                                Send Response
                                             </button>
                                         </form>
                                     </div>
@@ -391,6 +403,7 @@
                                     document.getElementById('modalInquiry').textContent = inquiry;
                                     document.getElementById('modalDate').textContent = date;
                                     document.getElementById('modalStatus').textContent = status;
+                                    document.getElementById('responseText').value = ''; // Clear previous response
 
                                     // Set the form action dynamically
                                     const updateForm = document.getElementById('updateInquiryForm');
@@ -400,26 +413,81 @@
                                     const responseButton = document.getElementById('responseButton');
 
                                     if (status === 'Resolved') {
-                                        responseButton.textContent = 'Resolved';
-                                        responseButton.classList.add('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
+                                        responseButton.textContent = 'Already Resolved';
+                                        responseButton.classList.add('bg-gray-400', 'cursor-not-allowed');
                                         responseButton.disabled = true;
+                                        document.getElementById('responseText').disabled = true;
                                     } else {
-                                        responseButton.textContent = 'Response';
-                                        responseButton.classList.remove('disabled:bg-gray-400', 'pointer-events-none', 'cursor-not-allowed');
+                                        responseButton.textContent = 'Send Response';
+                                        responseButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                                        responseButton.classList.add('bg-blue-600', 'hover:bg-blue-700');
                                         responseButton.disabled = false;
+                                        document.getElementById('responseText').disabled = false;
                                     }
 
-                                    // Add event listener to the "Response" button
-                                    responseButton.addEventListener('click', () => {
-                                        // Encode the inquiry text to ensure it works properly in a mailto link
-                                        const encodedInquiry = encodeURIComponent(inquiry);
+                                    // Remove previous event listeners to avoid duplicates
+                                    responseButton.replaceWith(responseButton.cloneNode(true));
+                                    const newResponseButton = document.getElementById('responseButton');
 
-                                        // Open the email client with pre-filled recipient, subject, and body including the user's question
-                                        window.location.href =
-                                            `mailto:${email}?subject=Response to Your Inquiry&body=Dear ${user},%0D%0A%0D%0AYou asked: "${encodedInquiry}"%0D%0A%0D%0AThank you for reaching out. We have reviewed your inquiry and here is our response:%0D%0A%0D%0A[Your response here]%0D%0A%0D%0ABest regards,%0D%0AAstrornix University Support Team`;
+                                    // Add new event listener
+                                    // Add new event listener
+                                    newResponseButton.addEventListener('click', async () => {
+                                        const responseText = document.getElementById('responseText').value.trim();
+                                        if (!responseText) {
+                                            alert('Please enter your response before sending.');
+                                            return;
+                                        }
 
-                                        // Submit the form to update the status
-                                        updateForm.submit();
+                                        // Store response in hidden field
+                                        document.getElementById('responseContent').value = responseText;
+
+                                        // Show loading state with spinner
+                                        const originalButtonHTML = newResponseButton.innerHTML;
+                                        newResponseButton.disabled = true;
+                                        newResponseButton.innerHTML = `
+        <span class="inline-flex items-center">
+            Sending...
+            <svg class="animate-spin -mr-1 ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </span>
+    `;
+
+                                        try {
+                                            // Submit the form via AJAX
+                                            const response = await fetch(updateForm.action, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'Accept': 'application/json',
+                                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                                    'X-HTTP-Method-Override': 'PUT'
+                                                },
+                                                body: JSON.stringify({
+                                                    _method: 'PUT',
+                                                    response_content: responseText
+                                                })
+                                            });
+
+                                            const data = await response.json();
+
+                                            if (data.success) {
+                                                // Close modal on success
+                                                closeInquiryModal();
+                                                // Show success message or refresh the page
+                                                window.location.reload();
+                                            } else {
+                                                alert(data.message || 'Failed to send response');
+                                                newResponseButton.disabled = false;
+                                                newResponseButton.innerHTML = originalButtonHTML;
+                                            }
+                                        } catch (error) {
+                                            console.error('Error:', error);
+                                            alert('An error occurred while sending the response');
+                                            newResponseButton.disabled = false;
+                                            newResponseButton.innerHTML = originalButtonHTML;
+                                        }
                                     });
 
                                     // Show the modal

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InquiryRequest;
+use App\Mail\InquiryResponseMail;
 use App\Models\Contribution;
 use App\Models\Inquiry;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class InquiryController extends Controller
 {
@@ -50,7 +53,7 @@ class InquiryController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $unassigned_user_percentage_change = round($unassigned_user_percentage_change, 2);
+        $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
         $inquiries = Inquiry::all();
@@ -72,7 +75,7 @@ class InquiryController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
+        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
 
         $inquiries = Inquiry::query();
 
@@ -104,7 +107,7 @@ class InquiryController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $student_percentage_change = round($student_percentage_change, 2);
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
 
         // Get the current month's student count
         $current_month_students = User::whereHas('role', function ($query) {
@@ -129,7 +132,7 @@ class InquiryController extends Controller
         }
 
         // Round the percentage to 2 decimal places
-        $student_percentage_change = round($student_percentage_change, 2);
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
         $contributions = Contribution::where('contribution_status', 'Upload')->get();
 
         // Apply search filter if search term is provided
@@ -182,24 +185,84 @@ class InquiryController extends Controller
         return redirect()->back()->with('success', 'Your inquiry has been submitted successfully!');
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     // Validate the request data (if needed)
+    //     $request->validate([
+    //         // Add validation rules if necessary
+    //     ]);
+
+    //     // Find the inquiry by ID
+    //     $inquiry = Inquiry::findOrFail($id);
+
+    //     // Update the inquiry status to "Resolved"
+    //     $inquiry->update([
+    //         'inquiry_status' => 'Resolved',
+    //         'response_date' => now(),
+    //     ]);
+
+    //     // Redirect back with a success message
+    //     return redirect()->route('admin.notifications.inquiry')
+    //         ->with('success', 'Inquiry marked as resolved.');
+    // }
+
     public function update(Request $request, $id)
     {
-        // Validate the request data (if needed)
+        // Validate input
         $request->validate([
-            // Add validation rules if necessary
+            'response_content' => 'required|string|min:10'
         ]);
 
-        // Find the inquiry by ID
-        $inquiry = Inquiry::findOrFail($id);
+        try {
+            // Find inquiry
+            $inquiry = Inquiry::with('user')->findOrFail($id);
 
-        // Update the inquiry status to "Resolved"
-        $inquiry->update([
-            'inquiry_status' => 'Resolved',
-            'response_date' => now(),
-        ]);
+            // Check if the user exists and has an email
+            if (!$inquiry->user || empty($inquiry->user->email)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User email not found for this inquiry.'
+                ], 400);
+            }
 
-        // Redirect back with a success message
-        return redirect()->route('admin.notifications.inquiry')
-            ->with('success', 'Inquiry marked as resolved.');
+            // Update inquiry status
+            $inquiry->update([
+                'inquiry_status' => 'Resolved',
+                'response_date' => now(),
+                'response_content' => $request->response_content
+            ]);
+
+            // Send email (try-catch to handle failures)
+            try {
+                Mail::to($inquiry->user->email)->send(new InquiryResponseMail(
+                    $inquiry->user->username ?? 'User',
+                    $inquiry->inquiry,
+                    $request->response_content
+                ));
+            } catch (\Exception $mailException) {
+                Log::error('Failed to send email: ' . $mailException->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Response saved, but email failed to send.'
+                ], 500);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Response sent successfully!'
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error('Inquiry not found: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Inquiry not found.'
+            ], 404);
+        } catch (\Exception $e) {
+            Log::error('Inquiry response failed: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while processing the response.'
+            ], 500);
+        }
     }
 }

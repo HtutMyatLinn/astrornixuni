@@ -36,27 +36,16 @@
 
                 <!-- Success Message -->
                 @if (session('success'))
-                    <div id="successMessage"
-                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                    <div id="success-message"
+                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
                         role="alert">
-                        <strong class="font-bold">Success!</strong>
                         <span class="block sm:inline">{{ session('success') }}</span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                            <svg class="fill-current h-6 w-6 text-green-500" role="button"
-                                onclick="document.getElementById('successMessage').remove()"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <title>Close</title>
-                                <path
-                                    d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z" />
-                            </svg>
-                        </span>
                     </div>
 
-                    <!-- Auto-hide script -->
                     <script>
-                        setTimeout(function() {
-                            document.getElementById('successMessage').remove();
-                        }, 3000); // 3 seconds
+                        setTimeout(() => {
+                            document.getElementById('success-message').style.display = 'none';
+                        }, 3000);
                     </script>
                 @endif
 
@@ -127,12 +116,20 @@
                                                 {{ $message }}</p>
                                         @enderror
                                     </div>
-                                    <div class="mt-6">
+                                    <div class="mt-6 flex">
                                         <button type="submit" id="submitFeedbackButton"
-                                            class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors
-                                            {{ now()->isBefore($contribution->submitted_date->addDays(14)) ? '' : 'opacity-50 cursor-not-allowed' }}"
+                                            class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors flex items-center justify-center"
                                             {{ now()->isBefore($contribution->submitted_date->addDays(14)) ? '' : 'disabled' }}>
-                                            Submit Feedback
+                                            <span id="submitFeedbackText">Submit Feedback</span>
+                                            <svg id="submitFeedbackSpinner"
+                                                class="animate-spin ml-2 h-5 w-5 text-white hidden"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                    stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                                </path>
+                                            </svg>
                                         </button>
                                         <a href="{{ route('marketingcoordinator.submission-management') }}"
                                             class="bg-black hover:bg-gray-600 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors ml-4">
@@ -140,6 +137,21 @@
                                         </a>
                                     </div>
                                 </form>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function() {
+                                        const feedbackForm = document.getElementById("feedbackForm");
+                                        const submitFeedbackButton = document.getElementById("submitFeedbackButton");
+                                        const submitFeedbackText = document.getElementById("submitFeedbackText");
+                                        const submitFeedbackSpinner = document.getElementById("submitFeedbackSpinner");
+
+                                        feedbackForm.addEventListener("submit", function(e) {
+                                            submitFeedbackButton.disabled = true;
+                                            submitFeedbackText.textContent = "Submitting...";
+                                            submitFeedbackSpinner.classList.remove("hidden");
+                                        });
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>
