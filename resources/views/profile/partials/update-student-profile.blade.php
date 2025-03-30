@@ -15,35 +15,42 @@
         <div class="w-full max-w-4xl p-8 rounded-xl">
             <!-- Success/Error Messages -->
             @if (session('status'))
-            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-                role="alert">
-                <span class="block sm:inline">{{ session('status') }}</span>
-            </div>
+                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                    role="alert">
+                    <span class="block sm:inline">{{ session('status') }}</span>
+                </div>
             @endif
 
             @if (session('success'))
-            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-                role="alert">
-                <span class="block sm:inline">{{ session('success') }}</span>
-            </div>
+                <div id="success-message"
+                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                    role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+
+                <script>
+                    setTimeout(() => {
+                        document.getElementById('success-message').style.display = 'none';
+                    }, 3000);
+                </script>
             @endif
 
             @if ($errors->any())
-            <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                role="alert">
-                @foreach ($errors->all() as $error)
-                <span class="block sm:inline">{{ $error }}</span>
-                @endforeach
-            </div>
+                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                    role="alert">
+                    @foreach ($errors->all() as $error)
+                        <span class="block sm:inline">{{ $error }}</span>
+                    @endforeach
+                </div>
             @endif
 
             <!-- Form Section -->
-            <form action="{{
-    Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student'
-        ? route('profile.update')
-        : route('guest.profile.update')
-}}"
-                method="POST" enctype="multipart/form-data" class="space-y-3 md:space-y-4 border-gray-200 border-x-2 px-10">
+            <form
+                action="{{ Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student'
+                    ? route('profile.update')
+                    : route('guest.profile.update') }}"
+                method="POST" enctype="multipart/form-data"
+                class="space-y-3 md:space-y-4 border-gray-200 border-x-2 px-10">
 
                 @csrf
                 @method('PUT')
@@ -52,14 +59,14 @@
                 <div class="flex justify-center mb-3">
                     <div class="relative w-40 h-40 rounded-full my-3 select-none group">
                         @if (Auth::user()->profile_image)
-                        <img id="profilePreview"
-                            class="w-full h-full rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                            src="{{ asset('profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
+                            <img id="profilePreview"
+                                class="w-full h-full rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                src="{{ asset('profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
                         @else
-                        <div id="profilePreview"
-                            class="w-full h-full bg-gray-300 rounded-full flex items-center justify-center text-white text-4xl font-bold uppercase">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </div>
+                            <p id="profilePreview"
+                                class="w-full h-full rounded-full bg-blue-100 text-blue-500 flex items-center justify-center select-none text-4xl font-bold uppercase">
+                                {{ strtoupper(Auth::user()->username[0]) }}
+                            </p>
                         @endif
                         <div class="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                             onclick="document.getElementById('profile_image').click()">
