@@ -32,6 +32,8 @@ Route::resource('student/contributions/comment', CommentController::class);
 Route::patch('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
 Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
+Route::put('/guest/profile/update', [StudentController::class, 'update'])->name('guest.profile.update');
+
 // Faculty route
 Route::get('/faculty', [FacultyController::class, 'faculty'])->name('faculty');
 
