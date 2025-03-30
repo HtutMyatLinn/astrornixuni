@@ -1,3 +1,10 @@
+<?php
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+?>
+
 <nav x-data="{ open: false, isSticky: false }" x-on:scroll.window="isSticky = window.scrollY > 80" :class="{ 'shadow-sm': isSticky }"
     class="transition-all duration-500 bg-white border-b sticky top-0 border-gray-100 z-50 min-w-[420px]">
     <!-- Primary Navigation Menu -->
@@ -137,8 +144,164 @@
                     </x-slot>
                 </x-dropdown>
 
-                {{-- Notidication --}}
-                <i class="ri-notification-3-line text-lg cursor-pointer"></i>
+                <!-- Notification Icon with Counter -->
+                <div class="relative" x-data="{ notiOpen: false }">
+                    <button @click="notiOpen = !notiOpen"
+                        class="relative p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <i class="ri-notification-3-line text-xl cursor-pointer"></i>
+                        @if (Auth::check())
+                            @php
+                                $feedbacks = DB::table('feedbacks')
+                                    ->join(
+                                        'contributions',
+                                        'feedbacks.contribution_id',
+                                        '=',
+                                        'contributions.contribution_id',
+                                    )
+                                    ->where('contributions.user_id', Auth::id())
+                                    ->where('feedbacks.user_id', '!=', Auth::id())
+                                    ->get();
+
+                                $totalCount = $feedbacks->count();
+                            @endphp
+
+                            <span x-data="{
+                                unreadCount: {{ $totalCount }},
+                                init() {
+                                    // Initialize by checking localStorage for viewed notifications
+                                    @foreach ($feedbacks as $feedback)
+                        if(localStorage.getItem('viewedFeedback_{{ $feedback->feedback_id }}') === 'true') {
+                            this.unreadCount--;
+                        } @endforeach
+                                }
+                            }" x-show="unreadCount > 0"
+                                class="absolute -top-1 -right-1 flex h-4 w-4 notification-badge">
+                                <span
+                                    class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span
+                                    class="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-xs items-center justify-center"
+                                    x-text="unreadCount"></span>
+                            </span>
+                        @endif
+                    </button>
+
+                    <!-- Notification Dropdown -->
+                    <div x-show="notiOpen" @click.away="notiOpen = false"
+                        x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75"
+                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                        class="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none z-50 max-h-96 overflow-y-auto">
+
+                        <div class="px-4 py-3">
+                            <p class="text-sm font-semibold text-gray-900">Notifications</p>
+                        </div>
+
+                        <div class="py-1">
+                            @if (Auth::check())
+                                @php
+                                    $feedbacks = DB::table('feedbacks')
+                                        ->join(
+                                            'contributions',
+                                            'feedbacks.contribution_id',
+                                            '=',
+                                            'contributions.contribution_id',
+                                        )
+                                        ->join('users', 'feedbacks.user_id', '=', 'users.user_id')
+                                        ->where('contributions.user_id', Auth::id())
+                                        ->where('feedbacks.user_id', '!=', Auth::id())
+                                        ->orderBy('feedbacks.feedback_given_date', 'desc')
+                                        ->select(
+                                            'feedbacks.*',
+                                            'users.username as feedback_giver',
+                                            'contributions.contribution_title as contribution_title',
+                                        )
+                                        ->get();
+                                @endphp
+
+                                @if ($feedbacks->count() > 0)
+                                    @foreach ($feedbacks as $feedback)
+                                        <a href="{{ route('student.contribution-detail', $feedback->contribution_id) }}"
+                                            x-data="{
+                                                feedbackId: {{ $feedback->feedback_id }},
+                                                isNew: localStorage.getItem('viewedFeedback_{{ $feedback->feedback_id }}') !== 'true',
+                                                markAsViewed() {
+                                                    if (this.isNew) {
+                                                        localStorage.setItem('viewedFeedback_' + this.feedbackId, 'true');
+                                                        this.isNew = false;
+                                            
+                                                        // Update the counter
+                                                        const badge = document.querySelector('.notification-badge span:last-child');
+                                                        if (badge) {
+                                                            const currentCount = parseInt(badge.textContent);
+                                                            if (currentCount > 1) {
+                                                                badge.textContent = currentCount - 1;
+                                                            } else {
+                                                                badge.closest('.notification-badge').remove();
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }" @click="markAsViewed()"
+                                            class="block px-4 py-3 hover:bg-gray-50 transition-colors duration-150">
+                                            <div class="flex items-start">
+                                                <div class="flex-shrink-0 pt-0.5">
+                                                    <div
+                                                        class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                                        <i class="ri-feedback-fill text-blue-500"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-3 flex-1">
+                                                    <p class="text-sm font-medium text-gray-900">
+                                                        Feedback on
+                                                        "{{ Str::limit($feedback->contribution_title, 20) }}"
+                                                    </p>
+                                                    <p class="text-sm text-gray-500 mt-1">
+                                                        {{ Str::limit($feedback->feedback, 50) }}
+                                                    </p>
+                                                    <p class="text-xs text-gray-400 mt-1">
+                                                        {{ \Carbon\Carbon::parse($feedback->feedback_given_date)->diffForHumans() }}
+                                                        by {{ $feedback->feedback_giver }}
+                                                    </p>
+                                                </div>
+                                                <template x-if="isNew">
+                                                    <span class="ml-2 w-2 h-2 rounded-full bg-blue-500"></span>
+                                                </template>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                @else
+                                    <div class="px-4 py-3 text-center text-sm text-gray-500">
+                                        No notifications available
+                                    </div>
+                                @endif
+                            @else
+                                <div class="px-4 py-3 text-center text-sm text-gray-500">
+                                    Please login to view notifications
+                                </div>
+                            @endif
+                        </div>
+
+                        @if (Auth::check() && $feedbacks->count() > 0)
+                            <div class="px-4 py-2 text-center">
+                                <a href="{{ route('contributions') }}"
+                                    @click="
+                        // Mark all as viewed when clicking 'View all'
+                        @foreach ($feedbacks as $feedback)
+                            localStorage.setItem('viewedFeedback_{{ $feedback->feedback_id }}', 'true'); @endforeach
+                        // Remove the badge
+                        const badge = document.querySelector('.notification-badge');
+                        if(badge) {
+                            badge.remove();
+                        }
+                    "
+                                    class="text-sm font-medium text-blue-600 hover:text-blue-500">
+                                    View all notifications
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
 
             <!-- Hamburger -->
@@ -157,7 +320,6 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
     <!-- Mobile Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
