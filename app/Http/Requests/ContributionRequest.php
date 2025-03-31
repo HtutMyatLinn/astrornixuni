@@ -26,8 +26,8 @@ class ContributionRequest extends FormRequest
             'intake_id' => 'required|exists:intakes,intake_id',
             'contribution_category_id' => 'required|exists:contribution_categories,contribution_category_id',
             'contribution_description' => 'required|string',
-            'contribution_cover' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'contribution_images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'contribution_cover' => 'nullable|image|mimes:jpeg,png,jpg',
+            'contribution_images.*' => 'nullable|image|mimes:jpeg,png,jpg',
             'contribution_file_path' => 'mimes:doc,docx',
             'terms_and_conditions' => 'required|accepted'
         ];

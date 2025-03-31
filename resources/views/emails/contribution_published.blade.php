@@ -102,7 +102,7 @@
         }
 
         .footer a {
-            color: #007bff;
+            color: #004085;
             text-decoration: none;
         }
 

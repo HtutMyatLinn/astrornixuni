@@ -128,7 +128,7 @@
                         <p class="flex items-center text-sm md:text-base">
                             <img src="{{ asset('images/phone.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"
                                 alt="Phone">
-                            <span class="ml-2">+123 46 78905</span>
+                            <span class="ml-2">+95963554322</span>
                         </p>
                         <p class="flex items-center text-sm md:text-base">
                             <img src="{{ asset('images/Message.png') }}" class="w-5 h-5 md:w-6 md:h-6 select-none"

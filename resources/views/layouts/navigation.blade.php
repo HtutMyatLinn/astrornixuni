@@ -117,6 +117,11 @@ use Carbon\Carbon;
                                 </p>
                             </div>
 
+                            <x-dropdown-link :href="route('student.re_upload_contribution')" class="flex gap-2 items-center">
+                                <i class="ri-file-history-line text-xl"></i>
+                                {{ __('Contribution History') }}
+                            </x-dropdown-link>
+
                             <x-dropdown-link :href="route('profile.edit')" class="flex gap-2 items-center">
                                 <i class="ri-user-3-line text-xl"></i>
                                 {{ __('Profile') }}

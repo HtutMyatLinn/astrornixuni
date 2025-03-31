@@ -54,7 +54,7 @@
             at
             <a href="mailto:astrornixuni27@gmail.com" style="color: #3b82f6; text-decoration: none;">
                 astrornixuni27@gmail.com
-            </a> or call +123 46 78905.
+            </a> or call +95963554322.
         </p>
     </div>
 

@@ -46,7 +46,7 @@
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm md:text-base pl-10 transition duration-300 ease-in-out"
                     value="{{ request('search') }}">
                 <img src="{{ asset('images/group.png') }}" alt="Search Icon"
-                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-all duration-300 ease-in-out">
+                    class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-all duration-300 ease-in-out select-none">
             </form>
 
             <!-- Filter by Faculty -->
@@ -72,19 +72,20 @@
             @if ($contributions->count() > 0)
                 @foreach ($contributions as $contribution)
                     <a href="{{ route('student.contribution-detail', $contribution) }}"
-                        class="flex flex-col items-center group">
+                        class="flex flex-col items-center group h-full">
                         @if ($contribution->contribution_cover)
                             <!-- Display the contribution cover image if it exists -->
-                            <div class="w-full select-none">
+                            <div class="w-full h-60 sm:h-64 md:h-72 overflow-hidden">
                                 <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
-                                    alt="{{ $contribution->contribution_title }}" class="w-full h-auto object-cover">
+                                    alt="{{ $contribution->contribution_title }}"
+                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300 select-none">
                             </div>
                         @else
                             <!-- Display the default logo image if contribution_cover is null -->
-                            <div class="flex h-60 sm:h-full w-full items-center justify-center bg-white">
+                            <div class="w-full h-60 sm:h-64 md:h-72 bg-white flex items-center justify-center">
                                 <div class="w-24 select-none">
                                     <img src="{{ asset('images/logo.png') }}" alt="Logo"
-                                        class="w-full h-full object-cover">
+                                        class="w-full h-auto object-contain">
                                 </div>
                             </div>
                         @endif

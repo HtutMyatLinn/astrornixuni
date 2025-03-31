@@ -242,7 +242,7 @@
                                                     @if ($feedback->user->profile_image)
                                                         <img id="profilePreview"
                                                             class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                            src="{{ asset('profile_images/' . $feedback->user->profile_image) }}"
+                                                            src="{{ asset('storage/profile_images/' . $feedback->user->profile_image) }}"
                                                             alt="Profile">
                                                     @else
                                                         <p
