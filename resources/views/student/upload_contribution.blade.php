@@ -39,14 +39,6 @@
                     </p>
                 </div>
             </div>
-
-            <!-- History Link -->
-            <div class="mt-6 flex justify-end">
-                <a href="{{ route('student.re_upload_contribution') }}"
-                    class="text-sm text-blue-600 hover:text-blue-800">
-                    Contribution History →
-                </a>
-            </div>
         </div>
     </section>
 
@@ -200,40 +192,211 @@
                 </div>
 
                 <!-- Cover Image Upload -->
-                <div class="mb-4 relative">
-                    <label class="block text-gray-700 font-medium mb-2">Cover Image (High-Quality JPG/PNG)</label>
-                    <input type="file" name="contribution_cover"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Cover Image (High-Quality JPG/PNG/JPEG)</label>
+                    <div
+                        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors hover:border-blue-400 bg-gray-50 relative">
+                        <div id="cover-preview-container" class="hidden mb-4 relative">
+                            <div class="flex justify-center">
+                                <div class="relative select-none">
+                                    <img id="cover-preview"
+                                        class="max-h-40 rounded-lg shadow-sm border border-gray-200">
+                                    <button type="button" onclick="removeCoverImage()"
+                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 shadow-md">
+                                        ×
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="cover-upload-area" class="flex flex-col items-center justify-center space-y-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <p class="text-sm text-gray-600">Drag & drop your cover image here</p>
+                            <p class="text-xs text-gray-500">or click to browse</p>
+                        </div>
+                        <input type="file" name="contribution_cover" id="cover-input"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            accept="image/jpeg,image/png,image/jpg">
+                    </div>
                     @error('contribution_cover')
-                        <p class="absolute left-2 -bottom-3 bg-white text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Additional Images Upload -->
-                <div class="mb-4 relative">
-                    <label class="block text-gray-700 font-medium mb-2">Additional Images (Up to 3) - JPG/PNG</label>
-                    <input type="file" name="contribution_images[]" multiple
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Additional Images - JPG/PNG/JPEG</label>
+                    <div
+                        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors hover:border-blue-400 bg-gray-50 relative">
+                        <div id="additional-preview-container" class="grid grid-cols-4 gap-2 mb-4 hidden select-none">
+                        </div>
+                        <div id="additional-upload-area" class="flex flex-col items-center justify-center space-y-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                            </svg>
+                            <p class="text-sm text-gray-600">Drag & drop your additional images here</p>
+                            <p class="text-xs text-gray-500">or click to browse</p>
+                        </div>
+                        <input type="file" name="contribution_images[]" id="additional-input" multiple
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            accept="image/jpeg,image/png,image/jpg">
+                    </div>
                     @error('contribution_images.*')
-                        <p class="absolute left-2 -bottom-3 bg-white text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Document Upload -->
-                <div class="mb-4 relative">
+                <div class="mb-6">
                     <label class="block text-gray-700 font-medium mb-2">Upload Word Document (.docx)</label>
-                    <input type="file" name="contribution_file_path"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none">
+                    <div
+                        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors hover:border-blue-400 bg-gray-50 relative">
+                        <div id="document-preview-container" class="hidden mb-4 relative">
+                            <div
+                                class="flex items-center justify-between bg-blue-50 rounded-lg p-3 border border-blue-100 select-none">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500 mr-2"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span id="document-name"
+                                        class="text-sm font-medium text-gray-700 truncate max-w-xs"></span>
+                                </div>
+                                <button type="button" onclick="removeDocument()"
+                                    class="ml-4 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600">
+                                    ×
+                                </button>
+                            </div>
+                        </div>
+                        <div id="document-upload-area" class="flex flex-col items-center justify-center space-y-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <p class="text-sm text-gray-600">Drag & drop your Word document here</p>
+                            <p class="text-xs text-gray-500">or click to browse (.docx only)</p>
+                        </div>
+                        <input type="file" name="contribution_file_path" id="document-input"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".docx">
+                    </div>
                     @error('contribution_file_path')
-                        <p class="absolute left-2 -bottom-3 bg-white text-red-500 text-sm mt-1">
-                            {{ $message }}
-                        </p>
+                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <script>
+                    // Cover Image Preview
+                    const coverInput = document.getElementById('cover-input');
+                    coverInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                document.getElementById('cover-preview').src = event.target.result;
+                                document.getElementById('cover-preview-container').classList.remove('hidden');
+                                document.getElementById('cover-upload-area').classList.add('hidden');
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+
+                    // Remove Cover Image
+                    window.removeCoverImage = function() {
+                        coverInput.value = '';
+                        document.getElementById('cover-preview-container').classList.add('hidden');
+                        document.getElementById('cover-upload-area').classList.remove('hidden');
+                    };
+
+                    // Additional Images Preview
+                    const additionalInput = document.getElementById('additional-input');
+                    additionalInput.addEventListener('change', function(e) {
+                        const files = e.target.files;
+                        const previewContainer = document.getElementById('additional-preview-container');
+
+                        if (files.length > 0) {
+                            previewContainer.innerHTML = '';
+                            previewContainer.classList.remove('hidden');
+                            document.getElementById('additional-upload-area').classList.add('hidden');
+
+                            Array.from(files).forEach((file, index) => {
+                                if (file.type.match('image.*')) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(event) {
+                                        const previewDiv = document.createElement('div');
+                                        previewDiv.className =
+                                            'relative group h-24'; // Fixed height for consistency
+                                        previewDiv.innerHTML = `
+                            <div class="h-full w-full overflow-hidden rounded-lg border border-gray-200">
+                                <img src="${event.target.result}" class="w-full h-full object-cover">
+                            </div>
+                            <button type="button"
+                                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 shadow-md"
+                                onclick="removeAdditionalImage(this, ${index})">
+                                ×
+                            </button>
+                        `;
+                                        previewContainer.appendChild(previewDiv);
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+                        }
+                    });
+
+                    // Remove Additional Image
+                    window.removeAdditionalImage = function(button, index) {
+                        // Create new DataTransfer object
+                        const dataTransfer = new DataTransfer();
+                        const files = additionalInput.files;
+
+                        // Add all files except the one being removed
+                        for (let i = 0; i < files.length; i++) {
+                            if (i !== index) {
+                                dataTransfer.items.add(files[i]);
+                            }
+                        }
+
+                        // Update files in input
+                        additionalInput.files = dataTransfer.files;
+
+                        // Remove preview
+                        button.closest('.relative').remove();
+
+                        const previewContainer = document.getElementById('additional-preview-container');
+                        if (previewContainer.children.length === 0) {
+                            previewContainer.classList.add('hidden');
+                            document.getElementById('additional-upload-area').classList.remove('hidden');
+                        }
+
+                        // Trigger change event to update UI if needed
+                        additionalInput.dispatchEvent(new Event('change'));
+                    };
+
+                    // Document Preview
+                    const documentInput = document.getElementById('document-input');
+                    documentInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            document.getElementById('document-name').textContent = file.name;
+                            document.getElementById('document-preview-container').classList.remove('hidden');
+                            document.getElementById('document-upload-area').classList.add('hidden');
+                        }
+                    });
+
+                    // Remove Document
+                    window.removeDocument = function() {
+                        documentInput.value = '';
+                        document.getElementById('document-preview-container').classList.add('hidden');
+                        document.getElementById('document-upload-area').classList.remove('hidden');
+                    };
+                </script>
 
                 <div class="mb-4">
                     <div class="flex items-center">

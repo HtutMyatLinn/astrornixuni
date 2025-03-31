@@ -44,21 +44,40 @@
                                         <span class="ml-2 text-sm">All Categories</span>
                                     </label>
 
+                                    @php
+                                        $otherCategory = null;
+                                    @endphp
+
                                     @foreach ($contribution_categories as $contribution_category)
+                                        @if (strtolower($contribution_category->contribution_category) === 'others')
+                                            @php $otherCategory = $contribution_category; @endphp
+                                        @else
+                                            <label class="flex items-center">
+                                                <input type="radio" name="contribution_category"
+                                                    value="{{ $contribution_category->contribution_category_id }}"
+                                                    class="h-4 w-4 border-gray-300"
+                                                    {{ request('contribution_category') == $contribution_category->contribution_category_id ? 'checked' : '' }}>
+                                                <span
+                                                    class="ml-2 text-sm">{{ $contribution_category->contribution_category }}</span>
+                                            </label>
+                                        @endif
+                                    @endforeach
+
+                                    @if ($otherCategory)
                                         <label class="flex items-center">
                                             <input type="radio" name="contribution_category"
-                                                value="{{ $contribution_category->contribution_category_id }}"
+                                                value="{{ $otherCategory->contribution_category_id }}"
                                                 class="h-4 w-4 border-gray-300"
-                                                {{ request('contribution_category') == $contribution_category->contribution_category_id ? 'checked' : '' }}>
+                                                {{ request('contribution_category') == $otherCategory->contribution_category_id ? 'checked' : '' }}>
                                             <span
-                                                class="ml-2 text-sm">{{ $contribution_category->contribution_category }}</span>
+                                                class="ml-2 text-sm">{{ $otherCategory->contribution_category }}</span>
                                         </label>
-                                    @endforeach
+                                    @endif
                                 </div>
 
                                 <!-- Apply Filters Button -->
                                 <button type="submit"
-                                    class="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                                    class="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 select-none">
                                     Apply Filters
                                 </button>
                             </form>
@@ -76,7 +95,7 @@
                                             @if ($contribution->contribution_cover)
                                                 <img src="{{ asset('storage/contribution-images/' . $contribution->contribution_cover) }}"
                                                     alt="{{ $contribution->contribution_title }}"
-                                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 select-none">
                                             @else
                                                 <div class="flex h-full w-full items-center justify-center">
                                                     <div class="w-24 select-none">

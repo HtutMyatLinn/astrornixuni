@@ -331,6 +331,8 @@ class ContributionController extends Controller
     public function marketingcoordinatorNotifications()
     {
         $user = Auth::user();
+        $search = request('search');
+        $sort = request('sort', 'desc'); // Default to newest first
 
         // Get the faculty ID of the logged-in coordinator
         $facultyId = $user->faculty_id;
@@ -338,11 +340,10 @@ class ContributionController extends Controller
         $guestRole = Role::where('role', 'Guest')->first();
 
         if (!$guestRole) {
-            // Handle the case where the "Guest" role does not exist
             return redirect()->back()->with('error', 'Guest role not found. Please contact the administrator.');
         }
 
-        $guestRoleId = $guestRole->role_id; // Get the role ID
+        $guestRoleId = $guestRole->role_id;
 
         // Total faculty guests in the logged-in user's faculty
         $faculty_guests = User::where('role_id', $guestRoleId)
@@ -371,8 +372,6 @@ class ContributionController extends Controller
         if ($previous_month_faculty_guests > 0) {
             $faculty_guests_percentage_change = (($current_month_faculty_guests - $previous_month_faculty_guests) / $previous_month_faculty_guests) * 100;
         }
-
-        // Round the percentage to 2 decimal places
         $faculty_guests_percentage_change = min(round($faculty_guests_percentage_change, 2), 100);
 
         // Fetch contributions with status 'Update' and same faculty as the logged-in user
@@ -380,8 +379,19 @@ class ContributionController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('contribution_title', 'like', '%' . $search . '%')
+                        ->orWhereHas('user', function ($q) use ($search) {
+                            $q->where('username', 'like', '%' . $search . '%')
+                                ->orWhere('email', 'like', '%' . $search . '%')
+                                ->orWhere('first_name', 'like', '%' . $search . '%')
+                                ->orWhere('last_name', 'like', '%' . $search . '%');
+                        });
+                });
+            })
             ->with(['user', 'category'])
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', $sort)
             ->paginate(10);
 
         $resubmitted_contributions = Contribution::where('contribution_status', 'Update')
@@ -413,13 +423,11 @@ class ContributionController extends Controller
         if ($previous_month_update_contributions > 0) {
             $update_contributions_percentage_change = (($current_month_update_contributions - $previous_month_update_contributions) / $previous_month_update_contributions) * 100;
         }
-
-        // Round the percentage to 2 decimal places
         $update_contributions_percentage_change = min(round($update_contributions_percentage_change, 2), 100);
 
         $pending_review = Contribution::with(['user', 'category'])
             ->whereHas('user', function ($q) use ($facultyId) {
-                $q->where('faculty_id', $facultyId); // Filter by faculty_id
+                $q->where('faculty_id', $facultyId);
             })
             ->whereDoesntHave('feedbacks');
 
@@ -446,8 +454,6 @@ class ContributionController extends Controller
         if ($previous_month_pending_review > 0) {
             $pending_review_percentage_change = (($current_month_pending_review - $previous_month_pending_review) / $previous_month_pending_review) * 100;
         }
-
-        // Round to 2 decimal places
         $pending_review_percentage_change = min(round($pending_review_percentage_change, 2), 100);
 
         // Total feedback sent by the logged-in user
@@ -470,11 +476,19 @@ class ContributionController extends Controller
         if ($previous_month_feedback > 0) {
             $feedback_percentage_change = (($current_month_feedback - $previous_month_feedback) / $previous_month_feedback) * 100;
         }
-
-        // Round the percentage to 2 decimal places
         $feedback_percentage_change = min(round($feedback_percentage_change, 2), 100);
 
-        return view('marketingcoordinator.notifications', compact('contributions', 'update_contributions_percentage_change', 'resubmitted_contributions', 'faculty_guests', 'faculty_guests_percentage_change', 'pending_review', 'pending_review_percentage_change', 'total_feedback_sent', 'feedback_percentage_change'));
+        return view('marketingcoordinator.notifications', compact(
+            'contributions',
+            'update_contributions_percentage_change',
+            'resubmitted_contributions',
+            'faculty_guests',
+            'faculty_guests_percentage_change',
+            'pending_review',
+            'pending_review_percentage_change',
+            'total_feedback_sent',
+            'feedback_percentage_change'
+        ));
     }
 
     public function reports(Request $request)
