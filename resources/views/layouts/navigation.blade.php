@@ -229,14 +229,11 @@ use Carbon\Carbon;
                                             'contributions.contribution_title as contribution_title',
                                         )
                                         ->get();
-
-                                    // Filter out viewed notifications on the client side using Alpine
-
                                 @endphp
 
                                 @if ($feedbacks->count() > 0)
                                     @foreach ($feedbacks as $feedback)
-                                        <a href="{{ route('student.contribution-detail', $feedback->contribution_id) }}"
+                                        <a href="{{ route('upload_contribution.edit', $feedback->contribution_id) }}"
                                             x-data="{
                                                 feedbackId: {{ $feedback->feedback_id }},
                                                 isNew: localStorage.getItem('viewedFeedback_{{ $feedback->feedback_id }}') !== 'true',

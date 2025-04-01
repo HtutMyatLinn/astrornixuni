@@ -8,12 +8,15 @@
     </div>
 
     <!-- Notification Banner -->
-    <div
-        class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-3 flex items-center mx-auto mt-6 max-w-4xl rounded">
-        <span class="text-lg">📢</span>
-        <p class="ml-2 font-semibold">Notification:</p>
-        <p class="ml-1">Your previous submission has been reviewed. Please update and re-upload your contribution.</p>
-    </div>
+    @if (auth()->user()->contributions()->where('contribution_status', 'Update')->exists())
+        <div
+            class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-3 flex items-center mx-auto mt-6 max-w-4xl rounded">
+            <span class="text-lg">📢</span>
+            <p class="ml-2 font-semibold">Notification:</p>
+            <p class="ml-1">Your previous submission has been reviewed. Please update and re-upload your contribution.
+            </p>
+        </div>
+    @endif
 
     <div id="uploadHistory" class="mx-auto max-w-4xl mt-6 bg-white shadow-sm rounded-lg p-6">
         <h3 class="text-lg font-semibold">Your Upload History</h3>
@@ -70,11 +73,11 @@
                             <td class="border p-3 select-none">
                                 @if ($contribution->contribution_status !== 'Publish')
                                     @if (now() < \Carbon\Carbon::parse($contribution->intake->final_closure_date))
-                                        <button class="text-white px-4 py-1 rounded hover:opacity-80 underline"
-                                            style="background-color: #1FE689;"
-                                            onclick="showReUploadSection({{ $contribution->contribution_id }})">
+                                        <a href="{{ route('upload_contribution.edit', $contribution->contribution_id) }}"
+                                            class="text-white px-4 py-1 rounded hover:opacity-80 underline"
+                                            style="background-color: #1FE689;">
                                             Edit
-                                        </button>
+                                        </a>
                                         <form
                                             action="{{ route('student.contributions.destroy', $contribution->contribution_id) }}"
                                             method="POST" class="inline ml-2"
@@ -121,66 +124,4 @@
             </div>
         @endif
     </div>
-
-    <script>
-        function showReUploadSection(contributionId) {
-            // You can implement this function to show a modal or redirect
-            // For example:
-            window.location.href = `/contributions/${contributionId}/edit`;
-        }
-    </script>
-
-    <!-- Re-Upload Contribution Section (Initially Hidden) -->
-    <div id="reUploadSection" class="hidden mx-auto max-w-4xl mt-6 bg-white shadow-sm rounded-lg p-6">
-        <h3 class="text-lg font-semibold">Re-Upload Your Contribution</h3>
-        <p class="text-sm text-gray-600">These are the files from your last submission. You can delete them and upload
-            new ones.</p>
-
-        <!-- Current Submission Files -->
-        <div class="mt-4">
-            <div class="flex justify-between items-center border p-3 rounded bg-gray-100">
-                <span>Cover Image: ai_research.jpg</span>
-                <button
-                    class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"style="background-color: #E61F1F;">Delete</button>
-            </div>
-            <div class="flex justify-between items-center border p-3 rounded bg-gray-100 mt-2">
-                <span>Document: ai_research_paper.docx</span>
-                <button
-                    class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"style="background-color: #E61F1F;">Delete</button>
-            </div>
-            <h4 class="mt-4 font-semibold">Additional Images</h4>
-            <div class="flex justify-between items-center border p-3 rounded bg-gray-100 mt-2">
-                <span>Image 1: research_diagram.jpg</span>
-                <button
-                    class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"style="background-color: #E61F1F;">Delete</button>
-            </div>
-            <div class="flex justify-between items-center border p-3 rounded bg-gray-100 mt-2">
-                <span>Image 2: data_chart.png</span>
-                <button
-                    class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"style="background-color: #E61F1F;">Delete</button>
-            </div>
-        </div>
-
-        <!-- Upload New Files -->
-        <h3 class="mt-6 text-lg font-semibold">Upload New Files</h3>
-        <div class="mt-4">
-            <label class="block font-medium">Cover Image (High-Quality JPG/PNG)</label>
-            <input type="file" class="w-full border p-2 rounded mt-1">
-            <label class="block font-medium mt-4">Additional Images (Up to 3) - JPG/PNG</label>
-            <input type="file" class="w-full border p-2 rounded mt-1">
-            <label class="block font-medium mt-4">Upload Word Document (.docx)</label>
-            <input type="file" class="w-full border p-2 rounded mt-1">
-        </div>
-        <div class="mt-6">
-            <button class="bg-[#5A7BAF] text-white w-full py-3 rounded hover:bg-[#3A5B8F]">
-                Re-Upload Contribution
-            </button>
-        </div>
-    </div>
-    <br>
-    <script>
-        function showReUploadSection() {
-            document.getElementById("reUploadSection").classList.remove("hidden");
-        }
-    </script>
 </x-app-layout>
