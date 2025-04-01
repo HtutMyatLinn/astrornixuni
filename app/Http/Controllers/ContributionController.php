@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class ContributionController extends Controller
 {
@@ -321,6 +322,12 @@ class ContributionController extends Controller
             'feedback_given_date' => now(),
         ]);
 
+        // Update the contribution status to "Updated" or your desired status
+        $contribution->update([
+            'contribution_status' => 'Update',
+            'updated_at' => now()
+        ]);
+
         // Send email to the contributor
         Mail::to($contribution->user->email)->send(new ContributionFeedbackMail($contribution, $request->feedback));
 
@@ -535,15 +542,94 @@ class ContributionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $contribution = Contribution::with('images')->findOrFail($id);
+        $intakes = Intake::where('status', 'active')->get();
+        $contribution_categories = ContributionCategory::all();
+
+        return view('student.contribution-edit', compact('contribution', 'intakes', 'contribution_categories'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ContributionRequest $request, string $id)
     {
-        //
+        $contribution = Contribution::with('images')->findOrFail($id);
+
+        // Handle cover image update
+        if ($request->hasFile('contribution_cover')) {
+            // Delete old cover image if it exists
+            if ($contribution->contribution_cover) {
+                Storage::delete('public/contribution-images/' . $contribution->contribution_cover);
+            }
+
+            // Store new cover image
+            $file = $request->file('contribution_cover');
+            $coverImageName = 'contribution_cover_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/contribution-images', $coverImageName);
+            $contribution->contribution_cover = $coverImageName;
+        } elseif ($request->cover_deleted == '1') {
+            // Handle cover image deletion if marked for deletion
+            if ($contribution->contribution_cover) {
+                Storage::delete('public/contribution-images/' . $contribution->contribution_cover);
+                $contribution->contribution_cover = null;
+            }
+        }
+
+        // Handle document update
+        if ($request->hasFile('contribution_file_path')) {
+            // Delete old document if it exists
+            if ($contribution->contribution_file_path) {
+                Storage::delete('public/contribution-documents/' . $contribution->contribution_file_path);
+            }
+
+            // Store new document
+            $file = $request->file('contribution_file_path');
+            $documentName = 'contribution_file_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public/contribution-documents', $documentName);
+            $contribution->contribution_file_path = $documentName;
+        } elseif ($request->document_deleted == '1') {
+            // Handle document deletion if marked for deletion
+            if ($contribution->contribution_file_path) {
+                Storage::delete('public/contribution-documents/' . $contribution->contribution_file_path);
+                $contribution->contribution_file_path = null;
+            }
+        }
+
+        // Update other fields
+        $contribution->intake_id = $request->intake_id;
+        $contribution->contribution_category_id = $request->contribution_category_id;
+        $contribution->contribution_title = $request->contribution_title;
+        $contribution->contribution_description = $request->contribution_description;
+        $contribution->contribution_status = 'Upload';
+        $contribution->save();
+
+        // Handle additional images upload
+        if ($request->hasFile('contribution_images')) {
+            foreach ($request->file('contribution_images') as $image) {
+                $imageName = 'contribution_image_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/contribution-images', $imageName);
+
+                ContributionImage::create([
+                    'contribution_id' => $contribution->contribution_id,
+                    'contribution_image_path' => $imageName,
+                ]);
+            }
+        }
+
+        // Handle deleted images
+        if ($request->has('deleted_images')) {
+            foreach ($request->deleted_images as $imageId) {
+                $image = ContributionImage::find($imageId);
+                if ($image) {
+                    Storage::delete('public/contribution-images/' . $image->contribution_image_path);
+                    $image->delete();
+                }
+            }
+        }
+
+        return redirect()->back()->with('success', 'Contribution updated successfully!');
     }
 
     /**

@@ -194,20 +194,20 @@
                 <!-- Cover Image Upload -->
                 <div class="mb-6">
                     <label class="block text-gray-700 font-medium mb-2">Cover Image (High-Quality JPG/PNG/JPEG)</label>
-                    <div
-                        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors hover:border-blue-400 bg-gray-50 relative">
-                        <div id="cover-preview-container" class="hidden mb-4 relative">
-                            <div class="flex justify-center">
-                                <div class="relative select-none">
-                                    <img id="cover-preview"
-                                        class="max-h-40 rounded-lg shadow-sm border border-gray-200">
-                                    <button type="button" onclick="removeCoverImage()"
-                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 shadow-md">
-                                        ×
-                                    </button>
-                                </div>
+
+                    <div id="cover-preview-container" class="hidden mb-4 relative">
+                        <div class="flex justify-center">
+                            <div class="relative select-none">
+                                <img id="cover-preview" class="max-h-40 rounded-lg shadow-sm border border-gray-200">
+                                <button type="button" onclick="removeCoverImage()"
+                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 shadow-md">
+                                    ×
+                                </button>
                             </div>
                         </div>
+                    </div>
+                    <div
+                        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors hover:border-blue-400 bg-gray-50 relative">
                         <div id="cover-upload-area" class="flex flex-col items-center justify-center space-y-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -229,10 +229,11 @@
                 <!-- Additional Images Upload -->
                 <div class="mb-6">
                     <label class="block text-gray-700 font-medium mb-2">Additional Images - JPG/PNG/JPEG</label>
+
+                    <div id="additional-preview-container" class="grid grid-cols-4 gap-2 mb-4 hidden select-none">
+                    </div>
                     <div
                         class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors hover:border-blue-400 bg-gray-50 relative">
-                        <div id="additional-preview-container" class="grid grid-cols-4 gap-2 mb-4 hidden select-none">
-                        </div>
                         <div id="additional-upload-area" class="flex flex-col items-center justify-center space-y-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -254,26 +255,26 @@
                 <!-- Document Upload -->
                 <div class="mb-6">
                     <label class="block text-gray-700 font-medium mb-2">Upload Word Document (.docx)</label>
+                    <div id="document-preview-container" class="hidden mb-4 relative">
+                        <div
+                            class="flex items-center justify-between bg-blue-50 rounded-lg p-3 border border-blue-100 select-none">
+                            <div class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500 mr-2"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span id="document-name"
+                                    class="text-sm font-medium text-gray-700 truncate max-w-xs"></span>
+                            </div>
+                            <button type="button" onclick="removeDocument()"
+                                class="ml-4 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600">
+                                ×
+                            </button>
+                        </div>
+                    </div>
                     <div
                         class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors hover:border-blue-400 bg-gray-50 relative">
-                        <div id="document-preview-container" class="hidden mb-4 relative">
-                            <div
-                                class="flex items-center justify-between bg-blue-50 rounded-lg p-3 border border-blue-100 select-none">
-                                <div class="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500 mr-2"
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                    </svg>
-                                    <span id="document-name"
-                                        class="text-sm font-medium text-gray-700 truncate max-w-xs"></span>
-                                </div>
-                                <button type="button" onclick="removeDocument()"
-                                    class="ml-4 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600">
-                                    ×
-                                </button>
-                            </div>
-                        </div>
                         <div id="document-upload-area" class="flex flex-col items-center justify-center space-y-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -301,7 +302,6 @@
                             reader.onload = function(event) {
                                 document.getElementById('cover-preview').src = event.target.result;
                                 document.getElementById('cover-preview-container').classList.remove('hidden');
-                                document.getElementById('cover-upload-area').classList.add('hidden');
                             };
                             reader.readAsDataURL(file);
                         }
@@ -323,7 +323,6 @@
                         if (files.length > 0) {
                             previewContainer.innerHTML = '';
                             previewContainer.classList.remove('hidden');
-                            document.getElementById('additional-upload-area').classList.add('hidden');
 
                             Array.from(files).forEach((file, index) => {
                                 if (file.type.match('image.*')) {
@@ -386,7 +385,6 @@
                         if (file) {
                             document.getElementById('document-name').textContent = file.name;
                             document.getElementById('document-preview-container').classList.remove('hidden');
-                            document.getElementById('document-upload-area').classList.add('hidden');
                         }
                     });
 
