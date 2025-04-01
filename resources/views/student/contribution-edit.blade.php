@@ -523,7 +523,6 @@
                             // Show new document preview with filename
                             document.getElementById('new-document-name').innerHTML = file.name;
                             document.getElementById('new-document-preview-container').classList.remove('hidden');
-                            document.getElementById('document-upload-area').classList.add('hidden');
                         }
                     });
                 </script>

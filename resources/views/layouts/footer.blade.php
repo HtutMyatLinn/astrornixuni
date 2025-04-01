@@ -84,7 +84,7 @@
     <div class="flex justify-between items-center mx-8 border-t border-t-black">
         <!-- Social Media -->
         <div class="text-black">
-            <p class="text-sm">@2025 University Magazine</p>
+            <p class="text-sm">@2025 Astrornix University Magazine</p>
         </div>
         <!-- Country/Region -->
         <div class="text-center mt-4 text-sm font-medium">
