@@ -8,6 +8,7 @@ use App\Models\AcademicYear;
 use App\Models\BrowserStat;
 use App\Models\Contribution;
 use App\Models\Faculty;
+use App\Models\Feedback;
 use App\Models\Inquiry;
 use App\Models\PasswordResetRequest;
 use App\Models\Role;
@@ -1106,14 +1107,28 @@ class HomeController extends Controller
 
     public function reupload()
     {
-        // Get the authenticated user's ID
         $userId = auth()->id();
 
-        // Fetch contributions for the logged-in user
+        // Get all contributions for the logged-in user
         $contributions = Contribution::where('user_id', $userId)
             ->orderBy('submitted_date', 'desc')
             ->get();
 
-        return view('student.re_upload_contribution', compact('contributions'));
+        // Check if there are any contributions under review (for notification)
+        $noti = Contribution::where('user_id', $userId)
+            ->where('contribution_status', 'Review');
+
+        // Get all feedbacks for the user's contributions with pagination
+        $feedbacks = Feedback::whereHas('contribution', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
+            ->with(['contribution', 'user']) // Eager load relationships
+            ->orderBy('feedback_given_date', 'desc')
+            ->paginate(3);
+
+        // Keep this for any existing functionality that might need it
+        $reviewedContribution = null;
+
+        return view('student.re_upload_contribution', compact('contributions', 'noti', 'reviewedContribution', 'feedbacks'));
     }
 }

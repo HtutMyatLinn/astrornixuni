@@ -172,6 +172,7 @@ use Carbon\Carbon;
                                     )
                                     ->where('contributions.user_id', Auth::id())
                                     ->where('feedbacks.user_id', '!=', Auth::id())
+                                    ->where('contributions.contribution_status', 'Review')
                                     ->get();
 
                                 $totalCount = $feedbacks->count();
@@ -222,6 +223,7 @@ use Carbon\Carbon;
                                         ->join('users', 'feedbacks.user_id', '=', 'users.user_id')
                                         ->where('contributions.user_id', Auth::id())
                                         ->where('feedbacks.user_id', '!=', Auth::id())
+                                        ->where('contributions.contribution_status', 'Review')
                                         ->orderBy('feedbacks.feedback_given_date', 'desc')
                                         ->select(
                                             'feedbacks.*',

@@ -26,8 +26,8 @@ class ContributionRequest extends FormRequest
             'intake_id' => 'required|exists:intakes,intake_id',
             'contribution_category_id' => 'required|exists:contribution_categories,contribution_category_id',
             'contribution_description' => 'required|string',
-            'contribution_cover' => 'nullable|image|mimes:jpeg,png,jpg',
-            'contribution_images.*' => 'nullable|image|mimes:jpeg,png,jpg',
+            'contribution_cover' => 'nullable|mimes:jpeg,png,jpg',
+            'contribution_images.*' => 'nullable|mimes:jpeg,png,jpg',
             'contribution_file_path' => 'mimes:doc,docx',
             'terms_and_conditions' => 'required|accepted'
         ];
@@ -49,10 +49,8 @@ class ContributionRequest extends FormRequest
             'contribution_description.required' => 'The contribution description is required.',
             'contribution_description.string' => 'The contribution description must be a string.',
 
-            'contribution_cover.image' => 'The cover must be an image file.',
             'contribution_cover.mimes' => 'Only JPEG, PNG and JPG formats are allowed for the cover.',
 
-            'contribution_images.*.image' => 'Only image files are allowed.',
             'contribution_images.*.mimes' => 'Only JPEG, PNG and JPG formats are allowed.',
 
             'contribution_file_path.mimes' => 'Only Word files (.doc, .docx) are allowed.',
