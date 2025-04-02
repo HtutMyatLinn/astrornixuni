@@ -49,9 +49,9 @@
 
                     <a href="{{ asset($termsPdfPath) }}" target="_blank">Terms and Conditions</a>
                     <a href="{{ asset($privacyPdfPath) }}" target="_blank">Privacy Policy</a>
-                    <a href="">Twitter</a>
+                    {{-- <a href="">Twitter</a>
                     <a href="">Facebook</a>
-                    <a href="">Skype</a>
+                    <a href="">Skype</a> --}}
                 </ul>
             </div>
 
@@ -84,7 +84,7 @@
     <div class="flex justify-between items-center mx-8 border-t border-t-black">
         <!-- Social Media -->
         <div class="text-black">
-            <p class="text-sm">@2025 Astrornix University Magazine</p>
+            <p class="text-sm">@2025 Astrornix University</p>
         </div>
         <!-- Country/Region -->
         <div class="text-center mt-4 text-sm font-medium">

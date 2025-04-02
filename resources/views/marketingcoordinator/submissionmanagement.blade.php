@@ -62,6 +62,8 @@
                                         <option value="">All Statuses</option>
                                         <option value="Upload" {{ request('status') == 'Upload' ? 'selected' : '' }}>
                                             Uploaded</option>
+                                        <option value="Reject" {{ request('status') == 'Review' ? 'selected' : '' }}>
+                                            Reviewed</option>
                                         <option value="Select" {{ request('status') == 'Select' ? 'selected' : '' }}>
                                             Selected</option>
                                         <option value="Update" {{ request('status') == 'Update' ? 'selected' : '' }}>
@@ -135,25 +137,29 @@
                                                         ? 'bg-yellow-400'
                                                         : ($contribution->contribution_status == 'Select'
                                                             ? 'bg-blue-400'
-                                                            : ($contribution->contribution_status == 'Update'
-                                                                ? 'bg-orange-400'
-                                                                : ($contribution->contribution_status == 'Reject'
-                                                                    ? 'bg-red-400'
-                                                                    : ($contribution->contribution_status == 'Publish'
-                                                                        ? 'bg-green-400'
-                                                                        : 'bg-gray-300')))) }}
+                                                            : ($contribution->contribution_status == 'Review'
+                                                                ? 'bg-yellow-400'
+                                                                : ($contribution->contribution_status == 'Update'
+                                                                    ? 'bg-orange-400'
+                                                                    : ($contribution->contribution_status == 'Reject'
+                                                                        ? 'bg-red-400'
+                                                                        : ($contribution->contribution_status == 'Publish'
+                                                                            ? 'bg-green-400'
+                                                                            : 'bg-gray-300'))))) }}
                                                     text-white">
                                                             {{ $contribution->contribution_status == 'Upload'
                                                                 ? 'Uploaded'
                                                                 : ($contribution->contribution_status == 'Select'
                                                                     ? 'Selected'
-                                                                    : ($contribution->contribution_status == 'Update'
-                                                                        ? 'Updated'
-                                                                        : ($contribution->contribution_status == 'Reject'
-                                                                            ? 'Rejected'
-                                                                            : ($contribution->contribution_status == 'Publish'
-                                                                                ? 'Published'
-                                                                                : $contribution->contribution_status)))) }}
+                                                                    : ($contribution->contribution_status == 'Review'
+                                                                        ? 'Reviewed'
+                                                                        : ($contribution->contribution_status == 'Update'
+                                                                            ? 'Updated'
+                                                                            : ($contribution->contribution_status == 'Reject'
+                                                                                ? 'Rejected'
+                                                                                : ($contribution->contribution_status == 'Publish'
+                                                                                    ? 'Published'
+                                                                                    : $contribution->contribution_status))))) }}
                                                         </span>
                                                     </td>
                                                     <td class="px-6 py-4">

@@ -129,6 +129,8 @@
                                         <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Reject')
                                         <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
+                                    @elseif($contribution->contribution_status == 'Review')
+                                        <span class="w-4 h-4 bg-orange-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Update')
                                         <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
                                     @elseif($contribution->contribution_status == 'Select')
@@ -140,13 +142,15 @@
                                         ? 'Uploaded'
                                         : ($contribution->contribution_status == 'Select'
                                             ? 'Selected'
-                                            : ($contribution->contribution_status == 'Update'
-                                                ? 'Updated'
-                                                : ($contribution->contribution_status == 'Reject'
-                                                    ? 'Rejected'
-                                                    : ($contribution->contribution_status == 'Publish'
-                                                        ? 'Published'
-                                                        : $contribution->contribution_status)))) }}
+                                            : ($contribution->contribution_status == 'Review'
+                                                ? 'Reviewed'
+                                                : ($contribution->contribution_status == 'Update'
+                                                    ? 'Updated'
+                                                    : ($contribution->contribution_status == 'Reject'
+                                                        ? 'Rejected'
+                                                        : ($contribution->contribution_status == 'Publish'
+                                                            ? 'Published'
+                                                            : $contribution->contribution_status))))) }}
                                 </div>
                             </div>
 

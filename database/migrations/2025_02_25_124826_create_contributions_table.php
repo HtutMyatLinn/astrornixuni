@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('contribution_file_path')->nullable();;
             $table->date('submitted_date')->nullable();
             $table->date('published_date')->nullable();
-            $table->string('contribution_status', 20)->default('Upload'); // Status (Upload, Reject, Update, Select, Publish)
+            $table->string('contribution_status', 20)->default('Upload'); // Status (Upload, Reject, Update, Select, Publish, Review)
             $table->integer('view_count')->default(0); // View count
             $table->timestamps();
 

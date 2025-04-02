@@ -324,7 +324,7 @@ class ContributionController extends Controller
 
         // Update the contribution status to "Updated" or your desired status
         $contribution->update([
-            'contribution_status' => 'Update',
+            'contribution_status' => 'Review',
             'updated_at' => now()
         ]);
 
@@ -602,7 +602,7 @@ class ContributionController extends Controller
         $contribution->contribution_category_id = $request->contribution_category_id;
         $contribution->contribution_title = $request->contribution_title;
         $contribution->contribution_description = $request->contribution_description;
-        $contribution->contribution_status = 'Upload';
+        $contribution->contribution_status = 'Update';
         $contribution->save();
 
         // Handle additional images upload
