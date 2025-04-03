@@ -137,6 +137,8 @@ class AdminController extends Controller
 
         $user = User::where('user_id', $request->user_id)->firstOrFail();
         $user->password = Hash::make($newPassword);
+        $user->last_password_changed_date = now();
+        $user->password_expired_date = now()->addMonths(2);
         $user->save();
 
         // Update password reset requests if needed

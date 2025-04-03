@@ -115,6 +115,9 @@ class ProfileController extends Controller
 
         // Update the password
         $user->password = Hash::make($request->new_password);
+        $user->last_password_changed_date = now();
+        $user->password_expired_date = now()->addMonths(2);
+
         $user->save();
 
         return redirect()->back()->with('success', 'Password changed successfully.');
