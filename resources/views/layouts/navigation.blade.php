@@ -117,10 +117,12 @@ use Carbon\Carbon;
                                 </p>
                             </div>
 
-                            <x-dropdown-link :href="route('student.re_upload_contribution')" class="flex gap-2 items-center">
-                                <i class="ri-file-history-line text-xl"></i>
-                                {{ __('Contribution History') }}
-                            </x-dropdown-link>
+                            @if (Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student')
+                                <x-dropdown-link :href="route('student.re_upload_contribution')" class="flex gap-2 items-center">
+                                    <i class="ri-file-history-line text-xl"></i>
+                                    {{ __('Contribution History') }}
+                                </x-dropdown-link>
+                            @endif
 
                             <x-dropdown-link :href="route('profile.edit')" class="flex gap-2 items-center">
                                 <i class="ri-user-3-line text-xl"></i>

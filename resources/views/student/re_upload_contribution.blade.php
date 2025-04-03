@@ -49,10 +49,33 @@
                                 Submitted on: {{ $feedback->contribution->submitted_date->format('M d, Y') }}
                                 <span class="mx-2">•</span>
                                 <span
-                                    class="px-2 py-0.5 rounded-full text-xs font-medium select-none {{ $feedback->contribution->contribution_status == 'Review' ? 'bg-yellow-100 text-yellow-800' : '' }}">
-                                    {{ $feedback->contribution->contribution_status == 'Review'
-                                        ? 'Reviewed'
-                                        : $feedback->contribution->contribution_status }}
+                                    class="px-2 py-0.5 rounded-full text-xs font-medium select-none
+                                    {{ $feedback->contribution->contribution_status == 'Upload'
+                                        ? 'bg-yellow-100 text-yellow-800'
+                                        : ($feedback->contribution->contribution_status == 'Select'
+                                            ? 'bg-blue-100 text-blue-800'
+                                            : ($feedback->contribution->contribution_status == 'Review'
+                                                ? 'bg-yellow-100 text-yellow-800'
+                                                : ($feedback->contribution->contribution_status == 'Update'
+                                                    ? 'bg-orange-100 text-orange-800'
+                                                    : ($feedback->contribution->contribution_status == 'Reject'
+                                                        ? 'bg-red-100 text-red-800'
+                                                        : ($feedback->contribution->contribution_status == 'Publish'
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : 'bg-gray-300'))))) }} ">
+                                    {{ $feedback->contribution->contribution_status == 'Upload'
+                                        ? 'Uploaded'
+                                        : ($feedback->contribution->contribution_status == 'Select'
+                                            ? 'Selected'
+                                            : ($feedback->contribution->contribution_status == 'Review'
+                                                ? 'Reviewed'
+                                                : ($feedback->contribution->contribution_status == 'Update'
+                                                    ? 'Updated'
+                                                    : ($feedback->contribution->contribution_status == 'Reject'
+                                                        ? 'Rejected'
+                                                        : ($feedback->contribution->contribution_status == 'Publish'
+                                                            ? 'Published'
+                                                            : $feedback->contribution->contribution_status))))) }}
                                 </span>
                             </div>
                         </div>
