@@ -18,21 +18,21 @@
             <div class="flex items-center space-x-3">
                 <!-- Centered Profile Picture -->
                 @if (Auth::check())
-                @if (Auth::user()->profile_image)
-                <img id="profilePreview"
-                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                    src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
+                    @if (Auth::user()->profile_image)
+                        <img id="profilePreview"
+                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                            src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
+                    @else
+                        <p
+                            class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                            {{ strtoupper(Auth::user()->username[0]) }}
+                        </p>
+                    @endif
                 @else
-                <p
-                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                    {{ strtoupper(Auth::user()->username[0]) }}
-                </p>
-                @endif
-                @else
-                <div class="w-12 h-12 select-none">
-                    <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                        class="w-full h-full rounded-full object-cover">
-                </div>
+                    <div class="w-12 h-12 select-none">
+                        <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                            class="w-full h-full rounded-full object-cover">
+                    </div>
                 @endif
                 <div class="text-left">
                     <h3 class="text-sm font-semibold">{{ Auth::user()->username }}</h3>
@@ -92,7 +92,7 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('marketingcoordinator.submission-management') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/notifications.png') }}" alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/submission.png') }}" alt="">
                     Submission Management
                 </a>
 
@@ -101,8 +101,7 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('marketingcoordinator.selected-contributions') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/report&analysis.png') }}"
-                        alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/selected.png') }}" alt="">
                     Selected Contributions
                 </a>
 
@@ -110,8 +109,7 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('marketingcoordinator.published-contribution') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/report&analysis.png') }}"
-                        alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/published.png') }}" alt="">
                     Published Contributions
                 </a>
                 <a href="{{ route('marketingcoordinator.notifications') }}"
@@ -126,7 +124,7 @@
                     class="flex items-center px-4 py-4 text-sm rounded-lg
                           {{ request()->routeIs('marketingcoordinator.report') ? 'bg-gray-700 text-white' : 'bg-[#1C2434] text-[#D4D4D4]' }}
                           hover:bg-gray-700 transition-colors duration-200">
-                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/notifications.png') }}" alt="">
+                    <img class="w-4 h-4 mr-3 select-none" src="{{ asset('images/inquiry.png') }}" alt="">
                     Reports
                 </a>
             </div>

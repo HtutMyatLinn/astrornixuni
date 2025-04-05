@@ -196,7 +196,7 @@
                                                     <td class="px-6 py-4 text-gray-600">
                                                         {{ $student->faculty->faculty }}
                                                     </td>
-                                                    <td class="px-6 py-4 text-gray-600">Guest</td>
+                                                    <td class="px-6 py-4 text-gray-600">Student</td>
                                                     <!-- Hardcoded as "Guest" -->
                                                     <td class="px-6 py-4">
                                                         @if ($student->status == 1)

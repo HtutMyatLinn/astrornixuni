@@ -143,51 +143,32 @@ class UnassignedUserController extends Controller
 
         $guestRoleId = $guestRole->role_id; // Get the role ID
 
-        // Fetch users with the "Guest" role and no faculty_id (unassigned users)
+        // Fetch users with the "Guest" role (keeping your original query)
         $unassigned_users = User::where('role_id', $guestRoleId)->get();
 
-        // Get the current month's unassigned user count
-        $current_month_unassigned_users = User::whereNull('role_id')
+        // Get the current month's guest user count (fixed to check role_id instead of NULL)
+        $current_month_unassigned_users = User::where('role_id', $guestRoleId)
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
 
-        // Get the previous month's unassigned user count
-        $previous_month_unassigned_users = User::whereNull('role_id')
+        // Get the previous month's guest user count (fixed to check role_id instead of NULL)
+        $previous_month_unassigned_users = User::where('role_id', $guestRoleId)
             ->whereYear('created_at', Carbon::now()->subMonth()->year)
             ->whereMonth('created_at', Carbon::now()->subMonth()->month)
             ->count();
 
-        // Calculate the percentage change
+        // Calculate the percentage change (keeping your original logic)
         $unassigned_user_percentage_change = 0;
         if ($previous_month_unassigned_users > 0) {
             $unassigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
         }
 
-        // Round the percentage to 2 decimal places
+        // Round the percentage to 2 decimal places (keeping your original logic)
         $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
         $inquiries = Inquiry::all();
-
-        // Get the current month's new inquiry count
-        $current_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->count();
-
-        // Get the previous month's new inquiry count
-        $previous_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
-            ->count();
-
-        // Calculate the percentage change
-        $inquiry_percentage_change = 0;
-        if ($previous_month_inquiries > 0) {
-            $inquiry_percentage_change = (($current_month_inquiries - $previous_month_inquiries) / $previous_month_inquiries) * 100;
-        }
-
-        // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
 
         $users = User::where('role_id', $guestRoleId) // Get the id of Guest role
             ->orderBy('created_at', $sort)
@@ -224,6 +205,6 @@ class UnassignedUserController extends Controller
         // Round the percentage to 2 decimal places
         $student_percentage_change = min(round($student_percentage_change, 2), 100);
 
-        return view('admin.notificationsunregister', compact('unassigned_users', 'unassigned_user_percentage_change', 'inquiries', 'inquiry_percentage_change', 'users', 'total_students', 'student_percentage_change', 'sort'));
+        return view('admin.notificationsunregister', compact('unassigned_users', 'unassigned_user_percentage_change', 'inquiries', 'users', 'total_students', 'student_percentage_change', 'sort'));
     }
 }

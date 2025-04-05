@@ -42,7 +42,7 @@
                             </h1>
 
                             <button onclick="openModal()"
-                                class="px-8 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 select-none">
+                                class="px-8 py-2 bg-black text-white rounded-lg hover:bg-gray-700 select-none">
                                 Add Academic Year
                             </button>
                         </div>

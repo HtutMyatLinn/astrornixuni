@@ -92,21 +92,6 @@
                                         <h2 class="text-3xl font-bold">{{ $inquiries->count() }}</h2>
                                         <p class="text-xl text-gray-400">New Inquiries</p>
                                     </div>
-
-                                    <!-- Percentage -->
-                                    <div class="flex items-center gap-1">
-                                        @if ($inquiry_percentage_change > 0)
-                                            <span
-                                                class="text-emerald-500 text-xl font-medium">{{ $inquiry_percentage_change }}%
-                                                ↑</span>
-                                        @elseif ($inquiry_percentage_change < 0)
-                                            <span
-                                                class="text-red-500 text-xl font-medium">{{ abs($inquiry_percentage_change) }}%
-                                                ↓</span>
-                                        @else
-                                            <span class="text-gray-500 text-xl font-medium">0%</span>
-                                        @endif
-                                    </div>
                                 </div>
                             </div>
                             <!-- Total Pending Contributions Card -->
@@ -115,8 +100,7 @@
                                 <!-- Avatar Circle -->
                                 <div
                                     class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                    <img class="w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
-                                        alt="">
+                                    <img class="w-5 h-5" src="{{ asset('images/totaluser.png') }}" alt="">
                                 </div>
 
                                 <!-- Stats Container with Flexbox -->
@@ -222,20 +206,16 @@
                                     <table class="w-full">
                                         <thead class="bg-[#F9F8F8]">
                                             <tr>
-                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                    User</th>
-                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                    Message
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">User
                                                 </th>
+                                                <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
+                                                    Message</th>
                                                 <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">Date
-                                                    &
-                                                    Time</th>
+                                                    & Time</th>
                                                 <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                    Status
-                                                </th>
+                                                    Status</th>
                                                 <th class="text-left px-6 py-4 text-sm font-medium text-gray-500">
-                                                    Action
-                                                </th>
+                                                    Action</th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-gray-100">
@@ -277,11 +257,17 @@
                                                             @endif
                                                         </td>
                                                         <td class="px-6 py-4 text-[#2F64AA] font-light">
-                                                            <a href="#"
-                                                                onclick="openModal('{{ $inquiry->inquiry_id }}', '{{ $inquiry->user->first_name }} {{ $inquiry->user->last_name }}', '{{ $inquiry->user->email }}', '{{ $inquiry->priority_level }}', '{{ $inquiry->inquiry }}', '{{ $inquiry->created_at->format('M d, Y h:i A') }}', '{{ $inquiry->inquiry_status }}')"
-                                                                class="hover:underline">
+                                                            <button type="button"
+                                                                class="hover:underline view-inquiry-btn"
+                                                                data-id="{{ $inquiry->inquiry_id }}"
+                                                                data-user="{{ $inquiry->user->first_name }} {{ $inquiry->user->last_name }}"
+                                                                data-email="{{ $inquiry->user->email }}"
+                                                                data-priority="{{ $inquiry->priority_level }}"
+                                                                data-inquiry="{{ $inquiry->inquiry }}"
+                                                                data-date="{{ $inquiry->created_at->format('M d, Y h:i A') }}"
+                                                                data-status="{{ $inquiry->inquiry_status }}">
                                                                 <i class="ri-eye-line text-xl"></i>
-                                                            </a>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -309,7 +295,7 @@
                                 class="fixed inset-0 z-40 bg-black bg-opacity-50 opacity-0 invisible transition-opacity duration-300">
                             </div>
 
-                            {{-- Modal --}}
+                            <!-- Modal -->
                             <div id="inquiryModal"
                                 class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible p-2 -translate-y-5 transition-all duration-300">
                                 <div class="max-w-xl w-full bg-white p-8 rounded-md shadow-lg relative">
@@ -392,27 +378,28 @@
                                 // Get references to the dark overlay and inquiry modal
                                 const darkOverlay = document.getElementById('darkOverlay');
                                 const inquiryModal = document.getElementById('inquiryModal');
+                                let currentResponseButton = null;
 
                                 // Function to open the inquiry modal
-                                function openModal(id, user, email, priority_level, inquiry, date, status) {
+                                function openInquiryModal(data) {
                                     // Populate modal content
-                                    document.getElementById('inquiry_id').value = id;
-                                    document.getElementById('modalUser').textContent = user;
-                                    document.getElementById('modalEmail').textContent = email;
-                                    document.getElementById('modalPriorityLevel').textContent = priority_level;
-                                    document.getElementById('modalInquiry').textContent = inquiry;
-                                    document.getElementById('modalDate').textContent = date;
-                                    document.getElementById('modalStatus').textContent = status;
+                                    document.getElementById('inquiry_id').value = data.id;
+                                    document.getElementById('modalUser').textContent = data.user;
+                                    document.getElementById('modalEmail').textContent = data.email;
+                                    document.getElementById('modalPriorityLevel').textContent = data.priority;
+                                    document.getElementById('modalInquiry').textContent = data.inquiry;
+                                    document.getElementById('modalDate').textContent = data.date;
+                                    document.getElementById('modalStatus').textContent = data.status;
                                     document.getElementById('responseText').value = ''; // Clear previous response
 
                                     // Set the form action dynamically
                                     const updateForm = document.getElementById('updateInquiryForm');
-                                    updateForm.action = `/admin/notifications/inquiry/${id}`;
+                                    updateForm.action = `/admin/notifications/inquiry/${data.id}`;
 
                                     // Update the button based on inquiry status
                                     const responseButton = document.getElementById('responseButton');
 
-                                    if (status === 'Resolved') {
+                                    if (data.status === 'Resolved') {
                                         responseButton.textContent = 'Already Resolved';
                                         responseButton.classList.add('bg-gray-400', 'cursor-not-allowed');
                                         responseButton.disabled = true;
@@ -426,12 +413,13 @@
                                     }
 
                                     // Remove previous event listeners to avoid duplicates
-                                    responseButton.replaceWith(responseButton.cloneNode(true));
-                                    const newResponseButton = document.getElementById('responseButton');
+                                    if (currentResponseButton) {
+                                        currentResponseButton.replaceWith(currentResponseButton.cloneNode(true));
+                                    }
+                                    currentResponseButton = document.getElementById('responseButton');
 
                                     // Add new event listener
-                                    // Add new event listener
-                                    newResponseButton.addEventListener('click', async () => {
+                                    currentResponseButton.addEventListener('click', async () => {
                                         const responseText = document.getElementById('responseText').value.trim();
                                         if (!responseText) {
                                             alert('Please enter your response before sending.');
@@ -442,17 +430,17 @@
                                         document.getElementById('responseContent').value = responseText;
 
                                         // Show loading state with spinner
-                                        const originalButtonHTML = newResponseButton.innerHTML;
-                                        newResponseButton.disabled = true;
-                                        newResponseButton.innerHTML = `
-        <span class="inline-flex items-center">
-            Sending...
-            <svg class="animate-spin -mr-1 ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-        </span>
-    `;
+                                        const originalButtonHTML = currentResponseButton.innerHTML;
+                                        currentResponseButton.disabled = true;
+                                        currentResponseButton.innerHTML = `
+                                            <span class="inline-flex items-center">
+                                                Sending...
+                                                <svg class="animate-spin -mr-1 ml-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                            </span>
+                                        `;
 
                                         try {
                                             // Submit the form via AJAX
@@ -470,23 +458,23 @@
                                                 })
                                             });
 
-                                            const data = await response.json();
+                                            const result = await response.json();
 
-                                            if (data.success) {
+                                            if (result.success) {
                                                 // Close modal on success
                                                 closeInquiryModal();
                                                 // Show success message or refresh the page
                                                 window.location.reload();
                                             } else {
-                                                alert(data.message || 'Failed to send response');
-                                                newResponseButton.disabled = false;
-                                                newResponseButton.innerHTML = originalButtonHTML;
+                                                alert(result.message || 'Failed to send response');
+                                                currentResponseButton.disabled = false;
+                                                currentResponseButton.innerHTML = originalButtonHTML;
                                             }
                                         } catch (error) {
                                             console.error('Error:', error);
                                             alert('An error occurred while sending the response');
-                                            newResponseButton.disabled = false;
-                                            newResponseButton.innerHTML = originalButtonHTML;
+                                            currentResponseButton.disabled = false;
+                                            currentResponseButton.innerHTML = originalButtonHTML;
                                         }
                                     });
 
@@ -505,6 +493,26 @@
                                     inquiryModal.classList.add('opacity-0', 'invisible', '-translate-y-5');
                                     inquiryModal.classList.remove('opacity-100', 'visible', 'translate-y-0');
                                 }
+
+                                // Add event listeners to all view buttons
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const viewButtons = document.querySelectorAll('.view-inquiry-btn');
+
+                                    viewButtons.forEach(button => {
+                                        button.addEventListener('click', function() {
+                                            const data = {
+                                                id: this.getAttribute('data-id'),
+                                                user: this.getAttribute('data-user'),
+                                                email: this.getAttribute('data-email'),
+                                                priority: this.getAttribute('data-priority'),
+                                                inquiry: this.getAttribute('data-inquiry'),
+                                                date: this.getAttribute('data-date'),
+                                                status: this.getAttribute('data-status')
+                                            };
+                                            openInquiryModal(data);
+                                        });
+                                    });
+                                });
                             </script>
                         </div>
                     </div>
