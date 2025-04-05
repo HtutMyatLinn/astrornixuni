@@ -253,48 +253,29 @@ class HomeController extends Controller
             'filter' => $request->input('filter'),
         ]);
 
-        // Get the current month's unassigned user count
-        $current_month_unassigned_users = User::whereNull('role_id')
+        // Get the current month's guest user count (fixed to check role_id instead of NULL)
+        $current_month_unassigned_users = User::where('role_id', $guestRoleId)
             ->whereYear('created_at', Carbon::now()->year)
             ->whereMonth('created_at', Carbon::now()->month)
             ->count();
 
-        // Get the previous month's unassigned user count
-        $previous_month_unassigned_users = User::whereNull('role_id')
+        // Get the previous month's guest user count (fixed to check role_id instead of NULL)
+        $previous_month_unassigned_users = User::where('role_id', $guestRoleId)
             ->whereYear('created_at', Carbon::now()->subMonth()->year)
             ->whereMonth('created_at', Carbon::now()->subMonth()->month)
             ->count();
 
-        // Calculate the percentage change
+        // Calculate the percentage change (keeping your original logic)
         $unassigned_user_percentage_change = 0;
         if ($previous_month_unassigned_users > 0) {
             $unassigned_user_percentage_change = (($current_month_unassigned_users - $previous_month_unassigned_users) / $previous_month_unassigned_users) * 100;
         }
 
-        // Round the percentage to 2 decimal places
+        // Round the percentage to 2 decimal places (keeping your original logic)
         $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
         $inquiries = Inquiry::all();
-
-        // Get the current month's new inquiry count
-        $current_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->count();
-
-        // Get the previous month's new inquiry count
-        $previous_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
-            ->count();
-
-        // Calculate the percentage change
-        $inquiry_percentage_change = 0;
-        if ($previous_month_inquiries > 0) {
-            $inquiry_percentage_change = (($current_month_inquiries - $previous_month_inquiries) / $previous_month_inquiries) * 100;
-        }
-
-        // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
 
         // Total student
         $total_students = User::whereHas('role', function ($query) {
@@ -367,7 +348,6 @@ class HomeController extends Controller
             'unassigned_users',
             'unassigned_user_percentage_change',
             'inquiries',
-            'inquiry_percentage_change',
             'total_students',
             'student_percentage_change',
             'contributions',
@@ -415,8 +395,24 @@ class HomeController extends Controller
      */
     public function marketingmanager()
     {
-        // Total Published Contributions (contribution_status = 'Publish')
-        $totalPublishedContributions = Contribution::where('contribution_status', 'Publish')->count();
+        // Published Contributions
+        $totalPublishedContributions = Contribution::where('contribution_status', 'Publish')->get();
+
+        $current_month_published = Contribution::where('contribution_status', 'Publish')
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $previous_month_published = Contribution::where('contribution_status', 'Publish')
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        $published_percentage_change = 0;
+        if ($previous_month_published > 0) {
+            $published_percentage_change = (($current_month_published - $previous_month_published) / $previous_month_published) * 100;
+        }
+        $published_percentage_change = min(round($published_percentage_change, 2), 100);
 
         // Active Faculty Participation (faculties with at least one contribution)
         $activeFacultyParticipation = Faculty::whereHas('users.contributions', function ($query) {
@@ -426,13 +422,68 @@ class HomeController extends Controller
         // Submission Trends This Year (contributions with view_count > 100)
         $submissionTrendsThisYear = Contribution::where('view_count', '>', 100)->count();
 
+        $current_month_popular = Contribution::where('view_count', '>', 100)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $previous_month_popular = Contribution::where('view_count', '>', 100)
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        $popular_percentage_change = 0;
+        if ($previous_month_popular > 0) {
+            $popular_percentage_change = (($current_month_popular - $previous_month_popular) / $previous_month_popular) * 100;
+        }
+        $popular_percentage_change = min(round($popular_percentage_change, 2), 100);
+
         // Total Contributions Submitted (all contributions)
         $totalContributionsSubmitted = Contribution::count();
+
+        $current_month_contributions = Contribution::whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        $previous_month_contributions = Contribution::whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        $contribution_percentage_change = 0;
+        if ($previous_month_contributions > 0) {
+            $contribution_percentage_change = (($current_month_contributions - $previous_month_contributions) / $previous_month_contributions) * 100;
+        }
+        $contribution_percentage_change = min(round($contribution_percentage_change, 2), 100);
 
         // Total Students = count of user's role -> student
         $totalStudents = User::whereHas('role', function ($query) {
             $query->where('role', 'Student');
-        })->count();
+        })->get();
+
+        // Get the current month's student count
+        $current_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->count();
+
+        // Get the previous month's student count
+        $previous_month_students = User::whereHas('role', function ($query) {
+            $query->where('role', 'Student');
+        })
+            ->whereYear('created_at', Carbon::now()->subMonth()->year)
+            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->count();
+
+        // Calculate the percentage change
+        $student_percentage_change = 0;
+        if ($previous_month_students > 0) {
+            $student_percentage_change = (($current_month_students - $previous_month_students) / $previous_month_students) * 100;
+        }
+
+        // Round the percentage to 2 decimal places
+        $student_percentage_change = min(round($student_percentage_change, 2), 100);
 
         // Total Marketing Coordinators = count of user's role -> marketing coordinator
         $totalMarketingCoordinators = User::whereHas('role', function ($query) {
@@ -445,10 +496,14 @@ class HomeController extends Controller
         // Pass data to the view
         return view('marketingmanager.index', [
             'totalPublishedContributions' => $totalPublishedContributions,
+            'published_percentage_change' => $published_percentage_change,
             'activeFacultyParticipation' => $activeFacultyParticipation,
             'submissionTrendsThisYear' => $submissionTrendsThisYear,
+            'popular_percentage_change' => $popular_percentage_change,
             'totalContributionsSubmitted' => $totalContributionsSubmitted,
+            'contribution_percentage_change' => $contribution_percentage_change,
             'totalStudents' => $totalStudents,
+            'student_percentage_change' => $student_percentage_change,
             'totalMarketingCoordinators' => $totalMarketingCoordinators,
             'totalFaculty' => $totalFaculty,
         ]);

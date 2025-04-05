@@ -92,21 +92,6 @@
                                         <h2 class="text-3xl font-bold">{{ $inquiries->count() }}</h2>
                                         <p class="text-xl text-gray-400">New Inquiries</p>
                                     </div>
-
-                                    <!-- Percentage -->
-                                    <div class="flex items-center gap-1">
-                                        @if ($inquiry_percentage_change > 0)
-                                            <span
-                                                class="text-emerald-500 text-xl font-medium">{{ $inquiry_percentage_change }}%
-                                                ↑</span>
-                                        @elseif ($inquiry_percentage_change < 0)
-                                            <span
-                                                class="text-red-500 text-xl font-medium">{{ abs($inquiry_percentage_change) }}%
-                                                ↓</span>
-                                        @else
-                                            <span class="text-gray-500 text-xl font-medium">0%</span>
-                                        @endif
-                                    </div>
                                 </div>
                             </div>
                             <!-- Total Pending Contributions Card -->
@@ -115,8 +100,7 @@
                                 <!-- Avatar Circle -->
                                 <div
                                     class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                    <img class="w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
-                                        alt="">
+                                    <img class="w-5 h-5" src="{{ asset('images/totaluser.png') }}" alt="">
                                 </div>
 
                                 <!-- Stats Container with Flexbox -->

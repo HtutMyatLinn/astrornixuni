@@ -28,18 +28,29 @@
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
             <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                <img class="w-5 h-5" src="{{ asset('images/manager_contribution.png') }}" alt="">
+                <img class="w-5 h-5" src="{{ asset('images/totalinquiry.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
             <div class="flex items-end justify-between">
                 <!-- Numbers -->
                 <div class="space-y-1">
-                    <h2 class="text-3xl font-bold">{{ $totalPublishedContributions }}</h2>
+                    <h2 class="text-3xl font-bold">{{ $totalPublishedContributions->count() }}</h2>
                     <p class="text-xl text-gray-400">Total Published Contributions</p>
                 </div>
 
-
+                <!-- Percentage -->
+                <div class="flex items-center gap-1">
+                    @if ($published_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $published_percentage_change }}%
+                            ↑</span>
+                    @elseif ($published_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($published_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -47,7 +58,7 @@
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
             <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                <img class="w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
+                <img class="w-5 h-5" src="{{ asset('images/trend.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -66,7 +77,7 @@
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
             <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                <img class="w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}" alt="">
+                <img class="w-5 h-5" src="{{ asset('images/approved.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -77,7 +88,18 @@
                     <p class="text-xl text-gray-400">Submission Trends This Year</p>
                 </div>
 
-
+                <!-- Percentage -->
+                <div class="flex items-center gap-1">
+                    @if ($popular_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $popular_percentage_change }}%
+                            ↑</span>
+                    @elseif ($popular_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($popular_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -85,7 +107,7 @@
         <div class="bg-white shadow-[0px_14px_5px_-12px_#4353E1] p-6 w-full">
             <!-- Avatar Circle -->
             <div class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                <img class="w-5 h-5" src="{{ asset('images/totalfaculty.png') }}" alt="">
+                <img class="w-5 h-5" src="{{ asset('images/totalinquiry.png') }}" alt="">
             </div>
 
             <!-- Stats Container with Flexbox -->
@@ -96,6 +118,18 @@
                     <p class="text-xl text-gray-400">Total Contributions Submitted</p>
                 </div>
 
+                <!-- Percentage -->
+                <div class="flex items-center gap-1">
+                    @if ($contribution_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $contribution_percentage_change }}%
+                            ↑</span>
+                    @elseif ($contribution_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($contribution_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -110,8 +144,21 @@
             <div class="flex items-end justify-between">
                 <!-- Numbers -->
                 <div class="space-y-1">
-                    <h2 class="text-3xl font-bold">{{ $totalStudents }}</h2>
+                    <h2 class="text-3xl font-bold">{{ $totalStudents->count() }}</h2>
                     <p class="text-xl text-gray-400">Total Students</p>
+                </div>
+
+                <!-- Percentage -->
+                <div class="flex items-center gap-1">
+                    @if ($student_percentage_change > 0)
+                        <span class="text-emerald-500 text-xl font-medium">{{ $student_percentage_change }}%
+                            ↑</span>
+                    @elseif ($student_percentage_change < 0)
+                        <span class="text-red-500 text-xl font-medium">{{ abs($student_percentage_change) }}%
+                            ↓</span>
+                    @else
+                        <span class="text-gray-500 text-xl font-medium">0%</span>
+                    @endif
                 </div>
             </div>
         </div>

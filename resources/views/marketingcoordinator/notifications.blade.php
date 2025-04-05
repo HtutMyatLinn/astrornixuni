@@ -76,7 +76,7 @@
                             <!-- Avatar Circle -->
                             <div
                                 class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                <img class=" w-5 h-5" src="{{ asset('images/totalsubmissions.png') }}" alt="">
+                                <img class=" w-5 h-5" src="{{ asset('images/feedback.png') }}" alt="">
                             </div>
 
                             <!-- Stats Container with Flexbox -->
@@ -108,8 +108,7 @@
                             <!-- Avatar Circle -->
                             <div
                                 class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                <img class=" w-5 h-5" src="{{ asset('images/totalpendingcontributions.png') }}"
-                                    alt="">
+                                <img class=" w-5 h-5" src="{{ asset('images/selected2.png') }}" alt="">
                             </div>
 
                             <!-- Stats Container with Flexbox -->
@@ -141,7 +140,7 @@
                             <!-- Avatar Circle -->
                             <div
                                 class="w-14 h-14 bg-[#A2A2A225] rounded-full flex items-center justify-center mb-6 select-none">
-                                <img class=" w-5 h-5" src="{{ asset('images/totalstudents.png') }}" alt="">
+                                <img class="w-5 h-5" src="{{ asset('images/total_users.png') }}" alt="">
                             </div>
 
                             <!-- Stats Container with Flexbox -->
