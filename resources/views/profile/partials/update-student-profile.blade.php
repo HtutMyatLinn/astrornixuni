@@ -60,7 +60,7 @@
                     <div class="relative w-40 h-40 rounded-full my-3 select-none group">
                         @if (Auth::user()->profile_image)
                             <img id="profilePreview"
-                                class="w-full h-full rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                class="w-full h-full rounded-full object-cover bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
                                 src="{{ asset('profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
                         @else
                             <p id="profilePreview"
