@@ -18,7 +18,7 @@
 
         <!-- Right Side (Departments and Contact) -->
         <div class="w-full md:w-1/2 mt-10 sm:mt-0">
-            <h3 class="text-2xl text-black font-semibold text-center">UNIVERSITY OF ASTRORNIX</h3>
+            <h3 class="text-2xl text-white font-semibold text-center">UNIVERSITY OF ASTRORNIX</h3>
 
             <!-- Department Lists -->
             <div class="flex justify-center gap-10 sm:gap-32 my-10">
@@ -56,7 +56,7 @@
             </div>
 
             <!-- Contact Info -->
-            <div class="flex flex-col sm:flex-row justify-center items-start gap-3 sm:gap-36 mt-6 text-sm text-black">
+            <div class="flex flex-col sm:flex-row justify-center items-start gap-3 sm:gap-36 mt-6 text-sm text-white">
                 <div class="flex items-center gap-3">
                     <i class="ri-map-pin-line text-xl"></i> <span class="font-semibold">Taung Hlay Kar st, Pyin Oo Lwin,
                         Myanmar</span>
