@@ -111,7 +111,7 @@ class ContributionController extends Controller
             });
         }
 
-        $contributions = $query->paginate(20)->appends([
+        $contributions = $query->paginate(21)->appends([
             'contribution_category' => $selectedCategory,
             'search' => $searchQuery,
             'other_category' => $otherCategory
