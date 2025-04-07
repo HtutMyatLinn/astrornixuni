@@ -80,12 +80,12 @@ use Carbon\Carbon;
                             @if (Auth::check())
                                 @if (Auth::user()->profile_image)
                                     <img id="profilePreview"
-                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover"
                                         src="{{ asset('profile_images/' . Auth::user()->profile_image) }}"
                                         alt="Profile">
                                 @else
                                     <p
-                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover">
                                         {{ strtoupper(Auth::user()->username[0]) }}
                                     </p>
                                 @endif
@@ -777,22 +777,31 @@ use Carbon\Carbon;
                 @endif
             </div>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                    this.closest('form').submit();">
-                        {{ __('Log Out') }}
+            @if (Auth::check())
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
                     </x-responsive-nav-link>
-                </form>
-            </div>
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
+            @else
+                <x-responsive-nav-link :href="route('register')">
+                    {{ __('Register') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('login')">
+                    {{ __('Login') }}
+                </x-responsive-nav-link>
+            @endif
+
         </div>
     </div>
 </nav>
