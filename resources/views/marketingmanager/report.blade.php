@@ -68,7 +68,7 @@
                                             <option value="all" {{ request('faculty') == 'all' ? 'selected' : '' }}>
                                                 All
                                                 Faculties</option>
-                                            @foreach ($faculties as $faculty)
+                                            @foreach ($all_faculties as $faculty)
                                                 <option value="{{ $faculty->faculty_id }}"
                                                     {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
                                                     {{ $faculty->faculty }}
@@ -113,7 +113,7 @@
                                     </thead>
                                     <!-- Inside the <tbody> section -->
                                     <tbody class="divide-y divide-gray-100">
-                                        @forelse ($contributions as $index => $contribution)
+                                        @forelse ($published_contributions as $index => $contribution)
                                             <tr class="hover:bg-gray-50">
                                                 <td class="px-6 py-4 text-gray-600">{{ $loop->iteration }}</td>
                                                 <td class="px-6 py-4">
@@ -201,15 +201,14 @@
 
                         <!-- Pagination -->
                         <div class="flex justify-end items-center gap-2 mt-6">
-                            {{ $contributions->links() }}
+                            {{ $published_contributions->links() }}
                         </div>
                     </div>
                 </div>
 
-                <div class="p-8 bg-white my-5 shadow-lg">
+                <div class="p-8 bg-white m-5 shadow-lg">
                     <!-- Header -->
-                    <h1 class="text-2xl font-bold mb-6">List of Contributions by Faculty (Per Academic Year)
-                    </h1>
+                    <h1 class="text-2xl font-bold mb-6">List of Contributions by Faculty (Per Academic Year)</h1>
 
                     <!-- Academic Year Filter -->
                     <form action="{{ route('marketingmanager.report') }}" method="GET">
@@ -263,10 +262,9 @@
                     </script>
                 </div>
 
-                <div class="p-8 bg-white mt-5 shadow-lg">
+                <div class="p-8 bg-white m-5 shadow-lg">
                     <!-- Header -->
-                    <h1 class="text-2xl font-bold mb-6">List of Percentage of Contributions by Each Faculty
-                    </h1>
+                    <h1 class="text-2xl font-bold mb-6">List of Percentage of Contributions by Each Faculty</h1>
 
                     <!-- Academic Year Filter -->
                     <form action="{{ route('marketingmanager.report') }}" method="GET">
@@ -323,10 +321,11 @@
                     </script>
                 </div>
 
-                <div class="p-8 bg-white mt-5 shadow-lg">
+                <div class="p-8 bg-white m-5 shadow-lg">
                     <!-- Header -->
                     <h1 class="text-2xl font-bold mb-6">Number of Contributors Within Each Faculty for Each Academic
-                        Year</h1>
+                        Year
+                    </h1>
 
                     <!-- Academic Year Filter -->
                     <form action="{{ route('marketingmanager.report') }}" method="GET">
@@ -342,23 +341,23 @@
                         </select>
                     </form>
 
-                    <!-- New Chart Canvas for Number of Contributors -->
-                    <div style="width: 100%; margin: 0 auto; margin-top: 40px;">
-                        <canvas id="contributorChart"></canvas>
+                    <!-- Chart Canvas for Contributor Count -->
+                    <div style="width: 100%; margin: 0 auto;">
+                        <canvas id="contributorCountChart"></canvas>
                     </div>
 
-                    <!-- Chart Script for Number of Contributors -->
+                    <!-- Chart Script for Contributor Count -->
                     <script>
-                        const contributorCtx = document.getElementById('contributorChart').getContext('2d');
-                        const contributorChart = new Chart(contributorCtx, {
+                        const contributorCountCtx = document.getElementById('contributorCountChart').getContext('2d');
+                        const contributorCountChart = new Chart(contributorCountCtx, {
                             type: 'bar',
                             data: {
                                 labels: @json($labels),
                                 datasets: [{
                                     label: 'Number of Contributors',
                                     data: @json($contributorCountData),
-                                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                                    borderColor: 'rgba(153, 102, 255, 1)',
+                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                    borderColor: 'rgba(54, 162, 235, 1)',
                                     borderWidth: 1
                                 }]
                             },
@@ -367,10 +366,7 @@
                                     y: {
                                         beginAtZero: true,
                                         ticks: {
-                                            stepSize: 10, // Set the step size to 10
-                                            callback: function(value) {
-                                                return value; // Display the raw number of contributors
-                                            }
+                                            stepSize: 20, // Set the step size to 20
                                         },
                                         title: {
                                             display: true,
@@ -383,7 +379,7 @@
                     </script>
                 </div>
 
-                <div class="p-8 bg-white my-5 shadow-lg">
+                <div class="p-8 bg-white m-5 shadow-lg">
                     <!-- Header -->
                     <h1 class="text-2xl font-bold mb-6">List of Participation Published Contributions</h1>
 
@@ -401,21 +397,21 @@
                         </select>
                     </form>
 
-                    <!-- Chart Canvas for Participation Published Contributions -->
-                    <div style="width: 100%; margin: 0 auto;">
-                        <canvas id="participationChart"></canvas>
+                    <!-- Chart Canvas for Contributor Percentage -->
+                    <div style="width: 100%; margin: 0 auto; margin-top: 40px;">
+                        <canvas id="contributorPercentageChart"></canvas>
                     </div>
 
-                    <!-- Chart Script for Participation Published Contributions -->
+                    <!-- Chart Script for Contributor Percentage -->
                     <script>
-                        const participationCtx = document.getElementById('participationChart').getContext('2d');
-                        const participationChart = new Chart(participationCtx, {
+                        const contributorPercentageCtx = document.getElementById('contributorPercentageChart').getContext('2d');
+                        const contributorPercentageChart = new Chart(contributorPercentageCtx, {
                             type: 'bar',
                             data: {
                                 labels: @json($labels),
                                 datasets: [{
-                                    label: 'Percentage of Participation Published Contributions',
-                                    data: @json($percentageData),
+                                    label: 'Percentage of Contributors',
+                                    data: @json($contributorPercentageData),
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                     borderColor: 'rgba(75, 192, 192, 1)',
                                     borderWidth: 1
@@ -433,7 +429,7 @@
                                         },
                                         title: {
                                             display: true,
-                                            text: 'Percentage of Participation Published Contributions'
+                                            text: 'Percentage of Contributors'
                                         }
                                     }
                                 }
