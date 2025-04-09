@@ -12,7 +12,7 @@
 
 <body>
     <div class="flex flex-col justify-center items-center min-h-screen py-10">
-        <div class="w-full max-w-4xl p-8 rounded-xl">
+        <div class="w-full max-w-4xl px-0 sm:p-8 rounded-xl">
             <!-- Success/Error Messages -->
             @if (session('status'))
                 <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
@@ -50,7 +50,7 @@
                     ? route('profile.update')
                     : route('guest.profile.update') }}"
                 method="POST" enctype="multipart/form-data"
-                class="space-y-3 md:space-y-4 border-gray-200 border-x-2 px-10">
+                class="space-y-3 md:space-y-4 border-gray-200 border-x-2 px-3 sm:px-10">
 
                 @csrf
                 @method('PUT')
