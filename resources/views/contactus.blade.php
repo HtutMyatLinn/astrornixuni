@@ -1,4 +1,7 @@
 <x-app-layout>
+    <!-- Font Awesome CDN for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <!-- Hero Section (Top Cover Page) -->
     <div class="relative w-full h-[300px] md:h-[500px]">
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -157,4 +160,157 @@
             </div>
         </div>
     </div>
+
+    <div class="w-full px-4 md:px-12 mt-10 py-8 md:py-12 bg-gray-50">
+        <h2 class="text-2xl md:text-4xl font-semibold mb-8 text-center text-gray-800">Frequently Asked Questions</h2>
+
+        <div class="max-w-4xl mx-auto divide-y divide-gray-200">
+            <!-- FAQ Item 1 -->
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(1)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        How can I contact support?
+                    </span>
+                    <i id="icon1" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq1" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        You can contact support through the inquiry form on the contact page, or by emailing us at
+                        <strong class="text-blue-600">astrornixuni27@gmail.com</strong>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(2)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        What are your office hours?
+                    </span>
+                    <i id="icon2" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq2" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        Our office hours are Monday to Friday from 9:00 AM to 5:00 PM. We are closed on weekends.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(3)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        Can I reach you outside office hours?
+                    </span>
+                    <i id="icon3" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq3" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        While our office is closed on weekends, you can still send inquiries via the contact form, and
+                        our team will get back to you within 24-48 hours.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 4 -->
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(4)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        Do you offer 24/7 customer support?
+                    </span>
+                    <i id="icon4" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq4" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        We do not offer 24/7 support, but our team works diligently to respond to inquiries within 24-48
+                        hours.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 5 -->
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(5)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        What is the best way to provide feedback?
+                    </span>
+                    <i id="icon5" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq5" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        We welcome feedback through our contact form or by emailing us directly at
+                        <strong class="text-blue-600">astrornixuni27@gmail.com</strong>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 6 -->
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(6)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        How long does it take to respond to inquiries?
+                    </span>
+                    <i id="icon6" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq6" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        We aim to respond to all inquiries within 24-48 hours, depending on the complexity of the
+                        request.
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Item 7 -->
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(7)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        Do you have a physical store?
+                    </span>
+                    <i id="icon7" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq7" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        No, we do not have a physical store at the moment. However, you can reach us online through
+                        our contact form or via email.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dropdown Toggle Script -->
+    <script>
+        function toggleFaq(faqId) {
+            const faq = document.getElementById(`faq${faqId}`);
+            const icon = document.getElementById(`icon${faqId}`);
+
+            // Toggle the max-height to trigger the transition
+            if (faq.style.maxHeight) {
+                faq.style.maxHeight = null;
+                icon.classList.replace('fa-minus', 'fa-plus');
+                icon.classList.remove('rotate-180');
+            } else {
+                faq.style.maxHeight = faq.scrollHeight + 'px';
+                icon.classList.replace('fa-plus', 'fa-minus');
+                icon.classList.add('rotate-180');
+            }
+
+            // Close other open FAQs
+            document.querySelectorAll('[id^="faq"]').forEach((item) => {
+                if (item.id !== `faq${faqId}` && item.style.maxHeight) {
+                    item.style.maxHeight = null;
+                    const otherIcon = document.getElementById(item.id.replace('faq', 'icon'));
+                    otherIcon.classList.replace('fa-minus', 'fa-plus');
+                    otherIcon.classList.remove('rotate-180');
+                }
+            });
+        }
+    </script>
 </x-app-layout>
