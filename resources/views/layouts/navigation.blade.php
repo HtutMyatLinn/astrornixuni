@@ -770,10 +770,45 @@ use Carbon\Carbon;
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
+            <div class="px-4 flex items-center gap-2">
                 @if (Auth::check())
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    @if (Auth::check())
+                        @if (Auth::user()->profile_image)
+                            <img id="profilePreview"
+                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover"
+                                src="{{ asset('profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
+                        @else
+                            <p
+                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover">
+                                {{ strtoupper(Auth::user()->username[0]) }}
+                            </p>
+                        @endif
+                    @else
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
+                            <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                                class="w-full h-full rounded-full object-cover">
+                        </div>
+                    @endif
+                    <div class="flex flex-col">
+                        <div>
+                            <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                            <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                        </div>
+                        <p class="text-xs text-gray-500 text-nowrap">
+                            Last login date -
+                            {{ Auth::user()->last_login_date ? Auth::user()->last_login_date->format('d-m-Y h:i A') : 'Never' }}
+                        </p>
+                    </div>
+                @else
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
+                            <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                                class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-500 w-44 text-wrap" title="Guest">
+                            Register to get access to all features
+                        </p>
+                    </div>
                 @endif
             </div>
 
@@ -794,12 +829,14 @@ use Carbon\Carbon;
                     </form>
                 </div>
             @else
-                <x-responsive-nav-link :href="route('register')">
-                    {{ __('Register') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('login')">
-                    {{ __('Login') }}
-                </x-responsive-nav-link>
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('register')">
+                        {{ __('Register') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('login')">
+                        {{ __('Login') }}
+                    </x-responsive-nav-link>
+                </div>
             @endif
 
         </div>
