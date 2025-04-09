@@ -50,15 +50,19 @@
             </form>
 
             <!-- Filter by Faculty -->
-            <form id="faculty-form" class="w-full flex-1" method="GET" action="{{ route('faculty') }}">
-                <select id="faculty_filter" name="faculty_filter"
-                    class="px-4 py-2 border border-gray-300 rounded-md w-full transition duration-300 ease-in-out"
-                    onchange="this.form.submit()">
-                    <option value="all" {{ request('faculty_filter', 'all') == 'all' ? 'selected' : '' }}>All Faculty
+            <form id="faculty-form" method="GET" action="{{ route('faculty') }}">
+                <select class="border border-gray-300 rounded-md transition duration-300 ease-in-out w-full"
+                    name="faculty_filter" class="form-control" onchange="this.form.submit()">
+                    <option value="all" @if (request(
+                            'faculty_filter',
+                            auth()->user() && auth()->user()->role_id == $guestRole->role_id ? auth()->user()->faculty_id : 'all') == 'all') selected @endif>
+                        All Faculty
                     </option>
+
                     @foreach ($faculties as $faculty)
-                        <option value="{{ $faculty->faculty_id }}"
-                            {{ request('faculty_filter') == $faculty->faculty_id ? 'selected' : '' }}>
+                        <option value="{{ $faculty->faculty_id }}" @if (request(
+                                'faculty_filter',
+                                auth()->user() && auth()->user()->role_id == $guestRole->role_id ? auth()->user()->faculty_id : 'all') == $faculty->faculty_id) selected @endif>
                             {{ $faculty->faculty }}
                         </option>
                     @endforeach

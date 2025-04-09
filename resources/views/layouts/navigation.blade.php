@@ -775,16 +775,16 @@ use Carbon\Carbon;
                     @if (Auth::check())
                         @if (Auth::user()->profile_image)
                             <img id="profilePreview"
-                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover"
+                                class="m-0 w-14 h-14 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover"
                                 src="{{ asset('profile_images/' . Auth::user()->profile_image) }}" alt="Profile">
                         @else
                             <p
-                                class="m-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover">
+                                class="m-0 w-14 h-14 rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base object-cover">
                                 {{ strtoupper(Auth::user()->username[0]) }}
                             </p>
                         @endif
                     @else
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
+                        <div class="w-14 h-14 select-none">
                             <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
@@ -801,7 +801,7 @@ use Carbon\Carbon;
                     </div>
                 @else
                     <div class="flex items-center gap-2">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 select-none">
+                        <div class="w-14 h-14 select-none">
                             <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
@@ -814,6 +814,12 @@ use Carbon\Carbon;
 
             @if (Auth::check())
                 <div class="mt-3 space-y-1">
+                    @if (Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student')
+                        <a href="{{ route('upload_contribution.index') }}"
+                            class="leading-4 font-medium text-blue-800 hover:text-blue-900 border-l-2 mt-3 ps-3 pe-4 py-3 transition-colors duration-200">
+                            Contribute your article
+                        </a>
+                    @endif
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>

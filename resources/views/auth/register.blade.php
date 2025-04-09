@@ -130,7 +130,7 @@
                     <label for="faculty" class="block text-gray-700 font-semibold">Faculty</label>
                     <select id="faculty" name="faculty_id"
                         class="mt-1 w-full px-4 py-2 border border-slate-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                        <option value="" disabled {{ old('faculty_id') == '' ? 'selected' : '' }}>Select your
+                        <option value="" {{ old('faculty_id') == '' ? 'selected' : '' }}>Select your
                             faculty</option>
                         @if ($faculties->isEmpty())
                             <option disabled>No data found</option>

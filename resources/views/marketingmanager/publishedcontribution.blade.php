@@ -43,14 +43,19 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
                         <div>
                             <h1 class="text-xl sm:text-2xl font-bold mb-4">List of Published Contributions</h1>
-                            <h2 class="text-lg font-semibold text-gray-400">Total - {{ $contributions->total() }}
-                            </h2>
+                            <h2 class="text-lg font-semibold text-gray-400">Total - {{ $contributions->total() }}</h2>
                         </div>
-                        <button id="downloadSelected"
-                            class="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-lg h-fit self-end sm:self-center select-none"
-                            disabled>
-                            Download Selected
-                        </button>
+                        <div class="flex gap-2">
+                            <button id="selectAllWithFiles"
+                                class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg h-fit self-end sm:self-center select-none">
+                                Select All with Files
+                            </button>
+                            <button id="downloadSelected"
+                                class="bg-black hover:bg-gray-700 text-white px-4 py-2 rounded-lg h-fit self-end sm:self-center select-none"
+                                disabled>
+                                Download Selected
+                            </button>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -66,14 +71,12 @@
                                     data-disabled="true" @endif>
                                             <svg class="h-5 w-5 text-gray-400 unchecked-icon" fill="none"
                                                 viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                <rect x="4" y="4" width="16" height="16" rx="2"
+                                                    ry="2" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
-                                            <svg class="h-5 w-5 text-blue-500 checked-icon hidden" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
+                                            <img class="h-5 w-5 checked-icon hidden select-none"
+                                                src="{{ asset('images/tabler_checkbox.png') }}" alt="">
                                         </div>
                                     </div>
 
@@ -141,6 +144,44 @@
                             });
                         });
 
+                        // Select All Contributions with Files
+                        let isAllSelected = false; // Tracks toggle state
+
+                        document.getElementById('selectAllWithFiles').addEventListener('click', function() {
+                            const allCheckboxes = document.querySelectorAll('.contribution-checkbox:not([data-disabled])');
+
+                            if (!isAllSelected) {
+                                // Select all with files
+                                allCheckboxes.forEach(checkbox => {
+                                    const uncheckedIcon = checkbox.querySelector('.unchecked-icon');
+                                    const checkedIcon = checkbox.querySelector('.checked-icon');
+
+                                    uncheckedIcon.classList.add('hidden');
+                                    checkedIcon.classList.remove('hidden');
+                                    checkbox.classList.add('selected');
+                                });
+
+                                isAllSelected = true;
+                                this.textContent = 'Unselect All';
+                            } else {
+                                // Deselect all
+                                document.querySelectorAll('.contribution-checkbox.selected').forEach(checkbox => {
+                                    const uncheckedIcon = checkbox.querySelector('.unchecked-icon');
+                                    const checkedIcon = checkbox.querySelector('.checked-icon');
+
+                                    uncheckedIcon.classList.remove('hidden');
+                                    checkedIcon.classList.add('hidden');
+                                    checkbox.classList.remove('selected');
+                                });
+
+                                isAllSelected = false;
+                                this.textContent = 'Select All with Files';
+                            }
+
+                            toggleDownloadButton();
+                        });
+
+
                         // Enable/Disable Download Selected button
                         function toggleDownloadButton() {
                             const selectedContributions = Array.from(document.querySelectorAll('.contribution-checkbox.selected'))
@@ -156,9 +197,23 @@
                                 return filePath && filePath.trim() !== '';
                             });
 
-                            // Enable button if at least one contribution has a file
+                            // Enable or disable the button
                             downloadButton.disabled = !hasFile;
+
+                            // Update button label with count
+                            const countText = selectedContributions.length > 0 ? ` (${selectedContributions.length})` : '';
+                            downloadButton.textContent = `Download Selected${countText}`;
+
+                            // Update the Select All button state
+                            const selectAllButton = document.getElementById('selectAllWithFiles');
+                            const totalWithFiles = document.querySelectorAll('.contribution-checkbox:not([data-disabled])').length;
+                            selectAllButton.disabled = totalWithFiles === 0;
                         }
+
+                        // Initialize the buttons on page load
+                        document.addEventListener('DOMContentLoaded', function() {
+                            toggleDownloadButton();
+                        });
 
                         document.getElementById('downloadSelected').addEventListener('click', function() {
                             const selectedContributions = Array.from(document.querySelectorAll('.contribution-checkbox.selected'))
