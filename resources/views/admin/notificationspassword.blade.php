@@ -63,16 +63,16 @@
                                     <!-- Percentage -->
                                     <div class="flex items-center gap-1">
                                         @if ($student_percentage_change > 0)
-                                            <span
-                                                class="text-emerald-500 text-xl font-medium">{{ $student_percentage_change }}%
-                                                ↑</span>
+                                        <span
+                                            class="text-emerald-500 text-xl font-medium">{{ $student_percentage_change }}%
+                                            ↑</span>
                                         @elseif ($student_percentage_change < 0)
                                             <span
-                                                class="text-red-500 text-xl font-medium">{{ abs($student_percentage_change) }}%
-                                                ↓</span>
-                                        @else
+                                            class="text-red-500 text-xl font-medium">{{ abs($student_percentage_change) }}%
+                                            ↓</span>
+                                            @else
                                             <span class="text-gray-500 text-xl font-medium">0%</span>
-                                        @endif
+                                            @endif
                                     </div>
                                 </div>
                             </div>
@@ -114,16 +114,16 @@
                                     <!-- Percentage -->
                                     <div class="flex items-center gap-1">
                                         @if ($unassigned_user_percentage_change > 0)
-                                            <span
-                                                class="text-emerald-500 text-xl font-medium">{{ $unassigned_user_percentage_change }}%
-                                                ↑</span>
+                                        <span
+                                            class="text-emerald-500 text-xl font-medium">{{ $unassigned_user_percentage_change }}%
+                                            ↑</span>
                                         @elseif ($unassigned_user_percentage_change < 0)
                                             <span
-                                                class="text-red-500 text-xl font-medium">{{ abs($unassigned_user_percentage_change) }}%
-                                                ↓</span>
-                                        @else
+                                            class="text-red-500 text-xl font-medium">{{ abs($unassigned_user_percentage_change) }}%
+                                            ↓</span>
+                                            @else
                                             <span class="text-gray-500 text-xl font-medium">0%</span>
-                                        @endif
+                                            @endif
                                     </div>
                                 </div>
                             </div>
@@ -140,17 +140,17 @@
 
                             {{-- Message --}}
                             @if (session('success'))
-                                <div id="success-message"
-                                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
-                                    role="alert">
-                                    <span class="block sm:inline">{{ session('success') }}</span>
-                                </div>
+                            <div id="success-message"
+                                class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                                role="alert">
+                                <span class="block sm:inline">{{ session('success') }}</span>
+                            </div>
 
-                                <script>
-                                    setTimeout(() => {
-                                        document.getElementById('success-message').style.display = 'none';
-                                    }, 5000);
-                                </script>
+                            <script>
+                                setTimeout(() => {
+                                    document.getElementById('success-message').style.display = 'none';
+                                }, 5000);
+                            </script>
                             @endif
 
                             <!-- Tabs -->
@@ -217,63 +217,63 @@
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
                                         @if ($reset_password_users->isNotEmpty())
-                                            @foreach ($reset_password_users as $reset_password_user)
-                                                <tr class="hover:bg-gray-50">
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ $reset_password_user->user->user_code }}
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <div class="flex items-center gap-3">
-                                                            @if ($reset_password_user->user->profile_image)
-                                                                <img id="profilePreview"
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
-                                                                    src="{{ asset('profile_images/' . $reset_password_user->user->profile_image) }}"
-                                                                    alt="Profile">
-                                                            @else
-                                                                <p
-                                                                    class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
-                                                                    {{ strtoupper($reset_password_user->user->username[0]) }}
-                                                                </p>
-                                                            @endif
-                                                            <div>
-                                                                <div class="font-medium">
-                                                                    {{ $reset_password_user->user->first_name . ' ' . $reset_password_user->user->last_name }}
-                                                                </div>
-                                                                <div class="text-sm text-gray-500">
-                                                                    {{ $reset_password_user->user->email }}
-                                                                </div>
-                                                            </div>
+                                        @foreach ($reset_password_users as $reset_password_user)
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ $reset_password_user->user->user_code }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    @if ($reset_password_user->user->profile_image)
+                                                    <img id="profilePreview"
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base"
+                                                        src="{{ asset('profile_images/' . $reset_password_user->user->profile_image) }}"
+                                                        alt="Profile">
+                                                    @else
+                                                    <p
+                                                        class="m-0 w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-sm sm:text-base">
+                                                        {{ strtoupper($reset_password_user->user->username[0]) }}
+                                                    </p>
+                                                    @endif
+                                                    <div>
+                                                        <div class="font-medium">
+                                                            {{ $reset_password_user->user->first_name . ' ' . $reset_password_user->user->last_name }}
                                                         </div>
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ optional($reset_password_user->user->faculty)->faculty ?? 'N/A' }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ optional($reset_password_user->user->role)->role ?? 'N/A' }}
-                                                    </td>
-                                                    <td class="px-6 py-4 text-gray-600">
-                                                        {{ optional($reset_password_user->created_at)->format('M d, Y') ?? 'N/A' }}
-                                                        <p class="text-gray-400">
-                                                            {{ optional($reset_password_user->created_at)->format('h:i A') }}
-                                                        </p>
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                                        <a href="#"
-                                                            class="text-blue-600 hover:text-blue-700 reset-password-btn"
-                                                            data-user-id="{{ $reset_password_user->user->user_id }}"
-                                                            data-user-email="{{ $reset_password_user->user->email }}"
-                                                            data-user-name="{{ $reset_password_user->user->first_name }} {{ $reset_password_user->user->last_name }}">
-                                                            Reset Password
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ $reset_password_user->user->email }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ optional($reset_password_user->user->faculty)->faculty ?? 'N/A' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ optional($reset_password_user->user->role)->role ?? 'N/A' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-gray-600">
+                                                {{ optional($reset_password_user->created_at)->format('M d, Y') ?? 'N/A' }}
+                                                <p class="text-gray-400">
+                                                    {{ optional($reset_password_user->created_at)->format('h:i A') }}
+                                                </p>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <a href="#"
+                                                    class="text-blue-600 hover:text-blue-700 reset-password-btn"
+                                                    data-user-id="{{ $reset_password_user->user->user_id }}"
+                                                    data-user-email="{{ $reset_password_user->user->email }}"
+                                                    data-user-name="{{ $reset_password_user->user->first_name }} {{ $reset_password_user->user->last_name }}">
+                                                    Reset Password
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
                                         @else
-                                            <tr class="hover:bg-gray-50">
-                                                <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
-                                                    No users found.
-                                                </td>
-                                            </tr>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-24 text-gray-600 text-center" colspan="6">
+                                                No users found.
+                                            </td>
+                                        </tr>
                                         @endif
                                     </tbody>
                                 </table>
@@ -282,9 +282,9 @@
 
                         <!-- Pagination -->
                         @if ($reset_password_users->isNotEmpty())
-                            <div class="flex justify-end items-center gap-2 mt-6">
-                                {{ $reset_password_users->appends(request()->query())->links('pagination::tailwind') }}
-                            </div>
+                        <div class="flex justify-end items-center gap-2 mt-6">
+                            {{ $reset_password_users->appends(request()->query())->links('pagination::tailwind') }}
+                        </div>
                         @endif
                     </div>
 
@@ -307,7 +307,7 @@
                                     <button type="button" id="closeModal"
                                         class="mr-2 px-4 py-2 bg-gray-400 text-white rounded-lg">Cancel</button>
                                     <button type="submit" id="resetButton"
-                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg flex items-center justify-center">
+                                        class="px-4 py-2 bg-black text-white rounded-lg flex items-center justify-center">
                                         <span id="resetButtonText">Reset</span>
                                         <svg id="resetSpinner"
                                             class="animate-spin -mr-1 ml-2 h-4 w-4 text-white hidden"
