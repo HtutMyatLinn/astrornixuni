@@ -1,11 +1,13 @@
 # Ignore everything
 *
 
-# Allow the private folder
-!private
+# Allow the app/public folder and its subfolders
+!storage/app/public/
+!storage/app/public/contribution-documents/
+!storage/app/public/contribution-images/
+!storage/app/public/profile_images/
 
-# Allow the public/Images folder and its contents
-!public/
-!public/Images/
-!public/Images/*
-
+# Allow specific files inside the folders if needed
+!storage/app/public/contribution-documents/*
+!storage/app/public/contribution-images/*
+!storage/app/public/profile_images/*
