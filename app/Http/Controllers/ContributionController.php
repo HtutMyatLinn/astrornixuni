@@ -214,7 +214,7 @@ class ContributionController extends Controller
             ->inRandomOrder()
             ->limit(5)
             ->get();
-        $comments = Comment::where('contribution_id', $contribution->contribution_id)->get();
+        $comments = Comment::where('contribution_id', $contribution->contribution_id)->paginate(5);
 
         // Get trending contributions excluding the current one
         $trendingContributions = Contribution::where('contribution_id', '!=', $contribution->contribution_id)

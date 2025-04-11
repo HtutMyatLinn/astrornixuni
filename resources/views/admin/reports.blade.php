@@ -52,30 +52,32 @@
                                 <circle cx="11" cy="11" r="8" />
                                 <path d="m21 21-4.3-4.3" />
                             </svg>
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search..."
+                            <input type="text" name="contribution_search"
+                                value="{{ request('contribution_search') }}" placeholder="Search contributions..."
                                 class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                         </div>
 
                         <div class="flex flex-wrap gap-4">
-                            <!-- Faculty Filter -->
-                            <select name="faculty" onchange="this.form.submit()"
+                            <!-- Faculty Filter for Published Contributions -->
+                            <select name="contribution_faculty" onchange="this.form.submit()"
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
                                 <option value="">All Faculties</option>
                                 @foreach ($all_faculties as $faculty)
                                     <option value="{{ $faculty->faculty_id }}"
-                                        {{ request('faculty') == $faculty->faculty_id ? 'selected' : '' }}>
+                                        {{ request('contribution_faculty') == $faculty->faculty_id ? 'selected' : '' }}>
                                         {{ $faculty->faculty }}
                                     </option>
                                 @endforeach
                             </select>
 
-                            <!-- Sort Option -->
-                            <select name="sort" onchange="this.form.submit()"
+                            <!-- Sort Option for Published Contributions -->
+                            <select name="contribution_sort" onchange="this.form.submit()"
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Newest
+                                <option value="desc"
+                                    {{ request('contribution_sort', 'desc') == 'desc' ? 'selected' : '' }}>Newest
                                 </option>
-                                <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Oldest
-                                </option>
+                                <option value="asc" {{ request('contribution_sort') == 'asc' ? 'selected' : '' }}>
+                                    Oldest</option>
                             </select>
                         </div>
                     </div>
@@ -170,10 +172,9 @@
                 </h2>
 
                 <!-- Search and Filters -->
-                <!-- Form for Feedbacked Contributions -->
                 <form method="GET" action="{{ route('admin.reports') }}">
                     <div class="flex flex-col md:flex-row gap-4 md:gap-0 justify-between mb-8">
-                        <!-- Search Input -->
+                        <!-- Search for Feedback -->
                         <div class="relative max-w-[400px]">
                             <svg class="absolute left-4 top-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -182,12 +183,12 @@
                                 <path d="m21 21-4.3-4.3" />
                             </svg>
                             <input type="text" name="feedback_search" value="{{ request('feedback_search') }}"
-                                placeholder="Search Feedback..."
+                                placeholder="Search feedback..."
                                 class="w-full pl-12 pr-4 py-2.5 rounded-lg bg-gray-100 border border-gray-300 focus:ring-2 focus:ring-blue-500" />
                         </div>
 
                         <div class="flex flex-wrap gap-4">
-                            <!-- Faculty Filter -->
+                            <!-- Faculty Filter for Feedback -->
                             <select name="feedback_faculty" onchange="this.form.submit()"
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
                                 <option value="">All Faculties</option>
@@ -199,11 +200,11 @@
                                 @endforeach
                             </select>
 
-                            <!-- Sort Option -->
+                            <!-- Sort Option for Feedback -->
                             <select name="feedback_sort" onchange="this.form.submit()"
                                 class="pl-3 pr-10 py-2.5 rounded-lg bg-[#F1F5F9] border border-gray-300">
-                                <option value="desc" {{ request('feedback_sort') == 'desc' ? 'selected' : '' }}>
-                                    Newest</option>
+                                <option value="desc"
+                                    {{ request('feedback_sort', 'desc') == 'desc' ? 'selected' : '' }}>Newest</option>
                                 <option value="asc" {{ request('feedback_sort') == 'asc' ? 'selected' : '' }}>
                                     Oldest</option>
                             </select>

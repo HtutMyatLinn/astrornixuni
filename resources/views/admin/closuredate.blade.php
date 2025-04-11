@@ -356,7 +356,7 @@
                         </div>
                         <div class="p-8 bg-white shadow-lg">
                             <!-- Header -->
-                            <h1 class="text-2xl font-bold mb-4">List of Overall Information
+                            <h1 class="text-2xl font-bold mb-4">List of Intake and Closure Date Information
                             </h1>
 
                             <h2 class=" text-lg font-semibold text-gray-400 mb-4">

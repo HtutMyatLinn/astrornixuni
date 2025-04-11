@@ -319,10 +319,10 @@ class AdminController extends Controller
             $contributorPercentageData[] = round($contributorPercentage, 2); // Percentage of unique contributors
         }
 
-        // Handle search and sort for published contributions
+        // Handle search and filter for published contributions
         $published_contributions = Contribution::where('contribution_status', 'Publish')
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $search = $request->input('search');
+            ->when($request->filled('contribution_search'), function ($query) use ($request) {
+                $search = $request->input('contribution_search');
                 return $query->where(function ($q) use ($search) {
                     $q->where('contribution_title', 'like', "%{$search}%")
                         ->orWhere('contribution_description', 'like', "%{$search}%")
@@ -333,14 +333,21 @@ class AdminController extends Controller
                         });
                 });
             })
-            ->orderBy('published_date', $request->input('sort', 'desc'))
+            ->when($request->filled('contribution_faculty'), function ($query) use ($request) {
+                $facultyId = $request->input('contribution_faculty');
+                return $query->whereHas('user.faculty', function ($q) use ($facultyId) {
+                    $q->where('faculty_id', $facultyId);
+                });
+            })
+            ->orderBy('published_date', $request->input('contribution_sort', 'desc'))
             ->paginate(10)
             ->appends([
-                'search' => $request->input('search'),
-                'sort' => $request->input('sort'),
+                'contribution_search' => $request->input('contribution_search'),
+                'contribution_faculty' => $request->input('contribution_faculty'),
+                'contribution_sort' => $request->input('contribution_sort'),
             ]);
 
-        // Handle search, faculty filter, and sort for feedbacked contributions
+        // Handle search and filter for feedbacked contributions
         $feedbacked_contributions = Feedback::with(['user', 'contribution'])
             ->when($request->filled('feedback_search'), function ($query) use ($request) {
                 $search = $request->input('feedback_search');
