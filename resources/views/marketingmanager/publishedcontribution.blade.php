@@ -45,7 +45,7 @@
                             <h1 class="text-xl sm:text-2xl font-bold mb-4">List of Published Contributions</h1>
                             <h2 class="text-lg font-semibold text-gray-400">Total - {{ $contributions->total() }}</h2>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex w-full md:w-auto items-end md:items-center flex-col-reverse md:flex-row gap-2">
                             <button id="selectAllWithFiles"
                                 class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg h-fit self-end sm:self-center select-none">
                                 Select All with Files
@@ -215,6 +215,7 @@
                             toggleDownloadButton();
                         });
 
+                        // Download Selected Contributions
                         document.getElementById('downloadSelected').addEventListener('click', function() {
                             const selectedContributions = Array.from(document.querySelectorAll('.contribution-checkbox.selected'))
                                 .map(checkbox => checkbox.getAttribute('data-contribution-id'));
@@ -239,16 +240,27 @@
                                     if (data.error) {
                                         alert(data.error);
                                     } else {
+                                        // Clear the selection count from the button
+                                        this.textContent = 'Download Selected';
+
+                                        // Reset the select all state
+                                        isAllSelected = false;
+                                        document.getElementById('selectAllWithFiles').textContent = 'Select All with Files';
+
+                                        // Reset all checkboxes
                                         document.querySelectorAll('.contribution-checkbox.selected').forEach(checkbox => {
                                             const uncheckedIcon = checkbox.querySelector('.unchecked-icon');
                                             const checkedIcon = checkbox.querySelector('.checked-icon');
 
                                             uncheckedIcon.classList.remove('hidden');
                                             checkedIcon.classList.add('hidden');
-
                                             checkbox.classList.remove('selected');
                                         });
 
+                                        // Disable the download button
+                                        this.disabled = true;
+
+                                        // Proceed with download
                                         window.location.href =
                                             "{{ route('marketingmanager.downloadMultipleContributions') }}?ids=" +
                                             selectedContributions.join(',');

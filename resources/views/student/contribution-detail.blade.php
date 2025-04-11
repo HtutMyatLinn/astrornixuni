@@ -236,7 +236,7 @@
                 <div class="flex space-x-4">
                     @if ($comment->user && $comment->user->profile_image)
                         <img src="{{ asset('profile_images/' . $comment->user->profile_image) }}" alt="User Profile"
-                            class="w-12 h-12 rounded-full select-none">
+                            class="w-12 h-12 rounded-full select-none object-cover">
                     @else
                         <div class="flex items-center">
                             <p
@@ -251,13 +251,13 @@
                                 <h4 class="font-semibold text-gray-800">{{ $comment->user->username }}</h4>
                                 <div>
                                     <span class="text-xs text-gray-500">
-                                        @if ($comment->created_at->diffInSeconds(now()) < 60)
+                                        @if ($comment->comment_date->diffInSeconds(now()) < 60)
                                             Just now
                                         @else
-                                            {{ $comment->created_at->diffForHumans() }}
+                                            {{ $comment->comment_date->diffForHumans() }}
                                         @endif
                                     </span>
-                                    @if ($comment->created_at != $comment->updated_at)
+                                    @if ($comment->comment_date != $comment->updated_at)
                                         <span class="text-sm text-gray-400">(Edited)</span>
                                     @endif
                                     </span>
@@ -339,6 +339,13 @@
             @endforeach
         @else
             <p class="text-gray-600 py-10 text-center">No comments found.</p>
+        @endif
+
+        <!-- Pagination -->
+        @if ($comments->count() > 0)
+            <div class="flex justify-end items-center gap-2 mt-6">
+                {{ $comments->appends(request()->query())->links('pagination::tailwind') }}
+            </div>
         @endif
     </div>
 

@@ -249,8 +249,17 @@
             </div>
 
             <!-- Password Change Modal -->
-            <div id="passwordModal" class="modal">
-                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+            <div id="passwordModal" class="modal @if ($errors->has('old_password') || $errors->has('new_password') || $errors->has('new_password_confirmation')) active @endif">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4 relative">
+                    <!-- Close Button -->
+                    <button id="closePasswordModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
                     <h2 class="text-2xl font-bold mb-6 ">
                         <span class="border-b-4 border-[#4353E1]">
                             Change
@@ -262,19 +271,39 @@
                         @csrf
                         <div>
                             <label for="oldPassword" class="block mb-2 font-medium">Old Password</label>
-                            <input type="password" id="oldPassword" name="old_password"
-                                placeholder="Enter Current Password"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('old_password') border-red-500 @enderror">
+                            <div class="relative">
+                                <input type="password" id="oldPassword" name="old_password"
+                                    value="{{ old('old_password') }}" placeholder="Enter Current Password"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('old_password') border-red-500 @enderror">
+                                <span
+                                    class="password-toggle absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                                    id="oldPasswordToggle">
+                                    <!-- Eye Icon (Show Password) -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-open" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <!-- Eye-Off Icon (Hide Password) - Initially Hidden -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-closed hidden"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                    </svg>
+                                </span>
+                            </div>
                             @error('old_password')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="password-container">
+                        <div class="password-container relative">
                             <label for="newPassword" class="block mb-2 font-medium">New Password</label>
                             <div class="relative">
                                 <input type="password" id="newPassword" name="new_password"
-                                    placeholder="Enter New Password"
+                                    value="{{ old('new_password') }}" placeholder="Enter New Password"
                                     class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('new_password') border-red-500 @enderror">
                                 <span
                                     class="password-toggle absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -326,6 +355,9 @@
                                     </svg>
                                 </span>
                             </div>
+                            @error('new_password_confirmation')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="flex justify-center mt-6">
@@ -348,16 +380,30 @@
         // Password Modal
         const modal = document.getElementById('passwordModal');
         const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const closePasswordModalBtn = document.getElementById('closePasswordModal');
 
         // Open modal when change password button is clicked
-        changePasswordBtn.addEventListener('click', function() {
-            modal.classList.add('active');
-        });
+        if (changePasswordBtn) {
+            changePasswordBtn.addEventListener('click', function() {
+                modal.classList.add('active');
+            });
+        }
+
+        // Close modal when clicking close button
+        if (closePasswordModalBtn) {
+            closePasswordModalBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+        }
 
         // Close modal when clicking outside the modal content
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
-                modal.classList.remove('active');
+                // Only close if there are no validation errors
+                const hasErrors = document.querySelectorAll('.text-red-500').length > 0;
+                if (!hasErrors) {
+                    modal.classList.remove('active');
+                }
             }
         });
 
@@ -422,6 +468,7 @@
             }
 
             // Setup password toggles
+            setupPasswordToggle('oldPasswordToggle', 'oldPassword');
             setupPasswordToggle('newPasswordToggle', 'newPassword');
             setupPasswordToggle('confirmPasswordToggle', 'confirmPassword');
         });

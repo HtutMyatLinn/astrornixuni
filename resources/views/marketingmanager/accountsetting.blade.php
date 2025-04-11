@@ -91,74 +91,74 @@
 
             <!-- Account Setting -->
             <div class="container mx-auto p-4">
-                <form action="{{ route('marketingmanager.update-account-setting', Auth::user()->user_id) }}" method="POST"
-                    enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6 md:p-8">
+                <form action="{{ route('marketingmanager.update-account-setting', Auth::user()->user_id) }}"
+                    method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md p-6 md:p-8">
                     @csrf
 
                     <h2 class="text-2xl font-medium mb-6">My Account</h2>
 
                     <div class="flex flex-col md:flex-row items-start gap-5 mb-8">
                         @if (Auth::check())
-                        <!-- Profile Image Container - Made Clickable -->
-                        <div class="profile-image-container w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden">
-                            @if (Auth::user()->profile_image)
-                            <img id="profileImagePreview"
-                                src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"
-                                alt="Profile Image" class="w-full h-full object-cover">
-                            @else
-                            <!-- Fallback to initials if profile_image is null -->
-                            <div id="profileInitials"
-                                class="w-full h-full rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
-                                {{ strtoupper(Auth::user()->username[0]) }}
+                            <!-- Profile Image Container - Made Clickable -->
+                            <div class="profile-image-container w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden">
+                                @if (Auth::user()->profile_image)
+                                    <img id="profileImagePreview"
+                                        src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"
+                                        alt="Profile Image" class="w-full h-full object-cover">
+                                @else
+                                    <!-- Fallback to initials if profile_image is null -->
+                                    <div id="profileInitials"
+                                        class="w-full h-full rounded-full bg-blue-100 text-blue-500 uppercase font-semibold flex items-center justify-center select-none text-2xl sm:text-3xl">
+                                        {{ strtoupper(Auth::user()->username[0]) }}
+                                    </div>
+                                @endif
+                                <!-- Overlay with camera icon -->
+                                <div class="profile-image-overlay">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
                             </div>
-                            @endif
-                            <!-- Overlay with camera icon -->
-                            <div class="profile-image-overlay">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </div>
-                        </div>
-                        <!-- Hidden file input for profile image -->
-                        <input type="file" id="profile_image" name="profile_image" class="hidden">
-                        @error('profile_image')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
+                            <!-- Hidden file input for profile image -->
+                            <input type="file" id="profile_image" name="profile_image" class="hidden">
+                            @error('profile_image')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         @else
-                        <!-- Guest user -->
-                        <div class="w-24 h-24 select-none">
-                            <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
-                                class="w-full h-full rounded-full object-cover">
-                        </div>
+                            <!-- Guest user -->
+                            <div class="w-24 h-24 select-none">
+                                <img src="{{ asset('images/guest.jpg') }}" alt="Guest Profile"
+                                    class="w-full h-full rounded-full object-cover">
+                            </div>
                         @endif
                         <div>
                             <h3 class="text-xl font-medium">{{ Auth::user()->username }}</h3>
                             <p class="text-gray-600">{{ Auth::user()->role->role }}</p>
                         </div>
                         @if (Auth::user()->status == 1)
-                        <span class="px-10 py-1 rounded-lg bg-[#CAF4E0] text-green-800 select-none">Active</span>
+                            <span class="px-10 py-1 rounded-lg bg-[#CAF4E0] text-green-800 select-none">Active</span>
                         @else
-                        <span class="px-10 py-1 rounded-lg bg-[#FAAFBD] text-red-800 select-none">Inactive</span>
+                            <span class="px-10 py-1 rounded-lg bg-[#FAAFBD] text-red-800 select-none">Inactive</span>
                         @endif
                     </div>
 
                     {{-- Message --}}
                     @if (session('success'))
-                    <div id="success-message"
-                        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
-                        role="alert">
-                        <span class="block sm:inline">{{ session('success') }}</span>
-                    </div>
+                        <div id="success-message"
+                            class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 my-3 rounded relative"
+                            role="alert">
+                            <span class="block sm:inline">{{ session('success') }}</span>
+                        </div>
 
-                    <script>
-                        setTimeout(() => {
-                            document.getElementById('success-message').style.display = 'none';
-                        }, 3000);
-                    </script>
+                        <script>
+                            setTimeout(() => {
+                                document.getElementById('success-message').style.display = 'none';
+                            }, 3000);
+                        </script>
                     @endif
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -170,7 +170,7 @@
                                 value="{{ Auth::user()->first_name }}">
                             <div class="absolute left-2 -bottom-2 bg-white">
                                 @error('first_name')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                                 value="{{ Auth::user()->last_name }}">
                             <div class="absolute left-2 -bottom-2 bg-white">
                                 @error('last_name')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -196,7 +196,7 @@
                                 value="{{ Auth::user()->username }}">
                             <div class="absolute left-2 -bottom-2 bg-white">
                                 @error('username')
-                                <p class="text-red-500 text-sm">{{ $message }}</p>
+                                    <p class="text-red-500 text-sm">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -213,13 +213,13 @@
                         <div>
                             <label for="faculty" class="block mb-2 font-medium">Faculty</label>
                             @if (optional(Auth::user()->faculty)->faculty)
-                            <input type="text" id="faculty"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="{{ Auth::user()->faculty->faculty }}" disabled>
+                                <input type="text" id="faculty"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                    value="{{ Auth::user()->faculty->faculty }}" disabled>
                             @else
-                            <input type="text" id="faculty"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
-                                value="No faculty assigned" disabled>
+                                <input type="text" id="faculty"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50"
+                                    value="No faculty assigned" disabled>
                             @endif
                         </div>
 
@@ -251,8 +251,17 @@
             </div>
 
             <!-- Password Change Modal -->
-            <div id="passwordModal" class="modal">
-                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4">
+            <div id="passwordModal" class="modal @if ($errors->has('old_password') || $errors->has('new_password') || $errors->has('new_password_confirmation')) active @endif">
+                <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md mx-4 relative">
+                    <!-- Close Button -->
+                    <button id="closePasswordModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
                     <h2 class="text-2xl font-bold mb-6 ">
                         <span class="border-b-4 border-[#4353E1]">
                             Change
@@ -264,11 +273,31 @@
                         @csrf
                         <div>
                             <label for="oldPassword" class="block mb-2 font-medium">Old Password</label>
-                            <input type="password" id="oldPassword" name="old_password"
-                                placeholder="Enter Current Password"
-                                class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('old_password') border-red-500 @enderror">
+                            <div class="relative">
+                                <input type="password" id="oldPassword" name="old_password"
+                                    value="{{ old('old_password') }}" placeholder="Enter Current Password"
+                                    class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('old_password') border-red-500 @enderror">
+                                <span
+                                    class="password-toggle absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                                    id="oldPasswordToggle">
+                                    <!-- Eye Icon (Show Password) -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-open" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    <!-- Eye-Off Icon (Hide Password) - Initially Hidden -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-closed hidden"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                    </svg>
+                                </span>
+                            </div>
                             @error('old_password')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -276,7 +305,7 @@
                             <label for="newPassword" class="block mb-2 font-medium">New Password</label>
                             <div class="relative">
                                 <input type="password" id="newPassword" name="new_password"
-                                    placeholder="Enter New Password"
+                                    value="{{ old('new_password') }}" placeholder="Enter New Password"
                                     class="w-full p-3 rounded-md border border-gray-200 bg-gray-50 @error('new_password') border-red-500 @enderror">
                                 <span
                                     class="password-toggle absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -298,7 +327,7 @@
                                 </span>
                             </div>
                             @error('new_password')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                             <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">Passwords do not match.</p>
                         </div>
@@ -328,6 +357,9 @@
                                     </svg>
                                 </span>
                             </div>
+                            @error('new_password_confirmation')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="flex justify-center mt-6">
@@ -344,22 +376,36 @@
     <script>
         // Sidebar Toggle
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
         });
 
         // Password Modal
         const modal = document.getElementById('passwordModal');
         const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const closePasswordModalBtn = document.getElementById('closePasswordModal');
 
         // Open modal when change password button is clicked
-        changePasswordBtn.addEventListener('click', function() {
-            modal.classList.add('active');
-        });
+        if (changePasswordBtn) {
+            changePasswordBtn.addEventListener('click', function() {
+                modal.classList.add('active');
+            });
+        }
+
+        // Close modal when clicking close button
+        if (closePasswordModalBtn) {
+            closePasswordModalBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+        }
 
         // Close modal when clicking outside the modal content
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
-                modal.classList.remove('active');
+                // Only close if there are no validation errors
+                const hasErrors = document.querySelectorAll('.text-red-500').length > 0;
+                if (!hasErrors) {
+                    modal.classList.remove('active');
+                }
             }
         });
 
@@ -424,6 +470,7 @@
             }
 
             // Setup password toggles
+            setupPasswordToggle('oldPasswordToggle', 'oldPassword');
             setupPasswordToggle('newPasswordToggle', 'newPassword');
             setupPasswordToggle('confirmPasswordToggle', 'confirmPassword');
         });
