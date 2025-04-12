@@ -237,35 +237,43 @@ class ContributionController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-        // Validate the request
         $request->validate([
             'status' => 'required|in:Upload,Reject,Update,Select,Publish',
         ]);
 
-        // Find the contribution
         $contribution = Contribution::findOrFail($id);
-
-        // Store the old status before updating
         $oldStatus = $contribution->contribution_status;
-
-        // Update the status
         $contribution->contribution_status = $request->status;
         $contribution->save();
 
-        // If the status is "Reject", send an email to the user
         if ($request->status == 'Reject') {
-            // Send rejection email to the user
-            Mail::to($contribution->user->email)->send(new ContributionRejected($contribution));
+            try {
+                Mail::to($contribution->user->email)->send(new ContributionRejected($contribution));
+            } catch (\Exception $e) {
+                if ($request->wantsJson() || $request->isJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Status updated but email failed to send'
+                    ]);
+                }
+                return redirect()->back()->with('error', 'Status updated but email failed to send');
+            }
         }
 
-        // Redirect based on the status
-        if ($request->status == 'Upload') {
+        if ($request->wantsJson() || $request->isJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Contribution status updated successfully.'
+            ]);
+        }
+
+        if ($request->status == '') {
             return redirect()->route('marketingcoordinator.submission-management.feedback', $id);
         }
 
-        // Redirect back with a success message
         return redirect()->back()->with('success', 'Contribution status updated successfully.');
     }
+
 
     public function showFeedbackForm($id)
     {
