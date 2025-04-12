@@ -77,7 +77,19 @@
 
                                 <div class="font-semibold text-xl">Status</div>
                                 <div class="md:col-span-2 text-xl flex items-center">
-                                    <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
+                                    @if ($contribution->contribution_status == 'Upload')
+                                        <span class="w-4 h-4 bg-yellow-400 rounded-full mr-3"></span>
+                                    @elseif($contribution->contribution_status == 'Reject')
+                                        <span class="w-4 h-4 bg-red-400 rounded-full mr-3"></span>
+                                    @elseif($contribution->contribution_status == 'Review')
+                                        <span class="w-4 h-4 bg-orange-400 rounded-full mr-3"></span>
+                                    @elseif($contribution->contribution_status == 'Update')
+                                        <span class="w-4 h-4 bg-blue-400 rounded-full mr-3"></span>
+                                    @elseif($contribution->contribution_status == 'Select')
+                                        <span class="w-4 h-4 bg-green-400 rounded-full mr-3"></span>
+                                    @elseif($contribution->contribution_status == 'Publish')
+                                        <span class="w-4 h-4 bg-purple-400 rounded-full mr-3"></span>
+                                    @endif
                                     {{ $contribution->contribution_status == 'Upload'
                                         ? 'Uploaded'
                                         : ($contribution->contribution_status == 'Select'

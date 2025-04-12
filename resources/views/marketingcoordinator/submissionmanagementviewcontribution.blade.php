@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Load Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.3/dist/cdn.min.js" defer></script>
     <!-- SwiperJS CSS -->
@@ -231,7 +232,7 @@
                             <!-- Approval Options -->
                             <div class="mt-12">
                                 <h2 class="text-3xl font-bold mb-8">Approval Options</h2>
-                                <form
+                                <form id="statusForm"
                                     action="{{ route('marketingcoordinator.submission-management.update-status', $contribution->contribution_id) }}"
                                     method="POST" class="flex flex-wrap gap-4 select-none">
                                     @csrf
@@ -239,11 +240,21 @@
                                         class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Select
                                     </button>
-                                    <button type="submit" name="status" value="Reject"
-                                        class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
-                                        Reject
+                                    <button type="submit" name="status" value="Reject" id="rejectBtn"
+                                        class="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors flex items-center justify-center">
+                                        <span id="rejectButtonText">Reject</span>
+                                        <svg id="rejectSpinner"
+                                            class="animate-spin -mr-1 ml-2 h-5 w-5 text-white hidden"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                        </svg>
                                     </button>
-                                    <button type="submit" name="status" value="Upload"
+                                    <button type="button"
+                                        onclick="window.location.href='{{ route('marketingcoordinator.submission-management.feedback', $contribution->contribution_id) }}'"
                                         class="bg-black hover:bg-gray-700 text-white px-8 py-3 rounded-md text-lg font-semibold transition-colors">
                                         Give Feedback
                                     </button>
@@ -252,6 +263,56 @@
                                         Back
                                     </a>
                                 </form>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const statusForm = document.getElementById('statusForm');
+                                        const rejectBtn = document.getElementById('rejectBtn');
+                                        const rejectButtonText = document.getElementById('rejectButtonText');
+                                        const rejectSpinner = document.getElementById('rejectSpinner');
+
+                                        if (statusForm && rejectBtn) {
+                                            statusForm.addEventListener('submit', function(e) {
+                                                const clickedBtn = e.submitter;
+
+                                                // Only handle Reject button with AJAX
+                                                if (clickedBtn && clickedBtn.value === 'Reject') {
+                                                    e.preventDefault();
+
+                                                    // Show loading state
+                                                    rejectBtn.disabled = true;
+                                                    rejectButtonText.textContent = "Rejecting...";
+                                                    rejectSpinner.classList.remove('hidden');
+
+                                                    fetch(this.action, {
+                                                            method: 'POST',
+                                                            headers: {
+                                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                                                    .getAttribute('content'),
+                                                                'Content-Type': 'application/json'
+                                                            },
+                                                            body: JSON.stringify({
+                                                                status: 'Reject'
+                                                            })
+                                                        })
+                                                        .then(response => {
+                                                            if (!response.ok) {
+                                                                throw new Error('Network response was not ok');
+                                                            }
+                                                            return response.json();
+                                                        })
+                                                        .then(data => {
+                                                            location.reload();
+                                                        })
+                                                        .catch(error => {
+                                                            console.error('Error:', error);
+                                                            alert('An error occurred while rejecting the contribution.');
+                                                        });
+                                                }
+                                            });
+                                        }
+                                    });
+                                </script>
                             </div>
                         </div>
                     </div>
