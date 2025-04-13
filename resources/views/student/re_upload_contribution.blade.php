@@ -119,8 +119,25 @@
                                         </div>
                                     </div>
 
-                                    <div class="prose prose-sm max-w-none text-sm text-gray-600">
+                                    {{-- <div class="prose prose-sm max-w-none text-sm text-gray-600">
                                         {!! nl2br(e($feedback->feedback)) !!}
+                                    </div> --}}
+                                    <div x-data="{ expanded: false }">
+                                        <p class="text-gray-700 mt-2">
+                                            <span x-show="!expanded">
+                                                {{ Str::limit($feedback->feedback, 150) }}
+                                            </span>
+                                            <span x-show="expanded">
+                                                {{ $feedback->feedback }}
+                                            </span>
+                                        </p>
+                                        @if (strlen($feedback->feedback) > 150)
+                                            <button @click="expanded = !expanded"
+                                                class="text-gray-400 text-sm hover:underline">
+                                                <span x-show="!expanded">Read more</span>
+                                                <span x-show="expanded">Show less</span>
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -162,87 +179,89 @@
         @endif
 
         @if ($contributions->count() > 0)
-            <table class="w-full mt-4 border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border p-3 text-left">Title</th>
-                        <th class="border p-3 text-left">Category</th>
-                        <th class="border p-3 text-left">Submission Date</th>
-                        <th class="border p-3 text-left">Status</th>
-                        <th class="border p-3 text-left">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($contributions as $contribution)
-                        <tr>
-                            <td class="border p-3">{{ $contribution->contribution_title }}</td>
-                            <td class="border p-3">{{ $contribution->category->contribution_category }}
-                            </td>
-                            <td class="border p-3">{{ $contribution->submitted_date->format('M d, Y') }}</td>
-                            <td
-                                class="border p-3 {{ $contribution->contribution_status === 'Publish' ? 'text-green-600' : 'text-yellow-500' }}">
-                                {{ $contribution->contribution_status == 'Upload'
-                                    ? 'Uploaded'
-                                    : ($contribution->contribution_status == 'Select'
-                                        ? 'Selected'
-                                        : ($contribution->contribution_status == 'Update'
-                                            ? 'Updated'
-                                            : ($contribution->contribution_status == 'Reject'
-                                                ? 'Rejected'
-                                                : ($contribution->contribution_status == 'Review'
-                                                    ? 'Reviewed'
-                                                    : ($contribution->contribution_status == 'Publish'
-                                                        ? 'Published'
-                                                        : $contribution->contribution_status))))) }}
-                            </td>
-                            <td class="border p-3 select-none">
-                                @if ($contribution->contribution_status !== 'Publish')
-                                    @if (now() < \Carbon\Carbon::parse($contribution->intake->final_closure_date))
-                                        <a href="{{ route('upload_contribution.edit', $contribution->contribution_id) }}"
-                                            class="text-white px-4 py-[7.5px] rounded hover:opacity-80 underline"
-                                            style="background-color: #1FE689;">
-                                            Edit
-                                        </a>
-                                        <form
-                                            action="{{ route('student.contributions.destroy', $contribution->contribution_id) }}"
-                                            method="POST" class="inline ml-2"
-                                            id="deleteForm{{ $contribution->contribution_id }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button"
-                                                class="text-white px-4 py-1 rounded hover:opacity-80 underline"
-                                                style="background-color: #E61F1F;"
-                                                onclick="confirmDelete({{ $contribution->contribution_id }})">
-                                                Delete
+            <div class="overflow-auto">
+                <table class="w-full mt-4 border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border p-3 text-left">Title</th>
+                            <th class="border p-3 text-left">Category</th>
+                            <th class="border p-3 text-left">Submission Date</th>
+                            <th class="border p-3 text-left">Status</th>
+                            <th class="border p-3 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($contributions as $contribution)
+                            <tr>
+                                <td class="border p-3">{{ $contribution->contribution_title }}</td>
+                                <td class="border p-3">{{ $contribution->category->contribution_category }}
+                                </td>
+                                <td class="border p-3">{{ $contribution->submitted_date->format('M d, Y') }}</td>
+                                <td
+                                    class="border p-3 {{ $contribution->contribution_status === 'Publish' ? 'text-green-600' : 'text-yellow-500' }}">
+                                    {{ $contribution->contribution_status == 'Upload'
+                                        ? 'Uploaded'
+                                        : ($contribution->contribution_status == 'Select'
+                                            ? 'Selected'
+                                            : ($contribution->contribution_status == 'Update'
+                                                ? 'Updated'
+                                                : ($contribution->contribution_status == 'Reject'
+                                                    ? 'Rejected'
+                                                    : ($contribution->contribution_status == 'Review'
+                                                        ? 'Reviewed'
+                                                        : ($contribution->contribution_status == 'Publish'
+                                                            ? 'Published'
+                                                            : $contribution->contribution_status))))) }}
+                                </td>
+                                <td class="border p-3 select-none">
+                                    @if ($contribution->contribution_status !== 'Publish')
+                                        @if (now() < \Carbon\Carbon::parse($contribution->intake->final_closure_date))
+                                            <a href="{{ route('upload_contribution.edit', $contribution->contribution_id) }}"
+                                                class="text-white px-4 py-[7.5px] rounded hover:opacity-80 underline"
+                                                style="background-color: #1FE689;">
+                                                Edit
+                                            </a>
+                                            <form
+                                                action="{{ route('student.contributions.destroy', $contribution->contribution_id) }}"
+                                                method="POST" class="inline ml-2"
+                                                id="deleteForm{{ $contribution->contribution_id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="text-white px-4 py-1 rounded hover:opacity-80 underline"
+                                                    style="background-color: #E61F1F;"
+                                                    onclick="confirmDelete({{ $contribution->contribution_id }})">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button
+                                                class="text-white px-4 py-1 rounded cursor-not-allowed hover:opacity-80 underline bg-[#B5B8BF]">
+                                                Submission Closed
                                             </button>
-                                        </form>
+                                        @endif
                                     @else
                                         <button
-                                            class="text-white px-4 py-1 rounded cursor-not-allowed hover:opacity-80 underline bg-[#B5B8BF]">
-                                            Submission Closed
+                                            class="text-white
+                                                px-4 py-1 rounded cursor-not-allowed hover:opacity-80 underline bg-[#B5B8BF]"
+                                            disabled>
+                                            Locked
                                         </button>
                                     @endif
-                                @else
-                                    <button
-                                        class="text-white
-                                            px-4 py-1 rounded cursor-not-allowed hover:opacity-80 underline bg-[#B5B8BF]"
-                                        disabled>
-                                        Locked
-                                    </button>
-                                @endif
 
-                                <script>
-                                    function confirmDelete(contributionId) {
-                                        if (confirm('Are you sure you want to delete this contribution?')) {
-                                            document.getElementById('deleteForm' + contributionId).submit();
+                                    <script>
+                                        function confirmDelete(contributionId) {
+                                            if (confirm('Are you sure you want to delete this contribution?')) {
+                                                document.getElementById('deleteForm' + contributionId).submit();
+                                            }
                                         }
-                                    }
-                                </script>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                    </script>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         @else
             <div class="mt-4 p-4 bg-gray-100 rounded-lg text-center">
                 <p class="text-gray-600">You haven't uploaded any contributions yet.</p>
