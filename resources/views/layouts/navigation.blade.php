@@ -542,9 +542,20 @@ use Carbon\Carbon;
                                     )
                                     ->where('contributions.user_id', Auth::id())
                                     ->where('feedbacks.user_id', '!=', Auth::id())
+                                    ->where('contributions.contribution_status', 'Review')
                                     ->get();
 
                                 $totalCount = $feedbacks->count();
+                                $passwordExpired = now()->gt(Auth::user()->password_expired_date);
+                                $passwordAboutToExpire =
+                                    now()->diffInDays(Auth::user()->password_expired_date) <= 7 && !$passwordExpired;
+
+                                if ($passwordExpired) {
+                                    $totalCount++;
+                                }
+                                if ($passwordAboutToExpire) {
+                                    $totalCount++;
+                                }
                             @endphp
 
                             <span x-data="{
@@ -555,6 +566,12 @@ use Carbon\Carbon;
                         if(localStorage.getItem('viewedFeedback_{{ $feedback->feedback_id }}') === 'true') {
                             this.unreadCount--;
                         } @endforeach
+                                    if (localStorage.getItem('viewedPasswordExpired') === 'true') {
+                                        this.unreadCount--;
+                                    }
+                                    if (localStorage.getItem('viewedPasswordAboutToExpire') === 'true') {
+                                        this.unreadCount--;
+                                    }
                                 }
                             }" x-show="unreadCount > 0" x-cloak
                                 class="absolute -top-1 -right-1 flex h-4 w-4 notification-badge">
@@ -581,6 +598,152 @@ use Carbon\Carbon;
 
                         <div class="py-1" id="notification-container">
                             @if (Auth::check())
+                                <!-- Password About to Expire Notification -->
+                                @php
+                                    $daysUntilExpiration = now()->diffInDays(Auth::user()->password_expired_date);
+                                @endphp
+                                @if ($daysUntilExpiration <= 7 && !now()->gt(Auth::user()->password_expired_date))
+                                    <a href="{{ route('profile.edit') }}" x-data="{
+                                        isNew: localStorage.getItem('viewedPasswordAboutToExpire') !== 'true',
+                                        init() {
+                                            if (!this.isNew) {
+                                                this.$el.remove();
+                                                this.checkEmptyState();
+                                            }
+                                        },
+                                        markAsViewed() {
+                                            if (this.isNew) {
+                                                localStorage.setItem('viewedPasswordAboutToExpire', 'true');
+                                                this.isNew = false;
+                                    
+                                                // Update the counter
+                                                const badge = document.querySelector('.notification-badge span:last-child');
+                                                if (badge) {
+                                                    const currentCount = parseInt(badge.textContent);
+                                                    if (currentCount > 1) {
+                                                        badge.textContent = currentCount - 1;
+                                                    } else {
+                                                        badge.closest('.notification-badge').remove();
+                                                    }
+                                                }
+                                    
+                                                // Remove this notification from the list
+                                                this.$el.remove();
+                                                this.checkEmptyState();
+                                            }
+                                        },
+                                        checkEmptyState() {
+                                            const container = document.getElementById('notification-container');
+                                            const notifications = container.querySelectorAll('a:not(.empty-state)');
+                                            if (notifications.length === 0) {
+                                                if (!container.querySelector('.empty-state')) {
+                                                    const emptyState = document.createElement('div');
+                                                    emptyState.className = 'px-4 py-3 text-center text-sm text-gray-500 empty-state';
+                                                    emptyState.textContent = 'No notifications available';
+                                                    container.appendChild(emptyState);
+                                                }
+                                            }
+                                        }
+                                    }"
+                                        @click="markAsViewed()" x-show="isNew"
+                                        class="block px-4 py-3 hover:bg-gray-50 transition-colors duration-150 notification-item">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 pt-0.5">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                    <i class="ri-alarm-line text-yellow-500"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <p class="text-sm font-medium text-gray-900">
+                                                    Password Expiring Soon
+                                                </p>
+                                                <p class="text-sm text-gray-500 mt-1">
+                                                    Your password will expire in {{ ceil($daysUntilExpiration) }}
+                                                    {{ Str::plural('day', ceil($daysUntilExpiration)) }}
+                                                </p>
+                                                <p class="text-xs text-gray-400 mt-1">
+                                                    Expires on
+                                                    {{ Auth::user()->password_expired_date }}
+                                                </p>
+                                            </div>
+                                            <span x-show="isNew"
+                                                class="ml-2 w-2 h-2 rounded-full bg-yellow-500"></span>
+                                        </div>
+                                    </a>
+                                @endif
+
+                                <!-- Password Expired Notification -->
+                                @if (now()->gt(Auth::user()->password_expired_date))
+                                    <a href="{{ route('profile.edit') }}" x-data="{
+                                        isNew: localStorage.getItem('viewedPasswordExpired') !== 'true',
+                                        init() {
+                                            if (!this.isNew) {
+                                                this.$el.remove();
+                                                this.checkEmptyState();
+                                            }
+                                        },
+                                        markAsViewed() {
+                                            if (this.isNew) {
+                                                localStorage.setItem('viewedPasswordExpired', 'true');
+                                                this.isNew = false;
+                                    
+                                                // Update the counter
+                                                const badge = document.querySelector('.notification-badge span:last-child');
+                                                if (badge) {
+                                                    const currentCount = parseInt(badge.textContent);
+                                                    if (currentCount > 1) {
+                                                        badge.textContent = currentCount - 1;
+                                                    } else {
+                                                        badge.closest('.notification-badge').remove();
+                                                    }
+                                                }
+                                    
+                                                // Remove this notification from the list
+                                                this.$el.remove();
+                                                this.checkEmptyState();
+                                            }
+                                        },
+                                        checkEmptyState() {
+                                            const container = document.getElementById('notification-container');
+                                            const notifications = container.querySelectorAll('a:not(.empty-state)');
+                                            if (notifications.length === 0) {
+                                                if (!container.querySelector('.empty-state')) {
+                                                    const emptyState = document.createElement('div');
+                                                    emptyState.className = 'px-4 py-3 text-center text-sm text-gray-500 empty-state';
+                                                    emptyState.textContent = 'No notifications available';
+                                                    container.appendChild(emptyState);
+                                                }
+                                            }
+                                        }
+                                    }"
+                                        @click="markAsViewed()" x-show="isNew"
+                                        class="block px-4 py-3 hover:bg-gray-50 transition-colors duration-150 notification-item">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 pt-0.5">
+                                                <div
+                                                    class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
+                                                    <i class="ri-alarm-warning-fill text-red-500"></i>
+                                                </div>
+                                            </div>
+                                            <div class="ml-3 flex-1">
+                                                <p class="text-sm font-medium text-gray-900">
+                                                    Password Expired
+                                                </p>
+                                                <p class="text-sm text-gray-500 mt-1">
+                                                    Your password expired on
+                                                    {{ Auth::user()->password_expired_date }}
+                                                </p>
+                                                <p class="text-xs text-gray-400 mt-1">
+                                                    Please change your password immediately
+                                                </p>
+                                            </div>
+                                            <span x-show="isNew" class="ml-2 w-2 h-2 rounded-full bg-red-500"></span>
+                                        </div>
+                                    </a>
+                                @endif
+
+                                <!-- Existing Feedback Notifications -->
                                 @php
                                     $feedbacks = DB::table('feedbacks')
                                         ->join(
@@ -592,6 +755,7 @@ use Carbon\Carbon;
                                         ->join('users', 'feedbacks.user_id', '=', 'users.user_id')
                                         ->where('contributions.user_id', Auth::id())
                                         ->where('feedbacks.user_id', '!=', Auth::id())
+                                        ->where('contributions.contribution_status', 'Review')
                                         ->orderBy('feedbacks.feedback_given_date', 'desc')
                                         ->select(
                                             'feedbacks.*',
@@ -599,19 +763,15 @@ use Carbon\Carbon;
                                             'contributions.contribution_title as contribution_title',
                                         )
                                         ->get();
-
-                                    // Filter out viewed notifications on the client side using Alpine
-
                                 @endphp
 
                                 @if ($feedbacks->count() > 0)
                                     @foreach ($feedbacks as $feedback)
-                                        <a href="{{ route('student.contribution-detail', $feedback->contribution_id) }}"
+                                        <a href="{{ route('upload_contribution.edit', $feedback->contribution_id) }}"
                                             x-data="{
                                                 feedbackId: {{ $feedback->feedback_id }},
                                                 isNew: localStorage.getItem('viewedFeedback_{{ $feedback->feedback_id }}') !== 'true',
                                                 init() {
-                                                    // Hide if already viewed
                                                     if (!this.isNew) {
                                                         this.$el.remove();
                                                         this.checkEmptyState();
@@ -622,7 +782,6 @@ use Carbon\Carbon;
                                                         localStorage.setItem('viewedFeedback_' + this.feedbackId, 'true');
                                                         this.isNew = false;
                                             
-                                                        // Update the counter
                                                         const badge = document.querySelector('.notification-badge span:last-child');
                                                         if (badge) {
                                                             const currentCount = parseInt(badge.textContent);
@@ -633,27 +792,19 @@ use Carbon\Carbon;
                                                             }
                                                         }
                                             
-                                                        // Remove this notification from the list
                                                         this.$el.remove();
                                                         this.checkEmptyState();
                                                     }
                                                 },
                                                 checkEmptyState() {
-                                                    // If no more notifications, show empty state
-                                                    if (document.querySelectorAll('#notification-container a').length === 0) {
-                                                        const container = document.getElementById('notification-container');
-                                                        // Check if empty state already exists
+                                                    const container = document.getElementById('notification-container');
+                                                    const notifications = container.querySelectorAll('a:not(.empty-state)');
+                                                    if (notifications.length === 0) {
                                                         if (!container.querySelector('.empty-state')) {
                                                             const emptyState = document.createElement('div');
                                                             emptyState.className = 'px-4 py-3 text-center text-sm text-gray-500 empty-state';
                                                             emptyState.textContent = 'No notifications available';
                                                             container.appendChild(emptyState);
-                                            
-                                                            // Hide the 'View all' link
-                                                            const viewAllLink = document.querySelector('.view-all-link');
-                                                            if (viewAllLink) {
-                                                                viewAllLink.remove();
-                                                            }
                                                         }
                                                     }
                                                 }
@@ -684,7 +835,9 @@ use Carbon\Carbon;
                                             </div>
                                         </a>
                                     @endforeach
-                                @else
+                                @endif
+
+                                @if ($feedbacks->count() == 0 && !now()->gt(Auth::user()->password_expired_date) && $daysUntilExpiration > 7)
                                     <div class="px-4 py-3 text-center text-sm text-gray-500 empty-state">
                                         No notifications available
                                     </div>
@@ -696,17 +849,22 @@ use Carbon\Carbon;
                             @endif
                         </div>
 
-                        @if (Auth::check() && $feedbacks->count() > 0)
+                        @if (Auth::check() &&
+                                ($feedbacks->count() > 0 || now()->gt(Auth::user()->password_expired_date) || $daysUntilExpiration <= 7))
                             <div class="px-4 py-2 text-center view-all-link" x-data="{
                                 viewAll() {
                                     // Mark all as viewed when clicking 'View all'
                                     @foreach ($feedbacks as $feedback)
                         localStorage.setItem('viewedFeedback_{{ $feedback->feedback_id }}', 'true'); @endforeach
+                                    localStorage.setItem('viewedPasswordExpired', 'true');
+                                    localStorage.setItem('viewedPasswordAboutToExpire', 'true');
+                            
                                     // Remove the badge
                                     const badge = document.querySelector('.notification-badge');
                                     if (badge) {
                                         badge.remove();
                                     }
+                            
                                     // Remove all notifications from the list
                                     const notificationItems = document.querySelectorAll('.notification-item');
                                     notificationItems.forEach(item => item.remove());
@@ -816,9 +974,14 @@ use Carbon\Carbon;
                 <div class="mt-3 space-y-1">
                     @if (Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student')
                         <a href="{{ route('upload_contribution.index') }}"
-                            class="leading-4 font-medium text-blue-800 hover:text-blue-900 border-l-2 mt-3 ps-3 pe-4 py-3 transition-colors duration-200">
+                            class="leading-4 font-medium text-blue-800 border-l-4 hover:text-blue-900 mt-3 ps-3 pe-4 py-3 transition-colors duration-200">
                             Contribute your article
                         </a>
+                    @endif
+                    @if (Auth::check() && Auth::user()->role && Auth::user()->role->role === 'Student')
+                        <x-responsive-nav-link :href="route('student.re_upload_contribution')">
+                            {{ __('Contribution History') }}
+                        </x-responsive-nav-link>
                     @endif
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
