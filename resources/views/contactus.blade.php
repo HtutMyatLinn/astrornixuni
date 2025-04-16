@@ -170,14 +170,17 @@
                 <button class="w-full text-left flex items-center justify-between focus:outline-none group"
                     onclick="toggleFaq(1)">
                     <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
-                        How can I contact support?
+                        What makes your magazine unique compared to others?
                     </span>
                     <i id="icon1" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
                 </button>
                 <div id="faq1" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
                     <div class="text-gray-600 mt-3">
-                        You can contact support through the inquiry form on the contact page, or by emailing us at
-                        <strong class="text-blue-600">astrornixuni27@gmail.com</strong>.
+                        Our magazine stands out by offering a perfect blend of in-depth, high-quality content across
+                        diverse fields. We focus on delivering expert opinions, innovative trends, and real stories from
+                        industry leaders, ensuring our readers receive both valuable knowledge and fresh perspectives
+                        every issue. We're committed to exploring untold stories and presenting them in ways that
+                        inspire, educate, and entertain.
                     </div>
                 </div>
             </div>
@@ -187,13 +190,17 @@
                 <button class="w-full text-left flex items-center justify-between focus:outline-none group"
                     onclick="toggleFaq(2)">
                     <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
-                        What are your office hours?
+                        How do you choose the topics you cover in each issue?
                     </span>
                     <i id="icon2" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
                 </button>
                 <div id="faq2" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
                     <div class="text-gray-600 mt-3">
-                        Our office hours are Monday to Friday from 9:00 AM to 5:00 PM. We are closed on weekends.
+                        We focus on what matters most to our audience—topics that drive conversation, spark curiosity,
+                        and challenge the status quo. Our editorial team combines market research, feedback from our
+                        loyal readers, and the latest trends in various industries to select timely, relevant, and
+                        impactful subjects. We’re dedicated to bringing attention to emerging ideas and exploring the
+                        depths of current events.
                     </div>
                 </div>
             </div>
@@ -203,14 +210,17 @@
                 <button class="w-full text-left flex items-center justify-between focus:outline-none group"
                     onclick="toggleFaq(3)">
                     <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
-                        Can I reach you outside office hours?
+                        How can I contribute to your magazine and be featured as a writer?
                     </span>
                     <i id="icon3" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
                 </button>
                 <div id="faq3" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
                     <div class="text-gray-600 mt-3">
-                        While our office is closed on weekends, you can still send inquiries via the contact form, and
-                        our team will get back to you within 24-48 hours.
+                        We’re always excited to discover fresh voices! If you have unique insights, stories, or
+                        expertise, we welcome your submissions. To contribute, simply submit a pitch or a completed
+                        article to our editorial team. We look for high-quality content that resonates with our
+                        audience, whether it’s through storytelling, analysis, or creative ideas. We prioritize
+                        authenticity, thought-provoking narratives, and original perspectives.
                     </div>
                 </div>
             </div>
@@ -220,14 +230,17 @@
                 <button class="w-full text-left flex items-center justify-between focus:outline-none group"
                     onclick="toggleFaq(4)">
                     <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
-                        Do you offer 24/7 customer support?
+                        What steps do you take to ensure the accuracy and credibility of your content?
                     </span>
                     <i id="icon4" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
                 </button>
                 <div id="faq4" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
                     <div class="text-gray-600 mt-3">
-                        We do not offer 24/7 support, but our team works diligently to respond to inquiries within 24-48
-                        hours.
+                        Accuracy is a cornerstone of our publication. Each article goes through a rigorous fact-checking
+                        process. We rely on expert sources, verified data, and multiple perspectives to ensure that
+                        every piece we publish is not only engaging but also credible. Our editorial team works closely
+                        with industry professionals to maintain the highest standards of journalism and integrity in our
+                        content.
                     </div>
                 </div>
             </div>
@@ -237,14 +250,17 @@
                 <button class="w-full text-left flex items-center justify-between focus:outline-none group"
                     onclick="toggleFaq(5)">
                     <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
-                        What is the best way to provide feedback?
+                        How can I engage with the magazine outside of reading it?
                     </span>
                     <i id="icon5" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
                 </button>
                 <div id="faq5" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
                     <div class="text-gray-600 mt-3">
-                        We welcome feedback through our contact form or by emailing us directly at
-                        <strong class="text-blue-600">astrornixuni27@gmail.com</strong>.
+                        We believe in fostering a community of passionate readers. You can engage with us through social
+                        media platforms, join live webinars and discussions, participate in contests, or even become a
+                        part of our writer’s network. We also encourage readers to leave feedback, share thoughts on
+                        articles, and interact with fellow readers in our forums to create an open dialogue that extends
+                        beyond the pages.
                     </div>
                 </div>
             </div>
@@ -254,14 +270,17 @@
                 <button class="w-full text-left flex items-center justify-between focus:outline-none group"
                     onclick="toggleFaq(6)">
                     <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
-                        How long does it take to respond to inquiries?
+                        What is the most important message your magazine aims to communicate?
                     </span>
                     <i id="icon6" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
                 </button>
                 <div id="faq6" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
                     <div class="text-gray-600 mt-3">
-                        We aim to respond to all inquiries within 24-48 hours, depending on the complexity of the
-                        request.
+                        Our core message is to inspire curiosity, provoke thought, and drive positive change. We want
+                        our readers to walk away from each issue feeling empowered with knowledge, challenged to think
+                        differently, and motivated to act. Whether it’s exploring new frontiers of innovation or
+                        shedding light on social issues, our magazine aims to spark the conversations that lead to
+                        growth, creativity, and progress.
                     </div>
                 </div>
             </div>
@@ -271,14 +290,76 @@
                 <button class="w-full text-left flex items-center justify-between focus:outline-none group"
                     onclick="toggleFaq(7)">
                     <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
-                        Do you have a physical store?
+                        How do you support the community through your magazine?
                     </span>
                     <i id="icon7" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
                 </button>
                 <div id="faq7" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
                     <div class="text-gray-600 mt-3">
-                        No, we do not have a physical store at the moment. However, you can reach us online through
-                        our contact form or via email.
+                        We take our responsibility to the community seriously. Beyond delivering engaging content, we
+                        spotlight local initiatives, support charity events, and promote sustainable practices. We use
+                        our platform to amplify important social causes and collaborate with organizations working
+                        toward positive change. Every subscription and engagement helps us fund and support these
+                        community-driven efforts.
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(8)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        What do you believe is the future of the magazine industry?
+                    </span>
+                    <i id="icon8" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq8" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        The future of magazines lies in adaptability and embracing digital transformation. While print
+                        will always have its place, digital magazines provide an interactive, multimedia experience that
+                        can reach global audiences instantaneously. Our focus is on creating content that’s dynamic,
+                        immersive, and multi-platform. We aim to integrate augmented reality, video content, and
+                        interactive features to create a more personalized and engaging experience for readers.
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(9)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        Why should I subscribe to your magazine instead of reading free online content?
+                    </span>
+                    <i id="icon9" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq9" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        While free content can be accessible, it often lacks depth, accuracy, and quality. A
+                        subscription to our magazine grants you exclusive access to premium content, expert analysis,
+                        and curated stories that you won’t find elsewhere. We provide value that goes beyond just
+                        information—offering carefully researched articles, creative designs, and thought-provoking
+                        features that can’t be replicated by free sources. When you subscribe, you’re investing in
+                        high-quality journalism and unique storytelling.
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-5">
+                <button class="w-full text-left flex items-center justify-between focus:outline-none group"
+                    onclick="toggleFaq(10)">
+                    <span class="text-lg md:text-xl font-medium text-gray-800 transition-colors duration-200">
+                        What can I expect from the magazine over the next year?
+                    </span>
+                    <i id="icon10" class="fas fa-plus text-gray-400 transition-all duration-300"></i>
+                </button>
+                <div id="faq10" class="overflow-hidden transition-all duration-300 ease-in-out max-h-0">
+                    <div class="text-gray-600 mt-3">
+                        Over the next year, expect to see a transformation in how we present content—more digital
+                        interactivity, exclusive interviews with top innovators, and deeper dives into topics that
+                        matter. We’re committed to bringing our readers closer to the cutting edge of various
+                        industries, from tech and business to culture and the arts. We’re also planning special editions
+                        and collaborations with thought leaders to enhance our editorial approach and keep you ahead of
+                        the curve.
                     </div>
                 </div>
             </div>
