@@ -1056,7 +1056,8 @@ class HomeController extends Controller
         // Start building the query
         $query = Contribution::whereHas('user', function ($query) use ($facultyId) {
             $query->where('faculty_id', $facultyId); // Filter by faculty_id
-        });
+        })
+            ->orderBy('submitted_date', 'desc'); // Order by latest submitted_date
 
         // Apply search filter by student name or contribution title
         if ($request->filled('search')) {  // Use 'filled' to check if the input exists and is not empty

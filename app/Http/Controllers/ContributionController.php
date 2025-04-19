@@ -57,9 +57,13 @@ class ContributionController extends Controller
 
     public function selectedContributions(Request $request)
     {
+        $user = Auth::user();
         // Fetch contributions with status "Select"
         $contributionsQuery = Contribution::where('contribution_status', 'Select')
-            ->with(['user', 'category']) // Eager load relationships
+            ->whereHas('user', function ($query) use ($user) {
+                $query->where('faculty_id', $user->faculty_id);
+            })
+            ->with(['user', 'category'])
             ->orderBy('submitted_date', $request->input('sort', 'desc')); // Default sorting by 'desc' if no sort is provided
 
         // If a search is provided, apply filters for Contribution Title and Student Name
