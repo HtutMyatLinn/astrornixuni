@@ -53,23 +53,23 @@ class HomeController extends Controller
         $inquiries = Inquiry::all();
 
         // Get the current month's inquiry count
-        $current_month_inquiries = User::whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+        $current_month_inquiries = Inquiry::whereYear('inquiry_date', Carbon::now()->year)
+            ->whereMonth('inquiry_date', Carbon::now()->month)
             ->count();
 
         // Get the previous month's inquiry count
-        $previous_month_inquiries = User::whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+        $previous_month_inquiries = Inquiry::whereYear('inquiry_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('inquiry_date', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change
         $inquiry_percentage_change = 0;
-        if ($previous_month_users > 0) {
+        if ($previous_month_inquiries > 0) {
             $inquiry_percentage_change = (($current_month_inquiries - $previous_month_inquiries) / $previous_month_inquiries) * 100;
         }
 
         // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
+        $inquiry_percentage_change = round($inquiry_percentage_change, 2);
 
         $total_students = User::whereHas('role', function ($query) {
             $query->where('role', 'Student');
@@ -105,12 +105,12 @@ class HomeController extends Controller
         // Contribution calculations
         $total_contributions = Contribution::all();
 
-        $current_month_contributions = Contribution::whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+        $current_month_contributions = Contribution::whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
-        $previous_month_contributions = Contribution::whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+        $previous_month_contributions = Contribution::whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         $contribution_percentage_change = 0;
@@ -125,13 +125,13 @@ class HomeController extends Controller
         $selected_contributions = Contribution::where('contribution_status', 'Select')->get();
 
         $current_month_selected = Contribution::where('contribution_status', 'Select')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         $previous_month_selected = Contribution::where('contribution_status', 'Select')
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         $selected_percentage_change = 0;
@@ -144,13 +144,13 @@ class HomeController extends Controller
         $rejected_contributions = Contribution::where('contribution_status', 'Reject')->get();
 
         $current_month_rejected = Contribution::where('contribution_status', 'Reject')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         $previous_month_rejected = Contribution::where('contribution_status', 'Reject')
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         $rejected_percentage_change = 0;
@@ -163,13 +163,13 @@ class HomeController extends Controller
         $published_contributions = Contribution::where('contribution_status', 'Publish')->get();
 
         $current_month_published = Contribution::where('contribution_status', 'Publish')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         $previous_month_published = Contribution::where('contribution_status', 'Publish')
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         $published_percentage_change = 0;
@@ -399,13 +399,13 @@ class HomeController extends Controller
         $totalPublishedContributions = Contribution::where('contribution_status', 'Publish')->get();
 
         $current_month_published = Contribution::where('contribution_status', 'Publish')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         $previous_month_published = Contribution::where('contribution_status', 'Publish')
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         $published_percentage_change = 0;
@@ -423,13 +423,13 @@ class HomeController extends Controller
         $submissionTrendsThisYear = Contribution::where('view_count', '>', 100)->count();
 
         $current_month_popular = Contribution::where('view_count', '>', 100)
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         $previous_month_popular = Contribution::where('view_count', '>', 100)
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         $popular_percentage_change = 0;
@@ -441,12 +441,12 @@ class HomeController extends Controller
         // Total Contributions Submitted (all contributions)
         $totalContributionsSubmitted = Contribution::count();
 
-        $current_month_contributions = Contribution::whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+        $current_month_contributions = Contribution::whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
-        $previous_month_contributions = Contribution::whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+        $previous_month_contributions = Contribution::whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         $contribution_percentage_change = 0;
@@ -838,8 +838,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         // Pending contributions for the previous month
@@ -847,8 +847,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change for pending contributions
@@ -871,8 +871,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         // Selected contributions for the previous month
@@ -880,8 +880,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change for selected contributions
@@ -904,8 +904,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         // Rejected contributions for the previous month
@@ -913,8 +913,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change for rejected contributions
@@ -937,8 +937,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         // Published contributions for the previous month
@@ -946,8 +946,8 @@ class HomeController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change for published contributions
