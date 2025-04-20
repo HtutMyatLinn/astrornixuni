@@ -3,19 +3,19 @@
     <div class="flex items-center justify-between mb-4">
         <div class="space-y-4">
             @if (Auth::user()->login_count === 1)
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-                    Welcome, {{ Auth::user()->username }}
-                </h1>
-                <h2 class="text-sm sm:text-lg text-gray-500">
-                    Here is what's happening in your university today.
-                </h2>
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+                Welcome, {{ Auth::user()->username }}
+            </h1>
+            <h2 class="text-sm sm:text-lg text-gray-500">
+                Here is what's happening in your university today.
+            </h2>
             @else
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-                    Welcome Back, {{ Auth::user()->username }}!
-                </h1>
-                <h2 class="text-sm sm:text-lg text-gray-500">
-                    Here is what's new in your university today.
-                </h2>
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">
+                Welcome Back, {{ Auth::user()->username }}!
+            </h1>
+            <h2 class="text-sm sm:text-lg text-gray-500">
+                Here is what's new in your university today.
+            </h2>
             @endif
         </div>
         <div class="text-right">
@@ -117,14 +117,14 @@
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
                     @if ($faculty_guests_percentage_change > 0)
-                        <span class="text-emerald-500 text-xl font-medium">{{ $faculty_guests_percentage_change }}%
-                            ↑</span>
+                    <span class="text-emerald-500 text-xl font-medium">{{ $faculty_guests_percentage_change }}%
+                        ↑</span>
                     @elseif ($faculty_guests_percentage_change < 0)
                         <span class="text-red-500 text-xl font-medium">{{ abs($faculty_guests_percentage_change) }}%
-                            ↓</span>
-                    @else
+                        ↓</span>
+                        @else
                         <span class="text-gray-500 text-xl font-medium">0%</span>
-                    @endif
+                        @endif
                 </div>
             </div>
         </div>
@@ -146,14 +146,14 @@
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
                     @if ($contributions_percentage_change > 0)
-                        <span class="text-emerald-500 text-xl font-medium">{{ $contributions_percentage_change }}%
-                            ↑</span>
+                    <span class="text-emerald-500 text-xl font-medium">{{ $contributions_percentage_change }}%
+                        ↑</span>
                     @elseif ($contributions_percentage_change < 0)
                         <span class="text-red-500 text-xl font-medium">{{ abs($contributions_percentage_change) }}%
-                            ↓</span>
-                    @else
+                        ↓</span>
+                        @else
                         <span class="text-gray-500 text-xl font-medium">0%</span>
-                    @endif
+                        @endif
                 </div>
             </div>
         </div>
@@ -175,12 +175,12 @@
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
                     @if ($student_percentage_change > 0)
-                        <span class="text-emerald-500 text-xl font-medium">{{ $student_percentage_change }}% ↑</span>
+                    <span class="text-emerald-500 text-xl font-medium">{{ $student_percentage_change }}% ↑</span>
                     @elseif ($student_percentage_change < 0)
                         <span class="text-red-500 text-xl font-medium">{{ abs($student_percentage_change) }}% ↓</span>
-                    @else
+                        @else
                         <span class="text-gray-500 text-xl font-medium">0%</span>
-                    @endif
+                        @endif
                 </div>
             </div>
         </div>
@@ -202,16 +202,16 @@
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
                     @if ($pending_contributions_percentage_change > 0)
-                        <span
-                            class="text-emerald-500 text-xl font-medium">{{ $pending_contributions_percentage_change }}%
-                            ↑</span>
+                    <span
+                        class="text-emerald-500 text-xl font-medium">{{ $pending_contributions_percentage_change }}%
+                        ↑</span>
                     @elseif ($pending_contributions_percentage_change < 0)
                         <span
-                            class="text-red-500 text-xl font-medium">{{ abs($pending_contributions_percentage_change) }}%
-                            ↓</span>
-                    @else
+                        class="text-red-500 text-xl font-medium">{{ abs($pending_contributions_percentage_change) }}%
+                        ↓</span>
+                        @else
                         <span class="text-gray-500 text-xl font-medium">0%</span>
-                    @endif
+                        @endif
                 </div>
             </div>
         </div>
@@ -233,16 +233,16 @@
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
                     @if ($selected_contributions_percentage_change > 0)
-                        <span
-                            class="text-emerald-500 text-xl font-medium">{{ $selected_contributions_percentage_change }}%
-                            ↑</span>
+                    <span
+                        class="text-emerald-500 text-xl font-medium">{{ $selected_contributions_percentage_change }}%
+                        ↑</span>
                     @elseif ($selected_contributions_percentage_change < 0)
                         <span
-                            class="text-red-500 text-xl font-medium">{{ abs($selected_contributions_percentage_change) }}%
-                            ↓</span>
-                    @else
+                        class="text-red-500 text-xl font-medium">{{ abs($selected_contributions_percentage_change) }}%
+                        ↓</span>
+                        @else
                         <span class="text-gray-500 text-xl font-medium">0%</span>
-                    @endif
+                        @endif
                 </div>
             </div>
         </div>
@@ -264,16 +264,16 @@
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
                     @if ($rejected_contributions_percentage_change > 0)
-                        <span
-                            class="text-emerald-500 text-xl font-medium">{{ $rejected_contributions_percentage_change }}%
-                            ↑</span>
+                    <span
+                        class="text-emerald-500 text-xl font-medium">{{ $rejected_contributions_percentage_change }}%
+                        ↑</span>
                     @elseif ($rejected_contributions_percentage_change < 0)
                         <span
-                            class="text-red-500 text-xl font-medium">{{ abs($rejected_contributions_percentage_change) }}%
-                            ↓</span>
-                    @else
+                        class="text-red-500 text-xl font-medium">{{ abs($rejected_contributions_percentage_change) }}%
+                        ↓</span>
+                        @else
                         <span class="text-gray-500 text-xl font-medium">0%</span>
-                    @endif
+                        @endif
                 </div>
             </div>
         </div>
@@ -290,22 +290,22 @@
                 <!-- Numbers -->
                 <div class="space-y-1">
                     <h2 class="text-3xl font-bold">{{ $published_contributions->count() }}</h2>
-                    <p class="text-xl text-gray-400">Published Contribtuions</p>
+                    <p class="text-xl text-gray-400">Published Contributions</p>
                 </div>
 
                 <!-- Percentage -->
                 <div class="flex items-center gap-1">
                     @if ($published_contributions_percentage_change > 0)
-                        <span
-                            class="text-emerald-500 text-xl font-medium">{{ $published_contributions_percentage_change }}%
-                            ↑</span>
+                    <span
+                        class="text-emerald-500 text-xl font-medium">{{ $published_contributions_percentage_change }}%
+                        ↑</span>
                     @elseif ($published_contributions_percentage_change < 0)
                         <span
-                            class="text-red-500 text-xl font-medium">{{ abs($published_contributions_percentage_change) }}%
-                            ↓</span>
-                    @else
+                        class="text-red-500 text-xl font-medium">{{ abs($published_contributions_percentage_change) }}%
+                        ↓</span>
+                        @else
                         <span class="text-gray-500 text-xl font-medium">0%</span>
-                    @endif
+                        @endif
                 </div>
             </div>
         </div>
