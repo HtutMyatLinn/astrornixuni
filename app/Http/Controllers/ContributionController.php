@@ -424,8 +424,8 @@ class ContributionController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         // Contributions with status 'Update' added last month
@@ -433,8 +433,8 @@ class ContributionController extends Controller
             ->whereHas('user.faculty', function ($query) use ($user) {
                 $query->where('faculty_id', $user->faculty_id);
             })
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change
@@ -455,8 +455,8 @@ class ContributionController extends Controller
             $q->where('faculty_id', $facultyId);
         })
             ->whereDoesntHave('feedbacks')
-            ->whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereYear('submitted_date', Carbon::now()->year)
+            ->whereMonth('submitted_date', Carbon::now()->month)
             ->count();
 
         // Get previous month's pending review contributions
@@ -464,8 +464,8 @@ class ContributionController extends Controller
             $q->where('faculty_id', $facultyId);
         })
             ->whereDoesntHave('feedbacks')
-            ->whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
+            ->whereYear('submitted_date', Carbon::now()->subMonth()->year)
+            ->whereMonth('submitted_date', Carbon::now()->subMonth()->month)
             ->count();
 
         // Calculate the percentage change in pending reviews
