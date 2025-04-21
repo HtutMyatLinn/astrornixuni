@@ -72,25 +72,6 @@ class UnassignedUserController extends Controller
         // Inquiry
         $inquiries = Inquiry::all();
 
-        // Get the current month's new inquiry count
-        $current_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->year)
-            ->whereMonth('created_at', Carbon::now()->month)
-            ->count();
-
-        // Get the previous month's new inquiry count
-        $previous_month_inquiries = Inquiry::whereYear('created_at', Carbon::now()->subMonth()->year)
-            ->whereMonth('created_at', Carbon::now()->subMonth()->month)
-            ->count();
-
-        // Calculate the percentage change
-        $inquiry_percentage_change = 0;
-        if ($previous_month_inquiries > 0) {
-            $inquiry_percentage_change = (($current_month_inquiries - $previous_month_inquiries) / $previous_month_inquiries) * 100;
-        }
-
-        // Round the percentage to 2 decimal places
-        $inquiry_percentage_change = min(round($inquiry_percentage_change, 2), 100);
-
         // Fetch the role ID for the "Guest" role
         $guestRole = Role::where('role', 'Guest')->first();
 
@@ -125,7 +106,7 @@ class UnassignedUserController extends Controller
         // Round the percentage to 2 decimal places
         $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
-        return view('admin.notificationsunregister', compact('users', 'search', 'total_students', 'student_percentage_change', 'inquiries', 'inquiry_percentage_change', 'unassigned_users', 'unassigned_user_percentage_change'));
+        return view('admin.notificationsunregister', compact('users', 'search', 'total_students', 'student_percentage_change', 'inquiries', 'unassigned_users', 'unassigned_user_percentage_change'));
     }
 
     // Display a listing of the resource.
@@ -168,7 +149,7 @@ class UnassignedUserController extends Controller
         $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
-        $inquiries = Inquiry::all();
+        $inquiries = Inquiry::where('inquiry_status', 'Pending')->get();
 
         $users = User::where('role_id', $guestRoleId) // Get the id of Guest role
             ->orderBy('created_at', $sort)

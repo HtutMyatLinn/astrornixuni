@@ -275,7 +275,7 @@ class HomeController extends Controller
         $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
-        $inquiries = Inquiry::all();
+        $inquiries = Inquiry::where('inquiry_status', 'Pending')->get();
 
         // Total student
         $total_students = User::whereHas('role', function ($query) {

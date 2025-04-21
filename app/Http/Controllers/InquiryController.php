@@ -56,7 +56,7 @@ class InquiryController extends Controller
         $unassigned_user_percentage_change = min(round($unassigned_user_percentage_change, 2), 100);
 
         // Inquiry
-        $inquiries = Inquiry::all();
+        $inquiries_count = Inquiry::where('inquiry_status', 'Pending')->get();
 
         $inquiries = Inquiry::query();
 
@@ -149,7 +149,7 @@ class InquiryController extends Controller
             'filter' => $filter, // Keep the filter parameter in pagination links
         ]);
 
-        return view('admin.notificationsinquiry', compact('inquiries', 'inquiries', 'sort', 'search', 'filter', 'total_students', 'student_percentage_change', 'unassigned_users', 'unassigned_user_percentage_change'));
+        return view('admin.notificationsinquiry', compact('inquiries_count', 'inquiries', 'sort', 'search', 'filter', 'total_students', 'student_percentage_change', 'unassigned_users', 'unassigned_user_percentage_change'));
     }
 
     //Store inquiry from user
