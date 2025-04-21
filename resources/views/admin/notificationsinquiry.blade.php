@@ -89,7 +89,7 @@
                                 <div class="flex items-end justify-between">
                                     <!-- Numbers -->
                                     <div class="space-y-1">
-                                        <h2 class="text-3xl font-bold">{{ $inquiries->count() }}</h2>
+                                        <h2 class="text-3xl font-bold">{{ $inquiries_count->count() }}</h2>
                                         <p class="text-xl text-gray-400">New Inquiries</p>
                                     </div>
                                 </div>
