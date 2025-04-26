@@ -9,9 +9,12 @@
             <div class="text-black">
                 <p class="font-medium">Follow us</p>
                 <div class="flex items-center gap-4 mt-2">
-                    <i class="ri-instagram-line text-2xl"></i>
-                    <i class="ri-facebook-circle-line text-2xl"></i>
-                    <i class="ri-twitter-line text-2xl"></i>
+                    <a href="https://www.instagram.com/astrornix_university?igsh=MWhmMWlpcXhmdm11&utm_source=qr"
+                        target="_blank"><i class="ri-instagram-line text-2xl"></i></a>
+                    <a href="https://www.facebook.com/share/16CBVLkHev/?mibextid=wwXIfr" target="_blank"><i
+                            class="ri-facebook-circle-line text-2xl"></i></a>
+                    <a href="https://x.com/1teamiconic?s=21" target="_blank"><i
+                            class="ri-twitter-line text-2xl"></i></a>
                 </div>
             </div>
         </div>
@@ -49,9 +52,6 @@
 
                     <a href="{{ asset($termsPdfPath) }}" target="_blank">Terms and Conditions</a>
                     <a href="{{ asset($privacyPdfPath) }}" target="_blank">Privacy Policy</a>
-                    {{-- <a href="">Twitter</a>
-                    <a href="">Facebook</a>
-                    <a href="">Skype</a> --}}
                 </ul>
             </div>
 
