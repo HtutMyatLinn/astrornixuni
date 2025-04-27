@@ -1,2 +1,13 @@
+# Ignore everything
 *
-!.gitignore
+
+# Allow the app/public folder and its subfolders
+!storage/app/public/
+!storage/app/public/contribution-documents/
+!storage/app/public/contribution-images/
+!storage/app/public/profile_images/
+
+# Allow specific files inside the folders if needed
+!storage/app/public/contribution-documents/*
+!storage/app/public/contribution-images/*
+!storage/app/public/profile_images/*

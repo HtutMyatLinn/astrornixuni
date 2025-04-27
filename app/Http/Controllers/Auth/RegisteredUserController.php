@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
+use App\Mail\NewUserNotification;
+use App\Mail\WelcomeEmail;
+use App\Models\Faculty;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -19,7 +24,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $faculties = Faculty::all();
+        return view('auth.register', compact('faculties'));
     }
 
     /**
@@ -27,24 +33,95 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
+    public function store(RegisterRequest $request): RedirectResponse
+    {
+        // Generate a unique user_code
+        $user_code = $this->generateUniqueUserId();
+
+        // Fetch the role ID for the "Guest" role
+        $guestRole = Role::where('role', 'Guest')->first();
+
+        if (!$guestRole) {
+            throw new \Exception('Guest role not found.');
+        }
+
+        // Create the new user
         $user = User::create([
-            'name' => $request->name,
+            'user_code' => $user_code,
+            'username' => $request->username,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'faculty_id' => $request->faculty_id,
+            'role_id' => $guestRole->role_id,
+            'last_login_date' => now(),
+            'last_password_changed_date' => now(),
+            'password_expired_date' => now()->addMonths(2),
+            'login_count' => 0,
+            'status' => true,
         ]);
 
-        event(new Registered($user));
+        // Send welcome email to the new user
+        try {
+            Mail::to($user->email)->send(new WelcomeEmail($user));
+        } catch (\Exception $e) {
+            // Log the error but don't break the registration flow
+            Log::error('Registration email failed: ' . $e->getMessage());
+        }
 
+        // Find Marketing Coordinators for the same faculty
+        $marketingCoordinatorRole = Role::where('role', 'Marketing Coordinator')->first();
+
+        if ($marketingCoordinatorRole) {
+            $marketingCoordinators = User::where('faculty_id', $request->faculty_id)
+                ->where('role_id', $marketingCoordinatorRole->role_id)
+                ->get();
+
+            // Send an email notification to each Marketing Coordinator
+            foreach ($marketingCoordinators as $mc) {
+                try {
+                    Mail::to($mc->email)->send(new NewUserNotification($user));
+                } catch (\Exception $e) {
+                    Log::error('Failed to send notification email to MC: ' . $e->getMessage());
+                }
+            }
+        }
+
+        event(new Registered($user));
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('/', absolute: false));
+    }
+
+    /**
+     * Generate a unique user_code.
+     */
+    private function generateUniqueUserId(): string
+    {
+        $lastUser = User::orderBy('user_code', 'desc')->first();
+
+        // If no users exist, start with U000001
+        if (!$lastUser) {
+            return 'U000001';
+        }
+
+        // Extract the numeric part of the last user_code
+        $lastUserId = intval(substr($lastUser->user_code, 1));
+
+        // Increment the numeric part
+        $newNumericPart = $lastUserId + 1;
+
+        // Generate the new user_id
+        $user_code = 'U' . str_pad($newNumericPart, 6, '0', STR_PAD_LEFT);
+
+        // Check if the generated user_id already exists
+        while (User::where('user_code', $user_code)->exists()) {
+            $newNumericPart++;
+            $user_code = 'U' . str_pad($newNumericPart, 6, '0', STR_PAD_LEFT);
+        }
+
+        return $user_code;
     }
 }
